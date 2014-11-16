@@ -3,6 +3,8 @@ package pl.kostro.expensesystem;
 import javax.servlet.annotation.WebServlet;
 
 import pl.kostro.expensesystem.components.LoginPage;
+import pl.kostro.expensesystem.components.MainPage;
+import pl.kostro.expensesystem.model.User;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -19,6 +21,8 @@ public class ExpenseSystemUI extends UI {
 	@VaadinServletConfiguration(productionMode = false, ui = ExpenseSystemUI.class)
 	public static class Servlet extends VaadinServlet {
 	}
+	
+	private User loggedUser = new User();
 
 	@Override
 	protected void init(VaadinRequest request) {
@@ -26,7 +30,10 @@ public class ExpenseSystemUI extends UI {
 		layout.setMargin(true);
 		setContent(layout);
 
-		layout.addComponent(new LoginPage());
+		if (loggedUser.getId() == 0) {
+			layout.addComponent(new LoginPage(loggedUser));
+		} else
+			layout.addComponent(new MainPage(loggedUser));
 	}
 
 }
