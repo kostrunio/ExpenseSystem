@@ -44,8 +44,7 @@ public class MainPage extends CustomComponent {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				mainView.removeAllComponents();
-				mainView.addComponent(new SettingsPage(loggedUser));
+				setCompositionRoot(new SettingsPage(loggedUser));
 			}
 		});
 		
