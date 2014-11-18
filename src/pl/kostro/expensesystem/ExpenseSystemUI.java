@@ -4,7 +4,7 @@ import javax.servlet.annotation.WebServlet;
 
 import pl.kostro.expensesystem.components.LoginPage;
 import pl.kostro.expensesystem.components.MainPage;
-import pl.kostro.expensesystem.model.User;
+import pl.kostro.expensesystem.model.RealUser;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -22,7 +22,7 @@ public class ExpenseSystemUI extends UI {
 	public static class Servlet extends VaadinServlet {
 	}
 	
-	private User loggedUser = new User();
+	private RealUser loggedUser = new RealUser();
 
 	@Override
 	protected void init(VaadinRequest request) {
