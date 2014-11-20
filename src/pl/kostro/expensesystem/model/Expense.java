@@ -9,6 +9,14 @@ public class Expense {
 	private Category category;
 	private User user;
 	
+	public Expense(Date date, String formula, Category category, User user) {
+		super();
+		this.date = date;
+		this.formula = formula;
+		this.category = category;
+		this.user = user;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -42,5 +50,14 @@ public class Expense {
 	}
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public static void createExpense(ExpenseSheet expenseSheet) {
+		expenseSheet.getExpenseList().add(
+				new Expense(
+						new Date(),
+						"=1+2",
+						expenseSheet.getCategoryList().get(0),
+						expenseSheet.getOwner()));
 	}
 }

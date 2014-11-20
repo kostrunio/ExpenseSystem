@@ -5,6 +5,11 @@ public class UserLimit {
 	private User user;
 	private int limit;
 	
+	public UserLimit(User user, int limit) {
+		this.user = user;
+		this.limit = limit;
+	}
+	
 	public int getId() {
 		return id;
 	}
@@ -24,6 +29,10 @@ public class UserLimit {
 	}
 	public void setLimit(int limit) {
 		this.limit = limit;
+	}
+	
+	public static void createUserLimit(ExpenseSheet expenseSheet) {
+		expenseSheet.getUserLimitList().add(new UserLimit(expenseSheet.getOwner(), 0));
 	}
 	
 }

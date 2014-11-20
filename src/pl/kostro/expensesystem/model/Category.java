@@ -1,5 +1,7 @@
 package pl.kostro.expensesystem.model;
 
+import java.util.List;
+
 public class Category {
 	private int id;
 	private String name;
@@ -29,6 +31,12 @@ public class Category {
 	}
 	public void setOrderId(int orderId) {
 		this.orderId = orderId;
+	}
+
+	public static void createCategory(List<Category> categoryList) {
+		categoryList.add(new Category("jedzenie", 1));
+		categoryList.add(new Category("s³odycze",2));
+		categoryList.add(new Category("kosmetyki", 3));
 	}
 	
 }

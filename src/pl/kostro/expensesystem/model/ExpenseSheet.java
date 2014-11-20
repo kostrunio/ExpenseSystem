@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class ExpenseSheet {
@@ -75,23 +76,31 @@ public class ExpenseSheet {
 		this.mainLimit = mainLimit;
 	}
 
-	public static void createExpenseSheet(List<ExpenseSheet> expenseSheetList, RealUser loggedUser) {
+	public List<Expense> getExpenseList(Date startDate, Date endDate) {
+		List<Expense> expenseListToReturn = new ArrayList<Expense>();
+		for (Expense expense : expenseList)
+			if (expense.getDate().after(startDate) && expense.getDate().before(endDate))
+				expenseListToReturn.add(expense);
+		return expenseListToReturn;
+	}
+	
+	public static void createExpenseSheet(RealUser loggedUser) {
 		ExpenseSheet expenseSheet = new ExpenseSheet();
 		expenseSheet.setId(1);
 		expenseSheet.setOwner(loggedUser);
 		expenseSheet.setName("wydatki");
-		List<Category> categoryList = new ArrayList<Category>();
-		categoryList.add(new Category("jedzenie", 1));
-		categoryList.add(new Category("s³odycze",2));
-		categoryList.add(new Category("kosmetyki", 3));
-		expenseSheet.setCategoryList(categoryList);
-		expenseSheetList.add(expenseSheet);
+		Category.createCategory(expenseSheet.getCategoryList());
+		UserLimit.createUserLimit(expenseSheet);
+		Expense.createExpense(expenseSheet);
+		loggedUser.getExpenseSheetList().add(expenseSheet);
 		
 		expenseSheet = new ExpenseSheet();
 		expenseSheet.setId(2);
 		expenseSheet.setOwner(loggedUser);
 		expenseSheet.setName("mieszkanie");
-		expenseSheet.setCategoryList(categoryList);
-		expenseSheetList.add(expenseSheet);
+		Category.createCategory(expenseSheet.getCategoryList());
+		UserLimit.createUserLimit(expenseSheet);
+		Expense.createExpense(expenseSheet);
+		loggedUser.getExpenseSheetList().add(expenseSheet);
 	}
 }
