@@ -50,7 +50,7 @@ public class MainPage extends CustomComponent {
 				for (ExpenseSheet expenseSheet : loggedUser.getExpenseSheetList()) {
 					if (selectedItem.getText().equals(expenseSheet.getName())) {
 							mainView.removeAllComponents();
-							mainView.addComponent(new ExpenseView(loggedUser));
+							mainView.addComponent(new ExpenseView(expenseSheet));
 					}
 				}
 			}
@@ -76,7 +76,7 @@ public class MainPage extends CustomComponent {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				// TODO Auto-generated method stub
-				loggedUser.setId(0);
+				loggedUser.removeData();
 				setCompositionRoot(new LoginPage(loggedUser));
 			}
 		});
