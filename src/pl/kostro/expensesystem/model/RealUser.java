@@ -31,8 +31,15 @@ public class RealUser extends User {
 		this.expenseSheetList = expenseSheetList;
 	}
 	
+	public void removeData() {
+		setId(0);
+		setName(null);
+		setEmail(null);
+		setExpenseSheets(null);
+	}
+	
 	public static void createUser(RealUser loggedUser) {
 		loggedUser.setId(1);
-		ExpenseSheet.createExpenseSheet(loggedUser.getExpenseSheetList(), loggedUser);
+		ExpenseSheet.createExpenseSheet(loggedUser);
 	}
 }
