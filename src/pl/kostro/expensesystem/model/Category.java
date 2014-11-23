@@ -32,11 +32,15 @@ public class Category {
 	public void setOrderId(int orderId) {
 		this.orderId = orderId;
 	}
+	
+	public String toString() {
+		return getName();
+	}
 
 	public static void createCategory(List<Category> categoryList) {
-		categoryList.add(new Category("jedzenie", 1));
-		categoryList.add(new Category("s³odycze",2));
-		categoryList.add(new Category("kosmetyki", 3));
+		categoryList.add(new Category("jedzenie", 0));
+		categoryList.add(new Category("s³odycze",1));
+		categoryList.add(new Category("kosmetyki", 2));
 	}
 	
 }
