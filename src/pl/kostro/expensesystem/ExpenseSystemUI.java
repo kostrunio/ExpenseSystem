@@ -22,7 +22,7 @@ public class ExpenseSystemUI extends UI {
 	public static class Servlet extends VaadinServlet {
 	}
 	
-	private RealUser loggedUser = new RealUser();
+	private RealUser loggedUser = new RealUser(null);
 
 	@Override
 	protected void init(VaadinRequest request) {

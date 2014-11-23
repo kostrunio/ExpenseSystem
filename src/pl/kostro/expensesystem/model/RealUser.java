@@ -8,6 +8,10 @@ public class RealUser extends User {
 	private String email;
 	private List<ExpenseSheet> expenseSheetList;
 	
+	public RealUser(String name) {
+		super(name);
+	}
+	
 	public String getPassword() {
 		return password;
 	}
