@@ -44,6 +44,7 @@ public class NewCategoryView extends CustomComponent {
 	      public void buttonClick(ClickEvent event) {
 	    	  Category category = new Category(newCategory.getValue(), expenseSheet.getCategoryList().size());
 	    	  expenseSheet.getCategoryList().add(category);
+	    	  setCompositionRoot(new ExpenseSheetSettingsView(expenseSheet));
 	      }
 	    });
 	}
@@ -91,7 +92,7 @@ private GridLayout buildNewCategoryGrid() {
 	newCategoryLabel.setImmediate(false);
 	newCategoryLabel.setWidth("-1px");
 	newCategoryLabel.setHeight("-1px");
-	newCategoryLabel.setValue("Nazwa arkusza");
+	newCategoryLabel.setValue("Nazwa kategorii");
 	newCategoryGrid.addComponent(newCategoryLabel, 0, 0);
 	
 	// newCategory

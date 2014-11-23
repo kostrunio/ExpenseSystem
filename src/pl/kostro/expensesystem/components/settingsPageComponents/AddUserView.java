@@ -43,9 +43,9 @@ public class AddUserView extends CustomComponent {
       
 	      @Override
 	      public void buttonClick(ClickEvent event) {
-	        User user = new User();
-	        user.setName(newUser.getValue());
+	        User user = new User(newUser.getValue());
 	        expenseSheet.getUserLimitList().add(new UserLimit(user, 0));
+	        setCompositionRoot(new ExpenseSheetSettingsView(expenseSheet));
 	      }
 	    });
 	}
@@ -93,7 +93,7 @@ private GridLayout buildNewUserGrid() {
 	newUserLabel.setImmediate(false);
 	newUserLabel.setWidth("-1px");
 	newUserLabel.setHeight("-1px");
-	newUserLabel.setValue("Nazwa arkusza");
+	newUserLabel.setValue("Nazwa u¿ytkownika");
 	newUserGrid.addComponent(newUserLabel, 0, 0);
 	
 	// newUser
