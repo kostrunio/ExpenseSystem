@@ -1,11 +1,16 @@
 package pl.kostro.expensesystem.model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import pl.kostro.expensesystem.utils.Calculator;
 
 public class Expense {
 	private int id;
 	private Date date;
 	private String formula;
+	private double value;
 	private Category category;
 	private User user;
 	
@@ -15,6 +20,7 @@ public class Expense {
 		this.formula = formula;
 		this.category = category;
 		this.user = user;
+		this.value = Calculator.getResult(formula);
 	}
 	
 	public int getId() {
@@ -38,6 +44,13 @@ public class Expense {
 		this.formula = formula;
 	}
 	
+	public double getValue() {
+		return value;
+	}
+	public void setValue(double value) {
+		this.value = value;
+	}
+	
 	public Category getCategory() {
 		return category;
 	}
@@ -51,13 +64,27 @@ public class Expense {
 	public void setUser(User user) {
 		this.user = user;
 	}
+	
+	public String getValueString() {
+		return "" + value;
+	}
+	
+	public String toString() {
+		return "Expense: " + date + ";" + category + ";" + value;
+	}
 
 	public static void createExpense(ExpenseSheet expenseSheet) {
-		expenseSheet.getExpenseList().add(
-				new Expense(
-						new Date(),
-						"=1+2",
-						expenseSheet.getCategoryList().get(0),
-						expenseSheet.getOwner()));
+		SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		try {
+			expenseSheet.getExpenseList().add(
+					new Expense(
+							df.parse(df.format(new Date())),
+							"1+2",
+							expenseSheet.getCategoryList().get(0),
+							expenseSheet.getOwner()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
