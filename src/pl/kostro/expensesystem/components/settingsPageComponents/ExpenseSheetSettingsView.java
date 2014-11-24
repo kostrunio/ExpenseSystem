@@ -114,20 +114,17 @@ public class ExpenseSheetSettingsView extends CustomComponent {
 		userTable.setPageLength(5);
 		userTable.addContainerProperty("Nazwa", String.class, null);
 		userTable.addContainerProperty("Limit", Integer.class, null);
-		System.out.println("UserLimitList: " + expenseSheet.getUserLimitList().size());
 		for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
 			if (userLimit.getUser() instanceof RealUser) {
 				Object newItemId = realUserTable.addItem();
 				Item row = realUserTable.getItem(newItemId);
 				row.getItemProperty("Nazwa").setValue(userLimit.getUser().getName());
 				row.getItemProperty("Limit").setValue(userLimit.getLimit());
-				System.out.println("RealUser: " + userLimit.getUser().getName());
 			} else {
 				Object newItemId = userTable.addItem();
 				Item row = userTable.getItem(newItemId);
 				row.getItemProperty("Nazwa").setValue(userLimit.getUser().getName());
 				row.getItemProperty("Limit").setValue(userLimit.getLimit());
-				System.out.println("User: " + userLimit.getUser().getName());
 			}
 		}
 		
