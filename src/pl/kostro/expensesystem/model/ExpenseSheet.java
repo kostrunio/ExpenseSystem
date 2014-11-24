@@ -2,7 +2,11 @@ package pl.kostro.expensesystem.model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import pl.kostro.expensesystem.utils.DateExpense;
 
 public class ExpenseSheet {
 	private int id;
@@ -13,6 +17,8 @@ public class ExpenseSheet {
 	private List<Expense> expenseList;
 	private int reloadeDay;
 	private int mainLimit;
+	
+	private Map<Date, DateExpense> dateExpenseMap;
 	
 	public int getId() {
 		return id;
@@ -75,13 +81,39 @@ public class ExpenseSheet {
 	public void setMainLimit(int mainLimit) {
 		this.mainLimit = mainLimit;
 	}
+	
+	public Map<Date, DateExpense> getDateExpenseMap() {
+		if (dateExpenseMap == null)
+			dateExpenseMap = new HashMap<Date, DateExpense>();
+		return dateExpenseMap;
+	}
+	
+	public void setDateExpenseMap(Map<Date, DateExpense> dateExpenseMap) {
+		this.dateExpenseMap = dateExpenseMap;
+	}
 
-	public List<Expense> getExpenseList(Date startDate, Date endDate) {
+	private List<Expense> getExpenseList(Date startDate, Date endDate) {
 		List<Expense> expenseListToReturn = new ArrayList<Expense>();
-		for (Expense expense : expenseList)
-			if (expense.getDate().after(startDate) && expense.getDate().before(endDate))
+		for (Expense expense : expenseList) {
+			if (expense.getDate().equals(startDate)
+					|| expense.getDate().equals(endDate)
+					|| (expense.getDate().after(startDate) && expense.getDate().before(endDate)))
 				expenseListToReturn.add(expense);
+		}
 		return expenseListToReturn;
+	}
+	
+	public Map<Date, DateExpense> prepareDateExpenseMap(Date startDate, Date endDate) {
+		getDateExpenseMap().clear();
+		for (Expense expense : getExpenseList(startDate, endDate)) {
+			DateExpense dateExpense = getDateExpenseMap().get(expense.getDate());
+			if (dateExpense == null) {
+				dateExpense = new DateExpense(expense.getDate());
+				getDateExpenseMap().put(expense.getDate(), dateExpense);
+			}
+			dateExpense.addExpense(expense);
+		}
+		return getDateExpenseMap();
 	}
 	
 	public static void createExpenseSheet(RealUser loggedUser) {
