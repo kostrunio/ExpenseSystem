@@ -14,6 +14,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 public class CategoryExpenseView extends CustomComponent {
@@ -68,24 +69,27 @@ public class CategoryExpenseView extends CustomComponent {
 
 	private void prepareExpenseGrid() {
 		List<Expense> expenseList = expenseSheet.getDateExpenseMap().get(date).getCategoryExpenseMap().get(category).getExpenseList();
-		expenseGrid.setColumns(2);
+		expenseGrid.setColumns(3);
 		expenseGrid.setRows(expenseList.size());
 		
 		for (int i = 0; i < expenseList.size(); i++) {
 			Expense expense = expenseList.get(i);
+			Label userLabel = new Label(expense.getUser().getName());
+			expenseGrid.addComponent(userLabel, 0, i);
+			
 			Button valueButton = new Button(expense.getValueString());
 			valueButton.setImmediate(true);
 			valueButton.setWidth("-1px");
 			valueButton.setHeight("-1px");
 			valueButton.setData(expense);
-			expenseGrid.addComponent(valueButton, 0, i);
+			expenseGrid.addComponent(valueButton, 1, i);
 			
 			Button removeButton = new Button();
 			removeButton.setCaption("X");
 			removeButton.setImmediate(true);
 			removeButton.setWidth("-1px");
 			removeButton.setHeight("-1px");
-			expenseGrid.addComponent(removeButton, 1, i);
+			expenseGrid.addComponent(removeButton, 2, i);
 		}
 	}
 
