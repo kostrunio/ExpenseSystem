@@ -64,6 +64,7 @@ public class AddNewExpense extends CustomComponent {
 		setCompositionRoot(mainLayout);
 
 		// TODO add user code here
+		user.setNewItemsAllowed(false);
 		user.setNullSelectionAllowed(false);
 		user.addItems(expenseSheet.getUserLimitList());
 		if (expense.getUser() != null)
@@ -86,6 +87,10 @@ public class AddNewExpense extends CustomComponent {
 			}
 		});
 		
+		comment.setNewItemsAllowed(true);
+		comment.setNullSelectionAllowed(true);
+		comment.select(expense.getComment());
+		
 		saveButton.setEnabled(false);
 		saveButton.addClickListener(new Button.ClickListener() {
 			
@@ -97,8 +102,9 @@ public class AddNewExpense extends CustomComponent {
 					UserLimit userLimit = (UserLimit) user.getValue();
 					if (modify)
 					  expenseSheet.removeExpense(expense);
-					expense.setFormula(formula.getValue());
 					expense.setUser(userLimit.getUser());
+					expense.setFormula(formula.getValue());
+					expense.setComment(comment.getValue().toString());
 					expenseSheet.addExpense(expense);
 					setCompositionRoot(new CategoryExpenseView(expenseSheet, expense.getDate(), expense.getCategory()));
 				}
@@ -187,7 +193,7 @@ public class AddNewExpense extends CustomComponent {
 		// comment
 		comment = new ComboBox();
 		comment.setCaption("komentarz");
-		comment.setImmediate(false);
+		comment.setImmediate(true);
 		comment.setWidth("-1px");
 		comment.setHeight("-1px");
 		expenseGrid.addComponent(comment, 2, 0);
