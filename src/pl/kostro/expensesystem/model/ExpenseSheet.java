@@ -106,14 +106,40 @@ public class ExpenseSheet {
 	public Map<Date, DateExpense> prepareDateExpenseMap(Date startDate, Date endDate) {
 		getDateExpenseMap().clear();
 		for (Expense expense : getExpenseList(startDate, endDate)) {
-			DateExpense dateExpense = getDateExpenseMap().get(expense.getDate());
-			if (dateExpense == null) {
-				dateExpense = new DateExpense(expense.getDate());
-				getDateExpenseMap().put(expense.getDate(), dateExpense);
-			}
-			dateExpense.addExpense(expense);
+			addExpenseToMap(expense);
 		}
 		return getDateExpenseMap();
+	}
+	
+	private void addExpenseToMap(Expense expense) {
+		DateExpense dateExpense = getDateExpenseMap().get(expense.getDate());
+		if (dateExpense == null) {
+			dateExpense = new DateExpense(expense.getDate());
+			getDateExpenseMap().put(expense.getDate(), dateExpense);
+		}
+		dateExpense.addExpense(expense);
+	}
+	
+	public void addNewExpense(Expense expense) {
+		getExpenseList().add(expense);
+		addExpenseToMap(expense);
+	}
+	
+	public void removeExpense(Expense expense) {
+		getExpenseList().remove(expense);
+		removeExpenseFromMap(expense);
+	}
+	
+	private void removeExpenseFromMap(Expense expense) {
+		DateExpense dateExpense = getDateExpenseMap().get(expense.getDate());
+		dateExpense.removeExpense(expense);
+	}
+	
+	public UserLimit getUserLimitForUser(User user) {
+		for (UserLimit userLimit : getUserLimitList())
+			if (userLimit.getUser() == user)
+				return userLimit;
+		return null;
 	}
 	
 	public static void createExpenseSheet(RealUser loggedUser) {
@@ -135,4 +161,5 @@ public class ExpenseSheet {
 		Expense.createExpense(expenseSheet);
 		loggedUser.getExpenseSheetList().add(expenseSheet);
 	}
+
 }
