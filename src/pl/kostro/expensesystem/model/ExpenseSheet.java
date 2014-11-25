@@ -5,6 +5,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -169,6 +171,16 @@ public class ExpenseSheet {
       if (userLimit.getUser() == user)
         return userLimit;
     return null;
+  }
+  
+  public Set<String> getCommentForCategory(Category category) {
+    Set<String> commentList = new TreeSet<String>();
+    for (Expense expense : getExpenseList())
+      if (expense.getCategory() == category)
+        if (expense.getComment() != null
+        || !expense.getComment().equals(new String()))
+        commentList.add(expense.getComment());
+    return commentList;
   }
 
   public static void createExpenseSheet(RealUser loggedUser) {
