@@ -1,9 +1,7 @@
 package pl.kostro.expensesystem.components.mainPageComponents;
 
-import java.util.Date;
 
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
@@ -97,11 +95,11 @@ public class AddNewExpense extends CustomComponent {
 			public void buttonClick(ClickEvent event) {
 				if (user.getValue() instanceof UserLimit) {
 					UserLimit userLimit = (UserLimit) user.getValue();
+					if (modify)
+					  expenseSheet.removeExpense(expense);
 					expense.setFormula(formula.getValue());
 					expense.setUser(userLimit.getUser());
-					expense.setValue(Calculator.getResult(formula.getValue()));
-					if (!modify)
-						expenseSheet.addNewExpense(expense);
+					expenseSheet.addExpense(expense);
 					setCompositionRoot(new CategoryExpenseView(expenseSheet, expense.getDate(), expense.getCategory()));
 				}
 			}
