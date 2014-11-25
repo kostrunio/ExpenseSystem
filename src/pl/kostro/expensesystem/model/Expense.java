@@ -13,14 +13,16 @@ public class Expense {
 	private double value;
 	private Category category;
 	private User user;
+	private String comment;
 	
-	public Expense(Date date, String formula, Category category, User user) {
+	public Expense(Date date, String formula, Category category, User user, String comment) {
 		super();
 		this.date = date;
 		this.formula = formula;
 		this.category = category;
 		this.user = user;
 		this.value = Calculator.getResult(formula);
+		this.comment = comment;
 	}
 	
 	public int getId() {
@@ -66,7 +68,14 @@ public class Expense {
 	}
 	
 	public String getValueString() {
-		return "" + value;
+		return new String() + value;
+	}
+	
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
 	}
 	
 	public String toString() {
@@ -81,7 +90,8 @@ public class Expense {
 							df.parse(df.format(new Date())),
 							"1+2",
 							expenseSheet.getCategoryList().get(0),
-							expenseSheet.getOwner()));
+							expenseSheet.getOwner(),
+							new String()));
 		} catch (ParseException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
