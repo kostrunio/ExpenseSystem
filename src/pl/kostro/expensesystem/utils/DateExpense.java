@@ -39,7 +39,7 @@ public class DateExpense {
 	}
 	
 	public String getSumString() {
-		return "" + sum;
+		return new String() + sum;
 	}
 	
 	public String toString() {
@@ -54,5 +54,10 @@ public class DateExpense {
 			getCategoryExpenseMap().put(expense.getCategory(), categoryExpense);
 		}
 		categoryExpense.addExpense(expense);
+	}
+	public void removeExpense(Expense expense) {
+		setSum(getSum() - expense.getValue());
+		CategoryExpense categoryExpense = getCategoryExpenseMap().get(expense.getCategory());
+		categoryExpense.removeExpense(expense);
 	}
 }

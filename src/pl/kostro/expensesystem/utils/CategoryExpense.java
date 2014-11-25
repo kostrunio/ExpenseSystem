@@ -38,11 +38,15 @@ public class CategoryExpense {
 	}
 	
 	public String getSumString() {
-		return "" + sum;
+		return new String() + sum;
 	}
 	
 	public void addExpense(Expense expense) {
 		setSum(getSum() + expense.getValue());
 		getExpenseList().add(expense);
+	}
+	public void removeExpense(Expense expense) {
+		setSum(getSum() - expense.getValue());
+		getExpenseList().remove(expense);
 	}
 }
