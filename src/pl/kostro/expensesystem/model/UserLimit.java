@@ -31,6 +31,10 @@ public class UserLimit {
 		this.limit = limit;
 	}
 	
+	public String toString() {
+		return user.getName();
+	}
+	
 	public static void createUserLimit(ExpenseSheet expenseSheet) {
 		expenseSheet.getUserLimitList().add(new UserLimit(expenseSheet.getOwner(), 0));
 		expenseSheet.getUserLimitList().add(new UserLimit(new User("wspólne"), 0));
