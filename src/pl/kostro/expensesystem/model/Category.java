@@ -18,6 +18,10 @@ public class Category {
 	private String name;
 	private int orderId;
 	
+	public Category() {
+	  super();
+	}
+	
 	public Category(String name, int orderId) {
 		this.name = name;
 		this.orderId = orderId;

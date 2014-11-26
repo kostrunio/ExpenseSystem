@@ -17,6 +17,10 @@ public class UserLimit {
   @OneToOne
   private User user;
   private int limit;
+  
+  public UserLimit() {
+    super();
+  }
 
   public UserLimit(User user, int limit) {
     this.user = user;

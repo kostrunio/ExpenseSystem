@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,6 +21,7 @@ public class Expense {
   @GeneratedValue(generator = "increment")
   @GenericGenerator(name = "increment", strategy = "increment")
   private int id;
+  @Column(name="ex_date")
   private Date date;
   private String formula;
   private double value;
@@ -27,6 +29,7 @@ public class Expense {
   private Category category;
   @OneToOne
   private User user;
+  @Column(name="ex_comment")
   private String comment;
 
   public Expense() {

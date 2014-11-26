@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -40,7 +41,7 @@ public class ExpenseSheet {
   private List<Expense> expenseList;
   private int reloadeDay;
   private int mainLimit;
-
+  @Transient
   private Map<Date, DateExpense> dateExpenseMap;
 
   public int getId() {

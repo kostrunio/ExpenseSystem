@@ -3,18 +3,25 @@ package pl.kostro.expensesystem.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.OrderBy;
 
 @Entity
+@DiscriminatorValue(value="2")
 public class RealUser extends User {
 
   private String password;
   private String email;
-  @ManyToMany
+  @ManyToMany(fetch=FetchType.EAGER)
   @OrderBy
   private List<ExpenseSheet> expenseSheetList;
+  
+  public RealUser() {
+    super();
+  }
 
   public RealUser(String name) {
     super(name);
@@ -44,13 +51,6 @@ public class RealUser extends User {
 
   public void setExpenseSheets(List<ExpenseSheet> expenseSheetList) {
     this.expenseSheetList = expenseSheetList;
-  }
-
-  public void removeData() {
-    setId(0);
-    setName(null);
-    setEmail(null);
-    setExpenseSheets(null);
   }
 
   public static void createUser(RealUser loggedUser) {
