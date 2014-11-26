@@ -81,8 +81,7 @@ public class MainPage extends CustomComponent {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				loggedUser.removeData();
-				setCompositionRoot(new LoginPage(loggedUser));
+				setCompositionRoot(new LoginPage());
 			}
 		});
 	}
