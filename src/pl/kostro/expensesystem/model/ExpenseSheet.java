@@ -180,7 +180,7 @@ public class ExpenseSheet {
     for (Expense expense : getExpenseList())
       if (expense.getCategory() == category)
         if (expense.getComment() != null
-        || !expense.getComment().equals(new String()))
+        && !expense.getComment().equals(new String()))
         commentList.add(expense.getComment());
     return commentList;
   }
