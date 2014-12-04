@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -30,13 +31,13 @@ public class ExpenseSheet {
   @OneToOne
   private RealUser owner;
   private String name;
-  @OneToMany
+  @OneToMany(fetch=FetchType.EAGER)
   @OrderBy("orderId")
   private List<Category> categoryList;
-  @OneToMany
+  @OneToMany(fetch=FetchType.EAGER)
   @OrderBy
   private List<UserLimit> userLimitList;
-  @OneToMany
+  @OneToMany(fetch=FetchType.EAGER)
   @OrderBy
   private List<Expense> expenseList;
   private int reloadeDay;
