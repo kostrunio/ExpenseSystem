@@ -48,9 +48,23 @@ public class Category {
 		this.orderId = orderId;
 	}
 	
+	@Override
 	public String toString() {
 		return getName();
 	}
+	
+	@Override
+	public int hashCode() {
+	  return getId();
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+	  if(o instanceof Category)
+	    return getId() == ((Category)o).getId();
+	  else return this == o;
+	}
+	
 
 	public static void createCategory(List<Category> categoryList) {
 		categoryList.add(new Category("jedzenie", 0));
