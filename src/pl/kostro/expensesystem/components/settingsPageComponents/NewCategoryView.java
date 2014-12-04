@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.components.settingsPageComponents;
 
+import pl.kostro.expensesystem.db.AdapterDB;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 
@@ -47,7 +48,8 @@ public class NewCategoryView extends CustomComponent {
 			@Override
 		      public void buttonClick(ClickEvent event) {
 		    	  Category category = new Category(newCategory.getValue(), expenseSheet.getCategoryList().size());
-		    	  expenseSheet.getCategoryList().add(category);
+//		    	  expenseSheet.getCategoryList().add(category);
+		    	  AdapterDB.createCategory(expenseSheet, category);
 		    	  setCompositionRoot(new ExpenseSheetSettingsView(expenseSheet));
 		      }
 		});
