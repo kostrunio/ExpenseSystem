@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.components.mainPageComponents;
 
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
+import pl.kostro.expensesystem.db.AdapterDB;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
@@ -120,11 +121,12 @@ public class AddNewExpense extends CustomComponent {
         if (user.getValue() instanceof UserLimit) {
           UserLimit userLimit = (UserLimit) user.getValue();
           if (modify)
-            expenseSheet.removeExpense(expense);
+            AdapterDB.removeExpense(expenseSheet, expense);
           expense.setUser(userLimit.getUser());
           expense.setFormula(formula.getValue());
-          expense.setComment(comment.getValue().toString());
-          expenseSheet.addExpense(expense);
+          if (comment.getValue() != null)
+            expense.setComment(comment.getValue().toString());
+          AdapterDB.creteExpense(expenseSheet, expense);
           setCompositionRoot(new CategoryExpenseView(expenseSheet, expense.getDate(), expense.getCategory()));
         }
       }
