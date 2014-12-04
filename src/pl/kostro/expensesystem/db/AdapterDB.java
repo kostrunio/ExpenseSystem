@@ -7,6 +7,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.User;
@@ -62,8 +63,6 @@ public class AdapterDB {
     try {
       entityManager.persist(user);
       commit();
-    } catch (NoResultException e) {
-
     } finally {
       close();
     }
@@ -74,8 +73,6 @@ public class AdapterDB {
     try {
       entityManager.persist(loggedUser);
       commit();
-    } catch (NoResultException e) {
-
     } finally {
       close();
     }
@@ -87,12 +84,10 @@ public class AdapterDB {
       UserLimit userLimit = new UserLimit(loggedUser, 0);
       entityManager.persist(userLimit);
       expenseSheet.getUserLimitList().add(userLimit);
-      entityManager.persist(expenseSheet);
-      RealUser persistUser = entityManager.find(RealUser.class, loggedUser.getId());
-      persistUser.getExpenseSheetList().add(expenseSheet);
-      entityManager.persist(persistUser);
-      commit();
+      expenseSheet = entityManager.merge(expenseSheet);
       loggedUser.getExpenseSheetList().add(expenseSheet);
+      loggedUser = entityManager.merge(loggedUser);
+      commit();
     } finally {
       close();
     }
@@ -102,11 +97,9 @@ public class AdapterDB {
     begin();
     try {
       entityManager.persist(category);
-      ExpenseSheet persistSheet = entityManager.find(ExpenseSheet.class, expenseSheet.getId());
-      persistSheet.getCategoryList().add(category);
-      entityManager.persist(persistSheet);
-      commit();
       expenseSheet.getCategoryList().add(category);
+      expenseSheet = entityManager.merge(expenseSheet);
+      commit();
     } finally {
       close();
     }
@@ -131,18 +124,40 @@ public class AdapterDB {
   public static void createUserLimit(ExpenseSheet expenseSheet, UserLimit userLimit) {
     begin();
     try {
-      entityManager.persist(userLimit);
-      ExpenseSheet persistSheet = entityManager.find(ExpenseSheet.class, expenseSheet.getId());
-      persistSheet.getUserLimitList().add(userLimit);
-      entityManager.persist(persistSheet);
+      userLimit = entityManager.merge(userLimit);
+      expenseSheet.getUserLimitList().add(userLimit);
+      expenseSheet = entityManager.merge(expenseSheet);
 
       if (userLimit.getUser() instanceof RealUser) {
         RealUser persistUser = entityManager.find(RealUser.class, userLimit.getUser().getId());
         persistUser.getExpenseSheetList().add(expenseSheet);
-        entityManager.persist(persistUser);
+        entityManager.merge(persistUser);
       }
       commit();
-      expenseSheet.getUserLimitList().add(userLimit);
+    } finally {
+      close();
+    }
+  }
+
+  public static void removeExpense(ExpenseSheet expenseSheet, Expense expense) {
+    begin();
+    try {
+      expenseSheet.removeExpense(expense);
+      entityManager.remove(expense);
+      expenseSheet = entityManager.merge(expenseSheet);
+      commit();
+    } finally {
+      close();
+    }
+  }
+
+  public static void creteExpense(ExpenseSheet expenseSheet, Expense expense) {
+    begin();
+    try {
+      expense = entityManager.merge(expense);
+      expenseSheet.addExpense(expense);
+      expenseSheet = entityManager.merge(expenseSheet);
+      commit();
     } finally {
       close();
     }
