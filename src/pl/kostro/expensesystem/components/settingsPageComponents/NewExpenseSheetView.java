@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.components.settingsPageComponents;
 
+import pl.kostro.expensesystem.db.AdapterDB;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 
@@ -48,7 +49,9 @@ public class NewExpenseSheetView extends CustomComponent {
 		      public void buttonClick(ClickEvent event) {
 		        ExpenseSheet expenseSheet = new ExpenseSheet();
 		        expenseSheet.setName(newSheet.getValue());
-		        loggedUser.getExpenseSheetList().add(expenseSheet);
+		        expenseSheet.setOwner(loggedUser);
+//		        loggedUser.getExpenseSheetList().add(expenseSheet);
+		        AdapterDB.createExpenseSheet(loggedUser, expenseSheet);
 		        setCompositionRoot(new ExpenseSheetSettingsView(expenseSheet));
 		      }
 		});
