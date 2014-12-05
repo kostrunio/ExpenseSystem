@@ -50,7 +50,6 @@ public class NewExpenseSheetView extends CustomComponent {
 		        ExpenseSheet expenseSheet = new ExpenseSheet();
 		        expenseSheet.setName(newSheet.getValue());
 		        expenseSheet.setOwner(loggedUser);
-//		        loggedUser.getExpenseSheetList().add(expenseSheet);
 		        AdapterDB.createExpenseSheet(loggedUser, expenseSheet);
 		        setCompositionRoot(new ExpenseSheetSettingsView(expenseSheet));
 		      }

@@ -51,7 +51,6 @@ public class AddUserView extends CustomComponent {
         User user = new User(newUser.getValue());
         AdapterDB.createUser(user);
         UserLimit userLimit = new UserLimit(user, 0);
-        // expenseSheet.getUserLimitList().add(new UserLimit(user, 0));
         AdapterDB.createUserLimit(expenseSheet, userLimit);
         setCompositionRoot(new ExpenseSheetSettingsView(expenseSheet));
       }

@@ -48,7 +48,6 @@ public class NewCategoryView extends CustomComponent {
 			@Override
 		      public void buttonClick(ClickEvent event) {
 		    	  Category category = new Category(newCategory.getValue(), expenseSheet.getCategoryList().size());
-//		    	  expenseSheet.getCategoryList().add(category);
 		    	  AdapterDB.createCategory(expenseSheet, category);
 		    	  setCompositionRoot(new ExpenseSheetSettingsView(expenseSheet));
 		      }

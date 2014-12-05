@@ -50,7 +50,6 @@ public class AddRealUserView extends CustomComponent {
       public void buttonClick(ClickEvent event) {
         RealUser realUser = AdapterDB.findRealUser(newRealUser.getValue());
         UserLimit userLimit = new UserLimit(realUser, 0);
-//        expenseSheet.getUserLimitList().add(new UserLimit(realUser, 0));
         AdapterDB.createUserLimit(expenseSheet, userLimit);
         setCompositionRoot(new ExpenseSheetSettingsView(expenseSheet));
       }
