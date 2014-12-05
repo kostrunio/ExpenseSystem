@@ -16,7 +16,7 @@ public class Calculator {
 	}
 
 	public static double getResult(String str) {
-		if (str.equals(new String()))
+		if (str.equals(""))
 			return 0;
 		str = str.replaceAll(",", ".");
 		if (str.indexOf("(") != -1) {
@@ -86,7 +86,7 @@ public class Calculator {
 						return result;
 					} else {
 						// no /
-						str = str.replaceAll("--", new String());
+						str = str.replaceAll("--", "");
 						return Double.parseDouble(str);
 					}
 				}

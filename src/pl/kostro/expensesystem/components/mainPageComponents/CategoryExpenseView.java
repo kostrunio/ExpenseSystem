@@ -77,7 +77,7 @@ public class CategoryExpenseView extends CustomComponent {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				Expense expense = new Expense(date, new String(), category, null, new String());
+				Expense expense = new Expense(date, "", category, null, "");
 				setCompositionRoot(new AddNewExpense(expenseSheet, expense, false));
 			}
 		});

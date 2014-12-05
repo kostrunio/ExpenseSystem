@@ -91,7 +91,7 @@ public class AddNewExpense extends CustomComponent {
 
       @Override
       public void valueChange(ValueChangeEvent event) {
-        if (event.getProperty().getValue() != null && !event.getProperty().getValue().toString().equals(new String()))
+        if (event.getProperty().getValue() != null && !event.getProperty().getValue().toString().equals(""))
           if (Calculator.verifyAllowed(event.getProperty().getValue().toString()))
             saveButton.setEnabled(true);
           else
