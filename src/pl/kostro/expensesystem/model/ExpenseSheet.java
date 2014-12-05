@@ -1,7 +1,9 @@
 package pl.kostro.expensesystem.model;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -190,11 +192,27 @@ public class ExpenseSheet {
     for (Expense expense : getExpenseList())
       if (expense.getCategory() == category)
         if (expense.getComment() != null
-        && !expense.getComment().equals(new String()))
+        && !expense.getComment().equals(""))
         commentList.add(expense.getComment());
     return commentList;
   }
-
+  
+  public List<String> getYearList() {
+    List<String> yearList = new ArrayList<String>();
+    int thisYear = new GregorianCalendar().get(Calendar.YEAR);
+    int firstYear = thisYear;
+    Calendar date = new GregorianCalendar();
+    for (Expense expense : getExpenseList()) {
+      date.setTime(expense.getDate());
+      int year = date.get(Calendar.YEAR);
+      if (year < firstYear)
+        firstYear = year;
+    }
+    for (int i = firstYear; i <= thisYear+1; i++)
+      yearList.add(Integer.toString(i));
+    return yearList;
+  }
+  
   public static void createExpenseSheet(RealUser loggedUser) {
     ExpenseSheet expenseSheet = new ExpenseSheet();
     expenseSheet.setId(1);
