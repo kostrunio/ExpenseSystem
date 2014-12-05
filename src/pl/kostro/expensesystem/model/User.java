@@ -60,7 +60,15 @@ public class User {
     this.creationDate = creationDate;
   }
 
+  @Override
   public String toString() {
     return getName();
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if(o instanceof User)
+      return getId() == ((User)o).getId();
+    else return this == o;
   }
 }
