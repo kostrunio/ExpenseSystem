@@ -38,7 +38,7 @@ public class CategoryExpense {
 	}
 	
 	public String getSumString() {
-		return new String() + sum;
+		return Double.toString(sum);
 	}
 	
 	public void addExpense(Expense expense) {

@@ -39,7 +39,7 @@ public class DateExpense {
 	}
 	
 	public String getSumString() {
-		return new String() + sum;
+		return Double.toString(sum);
 	}
 	
 	public String toString() {

@@ -96,7 +96,7 @@ public class Expense {
   }
 
   public String getValueString() {
-    return new String() + value;
+    return Double.toString(value);
   }
 
   public String getComment() {
@@ -114,7 +114,7 @@ public class Expense {
   public static void createExpense(ExpenseSheet expenseSheet) {
     SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
     try {
-      expenseSheet.getExpenseList().add(new Expense(df.parse(df.format(new Date())), "1+2", expenseSheet.getCategoryList().get(0), expenseSheet.getOwner(), new String()));
+      expenseSheet.getExpenseList().add(new Expense(df.parse(df.format(new Date())), "1+2", expenseSheet.getCategoryList().get(0), expenseSheet.getOwner(), ""));
     } catch (ParseException e) {
       // TODO Auto-generated catch block
       e.printStackTrace();
