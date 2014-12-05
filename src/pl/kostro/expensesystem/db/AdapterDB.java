@@ -143,7 +143,7 @@ public class AdapterDB {
     begin();
     try {
       expenseSheet.removeExpense(expense);
-      entityManager.remove(expense);
+      entityManager.remove(entityManager.find(Expense.class, expense.getId()));
       expenseSheet = entityManager.merge(expenseSheet);
       commit();
     } finally {
