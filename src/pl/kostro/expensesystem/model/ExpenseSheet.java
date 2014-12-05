@@ -42,6 +42,8 @@ public class ExpenseSheet {
   private List<Expense> expenseList;
   private int reloadeDay;
   private int mainLimit;
+  @OneToOne
+  private UserLimit defaultUserLimit;
   @Transient
   private Map<Date, DateExpense> dateExpenseMap;
 
@@ -115,6 +117,14 @@ public class ExpenseSheet {
     this.mainLimit = mainLimit;
   }
 
+  public UserLimit getDefaultUserLimit() {
+    return defaultUserLimit;
+  }
+
+  public void setDefaultUserLimit(UserLimit defaultUserLimit) {
+    this.defaultUserLimit = defaultUserLimit;
+  }
+
   public Map<Date, DateExpense> getDateExpenseMap() {
     if (dateExpenseMap == null)
       dateExpenseMap = new HashMap<Date, DateExpense>();
@@ -128,8 +138,8 @@ public class ExpenseSheet {
   private List<Expense> getExpenseList(Date startDate, Date endDate) {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     for (Expense expense : getExpenseList()) {
-      if (expense.getDate().equals(startDate)
-          || expense.getDate().equals(endDate)
+      if (startDate.equals(expense.getDate())
+          || endDate.equals(expense.getDate())
           || (expense.getDate().after(startDate) && expense.getDate().before(endDate)))
         expenseListToReturn.add(expense);
     }
@@ -170,7 +180,7 @@ public class ExpenseSheet {
   
   public UserLimit getUserLimitForUser(User user) {
     for (UserLimit userLimit : getUserLimitList())
-      if (userLimit.getUser() == user)
+      if (userLimit.getUser().equals(user))
         return userLimit;
     return null;
   }
