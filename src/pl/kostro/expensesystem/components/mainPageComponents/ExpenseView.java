@@ -55,7 +55,8 @@ public class ExpenseView extends CustomComponent {
 			}
 		};
 		
-		yearMenu.addItem("2014", yearCommand);
+		for (String year : expenseSheet.getYearList())
+		  yearMenu.addItem(year, yearCommand);
 		
 		MenuBar.Command monthCommand = new MenuBar.Command() {
 			
