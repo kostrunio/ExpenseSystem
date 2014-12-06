@@ -1,15 +1,10 @@
 package pl.kostro.expensesystem.model.service;
 
-import java.util.Date;
-
 import javax.persistence.EntityManager;
 
 import pl.kostro.expensesystem.db.AdapterDB;
-import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.User;
-import pl.kostro.expensesystem.utils.Calculator;
 
 public class ExpenseService {
   
@@ -17,18 +12,6 @@ public class ExpenseService {
   
   public ExpenseService() {
     this.em = AdapterDB.getEntityManager();
-  }
-  
-  public Expense createExpense(Date date, String formula, Category category, User user, String comment) {
-    Expense expense = new Expense();
-    expense.setDate(date);
-    expense.setFormula(formula);
-    expense.setCategory(category);
-    expense.setUser(user);
-    expense.setValue(Calculator.getResult(formula));
-    expense.setComment(comment);
-    em.persist(expense);
-    return expense;
   }
   
   public void removeExpense(int id) {

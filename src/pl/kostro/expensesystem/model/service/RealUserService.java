@@ -15,16 +15,7 @@ public class RealUserService {
     this.em = AdapterDB.getEntityManager();
   }
   
-  public RealUser createRealUser(String name, String password, String email) {
-    RealUser realUser = new RealUser();
-    realUser.setName(name);
-    realUser.setPassword(password);
-    realUser.setEmail(email);
-    em.persist(realUser);
-    return realUser;
-  }
-  
-  public void removeProfessor(int id) {
+  public void removeRealUser(int id) {
     RealUser emp = findRealUser(id);
     if (emp != null) {
       em.remove(emp);
@@ -33,6 +24,20 @@ public class RealUserService {
 
   public RealUser findRealUser(int id) {
     return em.find(RealUser.class, id);
+  }
+  
+  public void createRealUser(String name, String password, String email) {
+    AdapterDB.begin(em);
+    try {
+      RealUser realUser = new RealUser();
+      realUser.setName(name);
+      realUser.setPassword(password);
+      realUser.setEmail(email);
+      em.persist(realUser);
+      AdapterDB.commit(em);
+    } finally {
+      AdapterDB.close(em);
+    }
   }
   
   public RealUser getUserData(String userName, String password) {

@@ -28,14 +28,6 @@ public class ExpenseSheetService {
     this.em = AdapterDB.getEntityManager();
   }
   
-  public ExpenseSheet createExpenseSheet(String name, RealUser owner) {
-    ExpenseSheet expenseSheet = new ExpenseSheet();
-    expenseSheet.setOwner(owner);
-    expenseSheet.setName(name);
-    em.persist(expenseSheet);
-    return expenseSheet;
-  }
-  
   public void removeProfessor(int id) {
     ExpenseSheet emp = findExpenseSheet(id);
     if (emp != null) {
@@ -47,16 +39,20 @@ public class ExpenseSheetService {
     return em.find(ExpenseSheet.class, id);
   }
   
-  public void createExpenseSheet(RealUser loggedUser, ExpenseSheet expenseSheet) {
+  public ExpenseSheet createExpenseSheet(RealUser owner, String name) {
     AdapterDB.begin(em);
     try {
-      UserLimit userLimit = new UserLimit(loggedUser, 0);
+      UserLimit userLimit = new UserLimit(owner, 0);
       em.persist(userLimit);
+      ExpenseSheet expenseSheet = new ExpenseSheet();
+      expenseSheet.setOwner(owner);
+      expenseSheet.setName(name);
       expenseSheet.getUserLimitList().add(userLimit);
       expenseSheet = em.merge(expenseSheet);
-      loggedUser.getExpenseSheetList().add(expenseSheet);
-      loggedUser = em.merge(loggedUser);
+      owner.getExpenseSheetList().add(expenseSheet);
+      owner = em.merge(owner);
       AdapterDB.commit(em);
+      return expenseSheet;
     } finally {
       AdapterDB.close(em);
     }

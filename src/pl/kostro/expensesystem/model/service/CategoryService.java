@@ -14,14 +14,6 @@ public class CategoryService {
     this.em = AdapterDB.getEntityManager();
   }
   
-  public Category createCategory(String name, int orderId) {
-    Category category = new Category();
-    category.setName(name);
-    category.setOrderId(orderId);
-    em.persist(category);
-    return category;
-  }
-  
   public void removeProfessor(int id) {
     Category emp = findCategory(id);
     if (emp != null) {
@@ -33,9 +25,12 @@ public class CategoryService {
     return em.find(Category.class, id);
   }
   
-  public void createCategory(ExpenseSheet expenseSheet, Category category) {
+  public void createCategory(ExpenseSheet expenseSheet, String name, int orderId) {
     AdapterDB.begin(em);
     try {
+      Category category = new Category();
+      category.setName(name);
+      category.setOrderId(orderId);
       em.persist(category);
       expenseSheet.getCategoryList().add(category);
       expenseSheet = em.merge(expenseSheet);

@@ -15,12 +15,6 @@ public class UserLimitService {
     this.em = AdapterDB.getEntityManager();
   }
   
-  public UserLimit createUserLimit(String name, int orderId) {
-    UserLimit userLimit = new UserLimit();
-    em.persist(userLimit);
-    return userLimit;
-  }
-  
   public void removeProfessor(int id) {
     UserLimit emp = findUserLimit(id);
     if (emp != null) {

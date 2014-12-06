@@ -13,13 +13,6 @@ public class UserService {
     this.em = AdapterDB.getEntityManager();
   }
   
-  public User createUser(String name) {
-    User user = new User();
-    user.setName(name);
-    em.persist(user);
-    return user;
-  }
-  
   public void removeProfessor(int id) {
     User emp = findUser(id);
     if (emp != null) {
@@ -31,11 +24,14 @@ public class UserService {
     return em.find(User.class, id);
   }
   
-  public void createUser(User user) {
+  public User createUser(String name) {
     AdapterDB.begin(em);
     try {
+      User user = new User();
+      user.setName(name);
       em.persist(user);
       AdapterDB.commit(em);
+      return user;
     } finally {
       AdapterDB.close(em);
     }

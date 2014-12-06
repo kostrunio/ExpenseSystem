@@ -47,7 +47,7 @@ public class NewCategoryView extends CustomComponent {
 			@Override
 		      public void buttonClick(ClickEvent event) {
 			      CategoryService categoryService = new CategoryService();
-		    	  categoryService.createCategory(newCategory.getValue(), expenseSheet.getCategoryList().size());
+		    	  categoryService.createCategory(expenseSheet, newCategory.getValue(), expenseSheet.getCategoryList().size());
 		    	  setCompositionRoot(new ExpenseSheetSettingsView(expenseSheet));
 		      }
 		});
