@@ -9,8 +9,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import javax.persistence.EntityManager;
-
 import pl.kostro.expensesystem.db.AdapterDB;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
@@ -22,39 +20,33 @@ import pl.kostro.expensesystem.utils.DateExpense;
 
 public class ExpenseSheetService {
   
-  private EntityManager em;
-  
-  public ExpenseSheetService() {
-    this.em = AdapterDB.getEntityManager();
-  }
-  
   public void removeProfessor(int id) {
     ExpenseSheet emp = findExpenseSheet(id);
     if (emp != null) {
-      em.remove(emp);
+      AdapterDB.getEntityManager().remove(emp);
     }
   }
 
   public ExpenseSheet findExpenseSheet(int id) {
-    return em.find(ExpenseSheet.class, id);
+    return AdapterDB.getEntityManager().find(ExpenseSheet.class, id);
   }
   
   public ExpenseSheet createExpenseSheet(RealUser owner, String name) {
-    AdapterDB.begin(em);
+    AdapterDB.begin();
     try {
       UserLimit userLimit = new UserLimit(owner, 0);
-      em.persist(userLimit);
+      AdapterDB.getEntityManager().persist(userLimit);
       ExpenseSheet expenseSheet = new ExpenseSheet();
       expenseSheet.setOwner(owner);
       expenseSheet.setName(name);
       expenseSheet.getUserLimitList().add(userLimit);
-      expenseSheet = em.merge(expenseSheet);
+      expenseSheet = AdapterDB.getEntityManager().merge(expenseSheet);
       owner.getExpenseSheetList().add(expenseSheet);
-      owner = em.merge(owner);
-      AdapterDB.commit(em);
+      owner = AdapterDB.getEntityManager().merge(owner);
+      AdapterDB.commit();
       return expenseSheet;
     } finally {
-      AdapterDB.close(em);
+      AdapterDB.close();
     }
   }
 

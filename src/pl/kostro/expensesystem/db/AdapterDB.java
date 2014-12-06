@@ -20,16 +20,16 @@ public class AdapterDB {
     return entityManager;
   }
 
-  public static void begin(EntityManager entityManager) {
-    entityManager.getTransaction().begin();
+  public static void begin() {
+    getEntityManager().getTransaction().begin();
   }
 
-  public static void commit(EntityManager entityManager) {
-    entityManager.getTransaction().commit();
+  public static void commit() {
+    getEntityManager().getTransaction().commit();
   }
 
-  public static void close(EntityManager entityManager) {
-    entityManager.close();
+  public static void close() {
+    getEntityManager().close();
   }
 
 }

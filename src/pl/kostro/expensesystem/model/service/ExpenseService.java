@@ -1,54 +1,46 @@
 package pl.kostro.expensesystem.model.service;
 
-import javax.persistence.EntityManager;
-
 import pl.kostro.expensesystem.db.AdapterDB;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 
 public class ExpenseService {
   
-  private EntityManager em;
-  
-  public ExpenseService() {
-    this.em = AdapterDB.getEntityManager();
-  }
-  
   public void removeExpense(int id) {
     Expense emp = findExpense(id);
     if (emp != null) {
-      em.remove(emp);
+      AdapterDB.getEntityManager().remove(emp);
     }
   }
 
   public Expense findExpense(int id) {
-    return em.find(Expense.class, id);
+    return AdapterDB.getEntityManager().find(Expense.class, id);
   }
   
   public void creteExpense(ExpenseSheet expenseSheet, Expense expense) {
     ExpenseSheetService expenseSheetService = new ExpenseSheetService();
-    AdapterDB.begin(em);
+    AdapterDB.begin();
     try {
-      expense = em.merge(expense);
+      expense = AdapterDB.getEntityManager().merge(expense);
       expenseSheetService.addExpense(expenseSheet, expense);
-      expenseSheet = em.merge(expenseSheet);
-      AdapterDB.commit(em);
+      expenseSheet = AdapterDB.getEntityManager().merge(expenseSheet);
+      AdapterDB.commit();
     } finally {
-      AdapterDB.close(em);
+      AdapterDB.close();
     }
   }
 
   
   public void removeExpense(ExpenseSheet expenseSheet, Expense expense) {
     ExpenseSheetService expenseSheetService = new ExpenseSheetService();
-    AdapterDB.begin(em);
+    AdapterDB.begin();
     try {
       expenseSheetService.removeExpense(expenseSheet, expense);
-      em.remove(em.find(Expense.class, expense.getId()));
-      expenseSheet = em.merge(expenseSheet);
-      AdapterDB.commit(em);
+      AdapterDB.getEntityManager().remove(findExpense(expense.getId()));
+      expenseSheet = AdapterDB.getEntityManager().merge(expenseSheet);
+      AdapterDB.commit();
     } finally {
-      AdapterDB.close(em);
+      AdapterDB.close();
     }
   }
 
