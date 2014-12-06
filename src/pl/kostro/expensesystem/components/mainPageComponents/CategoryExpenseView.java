@@ -5,10 +5,10 @@ import java.util.Date;
 import java.util.List;
 
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.db.AdapterDB;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.utils.CategoryExpense;
 import pl.kostro.expensesystem.utils.DateExpense;
 
@@ -97,6 +97,7 @@ public class CategoryExpenseView extends CustomComponent {
 	}
 
 	private void prepareExpenseGrid() {
+	  final ExpenseService expenseService = new ExpenseService();
 	  expenseGrid.removeAllComponents();
 	  
 		List<Expense> expenseList;
@@ -118,7 +119,7 @@ public class CategoryExpenseView extends CustomComponent {
 			user.setValue(expense.getUser().getName());
 			expenseGrid.addComponent(user, 0, i);
 			
-			Button valueButton = new Button(expense.getValueString());
+			Button valueButton = new Button(expenseService.getValueString(expense));
 			valueButton.setImmediate(true);
 			valueButton.setWidth("-1px");
 			valueButton.setHeight("-1px");
@@ -170,7 +171,7 @@ public class CategoryExpenseView extends CustomComponent {
 	                @Override
 	                public void onClose(ConfirmDialog dialog) {
 	                  if (dialog.isConfirmed()) {
-	                    AdapterDB.removeExpense(expenseSheet, expense);
+	                    expenseService.removeExpense(expenseSheet, expense);
 	                    prepareExpenseGrid();
 	                  }
 	                }

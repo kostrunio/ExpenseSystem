@@ -1,7 +1,5 @@
 package pl.kostro.expensesystem.model;
 
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -20,11 +18,6 @@ public class Category {
 	
 	public Category() {
 	  super();
-	}
-	
-	public Category(String name, int orderId) {
-		this.name = name;
-		this.orderId = orderId;
 	}
 	
 	public int getId() {
@@ -63,13 +56,6 @@ public class Category {
 	  if(o instanceof Category)
 	    return getId() == ((Category)o).getId();
 	  else return this == o;
-	}
-	
-
-	public static void createCategory(List<Category> categoryList) {
-		categoryList.add(new Category("jedzenie", 0));
-		categoryList.add(new Category("s³odycze",1));
-		categoryList.add(new Category("kosmetyki", 2));
 	}
 	
 }

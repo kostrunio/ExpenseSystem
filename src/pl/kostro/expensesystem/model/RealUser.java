@@ -52,9 +52,4 @@ public class RealUser extends User {
   public void setExpenseSheets(List<ExpenseSheet> expenseSheetList) {
     this.expenseSheetList = expenseSheetList;
   }
-
-  public static void createUser(RealUser loggedUser) {
-    loggedUser.setId(1);
-    ExpenseSheet.createExpenseSheet(loggedUser);
-  }
 }

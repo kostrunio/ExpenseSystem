@@ -1,14 +1,10 @@
 package pl.kostro.expensesystem.model;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -136,101 +132,5 @@ public class ExpenseSheet {
   public void setDateExpenseMap(Map<Date, DateExpense> dateExpenseMap) {
     this.dateExpenseMap = dateExpenseMap;
   }
-
-  private List<Expense> getExpenseList(Date startDate, Date endDate) {
-    List<Expense> expenseListToReturn = new ArrayList<Expense>();
-    for (Expense expense : getExpenseList()) {
-      if (startDate.equals(expense.getDate())
-          || endDate.equals(expense.getDate())
-          || (expense.getDate().after(startDate) && expense.getDate().before(endDate)))
-        expenseListToReturn.add(expense);
-    }
-    return expenseListToReturn;
-  }
-
-  public Map<Date, DateExpense> prepareDateExpenseMap(Date startDate, Date endDate) {
-    getDateExpenseMap().clear();
-    for (Expense expense : getExpenseList(startDate, endDate)) {
-      addExpenseToMap(expense);
-    }
-    return getDateExpenseMap();
-  }
-
-  private void addExpenseToMap(Expense expense) {
-    DateExpense dateExpense = getDateExpenseMap().get(expense.getDate());
-    if (dateExpense == null) {
-      dateExpense = new DateExpense(expense.getDate());
-      getDateExpenseMap().put(expense.getDate(), dateExpense);
-    }
-    dateExpense.addExpense(expense);
-  }
-
-  public void addExpense(Expense expense) {
-    getExpenseList().add(expense);
-    addExpenseToMap(expense);
-  }
-
-  public void removeExpense(Expense expense) {
-    getExpenseList().remove(expense);
-    removeExpenseFromMap(expense);
-  }
   
-  private void removeExpenseFromMap(Expense expense) {
-    DateExpense dateExpense = getDateExpenseMap().get(expense.getDate());
-    dateExpense.removeExpense(expense);
-  }
-  
-  public UserLimit getUserLimitForUser(User user) {
-    for (UserLimit userLimit : getUserLimitList())
-      if (userLimit.getUser().equals(user))
-        return userLimit;
-    return null;
-  }
-  
-  public Set<String> getCommentForCategory(Category category) {
-    Set<String> commentList = new TreeSet<String>();
-    for (Expense expense : getExpenseList())
-      if (expense.getCategory() == category)
-        if (expense.getComment() != null
-        && !expense.getComment().equals(""))
-        commentList.add(expense.getComment());
-    return commentList;
-  }
-  
-  public List<String> getYearList() {
-    List<String> yearList = new ArrayList<String>();
-    int thisYear = new GregorianCalendar().get(Calendar.YEAR);
-    int firstYear = thisYear;
-    Calendar date = new GregorianCalendar();
-    for (Expense expense : getExpenseList()) {
-      date.setTime(expense.getDate());
-      int year = date.get(Calendar.YEAR);
-      if (year < firstYear)
-        firstYear = year;
-    }
-    for (int i = firstYear; i <= thisYear+1; i++)
-      yearList.add(Integer.toString(i));
-    return yearList;
-  }
-  
-  public static void createExpenseSheet(RealUser loggedUser) {
-    ExpenseSheet expenseSheet = new ExpenseSheet();
-    expenseSheet.setId(1);
-    expenseSheet.setOwner(loggedUser);
-    expenseSheet.setName("wydatki");
-    Category.createCategory(expenseSheet.getCategoryList());
-    UserLimit.createUserLimit(expenseSheet);
-    Expense.createExpense(expenseSheet);
-    loggedUser.getExpenseSheetList().add(expenseSheet);
-
-    expenseSheet = new ExpenseSheet();
-    expenseSheet.setId(2);
-    expenseSheet.setOwner(loggedUser);
-    expenseSheet.setName("mieszkanie");
-    Category.createCategory(expenseSheet.getCategoryList());
-    UserLimit.createUserLimit(expenseSheet);
-    Expense.createExpense(expenseSheet);
-    loggedUser.getExpenseSheetList().add(expenseSheet);
-  }
-
 }

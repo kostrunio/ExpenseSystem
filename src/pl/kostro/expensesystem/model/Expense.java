@@ -1,7 +1,5 @@
 package pl.kostro.expensesystem.model;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -37,12 +35,11 @@ public class Expense {
   }
 
   public Expense(Date date, String formula, Category category, User user, String comment) {
-    super();
     this.date = date;
     this.formula = formula;
+    this.value = Calculator.getResult(formula);
     this.category = category;
     this.user = user;
-    this.value = Calculator.getResult(formula);
     this.comment = comment;
   }
 
@@ -78,7 +75,7 @@ public class Expense {
   public void setValue(double value) {
     this.value = value;
   }
-
+  
   public Category getCategory() {
     return category;
   }
@@ -95,10 +92,6 @@ public class Expense {
     this.user = user;
   }
 
-  public String getValueString() {
-    return Double.toString(value);
-  }
-
   public String getComment() {
     return comment;
   }
@@ -106,18 +99,9 @@ public class Expense {
   public void setComment(String comment) {
     this.comment = comment;
   }
-
+  
+  @Override
   public String toString() {
     return "Expense: " + date + ";" + category + ";" + value;
-  }
-
-  public static void createExpense(ExpenseSheet expenseSheet) {
-    SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy");
-    try {
-      expenseSheet.getExpenseList().add(new Expense(df.parse(df.format(new Date())), "1+2", expenseSheet.getCategoryList().get(0), expenseSheet.getOwner(), ""));
-    } catch (ParseException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
   }
 }

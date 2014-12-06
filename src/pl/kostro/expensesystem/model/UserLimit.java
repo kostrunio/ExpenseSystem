@@ -55,9 +55,4 @@ public class UserLimit {
     return user.getName();
   }
 
-  public static void createUserLimit(ExpenseSheet expenseSheet) {
-    expenseSheet.getUserLimitList().add(new UserLimit(expenseSheet.getOwner(), 0));
-    expenseSheet.getUserLimitList().add(new UserLimit(new User("wspólne"), 0));
-  }
-
 }
