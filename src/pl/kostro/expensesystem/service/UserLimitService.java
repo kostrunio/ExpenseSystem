@@ -1,6 +1,6 @@
 package pl.kostro.expensesystem.service;
 
-import pl.kostro.expensesystem.db.AdapterDB;
+import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.UserLimit;
@@ -10,29 +10,29 @@ public class UserLimitService {
   public void removeProfessor(int id) {
     UserLimit emp = findUserLimit(id);
     if (emp != null) {
-      AdapterDB.getEntityManager().remove(emp);
+      ExpenseEntityDao.getEntityManager().remove(emp);
     }
   }
 
   public UserLimit findUserLimit(int id) {
-    return AdapterDB.getEntityManager().find(UserLimit.class, id);
+    return ExpenseEntityDao.getEntityManager().find(UserLimit.class, id);
   }
   
   public void createUserLimit(ExpenseSheet expenseSheet, UserLimit userLimit) {
-    AdapterDB.begin();
+    ExpenseEntityDao.begin();
     try {
-      userLimit = AdapterDB.getEntityManager().merge(userLimit);
+      userLimit = ExpenseEntityDao.getEntityManager().merge(userLimit);
       expenseSheet.getUserLimitList().add(userLimit);
-      expenseSheet = AdapterDB.getEntityManager().merge(expenseSheet);
+      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
 
       if (userLimit.getUser() instanceof RealUser) {
-        RealUser persistUser = AdapterDB.getEntityManager().find(RealUser.class, userLimit.getUser().getId());
+        RealUser persistUser = ExpenseEntityDao.getEntityManager().find(RealUser.class, userLimit.getUser().getId());
         persistUser.getExpenseSheetList().add(expenseSheet);
-        AdapterDB.getEntityManager().merge(persistUser);
+        ExpenseEntityDao.getEntityManager().merge(persistUser);
       }
-      AdapterDB.commit();
+      ExpenseEntityDao.commit();
     } finally {
-      AdapterDB.close();
+      ExpenseEntityDao.close();
     }
   }
 

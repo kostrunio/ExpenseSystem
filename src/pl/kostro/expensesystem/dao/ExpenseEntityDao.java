@@ -1,10 +1,10 @@
-package pl.kostro.expensesystem.db;
+package pl.kostro.expensesystem.dao;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class AdapterDB {
+public class ExpenseEntityDao {
   private static EntityManagerFactory entityManagerFactory;
   private static EntityManager entityManager;
 

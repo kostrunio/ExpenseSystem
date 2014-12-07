@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import pl.kostro.expensesystem.db.AdapterDB;
+import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -23,30 +23,30 @@ public class ExpenseSheetService {
   public void removeProfessor(int id) {
     ExpenseSheet emp = findExpenseSheet(id);
     if (emp != null) {
-      AdapterDB.getEntityManager().remove(emp);
+      ExpenseEntityDao.getEntityManager().remove(emp);
     }
   }
 
   public ExpenseSheet findExpenseSheet(int id) {
-    return AdapterDB.getEntityManager().find(ExpenseSheet.class, id);
+    return ExpenseEntityDao.getEntityManager().find(ExpenseSheet.class, id);
   }
   
   public ExpenseSheet createExpenseSheet(RealUser owner, String name) {
-    AdapterDB.begin();
+    ExpenseEntityDao.begin();
     try {
       UserLimit userLimit = new UserLimit(owner, 0);
-      AdapterDB.getEntityManager().persist(userLimit);
+      ExpenseEntityDao.getEntityManager().persist(userLimit);
       ExpenseSheet expenseSheet = new ExpenseSheet();
       expenseSheet.setOwner(owner);
       expenseSheet.setName(name);
       expenseSheet.getUserLimitList().add(userLimit);
-      expenseSheet = AdapterDB.getEntityManager().merge(expenseSheet);
+      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
       owner.getExpenseSheetList().add(expenseSheet);
-      owner = AdapterDB.getEntityManager().merge(owner);
-      AdapterDB.commit();
+      owner = ExpenseEntityDao.getEntityManager().merge(owner);
+      ExpenseEntityDao.commit();
       return expenseSheet;
     } finally {
-      AdapterDB.close();
+      ExpenseEntityDao.close();
     }
   }
 
