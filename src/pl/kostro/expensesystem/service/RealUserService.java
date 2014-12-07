@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.model.service;
+package pl.kostro.expensesystem.service;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;

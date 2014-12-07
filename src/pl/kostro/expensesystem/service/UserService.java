@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.model.service;
+package pl.kostro.expensesystem.service;
 
 import pl.kostro.expensesystem.db.AdapterDB;
 import pl.kostro.expensesystem.model.User;
