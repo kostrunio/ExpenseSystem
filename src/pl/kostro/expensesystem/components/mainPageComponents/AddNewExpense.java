@@ -136,6 +136,7 @@ public class AddNewExpense extends CustomComponent {
           expense.setFormula(formula.getValue());
           if (comment.getValue() != null)
             expense.setComment(comment.getValue().toString());
+          expense.setExpenseSheet(expenseSheet);
           expenseService.creteExpense(expenseSheet, expense);
           setCompositionRoot(new CategoryExpenseView(expenseSheet, expense.getDate(), expense.getCategory()));
         }

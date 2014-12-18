@@ -23,6 +23,7 @@ public class CategoryService {
       Category category = new Category();
       category.setName(name);
       category.setOrderId(orderId);
+      category.setExpenseSheet(expenseSheet);
       ExpenseEntityDao.getEntityManager().persist(category);
       expenseSheet.getCategoryList().add(category);
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);

@@ -52,7 +52,7 @@ public class AddRealUserView extends CustomComponent {
         RealUserService realUserService = new RealUserService();
         UserLimitService userLimitService = new UserLimitService();
         RealUser realUser = realUserService.findRealUser(newRealUser.getValue());
-        UserLimit userLimit = new UserLimit(realUser, 0);
+        UserLimit userLimit = new UserLimit(realUser, 0, expenseSheet);
         userLimitService.createUserLimit(expenseSheet, userLimit);
         setCompositionRoot(new ExpenseSheetSettingsView(expenseSheet));
       }

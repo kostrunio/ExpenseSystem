@@ -20,6 +20,8 @@ import pl.kostro.expensesystem.utils.DateExpense;
 
 public class ExpenseSheetService {
   
+  private ExpenseService expenseService = new ExpenseService();
+  
   public void removeProfessor(int id) {
     ExpenseSheet emp = findExpenseSheet(id);
     if (emp != null) {
@@ -34,9 +36,10 @@ public class ExpenseSheetService {
   public ExpenseSheet createExpenseSheet(RealUser owner, String name) {
     ExpenseEntityDao.begin();
     try {
-      UserLimit userLimit = new UserLimit(owner, 0);
-      ExpenseEntityDao.getEntityManager().persist(userLimit);
       ExpenseSheet expenseSheet = new ExpenseSheet();
+      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
+      UserLimit userLimit = new UserLimit(owner, 0, expenseSheet);
+      ExpenseEntityDao.getEntityManager().persist(userLimit);
       expenseSheet.setOwner(owner);
       expenseSheet.setName(name);
       expenseSheet.getUserLimitList().add(userLimit);
@@ -52,6 +55,7 @@ public class ExpenseSheetService {
 
   private List<Expense> getExpenseList(ExpenseSheet expenseSheet, Date startDate, Date endDate) {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
+    expenseSheet.setExpenseList(expenseService.findExpenseForDates(expenseSheet, startDate, endDate));
     for (Expense expense : expenseSheet.getExpenseList()) {
       if (startDate.equals(expense.getDate())
           || endDate.equals(expense.getDate())
@@ -102,7 +106,7 @@ public class ExpenseSheetService {
   
   public Set<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
     Set<String> commentList = new TreeSet<String>();
-    for (Expense expense : expenseSheet.getExpenseList())
+    for (Expense expense : expenseService.findExpenseByCategory(expenseSheet, category))
       if (expense.getCategory() == category)
         if (expense.getComment() != null
         && !expense.getComment().equals(""))
@@ -115,12 +119,10 @@ public class ExpenseSheetService {
     int thisYear = new GregorianCalendar().get(Calendar.YEAR);
     int firstYear = thisYear;
     Calendar date = new GregorianCalendar();
-    for (Expense expense : expenseSheet.getExpenseList()) {
-      date.setTime(expense.getDate());
-      int year = date.get(Calendar.YEAR);
-      if (year < firstYear)
-        firstYear = year;
-    }
+    date.setTime(expenseService.findFirstExpense(expenseSheet).getDate());
+    int year = date.get(Calendar.YEAR);
+    if (year < firstYear)
+      firstYear = year;
     for (int i = firstYear; i <= thisYear+1; i++)
       yearList.add(Integer.toString(i));
     return yearList;
