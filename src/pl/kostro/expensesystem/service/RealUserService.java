@@ -1,7 +1,8 @@
 package pl.kostro.expensesystem.service;
 
 import javax.persistence.NoResultException;
-import javax.persistence.Query;
+
+import com.google.gwt.thirdparty.guava.common.collect.ImmutableMap;
 
 import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.RealUser;
@@ -35,12 +36,9 @@ public class RealUserService {
   
   public RealUser getUserData(String userName, String password) {
     ExpenseEntityDao.begin();
-    Query q = ExpenseEntityDao.getEntityManager().createQuery("from RealUser where name = :name and password = :password", RealUser.class);
-    q.setParameter("name", userName);
-    q.setParameter("password", password);
     RealUser loggedUser = null;
     try {
-      loggedUser = (RealUser) q.getSingleResult();
+      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName, "password", password), RealUser.class);
       ExpenseEntityDao.commit();
     } catch (NoResultException e) {
 
@@ -52,11 +50,9 @@ public class RealUserService {
   
   public RealUser findRealUser(String userName) {
     ExpenseEntityDao.begin();
-    Query q = ExpenseEntityDao.getEntityManager().createQuery("from RealUser where name = :name", RealUser.class);
-    q.setParameter("name", userName);
     RealUser loggedUser = null;
     try {
-      loggedUser = (RealUser) q.getSingleResult();
+      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName), RealUser.class);
       ExpenseEntityDao.commit();
     } catch (NoResultException e) {
 
