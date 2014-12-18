@@ -7,11 +7,25 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OrderBy;
 
 @Entity
 @DiscriminatorValue(value="2")
+@NamedQueries({
+  @NamedQuery(
+      name = "findUser",
+      query = "select u from RealUser u where u.name = :name"
+      ),
+  @NamedQuery(
+      name = "findLoggedUser",
+      query = "select u from RealUser u where u.name = :name and u.password = :password"
+      )
+})
 public class RealUser extends User {
+
+  private static final long serialVersionUID = 8197867574179477991L;
 
   private String password;
   private String email;

@@ -6,6 +6,9 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -13,7 +16,27 @@ import org.hibernate.annotations.GenericGenerator;
 import pl.kostro.expensesystem.utils.Calculator;
 
 @Entity
-public class Expense {
+@NamedQueries({
+  @NamedQuery(
+      name = "findAllExpense",
+      query = "select e from ExpenseSheet es join es.expenseList e where es = :expenseSheet"
+      ),
+  @NamedQuery(
+      name = "findFirstExpense",
+      query = "select e from ExpenseSheet es join es.expenseList e where es = :expenseSheet and e.date = (select min(e1.date) from Expense e1 where e1.expenseSheet = e.expenseSheet) and rownum = 1"
+      ),
+  @NamedQuery(
+      name = "findExpenseByDates",
+      query = "select e from ExpenseSheet es join es.expenseList e where es.id = :expenseSheet and e.date between :startDate and :endDate"
+      ),
+  @NamedQuery(
+      name = "findExpenseByCategory",
+      query = "select e from ExpenseSheet es join es.expenseList e where es.id = :expenseSheet and e.category = :category"
+      )
+})
+public class Expense extends AbstractEntity {
+
+  private static final long serialVersionUID = 3149559648002478493L;
 
   @Id
   @GeneratedValue(generator = "increment")
@@ -29,6 +52,8 @@ public class Expense {
   private User user;
   @Column(name="ex_comment")
   private String comment;
+  @ManyToOne
+  private ExpenseSheet expenseSheet;
 
   public Expense() {
     super();
@@ -42,11 +67,10 @@ public class Expense {
     this.user = user;
     this.comment = comment;
   }
-
+  
   public int getId() {
     return id;
   }
-
   public void setId(int id) {
     this.id = id;
   }
@@ -100,6 +124,14 @@ public class Expense {
     this.comment = comment;
   }
   
+  public ExpenseSheet getExpenseSheet() {
+    return expenseSheet;
+  }
+
+  public void setExpenseSheet(ExpenseSheet expenseSheet) {
+    this.expenseSheet = expenseSheet;
+  }
+
   @Override
   public String toString() {
     return "Expense: " + date + ";" + category + ";" + value;

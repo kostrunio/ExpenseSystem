@@ -19,8 +19,10 @@ import org.hibernate.annotations.GenericGenerator;
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.INTEGER)
 @DiscriminatorValue(value="1")
-public class User {
+public class User extends AbstractEntity {
   
+  private static final long serialVersionUID = -2614536668038640488L;
+
   @Id
   @GeneratedValue(generator = "increment")
   @GenericGenerator(name = "increment", strategy = "increment")

@@ -20,7 +20,9 @@ import org.hibernate.annotations.GenericGenerator;
 import pl.kostro.expensesystem.utils.DateExpense;
 
 @Entity
-public class ExpenseSheet {
+public class ExpenseSheet extends AbstractEntity {
+
+  private static final long serialVersionUID = 3614726105787486216L;
 
   @Id
   @GeneratedValue(generator = "increment")
@@ -29,13 +31,13 @@ public class ExpenseSheet {
   @OneToOne
   private RealUser owner;
   private String name;
-  @OneToMany(fetch=FetchType.EAGER)
+  @OneToMany(mappedBy="expenseSheet", fetch=FetchType.EAGER)
   @OrderBy("orderId")
   private List<Category> categoryList;
-  @OneToMany(fetch=FetchType.EAGER)
+  @OneToMany(mappedBy="expenseSheet", fetch=FetchType.EAGER)
   @OrderBy
   private List<UserLimit> userLimitList;
-  @OneToMany(fetch=FetchType.EAGER)
+  @OneToMany(mappedBy="expenseSheet")
   @OrderBy
   private List<Expense> expenseList;
   private int reloadeDay;
@@ -48,11 +50,10 @@ public class ExpenseSheet {
   public int getId() {
     return id;
   }
-
   public void setId(int id) {
     this.id = id;
   }
-
+  
   public RealUser getOwner() {
     return owner;
   }
