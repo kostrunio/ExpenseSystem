@@ -28,7 +28,12 @@ public class ExpenseService {
   }
   
   public Expense findFirstExpense(ExpenseSheet expenseSheet) {
-    return ExpenseEntityDao.findSingleByNamedQueryWithParameters("findFirstExpense", ImmutableMap.of("expenseSheet", expenseSheet), Expense.class);
+	  Expense firstExpense = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findFirstExpense", ImmutableMap.of("expenseSheet", expenseSheet), Expense.class);
+	  if (firstExpense == null) {
+		  firstExpense = new Expense();
+		  firstExpense.setDate(new Date());
+	  }
+	  return firstExpense;
   }
   
   public List<Expense> findExpenseForDates(ExpenseSheet expenseSheet, Date startDate, Date endDate) {
