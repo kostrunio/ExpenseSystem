@@ -52,7 +52,7 @@ public class RealUserService {
     ExpenseEntityDao.begin();
     RealUser loggedUser = null;
     try {
-      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName), RealUser.class);
+      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findUser", ImmutableMap.of("name", userName), RealUser.class);
       ExpenseEntityDao.commit();
     } catch (NoResultException e) {
 
