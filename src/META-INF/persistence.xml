@@ -5,7 +5,7 @@
 	<persistence-unit name="expenseSystem">
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="oracle.jdbc.driver.OracleDriver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@//localhost/XE" />
+			<property name="javax.persistence.jdbc.url" value="jdbc:oracle:thin:@//vaio/XE" />
 			<property name="javax.persistence.jdbc.user" value="expenseSystem" />
 			<property name="javax.persistence.jdbc.password" value="expenseSystem" />
 			<property name="hibernate.show_sql" value="true" />
