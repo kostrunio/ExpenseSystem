@@ -107,10 +107,9 @@ public class ExpenseSheetService {
   public Set<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
     Set<String> commentList = new TreeSet<String>();
     for (Expense expense : expenseService.findExpenseByCategory(expenseSheet, category))
-      if (expense.getCategory() == category)
-        if (expense.getComment() != null
+      if (expense.getComment() != null
         && !expense.getComment().equals(""))
-        commentList.add(expense.getComment());
+      commentList.add(expense.getComment());
     return commentList;
   }
   
