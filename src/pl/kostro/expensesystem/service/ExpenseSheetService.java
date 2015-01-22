@@ -122,7 +122,7 @@ public class ExpenseSheetService {
     int year = date.get(Calendar.YEAR);
     if (year < firstYear)
       firstYear = year;
-    for (int i = firstYear; i <= thisYear+1; i++)
+    for (int i = firstYear-1; i <= thisYear+1; i++)
       yearList.add(Integer.toString(i));
     return yearList;
   }
