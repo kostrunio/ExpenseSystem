@@ -18,6 +18,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 
 import pl.kostro.expensesystem.utils.DateExpense;
+import pl.kostro.expensesystem.utils.Filter;
 
 @Entity
 public class ExpenseSheet extends AbstractEntity {
@@ -46,6 +47,8 @@ public class ExpenseSheet extends AbstractEntity {
   private UserLimit defaultUserLimit;
   @Transient
   private Map<Date, DateExpense> dateExpenseMap;
+  @Transient
+  private Filter filter;
 
   public int getId() {
     return id;
@@ -134,4 +137,11 @@ public class ExpenseSheet extends AbstractEntity {
     this.dateExpenseMap = dateExpenseMap;
   }
   
+  public Filter getFilter() {
+	  return filter;
+  }
+
+  public void setFilter(Filter filter) {
+	  this.filter = filter;
+  }
 }
