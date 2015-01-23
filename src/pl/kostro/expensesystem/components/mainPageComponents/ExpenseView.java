@@ -189,9 +189,11 @@ public class ExpenseView extends CustomComponent {
 	
 	private void prepareSearchLayout(ExpenseSheet expenseSheet, boolean visible) {
 		if (visible) {
-		category.addItems(expenseSheet.getCategoryList());
-		user.addItems(expenseSheet.getUserLimitList());
-//		comment.addItems();
+			category.addItems(expenseSheet.getCategoryList());
+			user.addItems(expenseSheet.getUserLimitList());
+			comment.setNewItemsAllowed(true);
+			comment.setNullSelectionAllowed(true);
+//			comment.addItems();
 		}
 	}
 
