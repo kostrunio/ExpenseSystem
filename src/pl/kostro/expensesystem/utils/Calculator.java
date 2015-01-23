@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Calculator {
 	public static boolean verifyAllowed(String str) {
+		if (str.startsWith("="))
+			str = str.substring(1);
 		str = str.replaceAll(",", ".");
 		if (str.matches("[0-9\\+\\-\\*\\/\\(\\)\\.]*")) {
 			String[] open = str.split("\\(", -1);
