@@ -17,6 +17,7 @@ import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.utils.DateExpense;
+import pl.kostro.expensesystem.utils.Filter;
 
 public class ExpenseSheetService {
   
@@ -57,15 +58,38 @@ public class ExpenseSheetService {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     expenseSheet.setExpenseList(expenseService.findExpenseForDates(expenseSheet, startDate, endDate));
     for (Expense expense : expenseSheet.getExpenseList()) {
-      if (startDate.equals(expense.getDate())
+      if ((startDate.equals(expense.getDate())
           || endDate.equals(expense.getDate())
           || (expense.getDate().after(startDate) && expense.getDate().before(endDate)))
+          && machFilter(expense, expenseSheet.getFilter()))
         expenseListToReturn.add(expense);
     }
     return expenseListToReturn;
   }
 
-  public Map<Date, DateExpense> prepareDateExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate) {
+  private boolean machFilter(Expense expense, Filter filter) {
+	  if (filter == null)
+		  return true;
+	  else {
+		  if (filter.getCategory() != null
+				  && !expense.getCategory().equals(filter.getCategory()))
+			  return false;
+		  if (filter.getUser() != null
+				  && !expense.getUser().equals(filter.getUser()))
+			  return false;
+		  if (filter.getFormula() != null
+				  && !expense.getFormula().contains(filter.getFormula()))
+			  return false;
+		  if (filter.getComment() != null && !filter.getComment().equals("")
+				  && ((expense.getComment() != null
+				  	&& !expense.getComment().contains(filter.getComment()))
+				  || expense.getComment() == null))
+			  return false;
+		  return true;
+	  }
+}
+
+public Map<Date, DateExpense> prepareDateExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate) {
     expenseSheet.getDateExpenseMap().clear();
     for (Expense expense : getExpenseList(expenseSheet, startDate, endDate)) {
       addExpenseToMap(expenseSheet, expense);
