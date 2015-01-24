@@ -131,7 +131,7 @@ public class ExpenseView extends CustomComponent {
 				if (searchLayout.isVisible()) {
 				category.removeAllItems();
 				user.removeAllItems();
-				formula.setValue(null);
+				formula.setValue("");
 				comment.removeAllItems();
 				expenseSheet.setFilter(null);
 				searchLayout.setVisible(false);
