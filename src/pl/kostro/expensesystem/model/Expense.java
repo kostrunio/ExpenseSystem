@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.model;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -45,7 +46,7 @@ public class Expense extends AbstractEntity {
   @Column(name="ex_date")
   private Date date;
   private String formula;
-  private double value;
+  private BigDecimal value;
   @OneToOne
   private Category category;
   @OneToOne
@@ -61,8 +62,7 @@ public class Expense extends AbstractEntity {
 
   public Expense(Date date, String formula, Category category, User user, String comment) {
     this.date = date;
-    this.formula = formula;
-    this.value = Calculator.getResult(formula);
+    setFormula(formula);
     this.category = category;
     this.user = user;
     this.comment = comment;
@@ -92,11 +92,11 @@ public class Expense extends AbstractEntity {
     this.value = Calculator.getResult(formula);
   }
 
-  public double getValue() {
+  public BigDecimal getValue() {
     return value;
   }
 
-  public void setValue(double value) {
+  public void setValue(BigDecimal value) {
     this.value = value;
   }
   

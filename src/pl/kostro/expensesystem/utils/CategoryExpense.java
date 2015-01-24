@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.utils;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import pl.kostro.expensesystem.model.Expense;
 public class CategoryExpense {
 	private Category category;
 	private List<Expense> expenseList;
-	private double sum;
+	private BigDecimal sum = new BigDecimal(0);
 	
 	public CategoryExpense(Category category) {
 		this.category = category;
@@ -30,23 +31,23 @@ public class CategoryExpense {
 		this.expenseList = expenseList;
 	}
 	
-	public double getSum() {
+	public BigDecimal getSum() {
 		return sum;
 	}
-	public void setSum(double sum) {
+	public void setSum(BigDecimal sum) {
 		this.sum = sum;
 	}
 	
 	public String getSumString() {
-		return Double.toString(sum);
+		return sum.toString();
 	}
 	
 	public void addExpense(Expense expense) {
-		setSum(getSum() + expense.getValue());
+		setSum(getSum().add(expense.getValue()));
 		getExpenseList().add(expense);
 	}
 	public void removeExpense(Expense expense) {
-		setSum(getSum() - expense.getValue());
+		setSum(getSum().subtract(expense.getValue()));
 		getExpenseList().remove(expense);
 	}
 }

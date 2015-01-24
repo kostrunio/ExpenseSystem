@@ -1,9 +1,14 @@
 package pl.kostro.expensesystem.utils;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.script.ScriptException;
+
 public class Calculator {
+	
 	public static boolean verifyAllowed(String str) {
 		if (str.startsWith("="))
 			str = str.substring(1);
@@ -17,25 +22,27 @@ public class Calculator {
 		return false;
 	}
 
-	public static double getResult(String str) {
+	public static BigDecimal getOperationResult(String str) {
+		if (str.startsWith("="))
+			str = str.substring(1);
 		if (str.equals(""))
-			return 0;
+			return new BigDecimal(0);
 		str = str.replaceAll(",", ".");
 		if (str.indexOf("(") != -1) {
 			int a = str.lastIndexOf("(");
 			int b = str.indexOf(")", a);
-			double middle = getResult(str.substring(a + 1, b));
-			return getResult(str.substring(0, a) + Double.toString(middle)
+			BigDecimal middle = getOperationResult(str.substring(a + 1, b));
+			return getOperationResult(str.substring(0, a) + middle
 					+ str.substring(b + 1));
 		}
-		double result = 0;
+		BigDecimal result = new BigDecimal(0);
 		String[] plus = str.split("\\+");
 		if (plus.length > 1) {
 			// there were some +
 			if (plus[0].length() > 0)
-				result = getResult(plus[0]);
+				result = getOperationResult(plus[0]);
 			for (int i = 1; i < plus.length; i++) {
-				result += getResult(plus[i]);
+				result = result.add(getOperationResult(plus[i]));
 			}
 			return result;
 		} else {
@@ -57,9 +64,9 @@ public class Calculator {
 			}
 			if (minusList.size() > 1) {
 				// there were some -
-				result = getResult((String) minusList.get(0));
+				result = getOperationResult((String) minusList.get(0));
 				for (int i = 1; i < minusList.size(); i++) {
-					result -= getResult((String) minusList.get(i));
+					result = result.subtract(getOperationResult((String) minusList.get(i)));
 				}
 				return result;
 			} else {
@@ -67,9 +74,9 @@ public class Calculator {
 				String[] mult = ((String) minusList.get(0)).split("\\*");
 				if (mult.length > 1) {
 					// there were some *
-					result = getResult(mult[0]);
+					result = getOperationResult(mult[0]);
 					for (int i = 1; i < mult.length; i++) {
-						result *= getResult(mult[i]);
+						result = result.multiply(getOperationResult(mult[i]));
 					}
 					return result;
 				} else {
@@ -77,22 +84,31 @@ public class Calculator {
 					String[] div = mult[0].split("\\/");
 					if (div.length > 1) {
 						// there were some /
-						result = getResult(div[0]);
+						result = getOperationResult(div[0]);
 						for (int i = 1; i < div.length; i++) {
-							double dv = getResult(div[i]);
-							if (dv == 0.0)
+							BigDecimal dv = getOperationResult(div[i]);
+							if (dv.equals(0))
 								throw new IllegalArgumentException(
 										"divide by ZERO not allowed");
-							result /= dv;
+							result = result.divide(dv);
 						}
 						return result;
 					} else {
 						// no /
 						str = str.replaceAll("--", "");
-						return Double.parseDouble(str);
+						return new BigDecimal(str);
 					}
 				}
 			}
 		}
+	}
+	
+	public static BigDecimal getResult(String str) {
+		return getOperationResult(str).setScale(2, RoundingMode.HALF_UP);
+	}
+		
+	
+	public static void main(String[] args) throws ScriptException {
+		System.out.println(getResult("64-21,131"));
 	}
 }

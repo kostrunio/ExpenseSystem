@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.utils;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +11,7 @@ import pl.kostro.expensesystem.model.Expense;
 public class DateExpense {
 	private Date date;
 	private Map<Category, CategoryExpense> categoryExpenseMap;
-	private double sum;
+	private BigDecimal sum = new BigDecimal(0);
 	
 	public DateExpense(Date date) {
 		this.date = date;
@@ -31,15 +32,15 @@ public class DateExpense {
 		this.categoryExpenseMap = categoryExpenseMap;
 	}
 
-	public double getSum() {
+	public BigDecimal getSum() {
 		return sum;
 	}
-	public void setSum(double sum) {
+	public void setSum(BigDecimal sum) {
 		this.sum = sum;
 	}
 	
 	public String getSumString() {
-		return Double.toString(sum);
+		return sum.toString();
 	}
 	
 	public String toString() {
@@ -47,7 +48,7 @@ public class DateExpense {
 	}
 	
 	public void addExpense(Expense expense) {
-		setSum(getSum() + expense.getValue());
+		setSum(getSum().add(expense.getValue()));
 		CategoryExpense categoryExpense = getCategoryExpenseMap().get(expense.getCategory());
 		if (categoryExpense == null) {
 			categoryExpense = new CategoryExpense(expense.getCategory());
@@ -56,7 +57,7 @@ public class DateExpense {
 		categoryExpense.addExpense(expense);
 	}
 	public void removeExpense(Expense expense) {
-		setSum(getSum() - expense.getValue());
+		setSum(getSum().subtract(expense.getValue()));
 		CategoryExpense categoryExpense = getCategoryExpenseMap().get(expense.getCategory());
 		categoryExpense.removeExpense(expense);
 	}

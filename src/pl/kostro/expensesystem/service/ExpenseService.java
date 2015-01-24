@@ -72,7 +72,7 @@ public class ExpenseService {
   }
 
   public String getValueString(Expense expense) {
-    return Double.toString(expense.getValue());
+    return expense.getValue().toString();
   }
 
 }
