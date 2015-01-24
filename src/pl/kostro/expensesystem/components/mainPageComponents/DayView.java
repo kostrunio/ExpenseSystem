@@ -16,6 +16,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
@@ -75,33 +76,37 @@ public class DayView extends CustomComponent {
 
 	private void prepareExpensesLayout() {
 		List<Category> categoryList = expenseSheet.getCategoryList();
-		expensesGrid.setColumns(3);
-		expensesGrid.setRows(categoryList.size());
+		expensesGrid.setColumns(5);
+		expensesGrid.setRows(categoryList.size()/5+1);
 		
 		for (int i = 0; i < categoryList.size(); i++) {
+			VerticalLayout vertLay = new VerticalLayout();
+			expensesGrid.addComponent(vertLay, i%5, i/5);
+
 			Category category = categoryList.get(i);
 			Label catLabel = new Label();
 			catLabel.setImmediate(false);
 			catLabel.setWidth("-1px");
 			catLabel.setHeight("-1px");
 			catLabel.setValue(category.getName());
-			expensesGrid.addComponent(catLabel, 0, i);
-			expensesGrid.setComponentAlignment(catLabel, new Alignment(48));
+			vertLay.addComponent(catLabel);
 			
-			Button catButton = new Button();
+			HorizontalLayout expLay = new HorizontalLayout();
+			vertLay.addComponent(expLay);
+			Button expButton = new Button();
 			DateExpense dateExpenseMap = expenseSheet.getDateExpenseMap().get(date);
 			if (dateExpenseMap == null
 					|| dateExpenseMap.getCategoryExpenseMap().get(category) == null)
-				catButton.setCaption("0");
+				expButton.setCaption("0");
 			else {
 				CategoryExpense categoryExpenseMap = dateExpenseMap.getCategoryExpenseMap().get(category);
-				catButton.setCaption(categoryExpenseMap.getSumString());
+				expButton.setCaption(categoryExpenseMap.getSumString());
 			}
-			catButton.setImmediate(true);
-			catButton.setWidth("-1px");
-			catButton.setHeight("-1px");
-			catButton.setData(category);
-			catButton.addClickListener(new Button.ClickListener() {
+			expButton.setImmediate(true);
+			expButton.setWidth("-1px");
+			expButton.setHeight("-1px");
+			expButton.setData(category);
+			expButton.addClickListener(new Button.ClickListener() {
 
 				private static final long serialVersionUID = -465615264102031639L;
 
@@ -114,7 +119,7 @@ public class DayView extends CustomComponent {
 				}
 				
 			});
-			expensesGrid.addComponent(catButton, 1, i);
+			expLay.addComponent(expButton);
 			
 			Button addRowButton = new Button("+");
 			addRowButton.setData(category);
@@ -131,7 +136,7 @@ public class DayView extends CustomComponent {
 					}
 				}
 			});
-			expensesGrid.addComponent(addRowButton, 2, i);
+			expLay.addComponent(addRowButton);
 		}
 	}
 
