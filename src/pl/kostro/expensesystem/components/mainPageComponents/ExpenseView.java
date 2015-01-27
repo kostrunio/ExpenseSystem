@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.components.mainPageComponents;
 
+import java.text.DateFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -168,19 +169,10 @@ public class ExpenseView extends CustomComponent {
 				mainView.addComponent(new MonthView(expenseSheet, month, year));
 			}
 		};
-		
-		monthMenu.addItem("styczeñ", monthCommand);
-		monthMenu.addItem("luty", monthCommand);
-		monthMenu.addItem("marzec", monthCommand);
-		monthMenu.addItem("kwiecieñ", monthCommand);
-		monthMenu.addItem("maj", monthCommand);
-		monthMenu.addItem("czerwiec", monthCommand);
-		monthMenu.addItem("lipiec", monthCommand);
-		monthMenu.addItem("sierpieñ", monthCommand);
-		monthMenu.addItem("wrzesieñ", monthCommand);
-		monthMenu.addItem("paŸdziernik", monthCommand);
-		monthMenu.addItem("listopad", monthCommand);
-		monthMenu.addItem("grudzieñ", monthCommand);
+		String[] monthsName = new DateFormatSymbols().getMonths();
+		for (int i=0; i<12; i++) {
+		  monthMenu.addItem(monthsName[i], monthCommand);
+		}
 		
 		month = new SimpleDateFormat("MMMM").format(new Date());
 		year = new SimpleDateFormat("yyyy").format(new Date());
