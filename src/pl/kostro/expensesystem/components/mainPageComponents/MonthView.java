@@ -93,7 +93,9 @@ public class MonthView extends CustomComponent {
       date = df.parse(expenseSheet.getReloadeDay()+"-"+monthName+"-"+year);
       java.util.Calendar calendar = GregorianCalendar.getInstance();
       calendar.setTime(date);
+      calendar.add(java.util.Calendar.DAY_OF_MONTH, -1);
       monthCalendar.setEndDate(calendar.getTime());
+      calendar.add(java.util.Calendar.DAY_OF_MONTH, 1);
       calendar.add(java.util.Calendar.MONTH, -1);
       monthCalendar.setStartDate(calendar.getTime());
 	  } catch (ParseException e) {
