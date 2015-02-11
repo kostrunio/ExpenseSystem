@@ -49,6 +49,10 @@ public class ExpenseSheet extends AbstractEntity {
   private Map<Date, DateExpense> dateExpenseMap;
   @Transient
   private Filter filter;
+  @Transient
+  private Date firstDate;
+  @Transient
+  private Date lastDate;
 
   public int getId() {
     return id;
@@ -144,4 +148,21 @@ public class ExpenseSheet extends AbstractEntity {
   public void setFilter(Filter filter) {
 	  this.filter = filter;
   }
+  
+  public Date getFirstDate() {
+    return firstDate;
+  }
+  
+  public void setFirstDate(Date firstDate) {
+    this.firstDate = firstDate;
+  }
+  
+  public Date getLastDate() {
+    return lastDate;
+  }
+  
+  public void setLastDate(Date lastDate) {
+    this.lastDate = lastDate;
+  }
+  
 }
