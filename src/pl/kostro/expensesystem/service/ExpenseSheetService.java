@@ -21,7 +21,7 @@ import pl.kostro.expensesystem.utils.Filter;
 
 public class ExpenseSheetService {
   
-  private ExpenseService expenseService = new ExpenseService();
+  private static ExpenseService expenseService = new ExpenseService();
   
   public void removeProfessor(int id) {
     ExpenseSheet emp = findExpenseSheet(id);
@@ -54,20 +54,18 @@ public class ExpenseSheetService {
     }
   }
 
-  private List<Expense> getExpenseList(ExpenseSheet expenseSheet, Date startDate, Date endDate) {
+  private static List<Expense> getExpenseList(ExpenseSheet expenseSheet, Date startDate, Date endDate) {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
+    expenseSheet.setFirstDate(startDate);
+    expenseSheet.setLastDate(endDate);
     expenseSheet.setExpenseList(expenseService.findExpenseForDates(expenseSheet, startDate, endDate));
-    for (Expense expense : expenseSheet.getExpenseList()) {
-      if ((startDate.equals(expense.getDate())
-          || endDate.equals(expense.getDate())
-          || (expense.getDate().after(startDate) && expense.getDate().before(endDate)))
-          && machFilter(expense, expenseSheet.getFilter()))
+    for (Expense expense : expenseSheet.getExpenseList())
+      if (matchFilter(expense, expenseSheet.getFilter()))
         expenseListToReturn.add(expense);
-    }
     return expenseListToReturn;
   }
 
-  private boolean machFilter(Expense expense, Filter filter) {
+  private static boolean matchFilter(Expense expense, Filter filter) {
 	  if (filter == null)
 		  return true;
 	  else {
@@ -89,7 +87,7 @@ public class ExpenseSheetService {
 	  }
 }
 
-public Map<Date, DateExpense> prepareDateExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate) {
+public static Map<Date, DateExpense> prepareDateExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate) {
     expenseSheet.getDateExpenseMap().clear();
     for (Expense expense : getExpenseList(expenseSheet, startDate, endDate)) {
       addExpenseToMap(expenseSheet, expense);
@@ -97,7 +95,7 @@ public Map<Date, DateExpense> prepareDateExpenseMap(ExpenseSheet expenseSheet, D
     return expenseSheet.getDateExpenseMap();
   }
 
-  private void addExpenseToMap(ExpenseSheet expenseSheet, Expense expense) {
+  private static void addExpenseToMap(ExpenseSheet expenseSheet, Expense expense) {
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
     if (dateExpense == null) {
       dateExpense = new DateExpense(expense.getDate());
@@ -149,6 +147,19 @@ public Map<Date, DateExpense> prepareDateExpenseMap(ExpenseSheet expenseSheet, D
     for (int i = firstYear-1; i <= thisYear+1; i++)
       yearList.add(Integer.toString(i));
     return yearList;
+  }
+  
+  public static DateExpense getDateExpenseMap(ExpenseSheet expenseSheet, Date date) {
+    if (date.before(expenseSheet.getFirstDate()) || date.after(expenseSheet.getLastDate())) {
+      java.util.Calendar calendar = GregorianCalendar.getInstance();
+      calendar.setTime(date);
+      calendar.set(java.util.Calendar.DAY_OF_MONTH, 1);
+      Date startDate = calendar.getTime();
+      calendar.set(java.util.Calendar.MONTH, 1);
+      calendar.add(java.util.Calendar.DAY_OF_MONTH, -1);
+      prepareDateExpenseMap(expenseSheet, startDate, calendar.getTime());
+    }
+    return expenseSheet.getDateExpenseMap().get(date);
   }
 
 }
