@@ -105,6 +105,7 @@ public class DayView extends CustomComponent {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
+				calendar.set(java.util.Calendar.DAY_OF_MONTH, 1);
 				setCompositionRoot(new MonthView(expenseSheet, calendar));
 			}
 			
