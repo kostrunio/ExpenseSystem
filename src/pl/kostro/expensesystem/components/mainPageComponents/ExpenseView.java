@@ -1,8 +1,7 @@
 package pl.kostro.expensesystem.components.mainPageComponents;
 
 import java.text.DateFormatSymbols;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.Calendar;
 
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -68,8 +67,9 @@ public class ExpenseView extends CustomComponent {
 
 	/*- VaadinEditorProperties={"grid":"RegularGrid,20","showGrid":true,"snapToGrid":true,"snapToObject":true,"movingGuides":false,"snappingDistance":10} */
 
-	private String year;
-	private String month;
+	private Calendar calendar = Calendar.getInstance();
+	
+	private String[] monthsName = new DateFormatSymbols().getMonths();
 	/**
 	 * The constructor should first build the main layout, set the
 	 * composition root and then do any custom initialization.
@@ -82,6 +82,7 @@ public class ExpenseView extends CustomComponent {
 		setCompositionRoot(mainLayout);
 
 		// TODO add user code here
+		
 		filterButton.addClickListener(new Button.ClickListener() {
 			
 			private static final long serialVersionUID = 5300096175827668413L;
@@ -119,7 +120,7 @@ public class ExpenseView extends CustomComponent {
 				}
 				expenseSheet.setFilter(new Filter(filterCateogry, filterUser, filterFormula, filterComment));
 				mainView.removeAllComponents();
-				mainView.addComponent(new MonthView(expenseSheet, month, year));
+				mainView.addComponent(new MonthView(expenseSheet, calendar));
 			}
 		});
 		
@@ -137,7 +138,7 @@ public class ExpenseView extends CustomComponent {
 				expenseSheet.setFilter(null);
 				searchLayout.setVisible(false);
 				mainView.removeAllComponents();
-				mainView.addComponent(new MonthView(expenseSheet, month, year));
+				mainView.addComponent(new MonthView(expenseSheet, calendar));
 				}
 			}
 		});
@@ -150,8 +151,9 @@ public class ExpenseView extends CustomComponent {
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
 				mainView.removeAllComponents();
-				year = selectedItem.getText();
-				mainView.addComponent(new MonthView(expenseSheet, month, year));
+				calendar.set(Calendar.DAY_OF_MONTH, 1);
+				calendar.set(Calendar.YEAR, Integer.parseInt(selectedItem.getText()));
+				mainView.addComponent(new MonthView(expenseSheet, calendar));
 			}
 		};
 		
@@ -165,18 +167,25 @@ public class ExpenseView extends CustomComponent {
 			@Override
 			public void menuSelected(MenuItem selectedItem) {
 				mainView.removeAllComponents();
-				month = selectedItem.getText();
-				mainView.addComponent(new MonthView(expenseSheet, month, year));
+				calendar.set(Calendar.DAY_OF_MONTH, 1);
+				calendar.set(Calendar.MONTH, getMonthNumber(selectedItem.getText()));
+				mainView.addComponent(new MonthView(expenseSheet, calendar));
 			}
+
+      private int getMonthNumber(String monthName) {
+        for (int i=0; i<monthsName.length; i++)
+          if (monthName.equals(monthsName[i]))
+            return i;
+        throw new IllegalArgumentException(monthName + "not known");
+      }
 		};
-		String[] monthsName = new DateFormatSymbols().getMonths();
-		for (int i=0; i<12; i++) {
-		  monthMenu.addItem(monthsName[i], monthCommand);
+		
+		for (String monthName : monthsName) {
+		  monthMenu.addItem(monthName, monthCommand);
 		}
 		
-		month = new SimpleDateFormat("MMMM").format(new Date());
-		year = new SimpleDateFormat("yyyy").format(new Date());
-		mainView.addComponent(new MonthView(expenseSheet, month, year));
+		calendar.set(Calendar.DAY_OF_MONTH, 1);
+		mainView.addComponent(new MonthView(expenseSheet, calendar));
 	}
 	
 	private void prepareSearchLayout(ExpenseSheet expenseSheet, boolean visible) {

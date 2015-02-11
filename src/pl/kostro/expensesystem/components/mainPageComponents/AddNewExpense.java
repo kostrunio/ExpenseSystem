@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.components.mainPageComponents;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Expense;
@@ -69,7 +70,7 @@ private static final long serialVersionUID = 665074948023076492L;
    * @param expenseSheet
    * @param category
    */
-  public AddNewExpense(final ExpenseSheet expenseSheet, final Expense expense, final Boolean modify) {
+  public AddNewExpense(final ExpenseSheet expenseSheet, final Expense expense, final Boolean modify, final Calendar calendar) {
     buildMainLayout();
     setCompositionRoot(mainLayout);
 
@@ -149,7 +150,7 @@ private static final long serialVersionUID = 665074948023076492L;
             expense.setComment(comment.getValue().toString());
           expense.setExpenseSheet(expenseSheet);
           expenseService.creteExpense(expenseSheet, expense);
-          setCompositionRoot(new DayView(expenseSheet, expense.getDate()));
+          setCompositionRoot(new DayView(expenseSheet, calendar));
         }
       }
     });
@@ -167,12 +168,12 @@ private static final long serialVersionUID = 665074948023076492L;
             @Override
             public void onClose(ConfirmDialog dialog) {
               if (dialog.isConfirmed()) {
-                setCompositionRoot(new CategoryExpenseView(expenseSheet, expense.getDate(), expense.getCategory()));
+                setCompositionRoot(new CategoryExpenseView(expenseSheet, calendar, expense.getCategory()));
               }
             }
           });
         } else {
-          setCompositionRoot(new CategoryExpenseView(expenseSheet, expense.getDate(), expense.getCategory()));
+          setCompositionRoot(new CategoryExpenseView(expenseSheet, calendar, expense.getCategory()));
         }
       }
     });
