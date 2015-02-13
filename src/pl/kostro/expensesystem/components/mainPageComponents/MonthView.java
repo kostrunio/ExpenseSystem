@@ -60,6 +60,7 @@ public class MonthView extends CustomComponent {
 		setCompositionRoot(mainLayout);
 
 		// TODO add user code here
+		calendar.set(java.util.Calendar.DAY_OF_MONTH, 1);
 		previousMonthButton.addClickListener(new Button.ClickListener() {
       
       private static final long serialVersionUID = -8048895457148394023L;
