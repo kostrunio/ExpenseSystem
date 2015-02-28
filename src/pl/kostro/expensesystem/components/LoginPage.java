@@ -55,6 +55,7 @@ public class LoginPage extends CustomComponent {
 		setCompositionRoot(mainLayout);
 
 		// TODO add user code here
+		userName.focus();
 		loginButton.setClickShortcut(KeyCode.ENTER);
 		loginButton.addStyleName(Reindeer.BUTTON_DEFAULT);
 		loginButton.addClickListener(new Button.ClickListener() {
