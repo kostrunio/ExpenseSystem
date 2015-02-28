@@ -91,11 +91,15 @@ public class AddNewExpense extends CustomComponent {
 
       @Override
       public void valueChange(ValueChangeEvent event) {
-        saveButton.setEnabled(true);
+    	if (expense.getFormula() != null
+    			&& !expense.getFormula().equals("")
+    			&& Calculator.verifyAllowed(expense.getFormula()))
+          saveButton.setEnabled(true);
       }
 
     });
 
+    formula.focus();
     formula.setValue(expense.getFormula());
     formula.addValueChangeListener(new Property.ValueChangeListener() {
 
@@ -103,11 +107,12 @@ public class AddNewExpense extends CustomComponent {
 
       @Override
       public void valueChange(ValueChangeEvent event) {
-        if (event.getProperty().getValue() != null && !event.getProperty().getValue().toString().equals(""))
-          if (Calculator.verifyAllowed(event.getProperty().getValue().toString()))
-            saveButton.setEnabled(true);
-          else
-            saveButton.setEnabled(false);
+        if (event.getProperty().getValue() != null
+        		&& !event.getProperty().getValue().toString().equals("")
+        		&& Calculator.verifyAllowed(event.getProperty().getValue().toString()))
+          saveButton.setEnabled(true);
+        else
+          saveButton.setEnabled(false);
       }
     });
 
@@ -122,7 +127,10 @@ public class AddNewExpense extends CustomComponent {
 
       @Override
       public void valueChange(ValueChangeEvent event) {
-        saveButton.setEnabled(true);
+        if (expense.getFormula() != null
+        		&& !expense.getFormula().equals("")
+      			&& Calculator.verifyAllowed(expense.getFormula()))
+          saveButton.setEnabled(true);
       }
 
     });
@@ -190,7 +198,7 @@ private GridLayout buildExpenseGrid() {
   
   // user
   user = new ComboBox();
-  user.setCaption("U¿ytkownik");
+  user.setCaption("u¿ytkownik");
   user.setImmediate(true);
   user.setWidth("-1px");
   user.setHeight("-1px");
@@ -198,7 +206,7 @@ private GridLayout buildExpenseGrid() {
   
   // formula
   formula = new TextField();
-  formula.setCaption("Formu³a");
+  formula.setCaption("formu³a");
   formula.setImmediate(true);
   formula.setWidth("-1px");
   formula.setHeight("-1px");
