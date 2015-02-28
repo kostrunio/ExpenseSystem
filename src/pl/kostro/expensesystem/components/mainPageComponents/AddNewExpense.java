@@ -150,7 +150,7 @@ public class AddNewExpense extends CustomComponent {
           if (modify)
             expenseService.removeExpense(expenseSheet, expense);
           expense.setUser(userLimit.getUser());
-          expense.setFormula(formula.getValue());
+          expense.setFormula(formula.getValue().startsWith("=")?formula.getValue().substring(1):formula.getValue());
           if (comment.getValue() != null)
             expense.setComment(comment.getValue().toString());
           expense.setExpenseSheet(expenseSheet);
