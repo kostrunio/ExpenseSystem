@@ -96,7 +96,7 @@ public class DayView extends CustomComponent {
       }
     });
     
-    nextDayButton.addClickListener(new Button.ClickListener() {
+		nextDayButton.addClickListener(new Button.ClickListener() {
       
       private static final long serialVersionUID = -8048895457148394023L;
 
@@ -119,6 +119,10 @@ public class DayView extends CustomComponent {
 			}
 			
 		});
+		
+		Category category = expenseSheet.getCategoryList().get(0);
+		categoryLayout.removeAllComponents();
+		categoryLayout.addComponent(new CategoryExpenseView(expenseSheet, calendar, category, thisView));
 	}
 	
 	public void refreshView(Calendar calendar, Category category) {
