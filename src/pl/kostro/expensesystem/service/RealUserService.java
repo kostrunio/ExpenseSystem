@@ -5,6 +5,7 @@ import javax.persistence.NoResultException;
 import com.google.gwt.thirdparty.guava.common.collect.ImmutableMap;
 
 import pl.kostro.expensesystem.dao.ExpenseEntityDao;
+import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 
 public class RealUserService {
@@ -32,6 +33,19 @@ public class RealUserService {
     } finally {
       ExpenseEntityDao.close();
     }
+  }
+  
+  public void setDefaultExpenseSheet(RealUser realUser, ExpenseSheet expenseSheet) {
+	  ExpenseEntityDao.begin();
+	  realUser.setDefaultExpenseSheetId(expenseSheet.getId());
+	  try {
+		  RealUser loggedUser = findRealUser(realUser.getId());
+		  loggedUser.setDefaultExpenseSheetId(expenseSheet.getId());
+		  ExpenseEntityDao.getEntityManager().merge(loggedUser);
+		  ExpenseEntityDao.commit();
+	  } finally {
+	      ExpenseEntityDao.close();
+	  }
   }
   
   public RealUser getUserData(String userName, String password) {
