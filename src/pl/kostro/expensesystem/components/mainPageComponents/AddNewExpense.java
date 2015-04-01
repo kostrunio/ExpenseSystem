@@ -82,7 +82,7 @@ private DayView dayView;
     user.setNullSelectionAllowed(false);
     user.addItems(expenseSheet.getUserLimitList());
     if (expense.getUser() != null)
-      user.select(expenseSheetService.getUserLimitForUser(expenseSheet, expense.getUser()));
+      user.select(ExpenseSheetService.getUserLimitForUser(expenseSheet, expense.getUser()));
     else
       user.select(expenseSheet.getDefaultUserLimit());
     user.addValueChangeListener(new Property.ValueChangeListener() {
