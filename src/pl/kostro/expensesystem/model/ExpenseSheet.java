@@ -17,8 +17,10 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import pl.kostro.expensesystem.utils.CategoryExpense;
 import pl.kostro.expensesystem.utils.DateExpense;
 import pl.kostro.expensesystem.utils.Filter;
+import pl.kostro.expensesystem.utils.UserLimitExpense;
 
 @Entity
 public class ExpenseSheet extends AbstractEntity {
@@ -47,6 +49,10 @@ public class ExpenseSheet extends AbstractEntity {
   private UserLimit defaultUserLimit;
   @Transient
   private Map<Date, DateExpense> dateExpenseMap;
+  @Transient
+  private Map<Category, CategoryExpense> categoryExpenseMap;
+  @Transient
+  private Map<UserLimit, UserLimitExpense> userLimitExpenseMap;
   @Transient
   private Filter filter;
   @Transient
@@ -139,6 +145,26 @@ public class ExpenseSheet extends AbstractEntity {
 
   public void setDateExpenseMap(Map<Date, DateExpense> dateExpenseMap) {
     this.dateExpenseMap = dateExpenseMap;
+  }
+  
+  public Map<Category, CategoryExpense> getCategoryExpenseMap() {
+	  if (categoryExpenseMap == null)
+		  categoryExpenseMap = new HashMap<Category, CategoryExpense>();
+	  return categoryExpenseMap;
+  }
+
+  public void setCategoryExpenseMap(Map<Category, CategoryExpense> categoryExpenseMap) {
+	  this.categoryExpenseMap = categoryExpenseMap;
+  }
+  
+  public Map<UserLimit, UserLimitExpense> getUserLimitExpenseMap() {
+	  if (userLimitExpenseMap == null)
+		  userLimitExpenseMap = new HashMap<UserLimit, UserLimitExpense>();
+	  return userLimitExpenseMap;
+  }
+
+  public void setUserLimitExpenseMap(Map<UserLimit, UserLimitExpense> userLimitExpenseMap) {
+	  this.userLimitExpenseMap = userLimitExpenseMap;
   }
   
   public Filter getFilter() {
