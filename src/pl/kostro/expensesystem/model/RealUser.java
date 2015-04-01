@@ -32,6 +32,7 @@ public class RealUser extends User {
   @ManyToMany(fetch=FetchType.EAGER)
   @OrderBy
   private List<ExpenseSheet> expenseSheetList;
+  private long defaultExpenseSheetId;
   
   public RealUser() {
     super();
@@ -66,4 +67,21 @@ public class RealUser extends User {
   public void setExpenseSheets(List<ExpenseSheet> expenseSheetList) {
     this.expenseSheetList = expenseSheetList;
   }
+  
+  public long getDefaultExpenseSheetId() {
+	  return defaultExpenseSheetId;
+  }
+  
+  public void setDefaultExpenseSheetId(long defaultExpenseSheetId) {
+	  this.defaultExpenseSheetId = defaultExpenseSheetId;
+  }
+  
+  public ExpenseSheet getDefaultExpenseSheet() {
+	  for (ExpenseSheet expenseSheet : getExpenseSheetList()) {
+		  if (expenseSheet.getId() == getDefaultExpenseSheetId())
+			  return expenseSheet;
+	  }
+	  return null;
+  }
+  
 }
