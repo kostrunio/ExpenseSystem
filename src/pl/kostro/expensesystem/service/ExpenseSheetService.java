@@ -16,8 +16,10 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.utils.CategoryExpense;
 import pl.kostro.expensesystem.utils.DateExpense;
 import pl.kostro.expensesystem.utils.Filter;
+import pl.kostro.expensesystem.utils.UserLimitExpense;
 
 public class ExpenseSheetService {
   
@@ -87,8 +89,10 @@ public class ExpenseSheetService {
 	  }
 }
 
-public static Map<Date, DateExpense> prepareDateExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate) {
+  public static Map<Date, DateExpense> prepareExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate) {
     expenseSheet.getDateExpenseMap().clear();
+    expenseSheet.getCategoryExpenseMap().clear();
+    expenseSheet.getUserLimitExpenseMap().clear();
     for (Expense expense : getExpenseList(expenseSheet, startDate, endDate)) {
       addExpenseToMap(expenseSheet, expense);
     }
@@ -96,12 +100,28 @@ public static Map<Date, DateExpense> prepareDateExpenseMap(ExpenseSheet expenseS
   }
 
   private static void addExpenseToMap(ExpenseSheet expenseSheet, Expense expense) {
+	//add to date expense map
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
     if (dateExpense == null) {
       dateExpense = new DateExpense(expense.getDate());
       expenseSheet.getDateExpenseMap().put(expense.getDate(), dateExpense);
     }
     dateExpense.addExpense(expense);
+    //add to category expense map
+    CategoryExpense categoryExpense = expenseSheet.getCategoryExpenseMap().get(expense.getCategory());
+    if (categoryExpense == null) {
+      categoryExpense = new CategoryExpense(expense.getCategory());
+      expenseSheet.getCategoryExpenseMap().put(expense.getCategory(), categoryExpense);
+    }
+    categoryExpense.addExpense(expense);
+    
+    //add to user limit expense map
+    UserLimitExpense userLimitExpense = expenseSheet.getUserLimitExpenseMap().get(getUserLimitForUser(expenseSheet, expense.getUser()));
+    if (userLimitExpense == null) {
+      userLimitExpense = new UserLimitExpense(getUserLimitForUser(expenseSheet, expense.getUser()));
+      expenseSheet.getUserLimitExpenseMap().put(getUserLimitForUser(expenseSheet, expense.getUser()), userLimitExpense);
+    }
+    userLimitExpense.addExpense(expense);
   }
 
   public void addExpense(ExpenseSheet expenseSheet, Expense expense) {
@@ -119,7 +139,7 @@ public static Map<Date, DateExpense> prepareDateExpenseMap(ExpenseSheet expenseS
     dateExpense.removeExpense(expense);
   }
   
-  public UserLimit getUserLimitForUser(ExpenseSheet expenseSheet, User user) {
+  public static UserLimit getUserLimitForUser(ExpenseSheet expenseSheet, User user) {
     for (UserLimit userLimit : expenseSheet.getUserLimitList())
       if (userLimit.getUser().equals(user))
         return userLimit;
@@ -157,9 +177,17 @@ public static Map<Date, DateExpense> prepareDateExpenseMap(ExpenseSheet expenseS
       Date startDate = calendar.getTime();
       calendar.set(java.util.Calendar.MONTH, 1);
       calendar.add(java.util.Calendar.DAY_OF_MONTH, -1);
-      prepareDateExpenseMap(expenseSheet, startDate, calendar.getTime());
+      prepareExpenseMap(expenseSheet, startDate, calendar.getTime());
     }
     return expenseSheet.getDateExpenseMap().get(date);
+  }
+  
+  public static CategoryExpense getCategoryExpenseMap(ExpenseSheet expenseSheet, Category category) {
+	  return expenseSheet.getCategoryExpenseMap().get(category);
+  }
+  
+  public static UserLimitExpense getUserLimitExpenseMap(ExpenseSheet expenseSheet, UserLimit userLimit) {
+	  return expenseSheet.getUserLimitExpenseMap().get(userLimit);
   }
 
 }
