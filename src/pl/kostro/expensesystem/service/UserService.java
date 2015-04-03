@@ -5,10 +5,10 @@ import pl.kostro.expensesystem.model.User;
 
 public class UserService {
   
-  public void removeProfessor(int id) {
-    User emp = findUser(id);
-    if (emp != null) {
-      ExpenseEntityDao.getEntityManager().remove(emp);
+  public void removeUser(int id) {
+    User u = findUser(id);
+    if (u != null) {
+      ExpenseEntityDao.getEntityManager().remove(u);
     }
   }
 

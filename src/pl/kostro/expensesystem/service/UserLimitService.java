@@ -7,10 +7,10 @@ import pl.kostro.expensesystem.model.UserLimit;
 
 public class UserLimitService {
 
-  public void removeProfessor(int id) {
-    UserLimit emp = findUserLimit(id);
-    if (emp != null) {
-      ExpenseEntityDao.getEntityManager().remove(emp);
+  public void removeUserLimit(int id) {
+    UserLimit uL = findUserLimit(id);
+    if (uL != null) {
+      ExpenseEntityDao.getEntityManager().remove(uL);
     }
   }
 

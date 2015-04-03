@@ -13,9 +13,9 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 public class ExpenseService {
   
   public void removeExpense(int id) {
-    Expense emp = findExpense(id);
-    if (emp != null) {
-      ExpenseEntityDao.getEntityManager().remove(emp);
+    Expense ex = findExpense(id);
+    if (ex != null) {
+      ExpenseEntityDao.getEntityManager().remove(ex);
     }
   }
 
@@ -36,8 +36,8 @@ public class ExpenseService {
 	  return firstExpense;
   }
   
-  public List<Expense> findExpenseForDates(ExpenseSheet expenseSheet, Date startDate, Date endDate) {
-    return ExpenseEntityDao.findByNamedQueryWithParameters("findExpenseByDates", ImmutableMap.of("expenseSheet", expenseSheet.getId(), "startDate", startDate, "endDate", endDate), Expense.class);
+  public List<Expense> findExpenseForDates(ExpenseSheet expenseSheet) {
+    return ExpenseEntityDao.findByNamedQueryWithParameters("findExpenseByDates", ImmutableMap.of("expenseSheet", expenseSheet.getId(), "startDate", expenseSheet.getFirstDate(), "endDate", expenseSheet.getLastDate()), Expense.class);
   }
   
   public List<Expense> findExpenseByCategory(ExpenseSheet expenseSheet, Category category) {

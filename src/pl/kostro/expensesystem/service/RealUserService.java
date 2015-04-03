@@ -11,9 +11,9 @@ import pl.kostro.expensesystem.model.RealUser;
 public class RealUserService {
   
   public void removeRealUser(int id) {
-    RealUser emp = findRealUser(id);
-    if (emp != null) {
-      ExpenseEntityDao.getEntityManager().remove(emp);
+    RealUser rU = findRealUser(id);
+    if (rU != null) {
+      ExpenseEntityDao.getEntityManager().remove(rU);
     }
   }
 
@@ -37,10 +37,10 @@ public class RealUserService {
   
   public void setDefaultExpenseSheet(RealUser realUser, ExpenseSheet expenseSheet) {
 	  ExpenseEntityDao.begin();
-	  realUser.setDefaultExpenseSheetId(expenseSheet.getId());
+	  realUser.setDefaultExpenseSheet(expenseSheet);
 	  try {
 		  RealUser loggedUser = findRealUser(realUser.getId());
-		  loggedUser.setDefaultExpenseSheetId(expenseSheet.getId());
+		  loggedUser.setDefaultExpenseSheet(expenseSheet);
 		  ExpenseEntityDao.getEntityManager().merge(loggedUser);
 		  ExpenseEntityDao.commit();
 	  } finally {
