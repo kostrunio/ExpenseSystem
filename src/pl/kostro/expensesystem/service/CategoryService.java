@@ -6,10 +6,10 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 
 public class CategoryService {
   
-  public void removeProfessor(int id) {
-    Category emp = findCategory(id);
-    if (emp != null) {
-      ExpenseEntityDao.getEntityManager().remove(emp);
+  public void removeCategory(int id) {
+    Category cat = findCategory(id);
+    if (cat != null) {
+      ExpenseEntityDao.getEntityManager().remove(cat);
     }
   }
 
@@ -20,10 +20,7 @@ public class CategoryService {
   public void createCategory(ExpenseSheet expenseSheet, String name, int orderId) {
     ExpenseEntityDao.begin();
     try {
-      Category category = new Category();
-      category.setName(name);
-      category.setOrderId(orderId);
-      category.setExpenseSheet(expenseSheet);
+      Category category = new Category(name, orderId, expenseSheet);
       ExpenseEntityDao.getEntityManager().persist(category);
       expenseSheet.getCategoryList().add(category);
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
