@@ -1,5 +1,7 @@
 package pl.kostro.expensesystem.components.settingsPageComponents;
 
+import java.math.BigDecimal;
+
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.UserLimit;
@@ -52,7 +54,7 @@ public class AddRealUserView extends CustomComponent {
         RealUserService realUserService = new RealUserService();
         UserLimitService userLimitService = new UserLimitService();
         RealUser realUser = realUserService.findRealUser(newRealUser.getValue());
-        UserLimit userLimit = new UserLimit(realUser, 0, expenseSheet);
+        UserLimit userLimit = new UserLimit(realUser, new BigDecimal(0), expenseSheet);
         userLimitService.createUserLimit(expenseSheet, userLimit);
         setCompositionRoot(new ExpenseSheetSettingsView(expenseSheet));
       }
