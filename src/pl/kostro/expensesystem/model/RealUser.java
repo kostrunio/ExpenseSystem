@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 
 @Entity
@@ -32,7 +33,8 @@ public class RealUser extends User {
   @ManyToMany(fetch=FetchType.EAGER)
   @OrderBy
   private List<ExpenseSheet> expenseSheetList;
-  private long defaultExpenseSheetId;
+  @OneToOne
+  private ExpenseSheet defaultExpenseSheet;
   
   public RealUser() {
     super();
@@ -68,20 +70,12 @@ public class RealUser extends User {
     this.expenseSheetList = expenseSheetList;
   }
   
-  public long getDefaultExpenseSheetId() {
-	  return defaultExpenseSheetId;
-  }
-  
-  public void setDefaultExpenseSheetId(long defaultExpenseSheetId) {
-	  this.defaultExpenseSheetId = defaultExpenseSheetId;
-  }
-  
   public ExpenseSheet getDefaultExpenseSheet() {
-	  for (ExpenseSheet expenseSheet : getExpenseSheetList()) {
-		  if (expenseSheet.getId() == getDefaultExpenseSheetId())
-			  return expenseSheet;
-	  }
-	  return null;
+	  return defaultExpenseSheet;
+  }
+  
+  public void setDefaultExpenseSheet(ExpenseSheet defaultExpenseSheet) {
+	  this.defaultExpenseSheet = defaultExpenseSheet;
   }
   
 }

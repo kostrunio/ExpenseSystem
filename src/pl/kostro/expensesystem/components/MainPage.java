@@ -92,7 +92,7 @@ public class MainPage extends CustomComponent {
 			}
 		});
 		
-		if (loggedUser.getDefaultExpenseSheetId() != 0) {
+		if (loggedUser.getDefaultExpenseSheet() != null) {
 			mainView.addComponent(new ExpenseView(loggedUser.getDefaultExpenseSheet()));
 		} else {
 			if (loggedUser.getExpenseSheetList().size() == 1) {
