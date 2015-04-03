@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -25,10 +26,10 @@ public class ExpenseSheetService {
   
   private static ExpenseService expenseService = new ExpenseService();
   
-  public void removeProfessor(int id) {
-    ExpenseSheet emp = findExpenseSheet(id);
-    if (emp != null) {
-      ExpenseEntityDao.getEntityManager().remove(emp);
+  public void removeExpenseSheet(int id) {
+    ExpenseSheet eSh = findExpenseSheet(id);
+    if (eSh != null) {
+      ExpenseEntityDao.getEntityManager().remove(eSh);
     }
   }
 
@@ -41,7 +42,7 @@ public class ExpenseSheetService {
     try {
       ExpenseSheet expenseSheet = new ExpenseSheet();
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
-      UserLimit userLimit = new UserLimit(owner, 0, expenseSheet);
+      UserLimit userLimit = new UserLimit(owner, new BigDecimal(0), expenseSheet);
       ExpenseEntityDao.getEntityManager().persist(userLimit);
       expenseSheet.setOwner(owner);
       expenseSheet.setName(name);
@@ -56,11 +57,9 @@ public class ExpenseSheetService {
     }
   }
 
-  private static List<Expense> getExpenseList(ExpenseSheet expenseSheet, Date startDate, Date endDate) {
+  private static List<Expense> getExpenseList(ExpenseSheet expenseSheet) {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
-    expenseSheet.setFirstDate(startDate);
-    expenseSheet.setLastDate(endDate);
-    expenseSheet.setExpenseList(expenseService.findExpenseForDates(expenseSheet, startDate, endDate));
+    expenseSheet.setExpenseList(expenseService.findExpenseForDates(expenseSheet));
     for (Expense expense : expenseSheet.getExpenseList())
       if (matchFilter(expense, expenseSheet.getFilter()))
         expenseListToReturn.add(expense);
@@ -89,33 +88,42 @@ public class ExpenseSheetService {
 	  }
 }
 
-  public static Map<Date, DateExpense> prepareExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate) {
+  public static Map<Date, DateExpense> prepareExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate, Date firstDay, Date lastDay) {
     expenseSheet.getDateExpenseMap().clear();
     expenseSheet.getCategoryExpenseMap().clear();
     expenseSheet.getUserLimitExpenseMap().clear();
-    for (Expense expense : getExpenseList(expenseSheet, startDate, endDate)) {
-      addExpenseToMap(expenseSheet, expense);
+    expenseSheet.setFirstDate(startDate);
+    expenseSheet.setLastDate(endDate);
+    for (Expense expense : getExpenseList(expenseSheet)) {
+      addExpenseToDateMap(expenseSheet, expense);
+      if (firstDay != null && lastDay != null && !expense.getDate().before(firstDay) && !expense.getDate().after(lastDay)) {
+        addExpenseToCategoryMap(expenseSheet, expense);
+        addExpenseToUserLimitMap(expenseSheet, expense);
+      }
     }
+    UserSummaryService.checkSummary(expenseSheet, firstDay);
     return expenseSheet.getDateExpenseMap();
   }
 
-  private static void addExpenseToMap(ExpenseSheet expenseSheet, Expense expense) {
-	//add to date expense map
+  private static void addExpenseToDateMap(ExpenseSheet expenseSheet, Expense expense) {
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
     if (dateExpense == null) {
       dateExpense = new DateExpense(expense.getDate());
       expenseSheet.getDateExpenseMap().put(expense.getDate(), dateExpense);
     }
     dateExpense.addExpense(expense);
-    //add to category expense map
+  }
+  
+  private static void addExpenseToCategoryMap(ExpenseSheet expenseSheet, Expense expense) {
     CategoryExpense categoryExpense = expenseSheet.getCategoryExpenseMap().get(expense.getCategory());
     if (categoryExpense == null) {
       categoryExpense = new CategoryExpense(expense.getCategory());
       expenseSheet.getCategoryExpenseMap().put(expense.getCategory(), categoryExpense);
     }
     categoryExpense.addExpense(expense);
-    
-    //add to user limit expense map
+  }
+  
+  private static void addExpenseToUserLimitMap(ExpenseSheet expenseSheet, Expense expense) {
     UserLimitExpense userLimitExpense = expenseSheet.getUserLimitExpenseMap().get(getUserLimitForUser(expenseSheet, expense.getUser()));
     if (userLimitExpense == null) {
       userLimitExpense = new UserLimitExpense(getUserLimitForUser(expenseSheet, expense.getUser()));
@@ -126,7 +134,7 @@ public class ExpenseSheetService {
 
   public void addExpense(ExpenseSheet expenseSheet, Expense expense) {
     expenseSheet.getExpenseList().add(expense);
-    addExpenseToMap(expenseSheet, expense);
+    addExpenseToDateMap(expenseSheet, expense);
   }
 
   public void removeExpense(ExpenseSheet expenseSheet, Expense expense) {
@@ -171,13 +179,7 @@ public class ExpenseSheetService {
   
   public static DateExpense getDateExpenseMap(ExpenseSheet expenseSheet, Date date) {
     if (date.before(expenseSheet.getFirstDate()) || date.after(expenseSheet.getLastDate())) {
-      java.util.Calendar calendar = GregorianCalendar.getInstance();
-      calendar.setTime(date);
-      calendar.set(java.util.Calendar.DAY_OF_MONTH, 1);
-      Date startDate = calendar.getTime();
-      calendar.set(java.util.Calendar.MONTH, 1);
-      calendar.add(java.util.Calendar.DAY_OF_MONTH, -1);
-      prepareExpenseMap(expenseSheet, startDate, calendar.getTime());
+      prepareExpenseMap(expenseSheet, UserSummaryService.getFirstDay(date), UserSummaryService.getLastDay(date), null, null);
     }
     return expenseSheet.getDateExpenseMap().get(date);
   }
