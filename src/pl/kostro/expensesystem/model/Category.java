@@ -25,6 +25,13 @@ public class Category extends AbstractEntity {
 	  super();
 	}
 	
+	public Category (String name, int orderId, ExpenseSheet expenseSheet) {
+	  super();
+	  this.name = name;
+	  this.orderId = orderId;
+	  this.expenseSheet = expenseSheet;
+	}
+	
 	public int getId() {
 	  return id;
 	}
