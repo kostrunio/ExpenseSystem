@@ -38,7 +38,7 @@ public class ExpenseSheet extends AbstractEntity {
   @OrderBy("orderId")
   private List<Category> categoryList;
   @OneToMany(mappedBy="expenseSheet", fetch=FetchType.EAGER)
-  @OrderBy
+  @OrderBy("orderId")
   private List<UserLimit> userLimitList;
   @OneToMany(mappedBy="expenseSheet")
   @OrderBy
