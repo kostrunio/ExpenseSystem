@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.model;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
@@ -15,9 +16,9 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name="ex_user")
+@Table(name="users")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="TYPE", discriminatorType=DiscriminatorType.INTEGER)
+@DiscriminatorColumn(name="u_type", discriminatorType=DiscriminatorType.INTEGER)
 @DiscriminatorValue(value="1")
 public class User extends AbstractEntity {
   
@@ -26,8 +27,11 @@ public class User extends AbstractEntity {
   @Id
   @GeneratedValue(generator = "increment")
   @GenericGenerator(name = "increment", strategy = "increment")
+  @Column(name="u_id")
   private int id;
+  @Column(name="u_name")
   private String name;
+  @Column(name="u_creation_date")
   private Date creationDate = new Date();
   
   public User() {

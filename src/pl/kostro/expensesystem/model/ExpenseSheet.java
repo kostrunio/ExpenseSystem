@@ -6,13 +6,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -23,6 +26,7 @@ import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.UserLimitExpense;
 
 @Entity
+@Table(name="expense_sheets")
 public class ExpenseSheet extends AbstractEntity {
 
   private static final long serialVersionUID = 3614726105787486216L;
@@ -30,22 +34,28 @@ public class ExpenseSheet extends AbstractEntity {
   @Id
   @GeneratedValue(generator = "increment")
   @GenericGenerator(name = "increment", strategy = "increment")
+  @Column(name="es_id")
   private int id;
   @OneToOne
+  @JoinColumn(name="es_u_id")
   private RealUser owner;
+  @Column(name="es_name")
   private String name;
-  @OneToMany(mappedBy="expenseSheet", fetch=FetchType.EAGER)
-  @OrderBy("orderId")
+  @OneToMany(fetch=FetchType.EAGER)
+  @JoinColumn(name="c_es_id") 
+  @OrderBy("order")
   private List<Category> categoryList;
-  @OneToMany(mappedBy="expenseSheet", fetch=FetchType.EAGER)
-  @OrderBy("orderId")
+  @OneToMany(fetch=FetchType.EAGER)
+  @JoinColumn(name="ul_es_id")
+  @OrderBy("order")
   private List<UserLimit> userLimitList;
   @OneToMany(mappedBy="expenseSheet")
   @OrderBy
   private List<Expense> expenseList;
-  private int reloadeDay;
-  private int mainLimit;
+  @Column(name="es_reload_day")
+  private int reloadDay;
   @OneToOne
+  @JoinColumn(name="es_default_ul_id")
   private UserLimit defaultUserLimit;
   @Transient
   private Map<Date, DateExpense> dateExpenseMap;
@@ -113,20 +123,12 @@ public class ExpenseSheet extends AbstractEntity {
     this.expenseList = expenseList;
   }
 
-  public int getReloadeDay() {
-    return reloadeDay;
+  public int getReloadDay() {
+    return reloadDay;
   }
 
-  public void setReloadeDay(int reloadeDay) {
-    this.reloadeDay = reloadeDay;
-  }
-
-  public int getMainLimit() {
-    return mainLimit;
-  }
-
-  public void setMainLimit(int mainLimit) {
-    this.mainLimit = mainLimit;
+  public void setReloadDay(int reloadDay) {
+    this.reloadDay = reloadDay;
   }
 
   public UserLimit getDefaultUserLimit() {
@@ -189,6 +191,13 @@ public class ExpenseSheet extends AbstractEntity {
   
   public void setLastDate(Date lastDate) {
     this.lastDate = lastDate;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if(o instanceof ExpenseSheet)
+      return getId() == ((ExpenseSheet)o).getId();
+    else return this == o;
   }
   
 }

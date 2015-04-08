@@ -7,16 +7,19 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import pl.kostro.expensesystem.utils.Calculator;
 
 @Entity
+@Table(name="expenses")
 @NamedQueries({
   @NamedQuery(
       name = "findAllExpense",
@@ -42,30 +45,37 @@ public class Expense extends AbstractEntity {
   @Id
   @GeneratedValue(generator = "increment")
   @GenericGenerator(name = "increment", strategy = "increment")
+  @Column(name="e_id")
   private int id;
-  @Column(name="ex_date")
+  @Column(name="e_date")
   private Date date;
+  @Column(name="e_formula")
   private String formula;
+  @Column(name="e_value")
   private BigDecimal value;
   @OneToOne
+  @JoinColumn(name="e_c_id")
   private Category category;
   @OneToOne
+  @JoinColumn(name="e_u_id")
   private User user;
-  @Column(name="ex_comment")
+  @Column(name="e_comment")
   private String comment;
   @ManyToOne
+  @JoinColumn(name="e_es_id")
   private ExpenseSheet expenseSheet;
 
   public Expense() {
     super();
   }
 
-  public Expense(Date date, String formula, Category category, User user, String comment) {
+  public Expense(Date date, String formula, Category category, User user, String comment, ExpenseSheet expenseSheet) {
     this.date = date;
     setFormula(formula);
     this.category = category;
     this.user = user;
     this.comment = comment;
+    this.expenseSheet = expenseSheet;
   }
   
   public int getId() {
@@ -135,5 +145,12 @@ public class Expense extends AbstractEntity {
   @Override
   public String toString() {
     return "Expense: " + date + ";" + category + ";" + value;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if(o instanceof Expense)
+      return getId() == ((Expense)o).getId();
+    else return this == o;
   }
 }

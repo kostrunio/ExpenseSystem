@@ -1,13 +1,15 @@
 package pl.kostro.expensesystem.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@Table(name="categories")
 public class Category extends AbstractEntity {
   
   private static final long serialVersionUID = 4537772469034122927L;
@@ -15,21 +17,21 @@ public class Category extends AbstractEntity {
   @Id
   @GeneratedValue(generator = "increment")
   @GenericGenerator(name = "increment", strategy = "increment")
+  @Column(name="c_id")
   private int id;
+  @Column(name="c_name")
   private String name;
-	private int orderId;
-	@ManyToOne
-  private ExpenseSheet expenseSheet;
+  @Column(name="c_order")
+	private int order;
 	
 	public Category() {
 	  super();
 	}
 	
-	public Category (String name, int orderId, ExpenseSheet expenseSheet) {
+	public Category (String name, int order) {
 	  super();
 	  this.name = name;
-	  this.orderId = orderId;
-	  this.expenseSheet = expenseSheet;
+	  this.order = order;
 	}
 	
 	public int getId() {
@@ -46,20 +48,12 @@ public class Category extends AbstractEntity {
 		this.name = name;
 	}
 	
-	public int getOrderId() {
-		return orderId;
+	public int getOrder() {
+		return order;
 	}
-	public void setOrderId(int orderId) {
-		this.orderId = orderId;
+	public void setOrder(int order) {
+		this.order = order;
 	}
-	
-  public ExpenseSheet getExpenseSheet() {
-    return expenseSheet;
-  }
-
-  public void setExpenseSheet(ExpenseSheet expenseSheet) {
-    this.expenseSheet = expenseSheet;
-  }
 	
 	@Override
 	public String toString() {

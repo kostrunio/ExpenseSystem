@@ -7,11 +7,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
+@Table(name="users_summaries")
 public class UserSummary extends AbstractEntity {
 
   private static final long serialVersionUID = 4742335081341225841L;
@@ -19,23 +20,23 @@ public class UserSummary extends AbstractEntity {
   @Id
   @GeneratedValue(generator = "increment")
   @GenericGenerator(name = "increment", strategy = "increment")
+  @Column(name="us_id")
   private int id;
-  @ManyToOne
-  private UserLimit userLimit;
-  @Column(name="s_date")
+  @Column(name="us_date")
   private Date date;
+  @Column(name="us_limit")
   private BigDecimal limit;
-  private BigDecimal exSummary;
+  @Column(name="us_sum")
+  private BigDecimal sum;
   
   public UserSummary() {
     super();
   }
 
-  public UserSummary(UserLimit userLimit, Date date, BigDecimal limit) {
-    this.userLimit = userLimit;
+  public UserSummary(Date date, BigDecimal limit) {
     this.date = date;
     this.limit = limit;
-    this.exSummary = new BigDecimal(0);
+    this.sum = new BigDecimal(0);
   }
 
   public int getId() {
@@ -43,14 +44,6 @@ public class UserSummary extends AbstractEntity {
   }
   public void setId(int id) {
     this.id = id;
-  }
-  
-  public UserLimit getUserLimit() {
-    return userLimit;
-  }
-  
-  public void setUserLimit(UserLimit userLimit) {
-    this.userLimit = userLimit;
   }
   
   public Date getDate() {
@@ -69,16 +62,24 @@ public class UserSummary extends AbstractEntity {
     this.limit = limit;
   }
   
-  public BigDecimal getExSummary() {
-    return exSummary;
+  public BigDecimal getSum() {
+    return sum;
   }
 
-  public void setExSummary(BigDecimal exSummary) {
-    this.exSummary = exSummary;
+  public void setSum(BigDecimal sum) {
+    this.sum = sum;
   }
 
+  @Override
   public String toString() {
-    return userLimit.getUser().getName() + " " + date;
+    return date + " " + limit + " " + sum;
+  }
+  
+  @Override
+  public boolean equals(Object o) {
+    if(o instanceof UserSummary)
+      return getId() == ((UserSummary)o).getId();
+    else return this == o;
   }
 
 }
