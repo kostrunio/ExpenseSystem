@@ -76,8 +76,6 @@ private DayView dayView;
     setCompositionRoot(mainLayout);
 
     // TODO add user code here
-    ExpenseSheetService expenseSheetService = new ExpenseSheetService();
-    
     user.setNewItemsAllowed(false);
     user.setNullSelectionAllowed(false);
     user.addItems(expenseSheet.getUserLimitList());
@@ -118,7 +116,7 @@ private DayView dayView;
 
     comment.setNewItemsAllowed(true);
     comment.setNullSelectionAllowed(true);
-    comment.addItems(expenseSheetService.getCommentForCategory(expenseSheet, expense.getCategory()));
+    comment.addItems(ExpenseSheetService.getCommentForCategory(expenseSheet, expense.getCategory()));
     comment.select(expense.getComment());
     comment.addValueChangeListener(new Property.ValueChangeListener() {
 
@@ -145,16 +143,7 @@ private DayView dayView;
       @Override
       public void buttonClick(ClickEvent event) {
         if (user.getValue() instanceof UserLimit) {
-          ExpenseService expenseService = new ExpenseService();
-          UserLimit userLimit = (UserLimit) user.getValue();
-          if (modify)
-            expenseService.removeExpense(expenseSheet, expense);
-          expense.setUser(userLimit.getUser());
-          expense.setFormula(formula.getValue().startsWith("=")?formula.getValue().substring(1):formula.getValue());
-          if (comment.getValue() != null)
-            expense.setComment(comment.getValue().toString());
-          expense.setExpenseSheet(expenseSheet);
-          expenseService.creteExpense(expenseSheet, expense);
+          ExpenseService.saveExpense(expense, (UserLimit) user.getValue(), formula.getValue(), comment.getValue(), modify);
           dayView.refreshView(calendar, expense.getCategory());
         }
       }
