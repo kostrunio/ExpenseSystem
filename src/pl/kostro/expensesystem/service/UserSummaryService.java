@@ -33,7 +33,7 @@ public class UserSummaryService {
   public static UserSummary createUserSummary(UserLimit userLimit, Date date) {
     ExpenseEntityDao.begin();
     try {
-      UserSummary userSummary = new UserSummary(userLimit, date, userLimit.getLimit());
+      UserSummary userSummary = new UserSummary(date, userLimit.getLimit());
       ExpenseEntityDao.getEntityManager().persist(userSummary);
       userLimit.getUserSummaryList().add(userSummary);
       ExpenseEntityDao.getEntityManager().merge(userLimit);
@@ -101,7 +101,7 @@ public class UserSummaryService {
     for (UserSummary userSummary : userLimit.getUserSummaryList()) {
       if (!userSummary.getDate().after(date)) {
         sum = sum.add(userSummary.getLimit());
-        sum = sum.subtract(userSummary.getExSummary());
+        sum = sum.subtract(userSummary.getSum());
       }
     }
     return sum;
@@ -109,7 +109,7 @@ public class UserSummaryService {
 
   public static UserSummary findUserSummary(UserLimit userLimit, Date date) {
     for (UserSummary userSummary : userLimit.getUserSummaryList())
-      if (userSummary.getDate().equals(date))
+      if (userSummary.getDate().getTime() == date.getTime())
         return userSummary;
     return createUserSummary(userLimit, date);
   }
@@ -120,8 +120,8 @@ public class UserSummaryService {
       BigDecimal exSummary = new BigDecimal(0);
       if (expenseSheet.getUserLimitExpenseMap().get(userLimit) != null)
         exSummary = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
-      if (!userSummary.getExSummary().equals(exSummary)) {
-        userSummary.setExSummary(exSummary);
+      if (!userSummary.getSum().equals(exSummary)) {
+        userSummary.setSum(exSummary);
         save(userSummary);
       }
     }
