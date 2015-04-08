@@ -96,8 +96,7 @@ public class MainPage extends CustomComponent {
 			mainView.addComponent(new ExpenseView(loggedUser.getDefaultExpenseSheet()));
 		} else {
 			if (loggedUser.getExpenseSheetList().size() == 1) {
-				RealUserService rus = new RealUserService();
-				rus.setDefaultExpenseSheet(loggedUser, loggedUser.getExpenseSheetList().get(0));
+				RealUserService.setDefaultExpenseSheet(loggedUser, loggedUser.getExpenseSheetList().get(0));
 				mainView.addComponent(new ExpenseView(loggedUser.getDefaultExpenseSheet()));
 			}
 		}

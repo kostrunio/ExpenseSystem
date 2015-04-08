@@ -64,8 +64,7 @@ public class LoginPage extends CustomComponent {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-			  RealUserService realUserService = new RealUserService();
-			  RealUser loggedUser = realUserService.getUserData(userName.getValue(), password.getValue());
+			  RealUser loggedUser = RealUserService.getUserData(userName.getValue(), password.getValue());
 			  if (loggedUser == null)
 			    new Notification("B³¹d logowania", "B³êdna nazwa u¿ytkownika lub has³o", Notification.Type.ERROR_MESSAGE).show(Page.getCurrent());
 			  else

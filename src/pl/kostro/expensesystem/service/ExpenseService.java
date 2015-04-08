@@ -9,6 +9,8 @@ import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.User;
+import pl.kostro.expensesystem.model.UserLimit;
 
 public class ExpenseService {
   
@@ -19,7 +21,7 @@ public class ExpenseService {
     }
   }
 
-  public Expense findExpense(int id) {
+  public static Expense findExpense(int id) {
     return ExpenseEntityDao.getEntityManager().find(Expense.class, id);
   }
   
@@ -44,7 +46,7 @@ public class ExpenseService {
     return ExpenseEntityDao.findByNamedQueryWithParameters("findExpenseByCategory", ImmutableMap.of("expenseSheet", expenseSheet.getId(), "category", category), Expense.class);
   }
   
-  public void creteExpense(ExpenseSheet expenseSheet, Expense expense) {
+  public static void creteExpense(ExpenseSheet expenseSheet, Expense expense) {
     ExpenseSheetService expenseSheetService = new ExpenseSheetService();
     ExpenseEntityDao.begin();
     try {
@@ -58,7 +60,7 @@ public class ExpenseService {
   }
 
   
-  public void removeExpense(ExpenseSheet expenseSheet, Expense expense) {
+  public static void removeExpense(ExpenseSheet expenseSheet, Expense expense) {
     ExpenseSheetService expenseSheetService = new ExpenseSheetService();
     ExpenseEntityDao.begin();
     try {
@@ -71,8 +73,22 @@ public class ExpenseService {
     }
   }
 
-  public String getValueString(Expense expense) {
+  public static String getValueString(Expense expense) {
     return expense.getValue().toString();
+  }
+
+  public static Expense prepareNewExpense(ExpenseSheet expenseSheet, Date date, Category category, User user) {
+    return new Expense(date, "", category, user, "", expenseSheet);
+  }
+
+  public static void saveExpense(Expense expense, UserLimit userLimit, String formula, Object comment, Boolean modify) {
+    if (modify)
+      ExpenseService.removeExpense(expense.getExpenseSheet(), expense);
+    expense.setUser(userLimit.getUser());
+    expense.setFormula(formula.startsWith("=")?formula.substring(1):formula);
+    if (comment != null)
+      expense.setComment(comment.toString());
+    ExpenseService.creteExpense(expense.getExpenseSheet(), expense);
   }
 
 }

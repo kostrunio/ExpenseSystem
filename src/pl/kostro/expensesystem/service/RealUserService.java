@@ -17,7 +17,7 @@ public class RealUserService {
     }
   }
 
-  public RealUser findRealUser(int id) {
+  public static RealUser findRealUser(int id) {
     return ExpenseEntityDao.getEntityManager().find(RealUser.class, id);
   }
   
@@ -35,7 +35,7 @@ public class RealUserService {
     }
   }
   
-  public void setDefaultExpenseSheet(RealUser realUser, ExpenseSheet expenseSheet) {
+  public static void setDefaultExpenseSheet(RealUser realUser, ExpenseSheet expenseSheet) {
 	  ExpenseEntityDao.begin();
 	  realUser.setDefaultExpenseSheet(expenseSheet);
 	  try {
@@ -48,7 +48,7 @@ public class RealUserService {
 	  }
   }
   
-  public RealUser getUserData(String userName, String password) {
+  public static RealUser getUserData(String userName, String password) {
     ExpenseEntityDao.begin();
     RealUser loggedUser = null;
     try {

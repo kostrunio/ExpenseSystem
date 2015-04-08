@@ -42,7 +42,7 @@ public class ExpenseSheetService {
     try {
       ExpenseSheet expenseSheet = new ExpenseSheet();
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
-      UserLimit userLimit = new UserLimit(owner, new BigDecimal(0), expenseSheet);
+      UserLimit userLimit = new UserLimit(owner, new BigDecimal(0));
       ExpenseEntityDao.getEntityManager().persist(userLimit);
       expenseSheet.setOwner(owner);
       expenseSheet.setName(name);
@@ -154,7 +154,7 @@ public class ExpenseSheetService {
     return null;
   }
   
-  public Set<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
+  public static Set<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
     Set<String> commentList = new TreeSet<String>();
     for (Expense expense : expenseService.findExpenseByCategory(expenseSheet, category))
       if (expense.getComment() != null
