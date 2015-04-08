@@ -1,6 +1,5 @@
 package pl.kostro.expensesystem.components.mainPageComponents;
 
-import java.text.DateFormatSymbols;
 import java.util.Calendar;
 
 import pl.kostro.expensesystem.model.Category;
