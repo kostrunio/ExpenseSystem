@@ -17,10 +17,10 @@ public class CategoryService {
     return ExpenseEntityDao.getEntityManager().find(Category.class, id);
   }
   
-  public void createCategory(ExpenseSheet expenseSheet, String name, int orderId) {
+  public void createCategory(ExpenseSheet expenseSheet, String name, int order) {
     ExpenseEntityDao.begin();
     try {
-      Category category = new Category(name, orderId, expenseSheet);
+      Category category = new Category(name, order);
       ExpenseEntityDao.getEntityManager().persist(category);
       expenseSheet.getCategoryList().add(category);
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
