@@ -86,15 +86,6 @@ public class DayView extends CustomComponent {
     });
     
 		thisDayButton.setCaption(new SimpleDateFormat("dd MMMM yyyy").format(calendar.getTime()));
-		thisDayButton.addClickListener(new Button.ClickListener() {
-      
-      private static final long serialVersionUID = -8048895457148394023L;
-
-      @Override
-      public void buttonClick(ClickEvent event) {
-        refreshView(calendar, null);
-      }
-    });
     
 		nextDayButton.addClickListener(new Button.ClickListener() {
       
@@ -120,9 +111,8 @@ public class DayView extends CustomComponent {
 			
 		});
 		
-		Category category = expenseSheet.getCategoryList().get(0);
 		categoryLayout.removeAllComponents();
-		categoryLayout.addComponent(new CategoryExpenseView(expenseSheet, calendar, category, thisView));
+		categoryLayout.addComponent(new CategoryExpenseView(expenseSheet, calendar, expenseSheet.getCategoryList().get(0), thisView));
 	}
 	
 	public void refreshView(Calendar calendar, Category category) {

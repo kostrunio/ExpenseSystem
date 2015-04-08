@@ -170,10 +170,10 @@ public class MonthView extends CustomComponent {
   }
 
   public void showCalendar(ExpenseSheet expenseSheet, java.util.Calendar calendar) {
-    monthCalendar.setStartDate(UserSummaryService.getFirstDay(calendar.getTime()));
-    monthCalendar.setEndDate(UserSummaryService.getLastDay(calendar.getTime()));
-    firstDateField.setValue(monthCalendar.getStartDate());
-    lastDateField.setValue(monthCalendar.getEndDate());
+    firstDateField.setValue(UserSummaryService.getFirstDay(calendar.getTime()));
+    lastDateField.setValue(UserSummaryService.getLastDay(calendar.getTime()));
+    monthCalendar.setStartDate(firstDateField.getValue());
+    monthCalendar.setEndDate(lastDateField.getValue());
   }
 
   public void showCategoryTable(ExpenseSheet expenseSheet) {
@@ -194,7 +194,7 @@ public class MonthView extends CustomComponent {
       Object newItemId = userLimitTable.addItem();
       Item row = userLimitTable.getItem(newItemId);
       row.getItemProperty("U¿ytkownik").setValue(userLimit.getUser().getName());
-      row.getItemProperty("Suma").setValue(userSummary.getExSummary().doubleValue());
+      row.getItemProperty("Suma").setValue(userSummary.getSum().doubleValue());
       if (userLimit.isContinuousSummary()) {
         row.getItemProperty("Suma naras.").setValue(UserSummaryService.calculateSum(userLimit, calendar.getTime()).doubleValue());
       }

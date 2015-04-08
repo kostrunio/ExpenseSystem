@@ -84,10 +84,10 @@ public class ExpenseSheetSettingsView extends CustomComponent {
 				}
 				if (event.getProperty().getValue() instanceof Category) {
 					Category category = (Category) event.getProperty().getValue();
-					if (category.getOrderId() == 0) {
+					if (category.getOrder() == 0) {
 						upButton.setEnabled(false);
 						downButton.setEnabled(true);
-					} else if (category.getOrderId() == expenseSheet.getCategoryList().size()-1) {
+					} else if (category.getOrder() == expenseSheet.getCategoryList().size()-1) {
 						upButton.setEnabled(true);
 						downButton.setEnabled(false);
 					} else {
