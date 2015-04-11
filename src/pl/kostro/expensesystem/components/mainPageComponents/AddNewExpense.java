@@ -143,7 +143,7 @@ private DayView dayView;
       @Override
       public void buttonClick(ClickEvent event) {
         if (user.getValue() instanceof UserLimit) {
-          ExpenseService.saveExpense(expense, (UserLimit) user.getValue(), formula.getValue(), comment.getValue(), modify);
+          ExpenseService.saveExpense(expenseSheet, expense, (UserLimit) user.getValue(), formula.getValue(), comment.getValue(), modify);
           dayView.refreshView(calendar, expense.getCategory());
         }
       }
