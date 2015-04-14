@@ -1,5 +1,7 @@
 package pl.kostro.expensesystem.components.settingsPageComponents;
 
+import java.math.BigDecimal;
+
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
@@ -115,11 +117,11 @@ public class ExpenseSheetSettingsView extends CustomComponent {
 		
 		realUserTable.setPageLength(5);
 		realUserTable.addContainerProperty("Nazwa", String.class, null);
-		realUserTable.addContainerProperty("Limit", Integer.class, null);
+		realUserTable.addContainerProperty("Limit", BigDecimal.class, null);
 		
 		userTable.setPageLength(5);
 		userTable.addContainerProperty("Nazwa", String.class, null);
-		userTable.addContainerProperty("Limit", Integer.class, null);
+		userTable.addContainerProperty("Limit", BigDecimal.class, null);
 		for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
 			if (userLimit.getUser() instanceof RealUser) {
 				Object newItemId = realUserTable.addItem();

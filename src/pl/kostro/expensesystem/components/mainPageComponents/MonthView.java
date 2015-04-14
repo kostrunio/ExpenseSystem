@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.components.mainPageComponents;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -160,12 +161,12 @@ public class MonthView extends CustomComponent {
 
     categoryTable.setPageLength(expenseSheet.getCategoryList().size());
     categoryTable.addContainerProperty("Kategoria", String.class, null);
-    categoryTable.addContainerProperty("Suma", Double.class, null);
+    categoryTable.addContainerProperty("Suma", BigDecimal.class, null);
 
     userLimitTable.setPageLength(expenseSheet.getUserLimitList().size());
     userLimitTable.addContainerProperty("U篡tkownik", String.class, null);
-    userLimitTable.addContainerProperty("Suma", Double.class, null);
-    userLimitTable.addContainerProperty("Zosta這", Double.class, null);
+    userLimitTable.addContainerProperty("Suma", BigDecimal.class, null);
+    userLimitTable.addContainerProperty("Zosta這", BigDecimal.class, null);
 
   }
 
@@ -183,7 +184,7 @@ public class MonthView extends CustomComponent {
       Object newItemId = categoryTable.addItem();
       Item row = categoryTable.getItem(newItemId);
       row.getItemProperty("Kategoria").setValue(category.getName());
-      row.getItemProperty("Suma").setValue(categoryExpense != null ? categoryExpense.getSum().doubleValue() : 0.0);
+      row.getItemProperty("Suma").setValue(categoryExpense != null ? categoryExpense.getSum() : 0.0);
     }
   }
 
@@ -194,11 +195,11 @@ public class MonthView extends CustomComponent {
       Object newItemId = userLimitTable.addItem();
       Item row = userLimitTable.getItem(newItemId);
       row.getItemProperty("U篡tkownik").setValue(userLimit.getUser().getName());
-      row.getItemProperty("Suma").setValue(userSummary.getSum().doubleValue());
+      row.getItemProperty("Suma").setValue(userSummary.getSum());
       if (userLimit.isContinuousSummary()) {
-        row.getItemProperty("Zosta這").setValue(UserSummaryService.calculateSum(userLimit, calendar.getTime()).doubleValue());
+        row.getItemProperty("Zosta這").setValue(UserSummaryService.calculateSum(userLimit, calendar.getTime()));
       } else {
-    	  row.getItemProperty("Zosta這").setValue(userSummary.getLimit().subtract(userSummary.getSum()).doubleValue());
+    	  row.getItemProperty("Zosta這").setValue(userSummary.getLimit().subtract(userSummary.getSum()));
       }
     }
   }
