@@ -184,7 +184,7 @@ public class MonthView extends CustomComponent {
       Object newItemId = categoryTable.addItem();
       Item row = categoryTable.getItem(newItemId);
       row.getItemProperty("Kategoria").setValue(category.getName());
-      row.getItemProperty("Suma").setValue(categoryExpense != null ? categoryExpense.getSum() : 0.0);
+      row.getItemProperty("Suma").setValue(categoryExpense != null ? categoryExpense.getSum() : new BigDecimal(0));
     }
   }
 
