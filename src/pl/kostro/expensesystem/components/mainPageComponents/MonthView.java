@@ -165,7 +165,7 @@ public class MonthView extends CustomComponent {
     userLimitTable.setPageLength(expenseSheet.getUserLimitList().size());
     userLimitTable.addContainerProperty("U¿ytkownik", String.class, null);
     userLimitTable.addContainerProperty("Suma", Double.class, null);
-    userLimitTable.addContainerProperty("Suma naras.", Double.class, null);
+    userLimitTable.addContainerProperty("Zosta³o", Double.class, null);
 
   }
 
@@ -196,7 +196,9 @@ public class MonthView extends CustomComponent {
       row.getItemProperty("U¿ytkownik").setValue(userLimit.getUser().getName());
       row.getItemProperty("Suma").setValue(userSummary.getSum().doubleValue());
       if (userLimit.isContinuousSummary()) {
-        row.getItemProperty("Suma naras.").setValue(UserSummaryService.calculateSum(userLimit, calendar.getTime()).doubleValue());
+        row.getItemProperty("Zosta³o").setValue(UserSummaryService.calculateSum(userLimit, calendar.getTime()).doubleValue());
+      } else {
+    	  row.getItemProperty("Zosta³o").setValue(userSummary.getLimit().subtract(userSummary.getSum()).doubleValue());
       }
     }
   }
