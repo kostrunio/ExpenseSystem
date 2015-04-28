@@ -122,7 +122,8 @@ public class UserSummaryService {
         exSummary = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
       if (!userSummary.getSum().equals(exSummary)) {
         userSummary.setSum(exSummary);
-        save(userSummary);
+        if (expenseSheet.getFilter() == null)
+        	save(userSummary);
       }
     }
   }
