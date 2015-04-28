@@ -179,7 +179,7 @@ public class ExpenseView extends CustomComponent {
       user.addItems(expenseSheet.getUserLimitList());
       comment.setNewItemsAllowed(true);
       comment.setNullSelectionAllowed(true);
-      // comment.addItems();
+      comment.addItems(ExpenseSheetService.getCommentsList(expenseSheet));
     }
   }
 
