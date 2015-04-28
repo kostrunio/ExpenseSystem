@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -191,5 +192,14 @@ public class ExpenseSheetService {
   public static UserLimitExpense getUserLimitExpenseMap(ExpenseSheet expenseSheet, UserLimit userLimit) {
 	  return expenseSheet.getUserLimitExpenseMap().get(userLimit);
   }
+
+public static Set<String> getCommentsList(ExpenseSheet expenseSheet) {
+	Set<String> commentsList = new TreeSet<String>();
+	for (Expense expense : expenseSheet.getExpenseList()) {
+		if (expense.getComment() != null && !expense.getComment().equals(""))
+			commentsList.add(expense.getComment());
+	}
+	return commentsList;
+}
 
 }
