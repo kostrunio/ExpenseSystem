@@ -1,0 +1,2 @@
+expdp expenseSystem/expenseSystem SCHEMAS=expenseSystem DIRECTORY=exp_dir  DUMPFILE=%date%.dmp LOGFILE=expschema.log
+xcopy C:\Users\magdalenka\workspace\ExpenseSystem\export \\dns\sklad\backup\expenseSystem /D /Y
