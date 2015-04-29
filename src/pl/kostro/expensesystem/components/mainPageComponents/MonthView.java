@@ -28,6 +28,8 @@ import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.Table;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.DateClickEvent;
+import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventClick;
+import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventClickHandler;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.WeekClick;
 import com.vaadin.ui.components.calendar.event.CalendarEvent;
 import com.vaadin.ui.components.calendar.event.CalendarEventProvider;
@@ -93,6 +95,8 @@ public class MonthView extends CustomComponent {
 
     // TODO add user code here
     this.calendar = date;
+    firstDateField.setDateFormat("dd-MM-yyyy");
+    lastDateField.setDateFormat("dd-MM-yyyy");
 
     UserSummaryService.setFirstDay(calendar);
     previousMonthButton.addClickListener(new Button.ClickListener() {
@@ -156,6 +160,18 @@ public class MonthView extends CustomComponent {
         // Do nothing
       }
     });
+    
+    monthCalendar.setHandler(new EventClickHandler() {
+		
+		private static final long serialVersionUID = -5971206190211782099L;
+
+		@Override
+		public void eventClick(EventClick event) {
+			calendar.setTime(event.getCalendarEvent().getStart());
+	        setCompositionRoot(new DayView(expenseSheet, calendar));
+			
+		}
+	});
 
     showCalendar(expenseSheet, calendar);
 
