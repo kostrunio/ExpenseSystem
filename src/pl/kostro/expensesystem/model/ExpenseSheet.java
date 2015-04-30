@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.model;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -107,6 +108,12 @@ public class ExpenseSheet extends AbstractEntity {
     if (userLimitList == null)
       userLimitList = new ArrayList<UserLimit>();
     return userLimitList;
+  }
+  
+  public List<UserLimit> getUserLimitListDesc() {
+	  List<UserLimit> returnList = new ArrayList<UserLimit>(getUserLimitList());
+	  Collections.reverse(returnList);
+	  return returnList;
   }
 
   public void setUserLimitList(List<UserLimit> userLimitList) {
