@@ -1,6 +1,6 @@
 // Global variable overrides. Must be declared before importing Valo.
 
-$v-app-loading-text: "Facebook Valo";
+$v-app-loading-text: "Expense System";
 $v-background-color: #fafafa;
 $v-app-background-color: #e7ebf2;
 $v-panel-background-color: #fff;
@@ -32,4 +32,20 @@ $v-selection-item-border-radius: 0;
   @include valo;
 
   // Insert your own theme rules here
+  .v-calendar .v-calendar-event-1-all-day {
+  	color: #ffffff;
+  	background-color: #3b5998;
+  }
+  .v-calendar .v-calendar-event-2-all-day {
+  	color: #ffffff;
+  	background-color: #983b59;
+  }
+  .v-calendar .v-calendar-event-3-all-day {
+  	color: #ffffff;
+  	background-color: #59983b;
+  }
+  .v-calendar .v-calendar-event-4-all-day {
+  	color: #ffffff;
+  	background-color: #987a3b;
+  }
 }
