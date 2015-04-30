@@ -183,7 +183,16 @@ public class MonthView extends CustomComponent {
     userLimitTable.addContainerProperty("U¿ytkownik", String.class, null);
     userLimitTable.addContainerProperty("Suma", BigDecimal.class, null);
     userLimitTable.addContainerProperty("Zosta³o", BigDecimal.class, null);
+    userLimitTable.setCellStyleGenerator(new Table.CellStyleGenerator() {
+		
+    	private static final long serialVersionUID = 446697675167120127L;
 
+		@Override
+		public String getStyle(Table source, Object itemId, Object propertyId) {
+            int row = ((Integer)itemId).intValue();
+            return ""+row;
+		}
+    });
   }
 
   public void showCalendar(ExpenseSheet expenseSheet, java.util.Calendar calendar) {
