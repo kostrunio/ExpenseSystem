@@ -135,7 +135,7 @@ public class MonthView extends CustomComponent {
             UserSummaryService.getLastDay(calendar.getTime()));
         showCategoryTable(expenseSheet);
         showUserLimitTable(expenseSheet);
-        return Converter.transformExpensesToEvents(eventToShow);
+        return Converter.transformExpensesToEvents(expenseSheet, eventToShow);
       }
 
     });
