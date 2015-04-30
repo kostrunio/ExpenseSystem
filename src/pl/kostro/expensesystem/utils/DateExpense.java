@@ -7,10 +7,13 @@ import java.util.Map;
 
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
+import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.service.ExpenseSheetService;
 
 public class DateExpense {
 	private Date date;
 	private Map<Category, CategoryExpense> categoryExpenseMap;
+	private Map<UserLimit, UserLimitExpense> userLimitExpenseMap;
 	private BigDecimal sum = new BigDecimal(0);
 	
 	public DateExpense(Date date) {
@@ -30,6 +33,15 @@ public class DateExpense {
 	}
 	public void setCategoryExpenseMap(Map<Category, CategoryExpense> categoryExpenseMap) {
 		this.categoryExpenseMap = categoryExpenseMap;
+	}
+	
+	public Map<UserLimit, UserLimitExpense> getUserLimitExpenseMap() {
+		if (userLimitExpenseMap == null)
+			userLimitExpenseMap = new HashMap<UserLimit, UserLimitExpense>();
+		return userLimitExpenseMap;
+	}
+	public void setUserLimitExpenseMap(Map<UserLimit, UserLimitExpense> userLimitExpenseMap) {
+		this.userLimitExpenseMap = userLimitExpenseMap;
 	}
 
 	public BigDecimal getSum() {
@@ -55,6 +67,12 @@ public class DateExpense {
 			getCategoryExpenseMap().put(expense.getCategory(), categoryExpense);
 		}
 		categoryExpense.addExpense(expense);
+		UserLimitExpense userLimitExpense = getUserLimitExpenseMap().get(ExpenseSheetService.getUserLimitForUser(expense.getExpenseSheet(), expense.getUser()));
+		if (userLimitExpense == null) {
+			userLimitExpense = new UserLimitExpense(ExpenseSheetService.getUserLimitForUser(expense.getExpenseSheet(), expense.getUser()));
+			getUserLimitExpenseMap().put(ExpenseSheetService.getUserLimitForUser(expense.getExpenseSheet(), expense.getUser()), userLimitExpense);
+		}
+		userLimitExpense.addExpense(expense);
 	}
 	public void removeExpense(Expense expense) {
 		setSum(getSum().subtract(expense.getValue()));
