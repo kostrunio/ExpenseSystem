@@ -189,8 +189,9 @@ public class MonthView extends CustomComponent {
 
 		@Override
 		public String getStyle(Table source, Object itemId, Object propertyId) {
+			int rows = source.getVisibleItemIds().size();
             int row = ((Integer)itemId).intValue();
-            return ""+row;
+            return ""+row%rows;
 		}
     });
   }
