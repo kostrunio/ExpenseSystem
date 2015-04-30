@@ -77,4 +77,12 @@ public class User extends AbstractEntity {
       return getId() == ((User)o).getId();
     else return this == o;
   }
+  
+  @Override
+  public int hashCode() {
+	  int hash = id;
+	  hash += name.hashCode();
+	  hash += creationDate.hashCode();
+	  return hash;
+  }
 }

@@ -110,5 +110,14 @@ public class UserLimit extends AbstractEntity {
       return getId() == ((UserLimit)o).getId();
     else return this == o;
   }
+  
+  @Override
+  public int hashCode() {
+	  int hash = id;
+	  hash += user.hashCode();
+	  hash += limit.hashCode();
+	  hash += order;
+	  return hash;
+  }
 
 }
