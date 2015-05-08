@@ -96,7 +96,11 @@ private java.util.Calendar calendar;
     // TODO add user code here
     this.calendar = date;
     firstDateField.setDateFormat("dd-MM-yyyy");
+    firstDateField.setTextFieldEnabled(false);
+    firstDateField.setEnabled(false);
     lastDateField.setDateFormat("dd-MM-yyyy");
+    lastDateField.setTextFieldEnabled(false);
+    lastDateField.setEnabled(false);
 
     UserSummaryService.setFirstDay(calendar);
     previousMonthButton.addClickListener(new Button.ClickListener() {
@@ -194,6 +198,7 @@ private java.util.Calendar calendar;
 
   public void showCalendar(ExpenseSheet expenseSheet, java.util.Calendar calendar) {
     thisMonthButton.setCaption(new SimpleDateFormat("MMMM yyyy").format(calendar.getTime()));
+    thisMonthButton.setEnabled(false);
     firstDateField.setValue(UserSummaryService.getFirstDay(calendar.getTime()));
     lastDateField.setValue(UserSummaryService.getLastDay(calendar.getTime()));
     monthCalendar.setStartDate(firstDateField.getValue());
