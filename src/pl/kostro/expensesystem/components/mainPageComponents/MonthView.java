@@ -341,6 +341,7 @@ private VerticalLayout buildSummaryLayout() {
 	categoryTable.setWidth("-1px");
 	categoryTable.setHeight("-1px");
 	summaryLayout.addComponent(categoryTable);
+	summaryLayout.setComponentAlignment(categoryTable, new Alignment(20));
 	
 	// userLimitTable
 	userLimitTable = new Table();
@@ -348,6 +349,7 @@ private VerticalLayout buildSummaryLayout() {
 	userLimitTable.setWidth("-1px");
 	userLimitTable.setHeight("-1px");
 	summaryLayout.addComponent(userLimitTable);
+	summaryLayout.setComponentAlignment(userLimitTable, new Alignment(20));
 	
 	return summaryLayout;
 }
