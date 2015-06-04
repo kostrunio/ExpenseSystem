@@ -61,32 +61,10 @@ public class ExpenseSheetService {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     expenseSheet.setExpenseList(expenseService.findExpenseForDates(expenseSheet));
     for (Expense expense : expenseSheet.getExpenseList())
-      if (matchFilter(expense, expenseSheet.getFilter()))
+      if (Filter.matchFilter(expense, expenseSheet.getFilter()))
         expenseListToReturn.add(expense);
     return expenseListToReturn;
   }
-
-  private static boolean matchFilter(Expense expense, Filter filter) {
-	  if (filter == null)
-		  return true;
-	  else {
-		  if (filter.getCategory() != null
-				  && !expense.getCategory().equals(filter.getCategory()))
-			  return false;
-		  if (filter.getUser() != null
-				  && !expense.getUser().equals(filter.getUser()))
-			  return false;
-		  if (filter.getFormula() != null
-				  && !expense.getFormula().contains(filter.getFormula()))
-			  return false;
-		  if (filter.getComment() != null && !filter.getComment().equals("")
-				  && ((expense.getComment() != null
-				  	&& !expense.getComment().contains(filter.getComment()))
-				  || expense.getComment() == null))
-			  return false;
-		  return true;
-	  }
-}
 
   public static Map<Date, DateExpense> prepareExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate, Date firstDay, Date lastDay) {
     expenseSheet.getDateExpenseMap().clear();
@@ -152,6 +130,15 @@ public class ExpenseSheetService {
       if (userLimit.getUser().equals(user))
         return userLimit;
     return null;
+  }
+  
+  public static Set<String> getAllComments(ExpenseSheet expenseSheet) {
+    Set<String> commentList = new TreeSet<String>();
+    for (Expense expense : ExpenseService.findAllExpense(expenseSheet))
+      if (expense.getComment() != null
+        && !expense.getComment().equals(""))
+      commentList.add(expense.getComment());
+    return commentList;
   }
   
   public static Set<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {

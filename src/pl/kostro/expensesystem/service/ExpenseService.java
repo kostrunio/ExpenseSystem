@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.utils.Filter;
 
 public class ExpenseService {
   
@@ -25,8 +27,16 @@ public class ExpenseService {
     return ExpenseEntityDao.getEntityManager().find(Expense.class, id);
   }
   
-  public List<Expense> findAllExpense(ExpenseSheet expenseSheet) {
-    return ExpenseEntityDao.findByNamedQueryWithParameters("findAllExpense", ImmutableMap.of("expenseSheet", expenseSheet), Expense.class);
+  public static List<Expense> findAllExpense(ExpenseSheet expenseSheet) {
+    List<Expense> expenseListToReturn = new ArrayList<Expense>();
+    for(Expense expense : ExpenseEntityDao.findByNamedQueryWithParameters(
+        "findAllExpense",
+        ImmutableMap.of("expenseSheet", expenseSheet),
+        Expense.class)) {
+      if (Filter.matchFilter(expense, expenseSheet.getFilter()))
+        expenseListToReturn.add(expense);
+    }
+    return expenseListToReturn;
   }
   
   public Expense findFirstExpense(ExpenseSheet expenseSheet) {
@@ -89,6 +99,17 @@ public class ExpenseService {
     if (comment != null)
       expense.setComment(comment.toString());
     ExpenseService.creteExpense(expenseSheet, expense);
+  }
+  
+  public static Expense merge(Expense expense) {
+    ExpenseEntityDao.begin();
+    try {
+      expense = ExpenseEntityDao.getEntityManager().merge(expense);
+      ExpenseEntityDao.commit();
+    } finally {
+      ExpenseEntityDao.close();
+    }
+    return expense;
   }
 
 }
