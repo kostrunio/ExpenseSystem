@@ -1,0 +1,199 @@
+package pl.kostro.expensesystem.form;
+
+import pl.kostro.expensesystem.components.mainPageComponents.FindExpenseView;
+import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.Expense;
+import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.service.ExpenseService;
+import pl.kostro.expensesystem.service.ExpenseSheetService;
+import pl.kostro.expensesystem.utils.Calculator;
+
+import com.vaadin.data.Property;
+import com.vaadin.event.ShortcutAction;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox;
+import com.vaadin.ui.DateField;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.TextField;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.themes.ValoTheme;
+
+public class ExpenseForm extends FormLayout {
+
+  private static final long serialVersionUID = -2448059466017092695L;
+
+  Button saveButton = new Button("Zapisz");
+  Button duplicateButton = new Button("Duplikuj");
+  DateField dateField = new DateField("data");
+  ComboBox categoryBox = new ComboBox("kategoria");
+  ComboBox userBox = new ComboBox("u¿ytkownik");
+  TextField formulaField = new TextField("formu³a");
+  ComboBox commentBox = new ComboBox("komentarz");
+  
+  ExpenseSheet expenseSheet;
+  Expense expense;
+  FindExpenseView view;
+  
+  public ExpenseForm() {}
+  
+  public void prepare(ExpenseSheet expenseSheet, FindExpenseView view) {
+    this.expenseSheet = expenseSheet;
+    this.view = view;
+    configureComponents();
+    buildLayout();
+  }
+  
+
+  private void configureComponents() {
+    dateField.setDateFormat("yyyy-MM-dd");
+    dateField.addValueChangeListener(new Property.ValueChangeListener() {
+
+      private static final long serialVersionUID = 766164268953228863L;
+
+      @Override
+      public void valueChange(ValueChangeEvent event) {
+        verifyFormula(event.getProperty().getValue());
+      }
+
+    });
+    
+    categoryBox.setNewItemsAllowed(false);
+    categoryBox.setNullSelectionAllowed(false);
+    categoryBox.addItems(expenseSheet.getCategoryList());
+    categoryBox.addValueChangeListener(new Property.ValueChangeListener() {
+
+      private static final long serialVersionUID = -3346130777239048282L;
+
+      @Override
+      public void valueChange(ValueChangeEvent event) {
+        verifyFormula(event.getProperty().getValue());
+      }
+
+    });
+    
+    userBox.setNewItemsAllowed(false);
+    userBox.setNullSelectionAllowed(false);
+    userBox.addItems(expenseSheet.getUserLimitList());
+    userBox.addValueChangeListener(new Property.ValueChangeListener() {
+
+      private static final long serialVersionUID = -7382627003346137188L;
+
+      @Override
+      public void valueChange(ValueChangeEvent event) {
+        verifyFormula(event.getProperty().getValue());
+      }
+
+    });
+    
+    formulaField.focus();
+    formulaField.addValueChangeListener(new Property.ValueChangeListener() {
+
+      private static final long serialVersionUID = -7382627003346137188L;
+
+      @Override
+      public void valueChange(ValueChangeEvent event) {
+        verifyFormula(event.getProperty().getValue());
+      }
+    });
+
+    commentBox.setNewItemsAllowed(true);
+    commentBox.setNullSelectionAllowed(true);
+    commentBox.addItems(ExpenseSheetService.getAllComments(expenseSheet));
+    commentBox.addValueChangeListener(new Property.ValueChangeListener() {
+
+
+      private static final long serialVersionUID = -2428143441766112539L;
+
+      @Override
+      public void valueChange(ValueChangeEvent event) {
+        verifyFormula(event.getProperty().getValue());
+      }
+
+    });
+    
+    saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+    saveButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
+    saveButton.addClickListener(new ClickListener() {
+      
+      private static final long serialVersionUID = 4132777194302109049L;
+
+      @Override
+      public void buttonClick(ClickEvent event) {
+        expense.setDate(dateField.getValue());
+        expense.setCategory((Category)categoryBox.getValue());
+        expense.setUser(((UserLimit)userBox.getValue()).getUser());
+        expense.setFormula(formulaField.getValue());
+        if (commentBox.getValue() != null && !commentBox.getValue().toString().isEmpty())
+          expense.setComment(commentBox.getValue().toString());
+        expense.setExpenseSheet(expenseSheet);
+        ExpenseService.merge(expense);
+        view.refreshExpenses();
+      }
+    });
+    
+    duplicateButton.addClickListener(new ClickListener() {
+      
+      private static final long serialVersionUID = 4132777194302109049L;
+
+      @Override
+      public void buttonClick(ClickEvent event) {
+        Expense newExpense = new Expense(
+            expense.getDate(),
+            expense.getFormula(),
+            expense.getCategory(),
+            expense.getUser(),
+            expense.getComment(),
+            expense.getExpenseSheet());
+        edit(newExpense);
+        saveButton.setEnabled(false);
+      }
+    });
+    
+    setVisible(false);
+  }
+  
+  private void verifyFormula(Object formula) {
+    if (formula != null
+        && !formula.toString().equals("")
+        && Calculator.verifyAllowed(formula.toString()))
+      saveButton.setEnabled(true);
+    else
+      saveButton.setEnabled(false);
+  }
+  
+  private void buildLayout() {
+    setSizeUndefined();
+    setMargin(true);
+
+    HorizontalLayout actions = new HorizontalLayout(saveButton, duplicateButton);
+    actions.setSpacing(true);
+
+    addComponents(actions, dateField, categoryBox, userBox, formulaField, commentBox);
+  }
+  
+  public void edit(Expense expense) {
+    this.expense = expense;
+    if (expense != null) {
+      dateField.setValue(expense.getDate());
+      categoryBox.setValue(expense.getCategory());
+      userBox.setValue(ExpenseSheetService.getUserLimitForUser(expenseSheet, expense.getUser()));
+      formulaField.setValue(expense.getFormula());
+      commentBox.setValue(expense.getComment());
+      formulaField.focus();
+      if (expense.getId() == 0)
+        duplicateButton.setEnabled(false);
+      else
+        duplicateButton.setEnabled(true);
+    } else {
+      userBox.select(expenseSheet.getDefaultUserLimit());
+      duplicateButton.setEnabled(false);
+    }
+    setVisible(expense != null);
+    saveButton.setEnabled(false);
+  }
+  
+}
