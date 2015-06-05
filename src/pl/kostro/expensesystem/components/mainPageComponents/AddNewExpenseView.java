@@ -89,7 +89,7 @@ private DayView dayView;
 
       @Override
       public void valueChange(ValueChangeEvent event) {
-        verifyFormula(event.getProperty().getValue());
+        verifyFormula(formulaField.getValue());
       }
 
     });
@@ -102,7 +102,7 @@ private DayView dayView;
 
       @Override
       public void valueChange(ValueChangeEvent event) {
-        verifyFormula(event.getProperty().getValue());
+        verifyFormula(formulaField.getValue());
       }
     });
 
@@ -117,7 +117,7 @@ private DayView dayView;
 
       @Override
       public void valueChange(ValueChangeEvent event) {
-        verifyFormula(event.getProperty().getValue());
+        verifyFormula(formulaField.getValue());
       }
 
     });

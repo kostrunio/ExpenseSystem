@@ -56,7 +56,7 @@ public class ExpenseForm extends FormLayout {
 
       @Override
       public void valueChange(ValueChangeEvent event) {
-        verifyFormula(event.getProperty().getValue());
+        verifyFormula(formulaField.getValue());
       }
 
     });
@@ -70,7 +70,7 @@ public class ExpenseForm extends FormLayout {
 
       @Override
       public void valueChange(ValueChangeEvent event) {
-        verifyFormula(event.getProperty().getValue());
+        verifyFormula(formulaField.getValue());
       }
 
     });
@@ -84,7 +84,7 @@ public class ExpenseForm extends FormLayout {
 
       @Override
       public void valueChange(ValueChangeEvent event) {
-        verifyFormula(event.getProperty().getValue());
+        verifyFormula(formulaField.getValue());
       }
 
     });
@@ -96,7 +96,7 @@ public class ExpenseForm extends FormLayout {
 
       @Override
       public void valueChange(ValueChangeEvent event) {
-        verifyFormula(event.getProperty().getValue());
+        verifyFormula(formulaField.getValue());
       }
     });
 
@@ -110,7 +110,7 @@ public class ExpenseForm extends FormLayout {
 
       @Override
       public void valueChange(ValueChangeEvent event) {
-        verifyFormula(event.getProperty().getValue());
+        verifyFormula(formulaField.getValue());
       }
 
     });
