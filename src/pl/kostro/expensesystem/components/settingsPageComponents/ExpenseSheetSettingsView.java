@@ -67,7 +67,8 @@ public class ExpenseSheetSettingsView extends CustomComponent {
 	 * visual editor.
 	 * @param expenseSheet 
 	 */
-	public ExpenseSheetSettingsView(final ExpenseSheet expenseSheet) {
+	@SuppressWarnings("unchecked")
+  public ExpenseSheetSettingsView(final ExpenseSheet expenseSheet) {
 		buildMainLayout();
 		setCompositionRoot(mainLayout);
 
@@ -118,10 +119,14 @@ public class ExpenseSheetSettingsView extends CustomComponent {
 		realUserTable.setPageLength(5);
 		realUserTable.addContainerProperty("Nazwa", String.class, null);
 		realUserTable.addContainerProperty("Limit", BigDecimal.class, null);
+		realUserTable.setSelectable(true);
+		realUserTable.setImmediate(true);
 		
 		userTable.setPageLength(5);
 		userTable.addContainerProperty("Nazwa", String.class, null);
 		userTable.addContainerProperty("Limit", BigDecimal.class, null);
+		userTable.setSelectable(true);
+		userTable.setImmediate(true);
 		for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
 			if (userLimit.getUser() instanceof RealUser) {
 				Object newItemId = realUserTable.addItem();
@@ -142,7 +147,7 @@ public class ExpenseSheetSettingsView extends CustomComponent {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				setCompositionRoot(new AddRealUserView(expenseSheet));
+				setCompositionRoot(new AddRealUserView(expenseSheet, null));
 			}
 		});
 		
@@ -152,7 +157,7 @@ public class ExpenseSheetSettingsView extends CustomComponent {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				setCompositionRoot(new AddUserView(expenseSheet));
+				setCompositionRoot(new AddUserView(expenseSheet, null));
 			}
 		});
 	}
@@ -247,7 +252,7 @@ private GridLayout buildButtoGrid() {
 	
 	// upButton
 	upButton = new Button();
-	upButton.setCaption("Button");
+	upButton.setCaption("Góra");
 	upButton.setImmediate(true);
 	upButton.setWidth("-1px");
 	upButton.setHeight("-1px");
