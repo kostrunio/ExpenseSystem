@@ -1,11 +1,13 @@
 @import "../valo/valo";
 @import "common";
-@import "views/login";
 @import "views/expensesystemview";
-@import "views/schedule";
-@import "views/sales";
-@import "views/transactions";
+@import "views/login";
+@import "views/register";
 @import "views/reports";
+@import "views/sales";
+@import "views/schedule";
+@import "views/transactions";
+@import "views/users";
 
 // Optimize the CSS output
 $v-included-components: remove($v-included-components, accordion);
@@ -28,10 +30,12 @@ $valo-menu-background-color: #414B56;
 @mixin expensesystem {
   @include valo;
   @include expensesystem-common;
-  @include expensesystem-login-view;
   @include expensesystem-expensesystem-view;
-  @include expensesystem-schedule-view;
-  @include expensesystem-sales-view;
-  @include expensesystem-transactions-view;
+  @include expensesystem-login-view;
+  @include expensesystem-register-view;
   @include expensesystem-reports-view;
+  @include expensesystem-sales-view;
+  @include expensesystem-schedule-view;
+  @include expensesystem-transactions-view;
+  @include expensesystem-users-view;
 }
