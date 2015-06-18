@@ -226,7 +226,7 @@ public class ExpenseView extends VerticalLayout implements View {
           filterUser = ((UserLimit) userCombo.getValue()).getUser();
         }
         if (formulaField.getValue() != null) {
-          filterFormula = formulaField.getValue().toString();
+          filterFormula = formulaField.getValue().toString().replaceAll(",", ".");
         }
         if (commentCombo.getValue() != null) {
           filterComment = commentCombo.getValue().toString();
