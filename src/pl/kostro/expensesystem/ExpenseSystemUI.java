@@ -3,16 +3,24 @@ package pl.kostro.expensesystem;
 import javax.servlet.annotation.WebServlet;
 
 import pl.kostro.expensesystem.components.LoginPage;
+import pl.kostro.expensesystem.components.MainPage;
+import pl.kostro.expensesystem.components.MainPage;
+import pl.kostro.expensesystem.model.RealUser;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
+import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 @Theme("expensesystem")
+@Title("Expense System Application")
 public class ExpenseSystemUI extends UI {
 
 	@WebServlet(value = "/*", asyncSupported = true)
@@ -22,11 +30,26 @@ public class ExpenseSystemUI extends UI {
 	
 	@Override
 	protected void init(VaadinRequest request) {
-		final VerticalLayout mainLayout = new VerticalLayout();
-		mainLayout.setMargin(true);
-		setContent(mainLayout);
-
-		  mainLayout.addComponent(new LoginPage());
+	  Responsive.makeResponsive(this);
+    addStyleName(ValoTheme.UI_WITH_MENU);
+	  
+	  updateContent();
 	}
-
+	
+	public void updateContent() {
+    RealUser user = (RealUser) VaadinSession.getCurrent().getAttribute(
+        RealUser.class.getName());
+    if (user != null) {
+        // Authenticated user
+        setContent(new MainPage());
+        removeStyleName("loginview");
+    } else {
+        setContent(new LoginPage());
+        addStyleName("loginview");
+    }
+	}
+	
+	public void updateContent(Component component) {
+	  setContent(component);
+  }
 }
