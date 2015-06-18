@@ -3,8 +3,8 @@ package pl.kostro.expensesystem;
 import javax.servlet.annotation.WebServlet;
 
 import pl.kostro.expensesystem.model.RealUser;
-import pl.kostro.expensesystem.pages.LoginPage;
-import pl.kostro.expensesystem.pages.MainPage;
+import pl.kostro.expensesystem.views.LoginPage;
+import pl.kostro.expensesystem.views.MainPage;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;

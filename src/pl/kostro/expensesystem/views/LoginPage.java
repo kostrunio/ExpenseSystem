@@ -1,4 +1,4 @@
- package pl.kostro.expensesystem.components;
+ package pl.kostro.expensesystem.views;
 
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.model.RealUser;
@@ -113,6 +113,7 @@ public class LoginPage extends VerticalLayout {
 	private Component buildOthButtons() {
 	  HorizontalLayout buttonsLayout = new HorizontalLayout();
 	  final Button registerButton = new Button("Rejestracja");
+	  registerButton.setStyleName("small");
 	  buttonsLayout.addComponent(registerButton);
 	  
 	  registerButton.addClickListener(new Button.ClickListener() {

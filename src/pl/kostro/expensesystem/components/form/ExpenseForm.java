@@ -1,6 +1,5 @@
-package pl.kostro.expensesystem.form;
+package pl.kostro.expensesystem.components.form;
 
-import pl.kostro.expensesystem.components.mainPageComponents.FindExpenseView;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -8,6 +7,7 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.service.ExpenseService;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Calculator;
+import pl.kostro.expensesystem.views.mainPage.FindExpenseView;
 
 import com.vaadin.data.Property;
 import com.vaadin.event.ShortcutAction;

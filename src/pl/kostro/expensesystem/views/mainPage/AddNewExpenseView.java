@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.components.mainPageComponents;
+package pl.kostro.expensesystem.views.mainPage;
 
 import java.util.Calendar;
 

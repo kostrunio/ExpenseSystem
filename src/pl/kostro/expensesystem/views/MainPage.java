@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.components;
+package pl.kostro.expensesystem.views;
 
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;

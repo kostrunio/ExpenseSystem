@@ -1,6 +1,6 @@
-package pl.kostro.expensesystem.components.mainPageComponents;
+package pl.kostro.expensesystem.views.mainPage;
 
-import pl.kostro.expensesystem.form.ExpenseForm;
+import pl.kostro.expensesystem.components.form.ExpenseForm;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;

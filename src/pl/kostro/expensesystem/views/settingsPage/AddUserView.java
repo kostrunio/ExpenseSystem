@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.components.settingsPageComponents;
+package pl.kostro.expensesystem.views.settingsPage;
 
 import java.math.BigDecimal;
 

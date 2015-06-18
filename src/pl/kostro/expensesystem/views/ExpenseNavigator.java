@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.pages;
+package pl.kostro.expensesystem.views;
 
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;

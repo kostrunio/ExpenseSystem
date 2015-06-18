@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.components.settingsPageComponents;
+package pl.kostro.expensesystem.views.settingsPage;
 
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.service.CategoryService;

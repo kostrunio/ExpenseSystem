@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.components;
+package pl.kostro.expensesystem.views;
 
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.service.RealUserService;
@@ -10,6 +10,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
@@ -59,7 +60,12 @@ public class RegisterPage extends VerticalLayout {
     emailField.setRequired(true);
     registerForm.addComponent(emailField);
     
+    final HorizontalLayout buttonsLayout = new HorizontalLayout();
+    buttonsLayout.setSpacing(true);
+    registerForm.addComponent(buttonsLayout);
+    
     final Button saveButton = new Button("Zapisz");
+    saveButton.setStyleName("small");
     saveButton.addClickListener(new ClickListener() {
       private static final long serialVersionUID = -3113257276493397402L;
 
@@ -74,7 +80,7 @@ public class RegisterPage extends VerticalLayout {
         } else {
           Notification notification = new Notification("B³êdne has³o");
           notification.setDescription("Podane has³a do siebie nie pasuj¹");
-          notification.setStyleName("error register-help");
+          notification.setStyleName("error small closable register-help");
           notification.setPosition(Position.BOTTOM_CENTER);
           notification.setDelayMsec(10000);
           notification.show(Page.getCurrent());
@@ -82,9 +88,11 @@ public class RegisterPage extends VerticalLayout {
       }
     });
     
-    registerForm.addComponent(saveButton);
+    buttonsLayout.addComponent(saveButton);
+    buttonsLayout.setComponentAlignment(saveButton, Alignment.MIDDLE_CENTER);
     
     final Button cancelButton = new Button("Powrót");
+    cancelButton.setStyleName("small");
     cancelButton.addClickListener(new ClickListener() {
       private static final long serialVersionUID = -3113257276493397402L;
 
@@ -94,7 +102,8 @@ public class RegisterPage extends VerticalLayout {
       }
     });
     
-    registerForm.addComponent(cancelButton);
+    buttonsLayout.addComponent(cancelButton);
+    buttonsLayout.setComponentAlignment(cancelButton, Alignment.MIDDLE_CENTER);
     return registerPanel;
   }
 
