@@ -237,12 +237,10 @@ private VerticalLayout buildMainLayout() {
 	// common part: create layout
 	mainLayout = new VerticalLayout();
 	mainLayout.setImmediate(false);
-	mainLayout.setWidth("100%");
 	mainLayout.setHeight("100%");
 	mainLayout.setMargin(false);
 	
 	// top-level component properties
-	setWidth("100.0%");
 	setHeight("100.0%");
 	
 	// navigationLayout

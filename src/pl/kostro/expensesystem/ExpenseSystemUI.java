@@ -40,11 +40,9 @@ public class ExpenseSystemUI extends UI {
     if (user != null) {
       // Authenticated user
       setContent(new MainPage());
-      removeStyleName("loginview");
       getNavigator().navigateTo(getNavigator().getState());
     } else {
       setContent(new LoginPage());
-      addStyleName("loginview");
     }
   }
 

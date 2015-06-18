@@ -150,7 +150,7 @@ public class ExpenseSheetService {
     return commentList;
   }
   
-  public List<String> getYearList(ExpenseSheet expenseSheet) {
+  public static List<String> getYearList(ExpenseSheet expenseSheet) {
     List<String> yearList = new ArrayList<String>();
     int thisYear = new GregorianCalendar().get(Calendar.YEAR);
     int firstYear = thisYear;

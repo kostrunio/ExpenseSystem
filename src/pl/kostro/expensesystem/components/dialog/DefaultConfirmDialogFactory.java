@@ -17,6 +17,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
 import com.vaadin.ui.themes.Reindeer;
+import com.vaadin.ui.themes.ValoTheme;
 
 /**
  * This is the default implementation for confirmation dialog factory.
@@ -88,7 +89,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         panel.setWidth("100%");
         panel.setHeight("100%");
         panel.setStyleName(Reindeer.PANEL_LIGHT);
-        panel.addStyleName("borderless"); // valo compatibility
+        panel.addStyleName(ValoTheme.PANEL_BORDERLESS); // valo compatibility
         c.setExpandRatio(panel, 1f);
 
         // Always HTML, but escape
@@ -108,7 +109,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         ok.setData(true);
         ok.setId(ConfirmDialog.OK_ID);
         ok.setClickShortcut(KeyCode.ENTER, null);
-        ok.setStyleName(Reindeer.BUTTON_DEFAULT);
+        ok.setStyleName(ValoTheme.BUTTON_PRIMARY);
         ok.focus();
         buttons.addComponent(ok);
         confirm.setOkButton(ok);

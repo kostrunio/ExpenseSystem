@@ -41,7 +41,6 @@ public class LoginPage extends VerticalLayout {
     loginPanel.setSizeUndefined();
     loginPanel.setSpacing(true);
     Responsive.makeResponsive(loginPanel);
-    loginPanel.addStyleName("login-panel");
 
     loginPanel.addComponent(buildLabels());
     loginPanel.addComponent(buildfieldsLayout());
@@ -51,7 +50,6 @@ public class LoginPage extends VerticalLayout {
 	
 	private Component buildLabels() {
     CssLayout labels = new CssLayout();
-    labels.addStyleName("labels");
 
     Label welcome = new Label("Witamy");
     welcome.setSizeUndefined();
@@ -70,7 +68,6 @@ public class LoginPage extends VerticalLayout {
 	private Component buildfieldsLayout() {
     HorizontalLayout fieldsLayout = new HorizontalLayout();
     fieldsLayout.setSpacing(true);
-    fieldsLayout.addStyleName("fieldsLayout");
 
     final TextField usernameField = new TextField("nazwa u¿ytkownika");
     usernameField.setIcon(FontAwesome.USER);
@@ -94,7 +91,7 @@ public class LoginPage extends VerticalLayout {
           if (loggedUser == null) {
             Notification notification = new Notification("B³¹d logowania");
             notification.setDescription("B³êdna nazwa u¿ytkownika lub has³o");
-            notification.setStyleName("error small closable login-help");
+            notification.setStyleName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
             notification.setPosition(Position.BOTTOM_CENTER);
             notification.setDelayMsec(10000);
             notification.show(Page.getCurrent());
@@ -113,7 +110,7 @@ public class LoginPage extends VerticalLayout {
 	private Component buildOthButtons() {
 	  HorizontalLayout buttonsLayout = new HorizontalLayout();
 	  final Button registerButton = new Button("Rejestracja");
-	  registerButton.setStyleName("small");
+	  registerButton.setStyleName(ValoTheme.BUTTON_SMALL);
 	  buttonsLayout.addComponent(registerButton);
 	  
 	  registerButton.addClickListener(new Button.ClickListener() {

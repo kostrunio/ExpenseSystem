@@ -17,6 +17,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.themes.ValoTheme;
 
 public class RegisterPage extends VerticalLayout {
 
@@ -34,7 +35,6 @@ public class RegisterPage extends VerticalLayout {
     final Panel registerPanel = new Panel("Rejestracja nowego u¿ytkownika");
     registerPanel.setSizeUndefined();
     Responsive.makeResponsive(registerPanel);
-    registerPanel.addStyleName("register-panel");
     final VerticalLayout contentLayout = new VerticalLayout();
     contentLayout.setSizeUndefined();
     contentLayout.setSpacing(true);
@@ -65,7 +65,7 @@ public class RegisterPage extends VerticalLayout {
     registerForm.addComponent(buttonsLayout);
     
     final Button saveButton = new Button("Zapisz");
-    saveButton.setStyleName("small");
+    saveButton.setStyleName(ValoTheme.BUTTON_SMALL);
     saveButton.addClickListener(new ClickListener() {
       private static final long serialVersionUID = -3113257276493397402L;
 
@@ -80,7 +80,7 @@ public class RegisterPage extends VerticalLayout {
         } else {
           Notification notification = new Notification("B³êdne has³o");
           notification.setDescription("Podane has³a do siebie nie pasuj¹");
-          notification.setStyleName("error small closable register-help");
+          notification.setStyleName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
           notification.setPosition(Position.BOTTOM_CENTER);
           notification.setDelayMsec(10000);
           notification.show(Page.getCurrent());
@@ -92,7 +92,7 @@ public class RegisterPage extends VerticalLayout {
     buttonsLayout.setComponentAlignment(saveButton, Alignment.MIDDLE_CENTER);
     
     final Button cancelButton = new Button("Powrót");
-    cancelButton.setStyleName("small");
+    cancelButton.setStyleName(ValoTheme.BUTTON_SMALL);
     cancelButton.addClickListener(new ClickListener() {
       private static final long serialVersionUID = -3113257276493397402L;
 

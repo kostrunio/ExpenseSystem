@@ -29,7 +29,6 @@ public class ExpenseMenu extends CustomComponent {
   public ExpenseMenu() {
     loggedUser = (RealUser) VaadinSession.getCurrent().getAttribute(RealUser.class.getName());
 
-    setPrimaryStyleName("valo-menu");
     setSizeUndefined();
 
     setCompositionRoot(buildContent());
@@ -37,10 +36,7 @@ public class ExpenseMenu extends CustomComponent {
 
   private Component buildContent() {
     final CssLayout menuLayout = new CssLayout();
-    menuLayout.addStyleName("sidebar");
     menuLayout.addStyleName(ValoTheme.MENU_PART);
-    menuLayout.addStyleName("no-vertical-drag-hints");
-    menuLayout.addStyleName("no-horizontal-drag-hints");
     menuLayout.setWidth(null);
     menuLayout.setHeight("100%");
 
@@ -54,17 +50,14 @@ public class ExpenseMenu extends CustomComponent {
     logo.setSizeUndefined();
     HorizontalLayout logoWrapper = new HorizontalLayout(logo);
     logoWrapper.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
-    logoWrapper.addStyleName("valo-menu-title");
     return logoWrapper;
   }
 
   private Component buildMenuItems() {
-    menuItemsLayout.addStyleName("valo-menuitems");
     menuItemsLayout.setHeight("100%");
 
     for (final ExpenseSheet expenseSheet : loggedUser.getExpenseSheetList()) {
       final Button b = new Button(expenseSheet.getName());
-      b.setStyleName("valo-menu-item");
       b.addClickListener(new ClickListener() {
         private static final long serialVersionUID = 6367146207004338123L;
 
@@ -78,7 +71,6 @@ public class ExpenseMenu extends CustomComponent {
     }
 
     final Button settingButton = new Button("Ustawienia");
-    settingButton.setStyleName("valo-menu-item");
     settingButton.addClickListener(new ClickListener() {
       
       private static final long serialVersionUID = -722003682240462618L;
@@ -91,7 +83,6 @@ public class ExpenseMenu extends CustomComponent {
     menuItemsLayout.addComponent(settingButton);
     
     final Button logoutButton = new Button("Wyloguj");
-    logoutButton.setStyleName("valo-menu-item");
     logoutButton.addClickListener(new ClickListener() {
       
       private static final long serialVersionUID = -1813471548646140303L;
