@@ -31,11 +31,13 @@ public class RegisterPage extends VerticalLayout {
 	
 	private Component buildRegisterForm() {
     final Panel registerPanel = new Panel("Rejestracja nowego u¿ytkownika");
+    registerPanel.setSizeUndefined();
+    Responsive.makeResponsive(registerPanel);
+    registerPanel.addStyleName("register-panel");
     final VerticalLayout contentLayout = new VerticalLayout();
     contentLayout.setSizeUndefined();
     contentLayout.setSpacing(true);
     Responsive.makeResponsive(contentLayout);
-    contentLayout.addStyleName("register-panel");
     registerPanel.setContent(contentLayout);
     
     final FormLayout registerForm = new FormLayout();
