@@ -2,9 +2,9 @@ package pl.kostro.expensesystem;
 
 import javax.servlet.annotation.WebServlet;
 
-import pl.kostro.expensesystem.components.LoginPage;
-import pl.kostro.expensesystem.components.MainPage;
 import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.pages.LoginPage;
+import pl.kostro.expensesystem.pages.MainPage;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -22,34 +22,33 @@ import com.vaadin.ui.themes.ValoTheme;
 @Theme("expensesystem")
 public class ExpenseSystemUI extends UI {
 
-	@WebServlet(value = "/*", asyncSupported = true)
-	@VaadinServletConfiguration(productionMode = false, ui = ExpenseSystemUI.class)
-	public static class Servlet extends VaadinServlet {
-	}
-	
-	@Override
-	protected void init(VaadinRequest request) {
-	  Responsive.makeResponsive(this);
+  @WebServlet(value = "/*", asyncSupported = true)
+  @VaadinServletConfiguration(productionMode = false, ui = ExpenseSystemUI.class)
+  public static class Servlet extends VaadinServlet {
+  }
+
+  @Override
+  protected void init(VaadinRequest request) {
+    Responsive.makeResponsive(this);
     addStyleName(ValoTheme.UI_WITH_MENU);
-	  
-	  updateContent();
-	}
-	
-	public void updateContent() {
-    RealUser user = (RealUser) VaadinSession.getCurrent().getAttribute(
-        RealUser.class.getName());
+
+    updateContent();
+  }
+
+  public void updateContent() {
+    RealUser user = (RealUser) VaadinSession.getCurrent().getAttribute(RealUser.class.getName());
     if (user != null) {
-        // Authenticated user
-        setContent(new MainPage());
-        removeStyleName("loginview");
-        getNavigator().navigateTo(getNavigator().getState());
+      // Authenticated user
+      setContent(new MainPage());
+      removeStyleName("loginview");
+      getNavigator().navigateTo(getNavigator().getState());
     } else {
-        setContent(new LoginPage());
-        addStyleName("loginview");
+      setContent(new LoginPage());
+      addStyleName("loginview");
     }
-	}
-	
-	public void updateContent(Component component) {
-	  setContent(component);
+  }
+
+  public void updateContent(Component component) {
+    setContent(component);
   }
 }
