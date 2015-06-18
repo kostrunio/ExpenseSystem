@@ -260,7 +260,6 @@ private HorizontalLayout buildNavigationLayout() {
 	// common part: create layout
 	navigationLayout = new HorizontalLayout();
 	navigationLayout.setImmediate(false);
-	navigationLayout.setWidth("100.0%");
 	navigationLayout.setHeight("-1px");
 	navigationLayout.setMargin(false);
 	navigationLayout.setSpacing(true);

@@ -3,6 +3,7 @@ package pl.kostro.expensesystem.views;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.service.RealUserService;
 
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
@@ -38,6 +39,7 @@ public class RegisterPage extends VerticalLayout {
     final VerticalLayout contentLayout = new VerticalLayout();
     contentLayout.setSizeUndefined();
     contentLayout.setSpacing(true);
+    contentLayout.setMargin(true);
     Responsive.makeResponsive(contentLayout);
     registerPanel.setContent(contentLayout);
     
@@ -46,14 +48,17 @@ public class RegisterPage extends VerticalLayout {
     
     final TextField nameField = new TextField("nazwa u¿ytkownika");
     nameField.setRequired(true);
+    nameField.setIcon(FontAwesome.USER);
     registerForm.addComponent(nameField);
     
     final TextField passwordField = new TextField("has³o");
     passwordField.setRequired(true);
+    passwordField.setIcon(FontAwesome.LOCK);
     registerForm.addComponent(passwordField);
     
     final TextField rePasswordField = new TextField("powtórz has³o");
     rePasswordField.setRequired(true);
+    rePasswordField.setIcon(FontAwesome.LOCK);
     registerForm.addComponent(rePasswordField);
     
     final TextField emailField = new TextField("e-mail");
@@ -66,6 +71,7 @@ public class RegisterPage extends VerticalLayout {
     
     final Button saveButton = new Button("Zapisz");
     saveButton.setStyleName(ValoTheme.BUTTON_SMALL);
+    saveButton.setIcon(FontAwesome.SAVE);
     saveButton.addClickListener(new ClickListener() {
       private static final long serialVersionUID = -3113257276493397402L;
 
@@ -93,6 +99,7 @@ public class RegisterPage extends VerticalLayout {
     
     final Button cancelButton = new Button("Powrót");
     cancelButton.setStyleName(ValoTheme.BUTTON_SMALL);
+    cancelButton.setIcon(FontAwesome.UNDO);
     cancelButton.addClickListener(new ClickListener() {
       private static final long serialVersionUID = -3113257276493397402L;
 

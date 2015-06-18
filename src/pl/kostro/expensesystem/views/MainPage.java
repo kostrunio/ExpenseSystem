@@ -10,11 +10,15 @@ public class MainPage extends HorizontalLayout {
   
   public MainPage() {
     setSizeFull();
-
+    addStyleName("mainview");
+    
     addComponent(new ExpenseMenu());
 
     ComponentContainer content = new CssLayout();
+    content.setPrimaryStyleName("valo-content");
+    content.addStyleName("v-scrollable");
     content.setSizeFull();
+    
     addComponent(content);
     setExpandRatio(content, 1.0f);
     

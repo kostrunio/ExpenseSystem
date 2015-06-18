@@ -41,7 +41,7 @@ public class LoginPage extends VerticalLayout {
     loginPanel.setSizeUndefined();
     loginPanel.setSpacing(true);
     Responsive.makeResponsive(loginPanel);
-
+    loginPanel.addStyleName("login-panel");
     loginPanel.addComponent(buildLabels());
     loginPanel.addComponent(buildfieldsLayout());
     loginPanel.addComponent(buildOthButtons());
@@ -49,25 +49,27 @@ public class LoginPage extends VerticalLayout {
 	}
 	
 	private Component buildLabels() {
-    CssLayout labels = new CssLayout();
+    CssLayout labelsLayout = new CssLayout();
+    labelsLayout.addStyleName("labels");
 
     Label welcome = new Label("Witamy");
     welcome.setSizeUndefined();
     welcome.addStyleName(ValoTheme.LABEL_H4);
     welcome.addStyleName(ValoTheme.LABEL_COLORED);
-    labels.addComponent(welcome);
+    labelsLayout.addComponent(welcome);
 
     Label title = new Label("Expense System Application");
     title.setSizeUndefined();
     title.addStyleName(ValoTheme.LABEL_H3);
     title.addStyleName(ValoTheme.LABEL_LIGHT);
-    labels.addComponent(title);
-    return labels;
+    labelsLayout.addComponent(title);
+    return labelsLayout;
 	}
 	
 	private Component buildfieldsLayout() {
     HorizontalLayout fieldsLayout = new HorizontalLayout();
     fieldsLayout.setSpacing(true);
+    fieldsLayout.addStyleName("fields");
 
     final TextField usernameField = new TextField("nazwa u¿ytkownika");
     usernameField.setIcon(FontAwesome.USER);
@@ -111,6 +113,7 @@ public class LoginPage extends VerticalLayout {
 	  HorizontalLayout buttonsLayout = new HorizontalLayout();
 	  final Button registerButton = new Button("Rejestracja");
 	  registerButton.setStyleName(ValoTheme.BUTTON_SMALL);
+	  registerButton.setIcon(FontAwesome.PLUS_SQUARE);
 	  buttonsLayout.addComponent(registerButton);
 	  
 	  registerButton.addClickListener(new Button.ClickListener() {

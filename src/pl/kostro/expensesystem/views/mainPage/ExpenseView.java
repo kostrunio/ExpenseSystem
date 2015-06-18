@@ -17,13 +17,11 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.MenuBar.MenuItem;
-import com.vaadin.ui.themes.ValoTheme;
 
 public class ExpenseView extends VerticalLayout implements View {
 
@@ -34,6 +32,7 @@ public class ExpenseView extends VerticalLayout implements View {
   private ExpenseSheet expenseSheet;
 
   private HorizontalLayout searchLayout = new HorizontalLayout();
+  
   final VerticalLayout mainView = new VerticalLayout();
 
   private ComboBox categoryCombo;
@@ -51,10 +50,6 @@ public class ExpenseView extends VerticalLayout implements View {
 
     setMargin(true);
     setSpacing(true);
-
-    Label h1 = new Label("Arkusz: " + expenseSheet.getName());
-    h1.addStyleName(ValoTheme.LABEL_H1);
-    addComponent(h1);
 
     addComponent(buildYearMenu());
     addComponent(buildMonthMenu());
