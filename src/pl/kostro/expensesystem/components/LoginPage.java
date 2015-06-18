@@ -29,6 +29,8 @@ public class LoginPage extends VerticalLayout {
   private static final long serialVersionUID = 73520020905697667L;
 
 	public LoginPage() {
+	  setSizeFull();
+	  
 	  Component loginForm = buildLoginForm();
     addComponent(loginForm);
     setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
@@ -92,7 +94,7 @@ public class LoginPage extends VerticalLayout {
           if (loggedUser == null) {
             Notification notification = new Notification("B³¹d logowania");
             notification.setDescription("B³êdna nazwa u¿ytkownika lub has³o");
-            notification.setStyleName("error login-help");
+            notification.setStyleName("error small closable login-help");
             notification.setPosition(Position.BOTTOM_CENTER);
             notification.setDelayMsec(10000);
             notification.show(Page.getCurrent());

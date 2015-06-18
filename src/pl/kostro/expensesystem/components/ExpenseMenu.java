@@ -21,7 +21,6 @@ public class ExpenseMenu extends CustomComponent {
   
   private static final long serialVersionUID = -2718336134775274630L;
 
-  CssLayout menu = new CssLayout();
   CssLayout menuItemsLayout = new CssLayout();
   
   RealUser loggedUser;
@@ -33,18 +32,25 @@ public class ExpenseMenu extends CustomComponent {
     setPrimaryStyleName("valo-menu");
     setSizeUndefined();
     
-    menu.addStyleName("sidebar");
-    menu.addStyleName(ValoTheme.MENU_PART);
-    menu.setWidth(null);
-    menu.setHeight("100%");
-    menu.addComponent(buildTitle());
-    menu.addComponent(buildMenuItems());
-    setCompositionRoot(menu);
+    setCompositionRoot(buildContent());
+  }
+  
+  private Component buildContent() {
+    final CssLayout menuLayout = new CssLayout();
+    menuLayout.addStyleName("sidebar");
+    menuLayout.addStyleName(ValoTheme.MENU_PART);
+    menuLayout.addStyleName("no-vertical-drag-hints");
+    menuLayout.addStyleName("no-horizontal-drag-hints");
+    menuLayout.setWidth(null);
+    menuLayout.setHeight("100%");
+    
+    menuLayout.addComponent(buildTitle());
+    menuLayout.addComponent(buildMenuItems());
+    return menuLayout;
   }
   
   private Component buildTitle() {
-    Label logo = new Label("Arkusze wydatków",
-            ContentMode.HTML);
+    Label logo = new Label("Arkusze wydatków", ContentMode.HTML);
     logo.setSizeUndefined();
     HorizontalLayout logoWrapper = new HorizontalLayout(logo);
     logoWrapper.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);

@@ -4,7 +4,6 @@ import javax.servlet.annotation.WebServlet;
 
 import pl.kostro.expensesystem.components.LoginPage;
 import pl.kostro.expensesystem.components.MainPage;
-import pl.kostro.expensesystem.components.MainPage;
 import pl.kostro.expensesystem.model.RealUser;
 
 import com.vaadin.annotations.Theme;
@@ -19,8 +18,8 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
-@Theme("expensesystem")
 @Title("Expense System Application")
+@Theme("expensesystem")
 public class ExpenseSystemUI extends UI {
 
 	@WebServlet(value = "/*", asyncSupported = true)
@@ -43,6 +42,7 @@ public class ExpenseSystemUI extends UI {
         // Authenticated user
         setContent(new MainPage());
         removeStyleName("loginview");
+        getNavigator().navigateTo(getNavigator().getState());
     } else {
         setContent(new LoginPage());
         addStyleName("loginview");

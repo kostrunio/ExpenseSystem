@@ -4,6 +4,7 @@ import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.service.RealUserService;
 
 import com.vaadin.server.Page;
+import com.vaadin.server.Responsive;
 import com.vaadin.shared.Position;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -21,7 +22,8 @@ public class RegisterPage extends VerticalLayout {
 	private static final long serialVersionUID = 6185954337600080624L;
 
 	public RegisterPage() {
-	  setWidthUndefined();
+	  setSizeFull();
+	  
 	  Component registerForm = buildRegisterForm();
     addComponent(registerForm);
     setComponentAlignment(registerForm, Alignment.MIDDLE_CENTER);
@@ -32,7 +34,8 @@ public class RegisterPage extends VerticalLayout {
     final VerticalLayout contentLayout = new VerticalLayout();
     contentLayout.setSizeUndefined();
     contentLayout.setSpacing(true);
-    contentLayout.setMargin(true);
+    Responsive.makeResponsive(contentLayout);
+    contentLayout.addStyleName("register-panel");
     registerPanel.setContent(contentLayout);
     
     final FormLayout registerForm = new FormLayout();

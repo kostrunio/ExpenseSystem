@@ -8,8 +8,6 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.navigator.ViewProvider;
-import com.vaadin.navigator.Navigator.ClassBasedViewProvider;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.UI;
@@ -36,6 +34,8 @@ public class ExpenseNavigator extends Navigator {
   private void initViewChangeListener() {
     addViewChangeListener(new ViewChangeListener() {
 
+      private static final long serialVersionUID = -5886728517257511451L;
+
         @Override
         public boolean beforeViewChange(final ViewChangeEvent event) {
             // Since there's no conditions in switching between the views
@@ -57,6 +57,9 @@ public class ExpenseNavigator extends Navigator {
     }
 
     setErrorProvider(new ViewProvider() {
+
+      private static final long serialVersionUID = 8120463966489805867L;
+
         @Override
         public String getViewName(final String viewAndParameters) {
             return loggedUser.getDefaultExpenseSheet().getName();
