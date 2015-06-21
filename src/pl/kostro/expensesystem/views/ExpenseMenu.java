@@ -67,7 +67,6 @@ public class ExpenseMenu extends CustomComponent {
     sheetLabel.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
     sheetLabel.addStyleName(ValoTheme.LABEL_H4);
     sheetLabel.setHeight("20px");
-    sheetLabel.setIcon(FontAwesome.INBOX);
     menuItemsLayout.addComponent(sheetLabel);
 
     for (final ExpenseSheet expenseSheet : loggedUser.getExpenseSheetList()) {
@@ -94,7 +93,6 @@ public class ExpenseMenu extends CustomComponent {
     settingsLabel.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
     settingsLabel.addStyleName(ValoTheme.LABEL_H4);
     settingsLabel.setHeight("20px");
-    settingsLabel.setIcon(FontAwesome.GEAR);
     menuItemsLayout.addComponent(settingsLabel);
 
     final Button settingButton = new Button("Ustawienia");

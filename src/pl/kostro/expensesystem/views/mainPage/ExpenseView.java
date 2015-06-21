@@ -28,21 +28,14 @@ public class ExpenseView extends VerticalLayout implements View {
   private static final long serialVersionUID = -7668118300710655240L;
 
   private Calendar calendar = Calendar.getInstance();
-
   private ExpenseSheet expenseSheet;
 
   private HorizontalLayout searchLayout = new HorizontalLayout();
-  
   final VerticalLayout mainView = new VerticalLayout();
-
   private ComboBox categoryCombo;
-
   private ComboBox userCombo;
-
   private TextField formulaField;
-
   private ComboBox commentCombo;
-
   private MenuBar monthMenu;
 
   public ExpenseView(final ExpenseSheet expenseSheet) {
@@ -214,9 +207,7 @@ public class ExpenseView extends VerticalLayout implements View {
     final Button searchButton = new Button();
     searchButton.setCaption("Zastosuj");
     searchButton.addClickListener(new Button.ClickListener() {
-
       private static final long serialVersionUID = 1L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         User filterUser = null;
@@ -238,7 +229,7 @@ public class ExpenseView extends VerticalLayout implements View {
     });
 
     searchLayout.addComponent(searchButton);
-    searchLayout.setComponentAlignment(searchButton, Alignment.MIDDLE_RIGHT);
+    searchLayout.setComponentAlignment(searchButton, Alignment.BOTTOM_RIGHT);
 
     return searchLayout;
   }

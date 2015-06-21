@@ -77,7 +77,7 @@ public class DayView extends CustomComponent {
 
 		// TODO add user code here
 		thisDateField.setImmediate(true);
-		thisDateField.setDateFormat("dd-MMMM-yyyy");
+		thisDateField.setDateFormat("dd-MM-yyyy");
 		thisDateField.setTextFieldEnabled(false);
 		thisDateField.setRangeStart(UserSummaryService.getFirstDay(calendar.getTime()));
 		thisDateField.setRangeEnd(UserSummaryService.getLastDay(calendar.getTime()));
