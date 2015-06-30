@@ -13,6 +13,15 @@ import pl.kostro.expensesystem.model.RealUser;
 
 public class RealUserService {
   
+  static MessageDigest messageDigest;
+  
+  static {
+    try {
+      messageDigest = MessageDigest.getInstance("SHA-256");
+    } catch (NoSuchAlgorithmException e) {
+    }
+  }
+  
   public void removeRealUser(int id) {
     RealUser rU = findRealUser(id);
     if (rU != null) {
@@ -27,17 +36,12 @@ public class RealUserService {
   public void createRealUser(String name, String password, String email) {
     ExpenseEntityDao.begin();
     try {
-      MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
-      messageDigest.update(password.getBytes());
-      String encryptedPassword = new String(messageDigest.digest());
-      
       RealUser realUser = new RealUser();
       realUser.setName(name);
-      realUser.setPassword(encryptedPassword);
+      realUser.setPassword(new String(messageDigest.digest()));
       realUser.setEmail(email);
       ExpenseEntityDao.getEntityManager().persist(realUser);
       ExpenseEntityDao.commit();
-    } catch (NoSuchAlgorithmException e) {
     } finally {
       ExpenseEntityDao.close();
     }
@@ -60,15 +64,11 @@ public class RealUserService {
     ExpenseEntityDao.begin();
     RealUser loggedUser = null;
     try {
-      MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
       messageDigest.update(password.getBytes());
-      String encryptedPassword = new String(messageDigest.digest());
-      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName, "password", encryptedPassword), RealUser.class);
+
+      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName, "password", new String(messageDigest.digest())), RealUser.class);
       ExpenseEntityDao.commit();
     } catch (NoResultException e) {
-
-    } catch (NoSuchAlgorithmException e) {
-      
     } finally {
       ExpenseEntityDao.close();
     }
