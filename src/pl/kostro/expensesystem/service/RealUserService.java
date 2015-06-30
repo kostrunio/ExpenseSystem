@@ -26,7 +26,7 @@ public class RealUserService {
     try {
       RealUser realUser = new RealUser();
       realUser.setName(name);
-      realUser.setPassword(password);
+      realUser.setPassword(password.hashCode());
       realUser.setEmail(email);
       ExpenseEntityDao.getEntityManager().persist(realUser);
       ExpenseEntityDao.commit();
@@ -52,7 +52,7 @@ public class RealUserService {
     ExpenseEntityDao.begin();
     RealUser loggedUser = null;
     try {
-      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName, "password", password), RealUser.class);
+      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName, "password", password.hashCode()), RealUser.class);
       ExpenseEntityDao.commit();
     } catch (NoResultException e) {
 

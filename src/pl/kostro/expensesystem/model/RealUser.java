@@ -32,7 +32,7 @@ public class RealUser extends User {
   private static final long serialVersionUID = 8197867574179477991L;
 
   @Column(name="u_password")
-  private String password;
+  private int password;
   @Column(name="u_email")
   private String email;
   @ManyToMany(fetch=FetchType.EAGER)
@@ -56,11 +56,11 @@ public class RealUser extends User {
     super(name);
   }
 
-  public String getPassword() {
+  public int getPassword() {
     return password;
   }
 
-  public void setPassword(String password) {
+  public void setPassword(int password) {
     this.password = password;
   }
 
