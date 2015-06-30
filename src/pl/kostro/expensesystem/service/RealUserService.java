@@ -1,5 +1,8 @@
 package pl.kostro.expensesystem.service;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
 import javax.persistence.NoResultException;
 
 import com.google.gwt.thirdparty.guava.common.collect.ImmutableMap;
@@ -24,12 +27,17 @@ public class RealUserService {
   public void createRealUser(String name, String password, String email) {
     ExpenseEntityDao.begin();
     try {
+      MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+      messageDigest.update(password.getBytes());
+      String encryptedPassword = new String(messageDigest.digest());
+      
       RealUser realUser = new RealUser();
       realUser.setName(name);
-      realUser.setPassword(password.hashCode());
+      realUser.setPassword(encryptedPassword);
       realUser.setEmail(email);
       ExpenseEntityDao.getEntityManager().persist(realUser);
       ExpenseEntityDao.commit();
+    } catch (NoSuchAlgorithmException e) {
     } finally {
       ExpenseEntityDao.close();
     }
@@ -52,10 +60,15 @@ public class RealUserService {
     ExpenseEntityDao.begin();
     RealUser loggedUser = null;
     try {
-      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName, "password", password.hashCode()), RealUser.class);
+      MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+      messageDigest.update(password.getBytes());
+      String encryptedPassword = new String(messageDigest.digest());
+      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName, "password", encryptedPassword), RealUser.class);
       ExpenseEntityDao.commit();
     } catch (NoResultException e) {
 
+    } catch (NoSuchAlgorithmException e) {
+      
     } finally {
       ExpenseEntityDao.close();
     }
