@@ -181,6 +181,8 @@ public class ExpenseView extends VerticalLayout implements View {
   }
 
   private Component buildSearchLayout() {
+    searchLayout.setMargin(true);
+    searchLayout.setSpacing(true);
     searchLayout.setVisible(false);
 
     // categoryCombo
