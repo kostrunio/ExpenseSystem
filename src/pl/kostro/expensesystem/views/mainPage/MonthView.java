@@ -13,11 +13,12 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
-public class MonthView extends HorizontalLayout {
+public class MonthView extends HorizontalSplitPanel {
 
   private ExpenseSheet expenseSheet;
 
@@ -40,8 +41,9 @@ public class MonthView extends HorizontalLayout {
     setSizeFull();
 
     // calendarLayout
-    addComponent(buildCalendarLayout());
-    addComponent(buildSummaryLayout());
+    setFirstComponent(buildCalendarLayout());
+    setSecondComponent(buildSummaryLayout());
+    setSplitPosition(70);
 
     showCalendar(expenseSheet, calendar);
   }

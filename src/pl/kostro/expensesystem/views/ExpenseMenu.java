@@ -42,7 +42,6 @@ public class ExpenseMenu extends CustomComponent {
     menuLayout.addStyleName(ValoTheme.MENU_PART);
     menuLayout.addStyleName("no-vertical-drag-hints");
     menuLayout.addStyleName("no-horizontal-drag-hints");
-    menuLayout.setWidth(null);
     menuLayout.setHeight("100%");
 
     menuLayout.addComponent(buildTitle());
@@ -66,7 +65,6 @@ public class ExpenseMenu extends CustomComponent {
     Label sheetLabel = new Label("Zdefiniowane arkusze", ContentMode.HTML);
     sheetLabel.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
     sheetLabel.addStyleName(ValoTheme.LABEL_H4);
-    sheetLabel.setHeight("20px");
     menuItemsLayout.addComponent(sheetLabel);
 
     for (final ExpenseSheet expenseSheet : loggedUser.getExpenseSheetList()) {
@@ -92,7 +90,6 @@ public class ExpenseMenu extends CustomComponent {
     Label settingsLabel = new Label("Zarz¹dzanie", ContentMode.HTML);
     settingsLabel.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
     settingsLabel.addStyleName(ValoTheme.LABEL_H4);
-    settingsLabel.setHeight("20px");
     menuItemsLayout.addComponent(settingsLabel);
 
     final Button settingButton = new Button("Ustawienia");
