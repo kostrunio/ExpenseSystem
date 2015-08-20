@@ -115,6 +115,8 @@ public class UserSummaryService {
   }
 
   public static void checkSummary(ExpenseSheet expenseSheet, Date date) {
+    if (expenseSheet.getFilter() != null)
+      return;
     for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
       UserSummary userSummary = findUserSummary(userLimit, date);
       BigDecimal exSummary = new BigDecimal(0);
@@ -122,7 +124,6 @@ public class UserSummaryService {
         exSummary = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
       if (!userSummary.getSum().equals(exSummary)) {
         userSummary.setSum(exSummary);
-        if (expenseSheet.getFilter() == null)
         	save(userSummary);
       }
     }
