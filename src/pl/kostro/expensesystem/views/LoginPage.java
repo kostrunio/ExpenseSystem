@@ -2,14 +2,13 @@
 
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.service.RealUserService;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.shared.Position;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -18,7 +17,6 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -89,14 +87,14 @@ public class LoginPage extends VerticalLayout {
 
         @Override
         public void buttonClick(final ClickEvent event) {
-          RealUser loggedUser = RealUserService.getUserData(usernameField.getValue(), passwordField.getValue());
+          RealUser loggedUser = null;
+          try {
+            loggedUser = RealUserService.getUserData(usernameField.getValue(), passwordField.getValue());
+          } catch (Exception e) {
+            ShowNotification.dbProblem();
+          }
           if (loggedUser == null) {
-            Notification notification = new Notification("B³¹d logowania");
-            notification.setDescription("B³êdna nazwa u¿ytkownika lub has³o");
-            notification.setStyleName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
-            notification.setPosition(Position.BOTTOM_CENTER);
-            notification.setDelayMsec(10000);
-            notification.show(Page.getCurrent());
+            ShowNotification.logonProblem();
           } else
             VaadinSession.getCurrent().setAttribute(RealUser.class.getName(), loggedUser);
           ((ExpenseSystemUI)getUI()).updateContent();
