@@ -10,7 +10,6 @@ import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Filter;
 
-import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Alignment;
@@ -23,7 +22,6 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.MenuBar.MenuItem;
-import com.vaadin.ui.themes.ValoTheme;
 
 public class ExpenseView extends VerticalLayout implements View {
 
@@ -189,8 +187,6 @@ public class ExpenseView extends VerticalLayout implements View {
     // searchButton
     final Button searchButton = new Button();
     searchButton.setCaption("Zastosuj");
-    searchButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
-    searchButton.setClickShortcut(KeyCode.ENTER);
     searchButton.addClickListener(new Button.ClickListener() {
       private static final long serialVersionUID = 1L;
       @Override
@@ -219,7 +215,7 @@ public class ExpenseView extends VerticalLayout implements View {
     return searchLayout;
   }
   
-  private void prepareSearchLayout(ExpenseSheet expenseSheet) {
+  private void prepareSearchLayout(ExpenseSheet expenseSheet) {    
     categoryCombo.removeAllItems();
     categoryCombo.addItems(expenseSheet.getCategoryList());
     userCombo.removeAllItems();
