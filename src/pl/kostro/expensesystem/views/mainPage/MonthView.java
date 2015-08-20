@@ -41,8 +41,8 @@ public class MonthView extends HorizontalSplitPanel {
     setSizeFull();
 
     // calendarLayout
-    setFirstComponent(buildCalendarLayout());
-    setSecondComponent(buildSummaryLayout());
+    addComponent(buildCalendarLayout());
+    addComponent(buildSummaryLayout());
     setSplitPosition(70);
 
     showCalendar(expenseSheet, calendar);
