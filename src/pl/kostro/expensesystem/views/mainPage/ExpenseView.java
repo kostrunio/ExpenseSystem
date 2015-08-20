@@ -10,6 +10,7 @@ import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Filter;
 
+import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Alignment;
@@ -22,6 +23,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.MenuBar.MenuItem;
+import com.vaadin.ui.themes.ValoTheme;
 
 public class ExpenseView extends VerticalLayout implements View {
 
@@ -90,39 +92,19 @@ public class ExpenseView extends VerticalLayout implements View {
       @Override
       public void buttonClick(ClickEvent event) {
         searchLayout.setVisible(!searchLayout.isVisible());
-        prepareSearchLayout(expenseSheet, searchLayout.isVisible());
+        if (searchLayout.isVisible()) {
+          prepareSearchLayout(expenseSheet);
+        } else {
+          expenseSheet.setFilter(null);
+          mainView.removeAllComponents();
+          mainView.addComponent(new MonthView(expenseSheet, calendar));
+        }
       }
 
     });
 
     menuLayout.addComponent(filterButton);
     menuLayout.setComponentAlignment(filterButton, Alignment.MIDDLE_RIGHT);
-
-    // cleanFilterButton
-    final Button cleanFilterButton = new Button();
-    cleanFilterButton.setCaption("Wyczyœæ");
-    cleanFilterButton.setImmediate(true);
-    cleanFilterButton.addClickListener(new Button.ClickListener() {
-
-      private static final long serialVersionUID = 3632539483442849389L;
-
-      @Override
-      public void buttonClick(ClickEvent event) {
-        if (searchLayout.isVisible()) {
-          categoryCombo.removeAllItems();
-          userCombo.removeAllItems();
-          formulaField.setValue("");
-          commentCombo.removeAllItems();
-          expenseSheet.setFilter(null);
-          searchLayout.setVisible(false);
-          mainView.removeAllComponents();
-          mainView.addComponent(new MonthView(expenseSheet, calendar));
-        }
-      }
-    });
-
-    menuLayout.addComponent(cleanFilterButton);
-    menuLayout.setComponentAlignment(cleanFilterButton, Alignment.MIDDLE_RIGHT);
 
     // findButton
     final Button findButton = new Button();
@@ -139,13 +121,12 @@ public class ExpenseView extends VerticalLayout implements View {
           yearMenu.setEnabled(false);
           monthMenu.setEnabled(false);
           filterButton.setEnabled(false);
-          cleanFilterButton.setEnabled(false);
           mainView.addComponent(new FindExpenseView(expenseSheet));
         } else {
+          expenseSheet.setFilter(null);
           yearMenu.setEnabled(true);
           monthMenu.setEnabled(true);
           filterButton.setEnabled(true);
-          cleanFilterButton.setEnabled(true);
           mainView.addComponent(new MonthView(expenseSheet, calendar));
         }
       }
@@ -208,6 +189,8 @@ public class ExpenseView extends VerticalLayout implements View {
     // searchButton
     final Button searchButton = new Button();
     searchButton.setCaption("Zastosuj");
+    searchButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
+    searchButton.setClickShortcut(KeyCode.ENTER);
     searchButton.addClickListener(new Button.ClickListener() {
       private static final long serialVersionUID = 1L;
       @Override
@@ -236,14 +219,15 @@ public class ExpenseView extends VerticalLayout implements View {
     return searchLayout;
   }
   
-  private void prepareSearchLayout(ExpenseSheet expenseSheet, boolean visible) {
-    if (visible) {
-      categoryCombo.addItems(expenseSheet.getCategoryList());
-      userCombo.addItems(expenseSheet.getUserLimitList());
-      commentCombo.setNewItemsAllowed(true);
-      commentCombo.setNullSelectionAllowed(true);
-      commentCombo.addItems(ExpenseSheetService.getCommentsList(expenseSheet));
-    }
+  private void prepareSearchLayout(ExpenseSheet expenseSheet) {
+    categoryCombo.removeAllItems();
+    categoryCombo.addItems(expenseSheet.getCategoryList());
+    userCombo.removeAllItems();
+    userCombo.addItems(expenseSheet.getUserLimitList());
+    formulaField.clear();
+    commentCombo.setNullSelectionAllowed(true);
+    commentCombo.removeAllItems();
+    commentCombo.addItems(ExpenseSheetService.getCommentsList(expenseSheet));
   }
 
   @Override
