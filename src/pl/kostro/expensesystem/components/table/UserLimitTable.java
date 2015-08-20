@@ -5,7 +5,6 @@ import java.util.Calendar;
 
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
-import pl.kostro.expensesystem.model.UserSummary;
 import pl.kostro.expensesystem.service.UserSummaryService;
 
 import com.vaadin.data.Item;
@@ -40,16 +39,19 @@ public class UserLimitTable extends Table {
   public void fulfill(Calendar calendar) {
     removeAllItems();
     for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
-      UserSummary userSummary = UserSummaryService.findUserSummary(userLimit,
-          UserSummaryService.getFirstDay(calendar.getTime()));
+      BigDecimal actSum;
+      if (expenseSheet.getUserLimitExpenseMap().get(userLimit) != null)
+        actSum = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
+      else
+        actSum = new BigDecimal(0);
       Object newItemId = addItem();
       Item row = getItem(newItemId);
       row.getItemProperty("U¿ytkownik").setValue(userLimit.getUser().getName());
-      row.getItemProperty("Suma").setValue(userSummary.getSum());
+      row.getItemProperty("Suma").setValue(actSum);
       if (userLimit.isContinuousSummary()) {
         row.getItemProperty("Zosta³o").setValue(UserSummaryService.calculateSum(userLimit, calendar.getTime()));
       } else {
-        row.getItemProperty("Zosta³o").setValue(userSummary.getLimit().subtract(userSummary.getSum()));
+        row.getItemProperty("Zosta³o").setValue(userLimit.getLimit().subtract(actSum));
       }
     }
   }
