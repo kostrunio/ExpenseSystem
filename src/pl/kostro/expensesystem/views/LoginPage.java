@@ -90,14 +90,15 @@ public class LoginPage extends VerticalLayout {
           RealUser loggedUser = null;
           try {
             loggedUser = RealUserService.getUserData(usernameField.getValue(), passwordField.getValue());
+            if (loggedUser == null) {
+              ShowNotification.logonProblem();
+            } else {
+              VaadinSession.getCurrent().setAttribute(RealUser.class.getName(), loggedUser);
+            }
+            ((ExpenseSystemUI)getUI()).updateContent();
           } catch (Exception e) {
             ShowNotification.dbProblem();
           }
-          if (loggedUser == null) {
-            ShowNotification.logonProblem();
-          } else
-            VaadinSession.getCurrent().setAttribute(RealUser.class.getName(), loggedUser);
-          ((ExpenseSystemUI)getUI()).updateContent();
         }
     });
     
