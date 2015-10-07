@@ -38,6 +38,7 @@ public class RealUserService {
     try {
       RealUser realUser = new RealUser();
       realUser.setName(name);
+      messageDigest.update(password.getBytes());
       realUser.setPassword(new String(messageDigest.digest()));
       realUser.setEmail(email);
       ExpenseEntityDao.getEntityManager().persist(realUser);
