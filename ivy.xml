@@ -42,7 +42,7 @@
 			rev="&vaadin.version;" conf="widgetset-compile->default" />
 		
 		<!-- Hibernate -->
-		<dependency org="org.hibernate" name="hibernate-entitymanager" rev="4.3.7.Final"/>
+		<dependency org="org.hibernate" name="hibernate-entitymanager" rev="4.3.10.Final"/>
 		<dependency org="org.hibernate" name="hibernate-c3p0" rev="4.3.10.Final"/>
 		
 	</dependencies>
