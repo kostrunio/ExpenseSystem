@@ -23,7 +23,7 @@ import pl.kostro.expensesystem.utils.Calculator;
 @NamedQueries({
   @NamedQuery(
       name = "findAllExpense",
-      query = "select e from ExpenseSheet es join es.expenseList e where es = :expenseSheet"
+      query = "select e from ExpenseSheet es join es.expenseList e where es = :expenseSheet order by e.date desc"
       ),
   @NamedQuery(
       name = "findFirstExpense",
