@@ -74,7 +74,7 @@ public class AddRealUserView extends CustomComponent {
           userLimit.setUser(realUser);
           userLimit.setLimit(new BigDecimal(limitField.getValue()));
         }
-        setCompositionRoot(new ExpenseSheetSettingsView(expenseSheet));
+        setCompositionRoot(new ExpenseSheetSettingsView());
       }
     });
     

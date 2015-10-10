@@ -3,6 +3,7 @@ package pl.kostro.expensesystem.views;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.views.mainPage.ExpenseView;
+import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsView;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
@@ -25,10 +26,7 @@ public class ExpenseNavigator extends Navigator {
     initViewChangeListener();
     initViewProviders();
 
-    for (final ExpenseSheet expenseSheet : loggedUser.getExpenseSheetList()) {
-      addView(expenseSheet.getName(), new ExpenseView(expenseSheet));
-    }
-    addView("settings", new SettingsPage());
+    addView("settings", new ExpenseSheetSettingsView());
   }
 
   private void initViewChangeListener() {

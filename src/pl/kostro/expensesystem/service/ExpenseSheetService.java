@@ -188,4 +188,12 @@ public static Set<String> getCommentsList(ExpenseSheet expenseSheet) {
 	return commentsList;
 }
 
+public static ExpenseSheet getExpenseSheet(RealUser loggedUser, String expenseSheetName) {
+  for (ExpenseSheet expenseSheet : loggedUser.getExpenseSheetList()) {
+    if (expenseSheet.getName().equals(expenseSheetName))
+      return expenseSheet;
+  }
+  return null;
+}
+
 }

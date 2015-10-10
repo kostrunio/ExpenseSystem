@@ -49,7 +49,7 @@ public class NewExpenseSheetView extends CustomComponent {
 		      public void buttonClick(ClickEvent event) {
 			      ExpenseSheetService expenseSheetService = new ExpenseSheetService();
 			      ExpenseSheet expenseSheet = expenseSheetService.createExpenseSheet(loggedUser, newSheet.getValue());
-		        setCompositionRoot(new ExpenseSheetSettingsView(expenseSheet));
+		        setCompositionRoot(new ExpenseSheetSettingsView());
 		      }
 		});
 	}

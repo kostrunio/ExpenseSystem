@@ -102,7 +102,11 @@ public class ExpenseMenu extends CustomComponent {
 
       @Override
       public void buttonClick(ClickEvent event) {
-        UI.getCurrent().getNavigator().navigateTo("settings");
+        String curExpenseSheetName = UI.getCurrent().getNavigator().getState().split("/")[0];
+        if (curExpenseSheetName.equals("settings"))
+          UI.getCurrent().getNavigator().navigateTo(UI.getCurrent().getNavigator().getState());
+        else
+          UI.getCurrent().getNavigator().navigateTo("settings"+"/"+curExpenseSheetName);
       }
     });
     menuItemsLayout.addComponent(settingButton);
