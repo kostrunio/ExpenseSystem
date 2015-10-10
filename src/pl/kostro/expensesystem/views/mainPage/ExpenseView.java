@@ -119,7 +119,7 @@ public class ExpenseView extends VerticalLayout implements View {
           yearMenu.setEnabled(false);
           monthMenu.setEnabled(false);
           filterButton.setEnabled(false);
-          mainView.addComponent(new FindExpenseView(expenseSheet));
+          mainView.addComponent(new FindExpenseView(expenseSheet, calendar));
         } else {
           expenseSheet.setFilter(null);
           yearMenu.setEnabled(true);
