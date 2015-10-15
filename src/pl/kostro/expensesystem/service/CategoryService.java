@@ -6,21 +6,21 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 
 public class CategoryService {
   
-  public void removeCategory(int id) {
+  public static void removeCategory(int id) {
     Category cat = findCategory(id);
     if (cat != null) {
       ExpenseEntityDao.getEntityManager().remove(cat);
     }
   }
 
-  public Category findCategory(int id) {
+  public static Category findCategory(int id) {
     return ExpenseEntityDao.getEntityManager().find(Category.class, id);
   }
   
-  public void createCategory(ExpenseSheet expenseSheet, String name, int order) {
+  public static void createCategory(ExpenseSheet expenseSheet, String name) {
     ExpenseEntityDao.begin();
     try {
-      Category category = new Category(name, order);
+      Category category = new Category(name, expenseSheet.getCategoryList().size());
       ExpenseEntityDao.getEntityManager().persist(category);
       expenseSheet.getCategoryList().add(category);
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
