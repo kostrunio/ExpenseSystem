@@ -1,13 +1,11 @@
 package pl.kostro.expensesystem.views;
 
-import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.views.mainPage.ExpenseView;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsView;
 
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.navigator.ViewProvider;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.ComponentContainer;
@@ -17,52 +15,21 @@ public class ExpenseNavigator extends Navigator {
 
   private static final long serialVersionUID = -4570240196212970040L;
 
-  RealUser loggedUser;
-
   public ExpenseNavigator(ComponentContainer container) {
     super(UI.getCurrent(), container);
-    loggedUser = (RealUser) VaadinSession.getCurrent().getAttribute(RealUser.class.getName());
 
-    initViewChangeListener();
-    initViewProviders();
-
+    addView("expenseSheet", new ExpenseView());
     addView("settings", new ExpenseSheetSettingsView());
-  }
-
-  private void initViewChangeListener() {
-    addViewChangeListener(new ViewChangeListener() {
-
-      private static final long serialVersionUID = -5886728517257511451L;
-
-      @Override
-      public boolean beforeViewChange(final ViewChangeEvent event) {
-        // Since there's no conditions in switching between the views
-        // we can always return true.
-        return true;
-      }
-
-      @Override
-      public void afterViewChange(final ViewChangeEvent event) {
-
-      }
-    });
-  }
-
-  private void initViewProviders() {
-    // A dedicated view provider is added for each separate view type
-    for (final ExpenseSheet expenseSheet : loggedUser.getExpenseSheetList()) {
-      addView(expenseSheet.getName(), new ExpenseView(expenseSheet));
-    }
-
+    
     setErrorProvider(new ViewProvider() {
-
       private static final long serialVersionUID = 8120463966489805867L;
 
       @Override
       public String getViewName(final String viewAndParameters) {
+        RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
         if (loggedUser.getDefaultExpenseSheet() == null)
           return "settings";
-        return loggedUser.getDefaultExpenseSheet().getName();
+        return "expenseSheet";
       }
 
       @Override
@@ -70,7 +37,7 @@ public class ExpenseNavigator extends Navigator {
         if (viewName.equals("settings"))
           return new ExpenseSheetSettingsView();
         else
-          return new ExpenseView(loggedUser.getDefaultExpenseSheet());
+          return new ExpenseView();
       }
     });
   }
