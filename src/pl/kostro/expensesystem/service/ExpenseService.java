@@ -57,11 +57,10 @@ public class ExpenseService {
   }
   
   public static void creteExpense(ExpenseSheet expenseSheet, Expense expense) {
-    ExpenseSheetService expenseSheetService = new ExpenseSheetService();
     ExpenseEntityDao.begin();
     try {
       expense = ExpenseEntityDao.getEntityManager().merge(expense);
-      expenseSheetService.addExpense(expenseSheet, expense);
+      ExpenseSheetService.addExpense(expenseSheet, expense);
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
       ExpenseEntityDao.commit();
     } finally {
@@ -71,10 +70,9 @@ public class ExpenseService {
 
   
   public static void removeExpense(ExpenseSheet expenseSheet, Expense expense) {
-    ExpenseSheetService expenseSheetService = new ExpenseSheetService();
     ExpenseEntityDao.begin();
     try {
-      expenseSheetService.removeExpense(expenseSheet, expense);
+      ExpenseSheetService.removeExpense(expenseSheet, expense);
       ExpenseEntityDao.getEntityManager().remove(findExpense(expense.getId()));
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
       ExpenseEntityDao.commit();
