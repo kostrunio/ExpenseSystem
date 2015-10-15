@@ -26,21 +26,28 @@ public class ExpenseSheetService {
   
   private static ExpenseService expenseService = new ExpenseService();
   
-  public void removeExpenseSheet(int id) {
-    ExpenseSheet eSh = findExpenseSheet(id);
-    if (eSh != null) {
-      ExpenseEntityDao.getEntityManager().remove(eSh);
+  public static void removeExpenseSheet(ExpenseSheet expenseSheet) {
+    ExpenseSheet attached = findExpenseSheet(expenseSheet.getId());
+    if (attached != null) {
+      ExpenseEntityDao.begin();
+      try {
+        RealUserService.removeExpenseSheet(attached);
+        ExpenseEntityDao.getEntityManager().remove(attached);
+        ExpenseEntityDao.commit();
+      } finally {
+        ExpenseEntityDao.close();
+      }
     }
   }
 
-  public ExpenseSheet findExpenseSheet(int id) {
+  public static ExpenseSheet findExpenseSheet(int id) {
     return ExpenseEntityDao.getEntityManager().find(ExpenseSheet.class, id);
   }
   
-  public ExpenseSheet createExpenseSheet(RealUser owner, String name) {
+  public static ExpenseSheet createExpenseSheet(RealUser owner, String name) {
     ExpenseEntityDao.begin();
+    ExpenseSheet expenseSheet = new ExpenseSheet();
     try {
-      ExpenseSheet expenseSheet = new ExpenseSheet();
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
       UserLimit userLimit = new UserLimit(owner, new BigDecimal(0));
       ExpenseEntityDao.getEntityManager().persist(userLimit);
@@ -51,10 +58,12 @@ public class ExpenseSheetService {
       owner.getExpenseSheetList().add(expenseSheet);
       owner = ExpenseEntityDao.getEntityManager().merge(owner);
       ExpenseEntityDao.commit();
-      return expenseSheet;
     } finally {
       ExpenseEntityDao.close();
     }
+    if (owner.getDefaultExpenseSheet() == null)
+      RealUserService.setDefaultExpenseSheet(owner, expenseSheet);
+    return expenseSheet;
   }
 
   private static List<Expense> getExpenseList(ExpenseSheet expenseSheet) {
@@ -110,17 +119,17 @@ public class ExpenseSheetService {
     userLimitExpense.addExpense(expense);
   }
 
-  public void addExpense(ExpenseSheet expenseSheet, Expense expense) {
+  public static void addExpense(ExpenseSheet expenseSheet, Expense expense) {
     expenseSheet.getExpenseList().add(expense);
     addExpenseToDateMap(expenseSheet, expense);
   }
 
-  public void removeExpense(ExpenseSheet expenseSheet, Expense expense) {
+  public static void removeExpense(ExpenseSheet expenseSheet, Expense expense) {
     expenseSheet.getExpenseList().remove(expense);
     removeExpenseFromMap(expenseSheet, expense);
   }
   
-  private void removeExpenseFromMap(ExpenseSheet expenseSheet, Expense expense) {
+  private static void removeExpenseFromMap(ExpenseSheet expenseSheet, Expense expense) {
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
     dateExpense.removeExpense(expense);
   }
