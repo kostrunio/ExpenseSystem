@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -42,15 +43,15 @@ public class ExpenseSheet extends AbstractEntity {
   private RealUser owner;
   @Column(name="es_name")
   private String name;
-  @OneToMany(fetch=FetchType.EAGER)
+  @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
   @JoinColumn(name="c_es_id") 
   @OrderBy("order")
   private List<Category> categoryList;
-  @OneToMany(fetch=FetchType.EAGER)
+  @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
   @JoinColumn(name="ul_es_id")
   @OrderBy("order")
   private List<UserLimit> userLimitList;
-  @OneToMany(mappedBy="expenseSheet")
+  @OneToMany(mappedBy="expenseSheet", cascade=CascadeType.REMOVE)
   @OrderBy
   private List<Expense> expenseList;
   @Column(name="es_reload_day")
