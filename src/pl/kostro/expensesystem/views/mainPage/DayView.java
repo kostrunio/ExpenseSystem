@@ -121,20 +121,20 @@ public class DayView extends CustomComponent {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				setCompositionRoot(new MonthView(expenseSheet, calendar));
+				setCompositionRoot(new MonthView(calendar));
 			}
 			
 		});
 		
 		categoryLayout.removeAllComponents();
-		categoryLayout.addComponent(new CategoryExpenseView(expenseSheet, calendar, expenseSheet.getCategoryList().get(0), thisView));
+		categoryLayout.addComponent(new CategoryExpenseView(calendar, expenseSheet.getCategoryList().get(0), thisView));
 	}
 	
 	public void refreshView(Calendar calendar, Category category) {
 	  prepareExpensesLayout(calendar);
 	  if (category != null) {
 	    categoryLayout.removeAllComponents();
-      categoryLayout.addComponent(new CategoryExpenseView(expenseSheet, calendar, category, thisView));
+      categoryLayout.addComponent(new CategoryExpenseView(calendar, category, thisView));
 	  }
 	}
 
@@ -180,7 +180,7 @@ public class DayView extends CustomComponent {
 					if (event.getButton().getData() instanceof Category) {
 						Category category = (Category) event.getButton().getData();
 						categoryLayout.removeAllComponents();
-						categoryLayout.addComponent(new CategoryExpenseView(expenseSheet, calendar, category, thisView));
+						categoryLayout.addComponent(new CategoryExpenseView(calendar, category, thisView));
 					}
 				}
 				

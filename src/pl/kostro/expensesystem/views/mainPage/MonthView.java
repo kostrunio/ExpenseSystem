@@ -9,6 +9,7 @@ import pl.kostro.expensesystem.components.table.UserLimitTable;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.service.UserSummaryService;
 
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -33,8 +34,8 @@ public class MonthView extends HorizontalSplitPanel {
 
   private static final long serialVersionUID = 2594978831652398190L;
 
-  public MonthView(final ExpenseSheet expenseSheet, Calendar date) {
-    this.expenseSheet = expenseSheet;
+  public MonthView(Calendar date) {
+    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.calendar = date;
     UserSummaryService.setFirstDay(calendar);
 

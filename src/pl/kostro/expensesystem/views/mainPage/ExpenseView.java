@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
@@ -12,6 +13,7 @@ import pl.kostro.expensesystem.utils.Filter;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -38,9 +40,10 @@ public class ExpenseView extends VerticalLayout implements View {
   private ComboBox commentCombo;
   private MenuBar monthMenu;
 
-  public ExpenseView(final ExpenseSheet expenseSheet) {
-    this.expenseSheet = expenseSheet;
-
+  public ExpenseView() {
+  }
+  
+  private void prepareView() {
     setMargin(true);
     setSpacing(true);
 
@@ -51,7 +54,7 @@ public class ExpenseView extends VerticalLayout implements View {
     addComponent(mainView);
 
     calendar.set(Calendar.DAY_OF_MONTH, 1);
-    mainView.addComponent(new MonthView(expenseSheet, calendar));
+    mainView.addComponent(new MonthView(calendar));
   }
 
   private Component buildYearMenu() {
@@ -63,7 +66,7 @@ public class ExpenseView extends VerticalLayout implements View {
       public void menuSelected(MenuItem selectedItem) {
         UserSummaryService.setFirstDay(calendar, selectedItem.getText());
         mainView.removeAllComponents();
-        mainView.addComponent(new MonthView(expenseSheet, calendar));
+        mainView.addComponent(new MonthView(calendar));
       }
     };
     
@@ -95,7 +98,7 @@ public class ExpenseView extends VerticalLayout implements View {
         } else {
           expenseSheet.setFilter(null);
           mainView.removeAllComponents();
-          mainView.addComponent(new MonthView(expenseSheet, calendar));
+          mainView.addComponent(new MonthView(calendar));
         }
       }
 
@@ -119,13 +122,13 @@ public class ExpenseView extends VerticalLayout implements View {
           yearMenu.setEnabled(false);
           monthMenu.setEnabled(false);
           filterButton.setEnabled(false);
-          mainView.addComponent(new FindExpenseView(expenseSheet, calendar));
+          mainView.addComponent(new FindExpenseView(calendar));
         } else {
           expenseSheet.setFilter(null);
           yearMenu.setEnabled(true);
           monthMenu.setEnabled(true);
           filterButton.setEnabled(true);
-          mainView.addComponent(new MonthView(expenseSheet, calendar));
+          mainView.addComponent(new MonthView(calendar));
         }
       }
     });
@@ -145,7 +148,7 @@ public class ExpenseView extends VerticalLayout implements View {
       public void menuSelected(MenuItem selectedItem) {
         mainView.removeAllComponents();
         UserSummaryService.setFirstDay(calendar, UserSummaryService.getMonthNumber(selectedItem.getText()));
-        mainView.addComponent(new MonthView(expenseSheet, calendar));
+        mainView.addComponent(new MonthView(calendar));
       }
 
     };
@@ -205,7 +208,7 @@ public class ExpenseView extends VerticalLayout implements View {
         }
         expenseSheet.setFilter(new Filter((Category) categoryCombo.getValue(), filterUser, filterFormula, filterComment));
         mainView.removeAllComponents();
-        mainView.addComponent(new MonthView(expenseSheet, calendar));
+        mainView.addComponent(new MonthView(calendar));
       }
     });
 
@@ -228,8 +231,16 @@ public class ExpenseView extends VerticalLayout implements View {
 
   @Override
   public void enter(ViewChangeEvent event) {
-    // TODO Auto-generated method stub
-
+    if (event.getParameters().isEmpty()) {
+      RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
+      expenseSheet = loggedUser.getDefaultExpenseSheet();
+    } else {
+      expenseSheet = ExpenseSheetService.findExpenseSheet(Integer.parseInt(event.getParameters()));
+    }
+    VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
+    removeAllComponents();
+    mainView.removeAllComponents();
+    prepareView();
   }
 
 }
