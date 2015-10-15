@@ -25,10 +25,7 @@ public class ExpenseMenu extends CustomComponent {
 
   CssLayout menuItemsLayout = new CssLayout();
 
-  RealUser loggedUser;
-
   public ExpenseMenu() {
-    loggedUser = (RealUser) VaadinSession.getCurrent().getAttribute(RealUser.class.getName());
 
     setPrimaryStyleName(ValoTheme.MENU_ROOT);
     setSizeUndefined();
@@ -59,6 +56,8 @@ public class ExpenseMenu extends CustomComponent {
   }
 
   private Component buildMenuItems() {
+    RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
+    
     menuItemsLayout.setHeight("100%");
     menuItemsLayout.setStyleName("valo-menuitems");
     
@@ -80,7 +79,7 @@ public class ExpenseMenu extends CustomComponent {
 
         @Override
         public void buttonClick(final ClickEvent event) {
-          UI.getCurrent().getNavigator().navigateTo(event.getButton().getCaption());
+          UI.getCurrent().getNavigator().navigateTo("expenseSheet/" + expenseSheet.getId());
         }
       });
 
@@ -102,11 +101,7 @@ public class ExpenseMenu extends CustomComponent {
 
       @Override
       public void buttonClick(ClickEvent event) {
-        String curExpenseSheetName = UI.getCurrent().getNavigator().getState().split("/")[0];
-        if (curExpenseSheetName.equals("settings"))
-          UI.getCurrent().getNavigator().navigateTo(UI.getCurrent().getNavigator().getState());
-        else
-          UI.getCurrent().getNavigator().navigateTo("settings"+"/"+curExpenseSheetName);
+        UI.getCurrent().getNavigator().navigateTo("settings");
       }
     });
     menuItemsLayout.addComponent(settingButton);
@@ -121,7 +116,8 @@ public class ExpenseMenu extends CustomComponent {
 
       @Override
       public void buttonClick(ClickEvent event) {
-        VaadinSession.getCurrent().setAttribute(RealUser.class.getName(), null);
+        VaadinSession.getCurrent().setAttribute(RealUser.class, null);
+        VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, null);
         ((ExpenseSystemUI)getUI()).updateContent();
       }
     });
@@ -129,6 +125,11 @@ public class ExpenseMenu extends CustomComponent {
     
     return menuItemsLayout;
 
+  }
+
+  public void refresh() {
+    menuItemsLayout.removeAllComponents();
+    buildMenuItems();
   }
 
 }

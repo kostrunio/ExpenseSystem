@@ -93,7 +93,7 @@ public class LoginPage extends VerticalLayout {
             if (loggedUser == null) {
               ShowNotification.logonProblem();
             } else {
-              VaadinSession.getCurrent().setAttribute(RealUser.class.getName(), loggedUser);
+              VaadinSession.getCurrent().setAttribute(RealUser.class, loggedUser);
             }
             ((ExpenseSystemUI)getUI()).updateContent();
           } catch (Exception e) {
