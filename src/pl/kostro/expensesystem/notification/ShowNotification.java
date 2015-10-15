@@ -41,7 +41,7 @@ public class ShowNotification {
 
   public static void fieldEmpty(String fieldName) {
     Notification notification = new Notification("Blad formularza");
-    notification.setDescription("Pole " + fieldName + "nie mo¿e byc puste");
+    notification.setDescription("Pole " + fieldName + " nie mo¿e byc puste");
     notification.setStyleName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
     notification.setPosition(Position.BOTTOM_CENTER);
     notification.setDelayMsec(5000);
