@@ -14,7 +14,7 @@ public class ShowNotification {
     notification.setDescription("B³êdna nazwa u¿ytkownika lub has³o");
     notification.setStyleName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
     notification.setPosition(Position.BOTTOM_CENTER);
-    notification.setDelayMsec(10000);
+    notification.setDelayMsec(5000);
     notification.show(Page.getCurrent());
   }
   
@@ -23,7 +23,7 @@ public class ShowNotification {
     notification.setDescription("Nie udalo sie polaczyc do bazy danych");
     notification.setStyleName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
     notification.setPosition(Position.BOTTOM_CENTER);
-    notification.setDelayMsec(10000);
+    notification.setDelayMsec(5000);
     notification.show(Page.getCurrent());
   }
   
@@ -34,6 +34,24 @@ public class ShowNotification {
     desc.append("Bylo: " + actSum + ", jest: " + newSum);
     notification.setDescription(desc.toString());
     notification.setStyleName(ValoTheme.NOTIFICATION_WARNING + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
+    notification.setPosition(Position.BOTTOM_CENTER);
+    notification.setDelayMsec(2000);
+    notification.show(Page.getCurrent());
+  }
+
+  public static void fieldEmpty(String fieldName) {
+    Notification notification = new Notification("Blad formularza");
+    notification.setDescription("Pole " + fieldName + "nie mo¿e byc puste");
+    notification.setStyleName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
+    notification.setPosition(Position.BOTTOM_CENTER);
+    notification.setDelayMsec(5000);
+    notification.show(Page.getCurrent());
+  }
+
+  public static void expenseSheetAdded() {
+    Notification notification = new Notification("Arkusz dodany");
+    notification.setDescription("Prosze ponownie sie zalogowac");
+    notification.setStyleName(ValoTheme.NOTIFICATION_SUCCESS + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
     notification.setPosition(Position.BOTTOM_CENTER);
     notification.setDelayMsec(5000);
     notification.show(Page.getCurrent());
