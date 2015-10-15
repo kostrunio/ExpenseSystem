@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.views;
 
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.ComponentContainer;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.HorizontalLayout;
@@ -12,7 +13,10 @@ public class MainPage extends HorizontalLayout {
     setSizeFull();
     addStyleName("mainview");
     
-    addComponent(new ExpenseMenu());
+    ExpenseMenu expenseMenu = new ExpenseMenu();
+    VaadinSession.getCurrent().setAttribute(ExpenseMenu.class, expenseMenu);
+    
+    addComponent(expenseMenu);
 
     ComponentContainer content = new CssLayout();
     content.setPrimaryStyleName("valo-content");
