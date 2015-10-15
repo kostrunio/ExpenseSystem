@@ -25,6 +25,10 @@ import javax.persistence.OrderBy;
   @NamedQuery(
       name = "findLoggedUser",
       query = "select u from RealUser u where u.name = :name and u.password = :password"
+      ),
+  @NamedQuery(
+      name = "findUsersWithExpenseSheet",
+      query = "select u from RealUser u join u.expenseSheetList es where es = :expenseSheet "
       )
 })
 public class RealUser extends User {
