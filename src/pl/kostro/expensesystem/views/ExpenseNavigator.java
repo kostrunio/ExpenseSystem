@@ -60,12 +60,17 @@ public class ExpenseNavigator extends Navigator {
 
       @Override
       public String getViewName(final String viewAndParameters) {
+        if (loggedUser.getDefaultExpenseSheet() == null)
+          return "settings";
         return loggedUser.getDefaultExpenseSheet().getName();
       }
 
       @Override
       public View getView(final String viewName) {
-        return new ExpenseView(loggedUser.getDefaultExpenseSheet());
+        if (viewName.equals("settings"))
+          return new ExpenseSheetSettingsView();
+        else
+          return new ExpenseView(loggedUser.getDefaultExpenseSheet());
       }
     });
   }
