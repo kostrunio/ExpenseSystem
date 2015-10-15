@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 import javax.persistence.NoResultException;
 
@@ -12,16 +13,16 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 
 public class RealUserService {
-  
+
   static MessageDigest messageDigest;
-  
+
   static {
     try {
       messageDigest = MessageDigest.getInstance("SHA-256");
     } catch (NoSuchAlgorithmException e) {
     }
   }
-  
+
   public void removeRealUser(int id) {
     RealUser rU = findRealUser(id);
     if (rU != null) {
@@ -32,7 +33,7 @@ public class RealUserService {
   public static RealUser findRealUser(int id) {
     return ExpenseEntityDao.getEntityManager().find(RealUser.class, id);
   }
-  
+
   public void createRealUser(String name, String password, String email) {
     ExpenseEntityDao.begin();
     try {
@@ -47,26 +48,25 @@ public class RealUserService {
       ExpenseEntityDao.close();
     }
   }
-  
+
   public static void setDefaultExpenseSheet(RealUser realUser, ExpenseSheet expenseSheet) {
-	  ExpenseEntityDao.begin();
-	  realUser.setDefaultExpenseSheet(expenseSheet);
-	  try {
-		  RealUser loggedUser = findRealUser(realUser.getId());
-		  loggedUser.setDefaultExpenseSheet(expenseSheet);
-		  ExpenseEntityDao.getEntityManager().merge(loggedUser);
-		  ExpenseEntityDao.commit();
-	  } finally {
-	      ExpenseEntityDao.close();
-	  }
+    ExpenseEntityDao.begin();
+    realUser.setDefaultExpenseSheet(expenseSheet);
+    try {
+      RealUser loggedUser = findRealUser(realUser.getId());
+      loggedUser.setDefaultExpenseSheet(expenseSheet);
+      ExpenseEntityDao.getEntityManager().merge(loggedUser);
+      ExpenseEntityDao.commit();
+    } finally {
+      ExpenseEntityDao.close();
+    }
   }
-  
+
   public static RealUser getUserData(String userName, String password) {
     ExpenseEntityDao.begin();
     RealUser loggedUser = null;
     try {
       messageDigest.update(password.getBytes());
-
       loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName, "password", new String(messageDigest.digest())), RealUser.class);
       ExpenseEntityDao.commit();
     } catch (NoResultException e) {
@@ -75,8 +75,8 @@ public class RealUserService {
     }
     return loggedUser;
   }
-  
-  public RealUser findRealUser(String userName) {
+
+  public static RealUser findRealUser(String userName) {
     ExpenseEntityDao.begin();
     RealUser loggedUser = null;
     try {
@@ -88,6 +88,17 @@ public class RealUserService {
       ExpenseEntityDao.close();
     }
     return loggedUser;
+  }
+
+  public static void removeExpenseSheet(ExpenseSheet expenseSheet) {
+    List<RealUser> realUsers = null;
+    realUsers = ExpenseEntityDao.findByNamedQueryWithParameters("findUsersWithExpenseSheet", ImmutableMap.of("expenseSheet", expenseSheet), RealUser.class);
+    if (realUsers != null)
+      for (RealUser realUser : realUsers) {
+        if (realUser.getDefaultExpenseSheet() != null && realUser.getDefaultExpenseSheet().equals(expenseSheet))
+          realUser.setDefaultExpenseSheet(null);
+        realUser.getExpenseSheetList().remove(expenseSheet);
+      }
   }
 
 }
