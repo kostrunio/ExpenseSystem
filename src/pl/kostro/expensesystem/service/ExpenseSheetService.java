@@ -23,9 +23,9 @@ import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.UserLimitExpense;
 
 public class ExpenseSheetService {
-  
+
   private static ExpenseService expenseService = new ExpenseService();
-  
+
   public static void removeExpenseSheet(ExpenseSheet expenseSheet) {
     ExpenseSheet attached = findExpenseSheet(expenseSheet.getId());
     if (attached != null) {
@@ -43,7 +43,7 @@ public class ExpenseSheetService {
   public static ExpenseSheet findExpenseSheet(int id) {
     return ExpenseEntityDao.getEntityManager().find(ExpenseSheet.class, id);
   }
-  
+
   public static ExpenseSheet createExpenseSheet(RealUser owner, String name) {
     ExpenseEntityDao.begin();
     ExpenseSheet expenseSheet = new ExpenseSheet();
@@ -100,7 +100,7 @@ public class ExpenseSheetService {
     }
     dateExpense.addExpense(expense);
   }
-  
+
   private static void addExpenseToCategoryMap(ExpenseSheet expenseSheet, Expense expense) {
     CategoryExpense categoryExpense = expenseSheet.getCategoryExpenseMap().get(expense.getCategory());
     if (categoryExpense == null) {
@@ -109,7 +109,7 @@ public class ExpenseSheetService {
     }
     categoryExpense.addExpense(expense);
   }
-  
+
   private static void addExpenseToUserLimitMap(ExpenseSheet expenseSheet, Expense expense) {
     UserLimitExpense userLimitExpense = expenseSheet.getUserLimitExpenseMap().get(getUserLimitForUser(expenseSheet, expense.getUser()));
     if (userLimitExpense == null) {
@@ -128,37 +128,35 @@ public class ExpenseSheetService {
     expenseSheet.getExpenseList().remove(expense);
     removeExpenseFromMap(expenseSheet, expense);
   }
-  
+
   private static void removeExpenseFromMap(ExpenseSheet expenseSheet, Expense expense) {
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
     dateExpense.removeExpense(expense);
   }
-  
+
   public static UserLimit getUserLimitForUser(ExpenseSheet expenseSheet, User user) {
     for (UserLimit userLimit : expenseSheet.getUserLimitList())
       if (userLimit.getUser().equals(user))
         return userLimit;
     return null;
   }
-  
+
   public static Set<String> getAllComments(ExpenseSheet expenseSheet) {
     Set<String> commentList = new TreeSet<String>();
     for (Expense expense : ExpenseService.findAllExpense(expenseSheet))
-      if (expense.getComment() != null
-        && !expense.getComment().equals(""))
-      commentList.add(expense.getComment());
+      if (expense.getComment() != null && !expense.getComment().equals(""))
+        commentList.add(expense.getComment());
     return commentList;
   }
-  
+
   public static Set<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
     Set<String> commentList = new TreeSet<String>();
     for (Expense expense : expenseService.findExpenseByCategory(expenseSheet, category))
-      if (expense.getComment() != null
-        && !expense.getComment().equals(""))
-      commentList.add(expense.getComment());
+      if (expense.getComment() != null && !expense.getComment().equals(""))
+        commentList.add(expense.getComment());
     return commentList;
   }
-  
+
   public static List<String> getYearList(ExpenseSheet expenseSheet) {
     List<String> yearList = new ArrayList<String>();
     int thisYear = new GregorianCalendar().get(Calendar.YEAR);
@@ -172,37 +170,79 @@ public class ExpenseSheetService {
       yearList.add(Integer.toString(i));
     return yearList;
   }
-  
+
   public static DateExpense getDateExpenseMap(ExpenseSheet expenseSheet, Date date) {
     if (date.before(expenseSheet.getFirstDate()) || date.after(expenseSheet.getLastDate())) {
       prepareExpenseMap(expenseSheet, UserSummaryService.getFirstDay(date), UserSummaryService.getLastDay(date), null, null);
     }
     return expenseSheet.getDateExpenseMap().get(date);
   }
-  
+
   public static CategoryExpense getCategoryExpenseMap(ExpenseSheet expenseSheet, Category category) {
-	  return expenseSheet.getCategoryExpenseMap().get(category);
+    return expenseSheet.getCategoryExpenseMap().get(category);
+  }
+
+  public static UserLimitExpense getUserLimitExpenseMap(ExpenseSheet expenseSheet, UserLimit userLimit) {
+    return expenseSheet.getUserLimitExpenseMap().get(userLimit);
+  }
+
+  public static Set<String> getCommentsList(ExpenseSheet expenseSheet) {
+    Set<String> commentsList = new TreeSet<String>();
+    for (Expense expense : expenseSheet.getExpenseList()) {
+      if (expense.getComment() != null && !expense.getComment().equals(""))
+        commentsList.add(expense.getComment());
+    }
+    return commentsList;
+  }
+
+  public static ExpenseSheet getExpenseSheet(RealUser loggedUser, String expenseSheetName) {
+    for (ExpenseSheet expenseSheet : loggedUser.getExpenseSheetList()) {
+      if (expenseSheet.getName().equals(expenseSheetName))
+        return expenseSheet;
+    }
+    return null;
+  }
+
+  public static ExpenseSheet moveCategoryUp(ExpenseSheet expenseSheet, Category category) {
+    if (category.getOrder() == 0)
+      return expenseSheet;
+    category.setOrder(category.getOrder() - 1);
+    for (Category cat : expenseSheet.getCategoryList()) {
+      if (cat.getOrder() == category.getOrder())
+        if (!cat.equals(category))
+          cat.setOrder(cat.getOrder() + 1);
+    }
+
+    ExpenseEntityDao.begin();
+    try {
+      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
+      ExpenseEntityDao.commit();
+      ExpenseEntityDao.getEntityManager().refresh(expenseSheet);
+    } finally {
+      ExpenseEntityDao.close();
+    }
+    return expenseSheet;
   }
   
-  public static UserLimitExpense getUserLimitExpenseMap(ExpenseSheet expenseSheet, UserLimit userLimit) {
-	  return expenseSheet.getUserLimitExpenseMap().get(userLimit);
-  }
-
-public static Set<String> getCommentsList(ExpenseSheet expenseSheet) {
-	Set<String> commentsList = new TreeSet<String>();
-	for (Expense expense : expenseSheet.getExpenseList()) {
-		if (expense.getComment() != null && !expense.getComment().equals(""))
-			commentsList.add(expense.getComment());
-	}
-	return commentsList;
-}
-
-public static ExpenseSheet getExpenseSheet(RealUser loggedUser, String expenseSheetName) {
-  for (ExpenseSheet expenseSheet : loggedUser.getExpenseSheetList()) {
-    if (expenseSheet.getName().equals(expenseSheetName))
+  public static ExpenseSheet moveCategoryDown(ExpenseSheet expenseSheet, Category category) {
+    if (category.getOrder() == expenseSheet.getCategoryList().size())
       return expenseSheet;
+    category.setOrder(category.getOrder() + 1);
+    for (Category cat : expenseSheet.getCategoryList()) {
+      if (cat.getOrder() == category.getOrder())
+        if (!cat.equals(category))
+          cat.setOrder(cat.getOrder() - 1);
+    }
+
+    ExpenseEntityDao.begin();
+    try {
+      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
+      ExpenseEntityDao.commit();
+      ExpenseEntityDao.getEntityManager().refresh(expenseSheet);
+    } finally {
+      ExpenseEntityDao.close();
+    }
+    return expenseSheet;
   }
-  return null;
-}
 
 }
