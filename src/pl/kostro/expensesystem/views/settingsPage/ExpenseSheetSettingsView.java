@@ -1,7 +1,9 @@
 package pl.kostro.expensesystem.views.settingsPage;
 
 import java.math.BigDecimal;
+import java.text.MessageFormat;
 
+import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -163,7 +165,20 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
 
       @Override
       public void buttonClick(ClickEvent event) {
-        
+        ConfirmDialog.show(getUI(), Msg.get("settingsPage.removeCategoryLabel"), MessageFormat.format(Msg.get("settingsPage.removeCategoryQuestion"), new Object[] {((Category)deleteCategoryButton.getData()).getName()}), Msg.get("settingsPage.removeCategoryYes"), Msg.get("settingsPage.removeCategoryNo"),
+            new ConfirmDialog.Listener() {
+
+          private static final long serialVersionUID = 3844318339125611876L;
+
+          @Override
+          public void onClose(ConfirmDialog dialog) {
+            if (dialog.isConfirmed()) {
+              expenseSheet = ExpenseSheetService.removeCategory(expenseSheet, (Category)deleteCategoryButton.getData());
+              VaadinSession.getCurrent().getAttribute(ExpenseMenu.class).refresh();
+              UI.getCurrent().getNavigator().navigateTo("");
+            }
+          }
+        });
       }
     });
     
@@ -181,7 +196,8 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
 
       @Override
       public void buttonClick(ClickEvent event) {
-        ConfirmDialog.show(getUI(), "Usuniêcie arkusza", "Czy na pewno chcesz usun¹æ caly arkusz: " + expenseSheet.getName() + "\n i wszystkie jego wydatki?", "Tak, wiem co robiê", "Nie", new ConfirmDialog.Listener() {
+        ConfirmDialog.show(getUI(), "Usuniecie arkusza", "Czy na pewno chcesz usunac caly arkusz: " + expenseSheet.getName() + "\n i wszystkie jego wydatki?", "Tak, wiem co robie", "Nie",
+            new ConfirmDialog.Listener() {
 
           private static final long serialVersionUID = 3844318339125611876L;
 
@@ -198,7 +214,7 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
               UI.getCurrent().getNavigator().navigateTo("");
             }
           }
-        });        
+        });
       }
     });
     
@@ -223,7 +239,7 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
   }
   
   private void prepareCategoryGrid() {
-    categoryGrid.addColumn("nazwa", Category.class);
+    categoryGrid.addColumn(Msg.get("settingsPage.categoryName"), Category.class);
     categoryGrid.setEditorEnabled(true);
     categoryGrid.addItemClickListener(new ItemClickListener() {
       private static final long serialVersionUID = 8360036685403681818L;
@@ -233,17 +249,17 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
         moveUpCategoryButton.setEnabled(event.getItem()!=null);
         moveDownCategoryButton.setEnabled(event.getItem()!=null);
         deleteCategoryButton.setEnabled(event.getItem()!=null);
-        moveUpCategoryButton.setData(event.getItem().getItemProperty("nazwa").getValue());
-        moveDownCategoryButton.setData(event.getItem().getItemProperty("nazwa").getValue());
-        deleteCategoryButton.setData(event.getItem().getItemProperty("nazwa").getValue());
+        moveUpCategoryButton.setData(event.getItem().getItemProperty(Msg.get("settingsPage.categoryName")).getValue());
+        moveDownCategoryButton.setData(event.getItem().getItemProperty(Msg.get("settingsPage.categoryName")).getValue());
+        deleteCategoryButton.setData(event.getItem().getItemProperty(Msg.get("settingsPage.categoryName")).getValue());
       }
     });
   }
   
   private void prepareRealUserGrid() {
-    realUserGrid.addColumn("nazwa", UserLimit.class);
-    realUserGrid.addColumn("limit", BigDecimal.class);
-    realUserGrid.addColumn("l.p.", Integer.class);
+    realUserGrid.addColumn(Msg.get("settingsPage.realUserName"), UserLimit.class);
+    realUserGrid.addColumn(Msg.get("settingsPage.realUserLimit"), BigDecimal.class);
+    realUserGrid.addColumn(Msg.get("settingsPage.realUserOrder"), Integer.class);
     realUserGrid.setEditorEnabled(true);
     realUserGrid.addItemClickListener(new ItemClickListener() {
       private static final long serialVersionUID = 8360036685403681818L;
@@ -251,14 +267,15 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
       @Override
       public void itemClick(ItemClickEvent event) {
         deleteRealUserButton.setEnabled(event.getItem()!=null);
+        deleteRealUserButton.setData(event.getItem().getItemProperty(Msg.get("settingsPage.realUserName")).getValue());
       }
     });
   }
   
   private void prepareUserGrid() {
-    userGrid.addColumn("nazwa", UserLimit.class);
-    userGrid.addColumn("limit", BigDecimal.class);
-    userGrid.addColumn("l.p.", Integer.class);
+    userGrid.addColumn(Msg.get("settingsPage.userName"), UserLimit.class);
+    userGrid.addColumn(Msg.get("settingsPage.userLimit"), BigDecimal.class);
+    userGrid.addColumn(Msg.get("settingsPage.userOrder"), Integer.class);
     userGrid.setEditorEnabled(true);
     userGrid.addItemClickListener(new ItemClickListener() {
       private static final long serialVersionUID = 8360036685403681818L;
@@ -266,6 +283,7 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
       @Override
       public void itemClick(ItemClickEvent event) {
         deleteUserButton.setEnabled(event.getItem()!=null);
+        deleteUserButton.setData(event.getItem().getItemProperty(Msg.get("settingsPage.userName")).getValue());
       }
     });
   }
@@ -297,6 +315,9 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
 
   @Override
   public void enter(ViewChangeEvent event) {
+    if (VaadinSession.getCurrent().getAttribute(ExpenseSheet.class) == null
+        && VaadinSession.getCurrent().getAttribute(RealUser.class).getDefaultExpenseSheet() != null)
+      VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, VaadinSession.getCurrent().getAttribute(RealUser.class).getDefaultExpenseSheet());
     prepareView();
   }
 
@@ -343,7 +364,7 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
   private Panel buildCategoryPanel() {
     // common part: create layout
     categoryPanel = new Panel();
-    categoryPanel.setCaption("Kategorie");
+    categoryPanel.setCaption(Msg.get("settingsPage.categoryLabel"));
     categoryPanel.setImmediate(false);
     categoryPanel.setWidth("100.0%");
     categoryPanel.setHeight("-1px");
@@ -427,7 +448,7 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
   private Panel buildRealUserPanel() {
     // common part: create layout
     realUserPanel = new Panel();
-    realUserPanel.setCaption("Dostêpy");
+    realUserPanel.setCaption(Msg.get("settingsPage.realUserLabel"));
     realUserPanel.setImmediate(false);
     realUserPanel.setWidth("100.0%");
     realUserPanel.setHeight("-1px");
@@ -495,7 +516,7 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
   private Panel buildUserPanel() {
     // common part: create layout
     userPanel = new Panel();
-    userPanel.setCaption("Dodatkowi u¿ytkownicy");
+    userPanel.setCaption(Msg.get("settingsPage.userLabel"));
     userPanel.setImmediate(false);
     userPanel.setWidth("100.0%");
     userPanel.setHeight("-1px");
@@ -571,7 +592,7 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
     
     // addSheetButton
     addSheetButton = new Button();
-    addSheetButton.setCaption("Dodaj nowy arkusz");
+    addSheetButton.setCaption(Msg.get("settingsPage.addSheet"));
     addSheetButton.setIcon(FontAwesome.PLUS_SQUARE);
     addSheetButton.setImmediate(true);
     addSheetButton.setWidth("-1px");
@@ -580,7 +601,7 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
     
     // delSheetButton
     delSheetButton = new Button();
-    delSheetButton.setCaption("Usuñ TEN arkusz");
+    delSheetButton.setCaption(Msg.get("settingsPage.removeSheet"));
     delSheetButton.setIcon(FontAwesome.MINUS_SQUARE);
     delSheetButton.setImmediate(true);
     delSheetButton.setWidth("-1px");

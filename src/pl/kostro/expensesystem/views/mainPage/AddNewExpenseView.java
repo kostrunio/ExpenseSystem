@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.views.mainPage;
 
 import java.util.Calendar;
 
+import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
@@ -178,7 +179,7 @@ private GridLayout buildExpenseGrid() {
 	
 	// user
 	userBox = new ComboBox();
-	userBox.setCaption("u¿ytkownik");
+	userBox.setCaption(Msg.get("newExpense.user"));
 	userBox.setImmediate(true);
 	userBox.setWidth("-1px");
 	userBox.setHeight("-1px");
@@ -186,7 +187,7 @@ private GridLayout buildExpenseGrid() {
 	
 	// formula
 	formulaField = new TextField();
-	formulaField.setCaption("formu³a");
+	formulaField.setCaption(Msg.get("newExpense.formula"));
 	formulaField.setImmediate(true);
 	formulaField.setWidth("-1px");
 	formulaField.setHeight("-1px");
@@ -194,7 +195,7 @@ private GridLayout buildExpenseGrid() {
 	
 	// comment
 	commentBox = new ComboBox();
-	commentBox.setCaption("komentarz");
+	commentBox.setCaption(Msg.get("newExpense.comment"));
 	commentBox.setImmediate(true);
 	commentBox.setWidth("-1px");
 	commentBox.setHeight("-1px");
@@ -214,7 +215,7 @@ private HorizontalLayout buildButtonLayout() {
 	
 	// saveButton
 	saveButton = new Button();
-	saveButton.setCaption("Zapisz");
+	saveButton.setCaption(Msg.get("newExpense.save"));
 	saveButton.setImmediate(true);
 	saveButton.setWidth("-1px");
 	saveButton.setHeight("-1px");

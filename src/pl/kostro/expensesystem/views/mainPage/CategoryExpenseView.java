@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
@@ -137,7 +138,7 @@ public class CategoryExpenseView extends CustomComponent {
         public void buttonClick(ClickEvent event) {
           if (event.getButton().getData() instanceof Expense) {
             final Expense expense = (Expense) event.getButton().getData();
-            ConfirmDialog.show(getUI(), "Usuniêcie wiersza", "Czy na pewno chcesz usun¹æ wiersz?", "Tak, wiem co robiê", "Nie", new ConfirmDialog.Listener() {
+            ConfirmDialog.show(getUI(), Msg.get("category.removeLabel"), Msg.get("category.removeQuestion"), Msg.get("category.removeYes"), Msg.get("category.removeNo"), new ConfirmDialog.Listener() {
 
               private static final long serialVersionUID = 3844318339125611876L;
 

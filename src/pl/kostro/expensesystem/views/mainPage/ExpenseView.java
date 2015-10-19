@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.views.mainPage;
 
 import java.util.Calendar;
 
+import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
@@ -109,7 +110,7 @@ public class ExpenseView extends VerticalLayout implements View {
 
     // findButton
     final Button findButton = new Button();
-    findButton.setCaption("Wyszukaj");
+    findButton.setCaption(Msg.get("expense.find"));
     findButton.setImmediate(true);
     findButton.addClickListener(new Button.ClickListener() {
 
@@ -169,27 +170,27 @@ public class ExpenseView extends VerticalLayout implements View {
 
     // categoryCombo
     categoryCombo = new ComboBox();
-    categoryCombo.setCaption("Kategoria");
+    categoryCombo.setCaption(Msg.get("expense.category"));
     searchLayout.addComponent(categoryCombo);
 
     // userCombo
     userCombo = new ComboBox();
-    userCombo.setCaption("U¿ytkownik");
+    userCombo.setCaption(Msg.get("expense.user"));
     searchLayout.addComponent(userCombo);
 
     // formulaField
     formulaField = new TextField();
-    formulaField.setCaption("Formu³a");
+    formulaField.setCaption(Msg.get("expense.formula"));
     searchLayout.addComponent(formulaField);
 
     // commentCombo
     commentCombo = new ComboBox();
-    commentCombo.setCaption("Komentarz");
+    commentCombo.setCaption(Msg.get("expense.commnent"));
     searchLayout.addComponent(commentCombo);
 
     // searchButton
     final Button searchButton = new Button();
-    searchButton.setCaption("Zastosuj");
+    searchButton.setCaption(Msg.get("expense.search"));
     searchButton.addClickListener(new Button.ClickListener() {
       private static final long serialVersionUID = 1L;
       @Override

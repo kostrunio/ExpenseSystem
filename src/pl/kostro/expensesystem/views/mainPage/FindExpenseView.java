@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.views.mainPage;
 
 import java.util.Calendar;
 
+import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.form.ExpenseForm;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
@@ -187,7 +188,7 @@ public class FindExpenseView extends CustomComponent {
     
     // fromDateField
     fromDateField = new PopupDateField();
-    fromDateField.setCaption("Od daty");
+    fromDateField.setCaption(Msg.get("findPage.dateFrom"));
     fromDateField.setDateFormat("dd-MM-yyyy");
     fromDateField.setImmediate(false);
     fromDateField.setWidth("-1px");
@@ -196,7 +197,7 @@ public class FindExpenseView extends CustomComponent {
     
     // toDateField
     toDateField = new PopupDateField();
-    toDateField.setCaption("Do daty");
+    toDateField.setCaption(Msg.get("findPage.dateTo"));
     toDateField.setDateFormat("dd-MM-yyyy");
     toDateField.setImmediate(false);
     toDateField.setWidth("-1px");
@@ -205,7 +206,7 @@ public class FindExpenseView extends CustomComponent {
     
     // categoryBox
     categoryBox = new ComboBox();
-    categoryBox.setCaption("Kategoria");
+    categoryBox.setCaption(Msg.get("findPage.category"));
     categoryBox.setImmediate(false);
     categoryBox.setWidth("-1px");
     categoryBox.setHeight("-1px");
@@ -213,7 +214,7 @@ public class FindExpenseView extends CustomComponent {
     
     // userBox
     userBox = new ComboBox();
-    userBox.setCaption("U¿ytkownik");
+    userBox.setCaption(Msg.get("findPage.user"));
     userBox.setImmediate(false);
     userBox.setWidth("-1px");
     userBox.setHeight("-1px");
@@ -221,7 +222,7 @@ public class FindExpenseView extends CustomComponent {
     
     // formulaField
     formulaField = new TextField();
-    formulaField.setCaption("Formu³a");
+    formulaField.setCaption(Msg.get("findPage.formula"));
     formulaField.setImmediate(false);
     formulaField.setWidth("-1px");
     formulaField.setHeight("-1px");
@@ -229,7 +230,7 @@ public class FindExpenseView extends CustomComponent {
     
     // commentBox
     commentBox = new ComboBox();
-    commentBox.setCaption("Komentarz");
+    commentBox.setCaption(Msg.get("findPage.comment"));
     commentBox.setImmediate(false);
     commentBox.setWidth("-1px");
     commentBox.setHeight("-1px");
@@ -237,7 +238,7 @@ public class FindExpenseView extends CustomComponent {
     
     // filterButton
     filterButton = new Button();
-    filterButton.setCaption("Filtruj");
+    filterButton.setCaption(Msg.get("findPage.filter"));
     filterButton.setImmediate(true);
     filterButton.setWidth("-1px");
     filterButton.setHeight("-1px");
@@ -246,7 +247,7 @@ public class FindExpenseView extends CustomComponent {
     
     // newExpenseButton
     newExpenseButton = new Button();
-    newExpenseButton.setCaption("Dodaj nowy");
+    newExpenseButton.setCaption(Msg.get("findPage.add"));
     newExpenseButton.setImmediate(true);
     newExpenseButton.setWidth("-1px");
     newExpenseButton.setHeight("-1px");

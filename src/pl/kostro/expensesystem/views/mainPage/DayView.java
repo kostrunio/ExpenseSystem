@@ -3,6 +3,7 @@ package pl.kostro.expensesystem.views.mainPage;
 import java.util.Calendar;
 import java.util.List;
 
+import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
@@ -194,7 +195,7 @@ public class DayView extends CustomComponent {
 private VerticalLayout buildMainLayout() {
 	// common part: create layout
 	mainLayout = new VerticalLayout();
-	mainLayout.setCaption("kwota");
+	mainLayout.setCaption(Msg.get("day.amount"));
 	mainLayout.setImmediate(false);
 	mainLayout.setWidth("100%");
 	mainLayout.setHeight("100%");
@@ -299,7 +300,7 @@ private VerticalLayout buildShowLayout() {
 	
 	// backButton
 	backButton = new Button();
-	backButton.setCaption("Powrót");
+	backButton.setCaption(Msg.get("day.back"));
 	backButton.setImmediate(true);
 	backButton.setWidth("-1px");
 	backButton.setHeight("-1px");
