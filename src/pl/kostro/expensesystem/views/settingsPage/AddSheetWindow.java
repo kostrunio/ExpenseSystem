@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.views.settingsPage;
 
+import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.notification.ShowNotification;
@@ -93,7 +94,7 @@ public class AddSheetWindow extends Window {
     
     // newSheetField
     newSheetField = new TextField();
-    newSheetField.setCaption("Nazwa nowego arkusza");
+    newSheetField.setCaption(Msg.get("newSheet.label"));
     newSheetField.setImmediate(false);
     newSheetField.setWidth("-1px");
     newSheetField.setHeight("-1px");
@@ -118,7 +119,7 @@ public class AddSheetWindow extends Window {
     
     // saveButton
     saveButton = new Button();
-    saveButton.setCaption("Zapisz");
+    saveButton.setCaption(Msg.get("newSheet.save"));
     saveButton.setImmediate(false);
     saveButton.setWidth("-1px");
     saveButton.setHeight("-1px");
@@ -128,7 +129,7 @@ public class AddSheetWindow extends Window {
     
     // cancelButton
     cancelButton = new Button();
-    cancelButton.setCaption("Anuluj");
+    cancelButton.setCaption(Msg.get("newSheet.cancel"));
     cancelButton.setImmediate(false);
     cancelButton.setWidth("-1px");
     cancelButton.setHeight("-1px");

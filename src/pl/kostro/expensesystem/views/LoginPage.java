@@ -1,6 +1,7 @@
  package pl.kostro.expensesystem.views;
 
 import pl.kostro.expensesystem.ExpenseSystemUI;
+import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.service.RealUserService;
@@ -50,13 +51,13 @@ public class LoginPage extends VerticalLayout {
     CssLayout labelsLayout = new CssLayout();
     labelsLayout.addStyleName("labels");
 
-    Label welcome = new Label("Witamy");
+    Label welcome = new Label(Msg.get("loginPage.welcome"));
     welcome.setSizeUndefined();
     welcome.addStyleName(ValoTheme.LABEL_H4);
     welcome.addStyleName(ValoTheme.LABEL_COLORED);
     labelsLayout.addComponent(welcome);
 
-    Label title = new Label("Expense System Application");
+    Label title = new Label(Msg.get("loginPage.title"));
     title.setSizeUndefined();
     title.addStyleName(ValoTheme.LABEL_H3);
     title.addStyleName(ValoTheme.LABEL_LIGHT);
@@ -69,16 +70,16 @@ public class LoginPage extends VerticalLayout {
     fieldsLayout.setSpacing(true);
     fieldsLayout.addStyleName("fields");
 
-    final TextField usernameField = new TextField("nazwa u¿ytkownika");
-    usernameField.setIcon(FontAwesome.USER);
-    usernameField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
-    usernameField.focus();
+    final TextField userNameField = new TextField(Msg.get("loginPage.userName"));
+    userNameField.setIcon(FontAwesome.USER);
+    userNameField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+    userNameField.focus();
 
-    final PasswordField passwordField = new PasswordField("has³o");
+    final PasswordField passwordField = new PasswordField(Msg.get("loginPage.password"));
     passwordField.setIcon(FontAwesome.LOCK);
     passwordField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
 
-    final Button signinButton = new Button("Zaloguj");
+    final Button signinButton = new Button(Msg.get("loginPage.signIn"));
     signinButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
     signinButton.setClickShortcut(KeyCode.ENTER);
     signinButton.addClickListener(new ClickListener() {
@@ -89,7 +90,7 @@ public class LoginPage extends VerticalLayout {
         public void buttonClick(final ClickEvent event) {
           RealUser loggedUser = null;
           try {
-            loggedUser = RealUserService.getUserData(usernameField.getValue(), passwordField.getValue());
+            loggedUser = RealUserService.getUserData(userNameField.getValue(), passwordField.getValue());
             if (loggedUser == null) {
               ShowNotification.logonProblem();
             } else {
@@ -102,7 +103,7 @@ public class LoginPage extends VerticalLayout {
         }
     });
     
-    fieldsLayout.addComponents(usernameField, passwordField, signinButton);
+    fieldsLayout.addComponents(userNameField, passwordField, signinButton);
     fieldsLayout.setComponentAlignment(signinButton, Alignment.BOTTOM_LEFT);
 
     return fieldsLayout;
@@ -110,7 +111,7 @@ public class LoginPage extends VerticalLayout {
 
 	private Component buildOthButtons() {
 	  HorizontalLayout buttonsLayout = new HorizontalLayout();
-	  final Button registerButton = new Button("Rejestracja");
+	  final Button registerButton = new Button(Msg.get("loginPage.register"));
 	  registerButton.setStyleName(ValoTheme.BUTTON_SMALL);
 	  registerButton.setIcon(FontAwesome.PLUS_SQUARE);
 	  buttonsLayout.addComponent(registerButton);

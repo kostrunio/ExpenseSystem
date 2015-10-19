@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.components.form;
 
+import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -26,13 +27,13 @@ public class ExpenseForm extends FormLayout {
 
   private static final long serialVersionUID = -2448059466017092695L;
 
-  Button saveButton = new Button("Zapisz");
-  Button duplicateButton = new Button("Duplikuj");
-  DateField dateField = new DateField("data");
-  ComboBox categoryBox = new ComboBox("kategoria");
-  ComboBox userBox = new ComboBox("u¿ytkownik");
-  TextField formulaField = new TextField("formu³a");
-  ComboBox commentBox = new ComboBox("komentarz");
+  Button saveButton = new Button(Msg.get("expensForm.save"));
+  Button duplicateButton = new Button(Msg.get("expensForm.duplicate"));
+  DateField dateField = new DateField(Msg.get("expensForm.date"));
+  ComboBox categoryBox = new ComboBox(Msg.get("expensForm.category"));
+  ComboBox userBox = new ComboBox(Msg.get("expensForm.user"));
+  TextField formulaField = new TextField(Msg.get("expensForm.formula"));
+  ComboBox commentBox = new ComboBox(Msg.get("expensForm.comment"));
   
   ExpenseSheet expenseSheet;
   Expense expense;

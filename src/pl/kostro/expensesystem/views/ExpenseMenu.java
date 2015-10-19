@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.views;
 
 import pl.kostro.expensesystem.ExpenseSystemUI;
+import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 
@@ -47,7 +48,7 @@ public class ExpenseMenu extends CustomComponent {
   }
 
   private Component buildTitle() {
-    Label logo = new Label("<strong>Expense Application</strong>", ContentMode.HTML);
+    Label logo = new Label(Msg.get("menu.logo"), ContentMode.HTML);
     logo.setSizeUndefined();
     HorizontalLayout logoWrapper = new HorizontalLayout(logo);
     logoWrapper.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
@@ -61,7 +62,7 @@ public class ExpenseMenu extends CustomComponent {
     menuItemsLayout.setHeight("100%");
     menuItemsLayout.setStyleName("valo-menuitems");
     
-    Label sheetLabel = new Label("Zdefiniowane arkusze", ContentMode.HTML);
+    Label sheetLabel = new Label(Msg.get("menu.sheets"));
     sheetLabel.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
     sheetLabel.addStyleName(ValoTheme.LABEL_H4);
     menuItemsLayout.addComponent(sheetLabel);
@@ -86,12 +87,12 @@ public class ExpenseMenu extends CustomComponent {
       menuItemsLayout.addComponent(b);
     }
     
-    Label settingsLabel = new Label("Zarz¹dzanie", ContentMode.HTML);
+    Label settingsLabel = new Label(Msg.get("menu.settingsLabel"));
     settingsLabel.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
     settingsLabel.addStyleName(ValoTheme.LABEL_H4);
     menuItemsLayout.addComponent(settingsLabel);
 
-    final Button settingButton = new Button("Ustawienia");
+    final Button settingButton = new Button(Msg.get("menu.settingsLabel"));
     settingButton.addStyleName(ValoTheme.MENU_ITEM);
     settingButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
     settingButton.setIcon(FontAwesome.FILES_O);
@@ -106,7 +107,7 @@ public class ExpenseMenu extends CustomComponent {
     });
     menuItemsLayout.addComponent(settingButton);
     
-    final Button logoutButton = new Button("Wyloguj");
+    final Button logoutButton = new Button(Msg.get("menu.logout"));
     logoutButton.addStyleName(ValoTheme.MENU_ITEM);
     logoutButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
     logoutButton.setIcon(FontAwesome.EJECT);

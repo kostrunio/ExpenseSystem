@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.components.table;
 
 import java.math.BigDecimal;
 
+import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
@@ -19,8 +20,8 @@ public class CategoryTable extends Table {
   public CategoryTable(ExpenseSheet expenseSheet) {
     this.expenseSheet = expenseSheet;
     setPageLength(expenseSheet.getCategoryList().size());
-    addContainerProperty("Kategoria", String.class, null);
-    addContainerProperty("Suma", BigDecimal.class, null);
+    addContainerProperty(Msg.get("categoryTable.category"), String.class, null);
+    addContainerProperty(Msg.get("categoryTable.sum"), BigDecimal.class, null);
   }
   
   @SuppressWarnings("unchecked")
@@ -30,8 +31,8 @@ public class CategoryTable extends Table {
       CategoryExpense categoryExpense = ExpenseSheetService.getCategoryExpenseMap(expenseSheet, category);
       Object newItemId = addItem();
       Item row = getItem(newItemId);
-      row.getItemProperty("Kategoria").setValue(category.getName());
-      row.getItemProperty("Suma").setValue(categoryExpense != null ? categoryExpense.getSum() : new BigDecimal(0));
+      row.getItemProperty(Msg.get("categoryTable.category")).setValue(category.getName());
+      row.getItemProperty(Msg.get("categoryTable.sum")).setValue(categoryExpense != null ? categoryExpense.getSum() : new BigDecimal(0));
     }
   }
 }

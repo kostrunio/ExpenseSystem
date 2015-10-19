@@ -1,18 +1,17 @@
 package pl.kostro.expensesystem.views;
 
 import pl.kostro.expensesystem.ExpenseSystemUI;
+import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.service.RealUserService;
 
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Page;
 import com.vaadin.server.Responsive;
-import com.vaadin.shared.Position;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -33,7 +32,7 @@ public class RegisterPage extends VerticalLayout {
 	}
 	
 	private Component buildRegisterForm() {
-    final Panel registerPanel = new Panel("Rejestracja nowego u¿ytkownika");
+    final Panel registerPanel = new Panel(Msg.get("registerPage.label"));
     registerPanel.setSizeUndefined();
     Responsive.makeResponsive(registerPanel);
     final VerticalLayout contentLayout = new VerticalLayout();
@@ -46,22 +45,22 @@ public class RegisterPage extends VerticalLayout {
     final FormLayout registerForm = new FormLayout();
     contentLayout.addComponent(registerForm);
     
-    final TextField nameField = new TextField("nazwa u¿ytkownika");
+    final TextField nameField = new TextField(Msg.get("registerPage.user"));
     nameField.setRequired(true);
     nameField.setIcon(FontAwesome.USER);
     registerForm.addComponent(nameField);
     
-    final TextField passwordField = new TextField("has³o");
+    final TextField passwordField = new TextField(Msg.get("registerPage.password"));
     passwordField.setRequired(true);
     passwordField.setIcon(FontAwesome.LOCK);
     registerForm.addComponent(passwordField);
     
-    final TextField rePasswordField = new TextField("powtórz has³o");
+    final TextField rePasswordField = new TextField(Msg.get("registerPage.passwordRep"));
     rePasswordField.setRequired(true);
     rePasswordField.setIcon(FontAwesome.LOCK);
     registerForm.addComponent(rePasswordField);
     
-    final TextField emailField = new TextField("e-mail");
+    final TextField emailField = new TextField(Msg.get("registerPage.email"));
     emailField.setRequired(true);
     registerForm.addComponent(emailField);
     
@@ -69,7 +68,7 @@ public class RegisterPage extends VerticalLayout {
     buttonsLayout.setSpacing(true);
     registerForm.addComponent(buttonsLayout);
     
-    final Button saveButton = new Button("Zapisz");
+    final Button saveButton = new Button(Msg.get("registerPage.save"));
     saveButton.setStyleName(ValoTheme.BUTTON_SMALL);
     saveButton.setIcon(FontAwesome.SAVE);
     saveButton.addClickListener(new ClickListener() {
@@ -84,12 +83,7 @@ public class RegisterPage extends VerticalLayout {
           realUserService.createRealUser(nameField.getValue(), passwordField.getValue(), emailField.getValue());
           ((ExpenseSystemUI)getUI()).updateContent();
         } else {
-          Notification notification = new Notification("B³êdne has³o");
-          notification.setDescription("Podane has³a do siebie nie pasuj¹");
-          notification.setStyleName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
-          notification.setPosition(Position.BOTTOM_CENTER);
-          notification.setDelayMsec(10000);
-          notification.show(Page.getCurrent());
+          ShowNotification.registerProblem();
         }
       }
     });
@@ -97,7 +91,7 @@ public class RegisterPage extends VerticalLayout {
     buttonsLayout.addComponent(saveButton);
     buttonsLayout.setComponentAlignment(saveButton, Alignment.MIDDLE_CENTER);
     
-    final Button cancelButton = new Button("Powrót");
+    final Button cancelButton = new Button(Msg.get("registerPage.cancel"));
     cancelButton.setStyleName(ValoTheme.BUTTON_SMALL);
     cancelButton.setIcon(FontAwesome.UNDO);
     cancelButton.addClickListener(new ClickListener() {
