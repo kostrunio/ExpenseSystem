@@ -48,15 +48,15 @@ public class ExpenseSheetService {
     ExpenseEntityDao.begin();
     ExpenseSheet expenseSheet = new ExpenseSheet();
     try {
-      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
       UserLimit userLimit = new UserLimit(owner, new BigDecimal(0));
       ExpenseEntityDao.getEntityManager().persist(userLimit);
       expenseSheet.setOwner(owner);
       expenseSheet.setName(name);
       expenseSheet.getUserLimitList().add(userLimit);
-      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
+      expenseSheet.setDefaultUserLimit(userLimit);
+      ExpenseEntityDao.getEntityManager().persist(expenseSheet);
       owner.getExpenseSheetList().add(expenseSheet);
-      owner = ExpenseEntityDao.getEntityManager().merge(owner);
+      ExpenseEntityDao.getEntityManager().merge(owner);
       ExpenseEntityDao.commit();
     } finally {
       ExpenseEntityDao.close();
@@ -237,6 +237,23 @@ public class ExpenseSheetService {
     ExpenseEntityDao.begin();
     try {
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
+      ExpenseEntityDao.commit();
+      ExpenseEntityDao.getEntityManager().refresh(expenseSheet);
+    } finally {
+      ExpenseEntityDao.close();
+    }
+    return expenseSheet;
+  }
+
+  public static ExpenseSheet removeCategory(ExpenseSheet expenseSheet, Category category) {
+    expenseSheet.getCategoryList().remove(category);
+    int i = 0;
+    for (Category cat : expenseSheet.getCategoryList())
+      cat.setOrder(i++);
+    ExpenseEntityDao.begin();
+    try {
+      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
+      ExpenseEntityDao.getEntityManager().remove(ExpenseEntityDao.getEntityManager().find(Category.class, category.getId()));
       ExpenseEntityDao.commit();
       ExpenseEntityDao.getEntityManager().refresh(expenseSheet);
     } finally {
