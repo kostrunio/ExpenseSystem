@@ -19,6 +19,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -87,6 +88,7 @@ public class FindExpenseView extends CustomComponent {
     toDateField.setValue(UserSummaryService.getLastDay(calendar.getTime()));
     categoryBox.addItems(expenseSheet.getCategoryList());
     userBox.addItems(expenseSheet.getUserLimitList());
+    commentBox.setFilteringMode(FilteringMode.CONTAINS);
     commentBox.addItems(ExpenseSheetService.getAllComments(expenseSheet));
     expenseSheet.setFilter(new Filter(
         fromDateField.getValue(),

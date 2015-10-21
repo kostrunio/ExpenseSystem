@@ -15,6 +15,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.ComboBox;
@@ -102,6 +103,7 @@ private DayView dayView;
 
     commentBox.setNewItemsAllowed(true);
     commentBox.setNullSelectionAllowed(true);
+    commentBox.setFilteringMode(FilteringMode.CONTAINS);
     commentBox.addItems(ExpenseSheetService.getCommentForCategory(expenseSheet, expense.getCategory()));
     commentBox.select(expense.getComment());
     commentBox.addValueChangeListener(new Property.ValueChangeListener() {
