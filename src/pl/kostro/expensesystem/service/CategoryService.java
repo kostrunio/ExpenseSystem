@@ -30,5 +30,15 @@ public class CategoryService {
     }
   }
 
+  public static void merge(Category category) {
+    ExpenseEntityDao.begin();
+    try {
+      ExpenseEntityDao.getEntityManager().merge(category);
+      ExpenseEntityDao.commit();
+    } finally {
+      ExpenseEntityDao.close();
+    }
+  }
+
 
 }
