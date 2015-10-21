@@ -92,7 +92,7 @@ public class ExpenseMenu extends CustomComponent {
     settingsLabel.addStyleName(ValoTheme.LABEL_H4);
     menuItemsLayout.addComponent(settingsLabel);
 
-    final Button settingButton = new Button(Msg.get("menu.settingsLabel"));
+    final Button settingButton = new Button(Msg.get("menu.settingsButton"));
     settingButton.addStyleName(ValoTheme.MENU_ITEM);
     settingButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
     settingButton.setIcon(FontAwesome.FILES_O);
