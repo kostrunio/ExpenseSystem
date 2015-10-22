@@ -95,7 +95,7 @@ public class ExpenseView extends VerticalLayout implements View {
       public void buttonClick(ClickEvent event) {
         searchLayout.setVisible(!searchLayout.isVisible());
         if (searchLayout.isVisible()) {
-          prepareSearchLayout(expenseSheet);
+          prepareSearchLayout();
         } else {
           expenseSheet.setFilter(null);
           mainView.removeAllComponents();
@@ -164,6 +164,7 @@ public class ExpenseView extends VerticalLayout implements View {
   }
 
   private Component buildSearchLayout() {
+    searchLayout.removeAllComponents();
     searchLayout.setMargin(true);
     searchLayout.setSpacing(true);
     searchLayout.setVisible(false);
@@ -219,7 +220,7 @@ public class ExpenseView extends VerticalLayout implements View {
     return searchLayout;
   }
   
-  private void prepareSearchLayout(ExpenseSheet expenseSheet) {    
+  private void prepareSearchLayout() {    
     categoryCombo.removeAllItems();
     categoryCombo.addItems(expenseSheet.getCategoryList());
     userCombo.removeAllItems();
