@@ -12,31 +12,29 @@ import com.vaadin.ui.themes.ValoTheme;
 
 public class ShowNotification {
   
-  public static void registerProblem() {
-    Notification notification = new Notification(Msg.get("notification.registerProblem"));
-    notification.setDescription(Msg.get("notification.resiterDesc"));
-    notification.setStyleName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
-    notification.setPosition(Position.BOTTOM_CENTER);
-    notification.setDelayMsec(5000);
-    notification.show(Page.getCurrent());
-  }
-
-  public static void logonProblem() {
-    Notification notification = new Notification(Msg.get("notification.logonProblem"));
-    notification.setDescription(Msg.get("notification.logonDesc"));
+  private static void setErrorStyle(Notification notification) {
     notification.setStyleName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
     notification.setPosition(Position.BOTTOM_CENTER);
     notification.setDelayMsec(5000);
     notification.show(Page.getCurrent());
   }
   
+  public static void registerProblem() {
+    Notification notification = new Notification(Msg.get("notification.registerProblem"));
+    notification.setDescription(Msg.get("notification.resiterDesc"));
+    setErrorStyle(notification);
+  }
+
+  public static void logonProblem() {
+    Notification notification = new Notification(Msg.get("notification.logonProblem"));
+    notification.setDescription(Msg.get("notification.logonDesc"));
+    setErrorStyle(notification);
+  }
+  
   public static void dbProblem() {
     Notification notification = new Notification(Msg.get("notification.dbProblem"));
     notification.setDescription(Msg.get("notification.dbDesc"));
-    notification.setStyleName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
-    notification.setPosition(Position.BOTTOM_CENTER);
-    notification.setDelayMsec(5000);
-    notification.show(Page.getCurrent());
+    setErrorStyle(notification);
   }
   
   public static void changeSummary(String userName, BigDecimal actSum, BigDecimal newSum) {
@@ -51,10 +49,13 @@ public class ShowNotification {
   public static void fieldEmpty(String fieldName) {
     Notification notification = new Notification(Msg.get("notification.formProblem"));
     notification.setDescription(MessageFormat.format(Msg.get("notification.formDesc"), new Object[] {fieldName}));
-    notification.setStyleName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
-    notification.setPosition(Position.BOTTOM_CENTER);
-    notification.setDelayMsec(5000);
-    notification.show(Page.getCurrent());
+    setErrorStyle(notification);
+  }
+
+  public static void noSuchUser(String name) {
+    Notification notification = new Notification(Msg.get("notification.noSuchUserProblem"));
+    notification.setDescription(MessageFormat.format(Msg.get("notification.noSuchUserDesc"), new Object[] {name}));
+    setErrorStyle(notification);
   }
 
 }
