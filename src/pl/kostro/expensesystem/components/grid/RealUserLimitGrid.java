@@ -8,7 +8,7 @@ import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.service.UserLimitService;
 import pl.kostro.expensesystem.views.ExpenseMenu;
-import pl.kostro.expensesystem.views.settingsPage.AddUserWindow;
+import pl.kostro.expensesystem.views.settingsPage.AddRealUserWindow;
 
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -23,17 +23,17 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 
-public class UserLimitGrid extends Grid {
+public class RealUserLimitGrid extends Grid {
   private static final long serialVersionUID = 5378642683850471251L;
 
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
   
-  public UserLimitGrid() {
+  public RealUserLimitGrid() {
     setImmediate(true);
     setEditorEnabled(true);
-    setEditorSaveCaption(Msg.get("settingsPage.userSave"));
-    setEditorCancelCaption(Msg.get("settingsPage.userCancel"));
+    setEditorSaveCaption(Msg.get("settingsPage.realUserSave"));
+    setEditorCancelCaption(Msg.get("settingsPage.realUserCancel"));
   }
 
   public void setAddUserLimitButton(Button button) {
@@ -43,7 +43,7 @@ public class UserLimitGrid extends Grid {
 
       @Override
       public void buttonClick(ClickEvent event) {
-        UI.getCurrent().addWindow(new AddUserWindow());
+        UI.getCurrent().addWindow(new AddRealUserWindow());
       }
     });
   }
@@ -56,10 +56,10 @@ public class UserLimitGrid extends Grid {
       @Override
       public void buttonClick(ClickEvent event) {
         ConfirmDialog.show(getUI(),
-            Msg.get("settingsPage.removeUserLabel"),
-            MessageFormat.format(Msg.get("settingsPage.removeUserQuestion"), new Object[] {getItem().getUser().getName()}),
-            Msg.get("settingsPage.removeUserYes"),
-            Msg.get("settingsPage.removeUserNo"),
+            Msg.get("settingsPage.removeRealUserLabel"),
+            MessageFormat.format(Msg.get("settingsPage.removeRealUserQuestion"), new Object[] {getItem().getUser().getName()}),
+            Msg.get("settingsPage.removeRealUserYes"),
+            Msg.get("settingsPage.removeRealUserNo"),
             new ConfirmDialog.Listener() {
 
           private static final long serialVersionUID = 3844318339125611876L;
@@ -83,9 +83,9 @@ public class UserLimitGrid extends Grid {
     setContainerDataSource(container);
     recalculateColumnWidths();
     setColumns("user.name", "limit", "order");
-    getColumn("user.name").setHeaderCaption(Msg.get("settingsPage.userName"));
-    getColumn("limit").setHeaderCaption(Msg.get("settingsPage.userLimit"));
-    getColumn("order").setHeaderCaption(Msg.get("settingsPage.userOrder"));
+    getColumn("user.name").setHeaderCaption(Msg.get("settingsPage.realUserName")).setEditable(false);
+    getColumn("limit").setHeaderCaption(Msg.get("settingsPage.realUserLimit"));
+    getColumn("order").setHeaderCaption(Msg.get("settingsPage.realUserOrder"));
     getEditorFieldGroup().addCommitHandler(new CommitHandler() {
       private static final long serialVersionUID = 7645963700451879164L;
 
