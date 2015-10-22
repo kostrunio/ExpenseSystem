@@ -36,4 +36,14 @@ public class UserLimitService {
     }
   }
 
+  public static void merge(UserLimit userLimit) {
+    ExpenseEntityDao.begin();
+    try {
+      ExpenseEntityDao.getEntityManager().merge(userLimit);
+      ExpenseEntityDao.commit();
+    } finally {
+      ExpenseEntityDao.close();
+    }
+  }
+
 }

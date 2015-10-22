@@ -36,6 +36,7 @@ public class CategoryGrid extends Grid {
   
   public CategoryGrid() {
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    setImmediate(true);
     setEditorEnabled(true);
     setEditorSaveCaption(Msg.get("settingsPage.categorySave"));
     setEditorCancelCaption(Msg.get("settingsPage.categoryCancel"));
@@ -112,8 +113,8 @@ public class CategoryGrid extends Grid {
     setContainerDataSource(container);
     recalculateColumnWidths();
     setColumns("name", "multiplier");
-    getColumn("name").setHeaderCaption(Msg.get("settingsPage.categoryName")).setHidden(false);
-    getColumn("multiplier").setHeaderCaption(Msg.get("settingsPage.categoryMultiplier")).setHidden(false);
+    getColumn("name").setHeaderCaption(Msg.get("settingsPage.categoryName"));
+    getColumn("multiplier").setHeaderCaption(Msg.get("settingsPage.categoryMultiplier"));
     getEditorFieldGroup().addCommitHandler(new CommitHandler() {
       private static final long serialVersionUID = 7645963700451879164L;
 
@@ -132,9 +133,9 @@ public class CategoryGrid extends Grid {
 
       @Override
       public void itemClick(ItemClickEvent event) {
-        moveUpCategoryButton.setEnabled(event.getItem()!=null);
-        moveDownCategoryButton.setEnabled(event.getItem()!=null);
-        deleteCategoryButton.setEnabled(event.getItem()!=null);
+        moveUpCategoryButton.setEnabled(getSelectedRow()!=null);
+        moveDownCategoryButton.setEnabled(getSelectedRow()!=null);
+        deleteCategoryButton.setEnabled(getSelectedRow()!=null);
       }
     });
   }

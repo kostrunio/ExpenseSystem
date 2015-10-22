@@ -116,6 +116,22 @@ public class ExpenseSheet extends AbstractEntity {
 	  Collections.reverse(returnList);
 	  return returnList;
   }
+  
+  public List<UserLimit> getUserLimitListRealUser() {
+    List<UserLimit> userLimitList = new ArrayList<UserLimit>();
+    for (UserLimit userLimit : getUserLimitList())
+      if (userLimit.getUser() instanceof RealUser)
+        userLimitList.add(userLimit);
+    return userLimitList;
+  }
+  
+  public List<UserLimit> getUserLimitListNotRealUser() {
+    List<UserLimit> userLimitList = new ArrayList<UserLimit>();
+    for (UserLimit userLimit : getUserLimitList())
+      if (!(userLimit.getUser() instanceof RealUser))
+        userLimitList.add(userLimit);
+    return userLimitList;
+  }
 
   public void setUserLimitList(List<UserLimit> userLimitList) {
     this.userLimitList = userLimitList;
