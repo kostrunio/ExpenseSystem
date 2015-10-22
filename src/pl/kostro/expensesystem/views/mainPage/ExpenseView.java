@@ -185,7 +185,7 @@ public class ExpenseView extends VerticalLayout implements View {
 
     // commentCombo
     commentCombo = new ComboBox();
-    commentCombo.setCaption(Msg.get("expense.commnent"));
+    commentCombo.setCaption(Msg.get("expense.comment"));
     searchLayout.addComponent(commentCombo);
 
     // searchButton
