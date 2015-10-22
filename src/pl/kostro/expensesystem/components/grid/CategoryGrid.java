@@ -89,7 +89,11 @@ public class CategoryGrid extends Grid {
 
       @Override
       public void buttonClick(ClickEvent event) {
-        ConfirmDialog.show(getUI(), Msg.get("settingsPage.removeCategoryLabel"), MessageFormat.format(Msg.get("settingsPage.removeCategoryQuestion"), new Object[] {getItem().getName()}), Msg.get("settingsPage.removeCategoryYes"), Msg.get("settingsPage.removeCategoryNo"),
+        ConfirmDialog.show(getUI(),
+            Msg.get("settingsPage.removeCategoryLabel"),
+            MessageFormat.format(Msg.get("settingsPage.removeCategoryQuestion"), new Object[] {getItem().getName()}),
+            Msg.get("settingsPage.removeCategoryYes"),
+            Msg.get("settingsPage.removeCategoryNo"),
             new ConfirmDialog.Listener() {
 
           private static final long serialVersionUID = 3844318339125611876L;
