@@ -176,8 +176,8 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
     
     if (expenseSheet != null) {
       categoryGrid.filCategoryGrid();
-      realUserGrid.filUserLimitGrid(expenseSheet.getUserLimitListRealUser());
-      userGrid.filUserLimitGrid(expenseSheet.getUserLimitListNotRealUser());
+      realUserGrid.filUserLimitGrid(expenseSheet.getUserLimitListRealUser(), false);
+      userGrid.filUserLimitGrid(expenseSheet.getUserLimitListNotRealUser(), true);
     } else {
       showNewSheetWindow();
     }

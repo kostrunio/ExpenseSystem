@@ -37,14 +37,14 @@ public class UserLimitGrid extends Grid {
     deleteUserLimitButton = button;
   }
   
-  public void filUserLimitGrid(List<UserLimit> userLimitList) {
+  public void filUserLimitGrid(List<UserLimit> userLimitList, boolean editName) {
     getContainerDataSource().removeAllItems();
     BeanItemContainer <UserLimit> container = new BeanItemContainer<UserLimit>(UserLimit.class, userLimitList);
     container.addNestedContainerBean("user");
     setContainerDataSource(container);
     recalculateColumnWidths();
     setColumns("user.name", "limit", "order");
-    getColumn("user.name").setHeaderCaption(Msg.get("settingsPage.realUserName"));
+    getColumn("user.name").setHeaderCaption(Msg.get("settingsPage.realUserName")).setEditable(editName);
     getColumn("limit").setHeaderCaption(Msg.get("settingsPage.realUserLimit"));
     getColumn("order").setHeaderCaption(Msg.get("settingsPage.realUserOrder"));
     getEditorFieldGroup().addCommitHandler(new CommitHandler() {
