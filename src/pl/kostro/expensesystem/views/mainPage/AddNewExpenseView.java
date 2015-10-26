@@ -77,7 +77,7 @@ private DayView dayView;
     if (expense.getUser() != null)
       userBox.select(ExpenseSheetService.getUserLimitForUser(expenseSheet, expense.getUser()));
     else
-      userBox.select(expenseSheet.getDefaultUserLimit());
+      userBox.select(expenseSheet.getUserLimitList().get(0));
     userBox.addValueChangeListener(new Property.ValueChangeListener() {
 
       private static final long serialVersionUID = -7382627003346137188L;

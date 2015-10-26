@@ -56,9 +56,6 @@ public class ExpenseSheet extends AbstractEntity {
   private List<Expense> expenseList;
   @Column(name="es_reload_day")
   private int reloadDay;
-  @OneToOne
-  @JoinColumn(name="es_default_ul_id")
-  private UserLimit defaultUserLimit;
   @Transient
   private Map<Date, DateExpense> dateExpenseMap;
   @Transient
@@ -153,14 +150,6 @@ public class ExpenseSheet extends AbstractEntity {
 
   public void setReloadDay(int reloadDay) {
     this.reloadDay = reloadDay;
-  }
-
-  public UserLimit getDefaultUserLimit() {
-    return defaultUserLimit;
-  }
-
-  public void setDefaultUserLimit(UserLimit defaultUserLimit) {
-    this.defaultUserLimit = defaultUserLimit;
   }
 
   public Map<Date, DateExpense> getDateExpenseMap() {

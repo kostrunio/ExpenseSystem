@@ -53,7 +53,6 @@ public class ExpenseSheetService {
       expenseSheet.setOwner(owner);
       expenseSheet.setName(name);
       expenseSheet.getUserLimitList().add(userLimit);
-      expenseSheet.setDefaultUserLimit(userLimit);
       ExpenseEntityDao.getEntityManager().persist(expenseSheet);
       owner.getExpenseSheetList().add(expenseSheet);
       ExpenseEntityDao.getEntityManager().merge(owner);

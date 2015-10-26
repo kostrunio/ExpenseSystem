@@ -74,7 +74,7 @@ public class CategoryExpenseView extends CustomComponent {
     addNewExpense.setDayView(dayView);
 
     prepareExpenseGrid(calendar);
-    addNewExpense.buildAddNewExpense(ExpenseService.prepareNewExpense(expenseSheet, calendar.getTime(), category, expenseSheet.getDefaultUserLimit().getUser()), false, calendar);
+    addNewExpense.buildAddNewExpense(ExpenseService.prepareNewExpense(expenseSheet, calendar.getTime(), category, expenseSheet.getUserLimitList().get(0).getUser()), false, calendar);
   }
 
   private void prepareExpenseGrid(final Calendar calendar) {

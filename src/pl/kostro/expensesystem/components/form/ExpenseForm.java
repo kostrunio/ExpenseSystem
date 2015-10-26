@@ -190,7 +190,7 @@ public class ExpenseForm extends FormLayout {
       else
         duplicateButton.setEnabled(true);
     } else {
-      userBox.select(expenseSheet.getDefaultUserLimit());
+      userBox.select(expenseSheet.getUserLimitList().get(0));
       duplicateButton.setEnabled(false);
     }
     setVisible(expense != null);
