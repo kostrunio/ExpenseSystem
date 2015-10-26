@@ -98,7 +98,7 @@ public class LoginPage extends VerticalLayout {
             }
             ((ExpenseSystemUI)getUI()).updateContent();
           } catch (Exception e) {
-            ShowNotification.dbProblem();
+            ShowNotification.dbProblem(e.getMessage());
           }
         }
     });

@@ -31,9 +31,9 @@ public class ShowNotification {
     setErrorStyle(notification);
   }
   
-  public static void dbProblem() {
+  public static void dbProblem(String msg) {
     Notification notification = new Notification(Msg.get("notification.dbProblem"));
-    notification.setDescription(Msg.get("notification.dbDesc"));
+    notification.setDescription((MessageFormat.format(Msg.get("notification.dbDesc"), new Object[] {msg})));
     setErrorStyle(notification);
   }
   
