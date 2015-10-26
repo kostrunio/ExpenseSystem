@@ -5,9 +5,12 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+
+import com.vaadin.server.VaadinSession;
 
 import pl.kostro.expensesystem.model.AbstractEntity;
 
@@ -26,17 +29,25 @@ public class ExpenseEntityDao {
       entityManager = getEntityManagerFactory().createEntityManager();
     return entityManager;
   }
+  
+  public static EntityTransaction getTransaction() {
+    if (VaadinSession.getCurrent().getAttribute(EntityTransaction.class) == null)
+      VaadinSession.getCurrent().setAttribute(EntityTransaction.class, getEntityManager().getTransaction());
+    return VaadinSession.getCurrent().getAttribute(EntityTransaction.class);
+  }
 
   public static void begin() {
-    getEntityManager().getTransaction().begin();
+    if (!getTransaction().isActive())
+      getTransaction().begin();
   }
 
   public static void commit() {
-    getEntityManager().getTransaction().commit();
+    getTransaction().commit();
   }
 
   public static void close() {
     getEntityManager().close();
+    VaadinSession.getCurrent().setAttribute(EntityTransaction.class, null);
   }
   
   @SuppressWarnings("unchecked")

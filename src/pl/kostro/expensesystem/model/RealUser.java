@@ -6,7 +6,6 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -39,7 +38,7 @@ public class RealUser extends User {
   private String password;
   @Column(name="u_email")
   private String email;
-  @ManyToMany(fetch=FetchType.EAGER)
+  @ManyToMany
   @JoinTable(name="user_expense_sheet",
   joinColumns=
       @JoinColumn(name="ues_u_id", referencedColumnName="u_id"),

@@ -6,17 +6,6 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 
 public class CategoryService {
   
-  public static void removeCategory(int id) {
-    Category cat = findCategory(id);
-    if (cat != null) {
-      ExpenseEntityDao.getEntityManager().remove(cat);
-    }
-  }
-
-  public static Category findCategory(int id) {
-    return ExpenseEntityDao.getEntityManager().find(Category.class, id);
-  }
-  
   public static void createCategory(ExpenseSheet expenseSheet, String name) {
     ExpenseEntityDao.begin();
     try {
@@ -26,7 +15,6 @@ public class CategoryService {
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
       ExpenseEntityDao.commit();
     } finally {
-      ExpenseEntityDao.close();
     }
   }
 
@@ -36,7 +24,6 @@ public class CategoryService {
       ExpenseEntityDao.getEntityManager().merge(category);
       ExpenseEntityDao.commit();
     } finally {
-      ExpenseEntityDao.close();
     }
   }
 

@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.views;
 
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 
@@ -119,6 +120,7 @@ public class ExpenseMenu extends CustomComponent {
       public void buttonClick(ClickEvent event) {
         VaadinSession.getCurrent().setAttribute(RealUser.class, null);
         VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, null);
+        ExpenseEntityDao.close();
         ((ExpenseSystemUI)getUI()).updateContent();
       }
     });

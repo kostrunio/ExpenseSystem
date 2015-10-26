@@ -7,17 +7,18 @@ import pl.kostro.expensesystem.model.UserLimit;
 
 public class UserLimitService {
 
-  public static void removeUserLimit(int id) {
-    UserLimit uL = findUserLimit(id);
-    if (uL != null) {
-      ExpenseEntityDao.getEntityManager().remove(uL);
+  public static void removeUserLimit(ExpenseSheet expenseSheet, UserLimit userLimit) {
+    ExpenseEntityDao.begin();
+    try {
+      expenseSheet.getUserLimitList().remove(userLimit);
+      ExpenseEntityDao.getEntityManager().remove(userLimit);
+      if (!(userLimit.getUser() instanceof RealUser))
+        ExpenseEntityDao.getEntityManager().remove(userLimit.getUser());
+      ExpenseEntityDao.commit();
+    } finally {
     }
   }
 
-  public static UserLimit findUserLimit(int id) {
-    return ExpenseEntityDao.getEntityManager().find(UserLimit.class, id);
-  }
-  
   public static void createUserLimit(ExpenseSheet expenseSheet, UserLimit userLimit) {
     ExpenseEntityDao.begin();
     try {
@@ -32,7 +33,6 @@ public class UserLimitService {
       }
       ExpenseEntityDao.commit();
     } finally {
-      ExpenseEntityDao.close();
     }
   }
 
@@ -42,7 +42,6 @@ public class UserLimitService {
       ExpenseEntityDao.getEntityManager().merge(userLimit);
       ExpenseEntityDao.commit();
     } finally {
-      ExpenseEntityDao.close();
     }
   }
 

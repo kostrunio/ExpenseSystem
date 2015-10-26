@@ -5,17 +5,6 @@ import pl.kostro.expensesystem.model.User;
 
 public class UserService {
   
-  public static void removeUser(int id) {
-    User u = findUser(id);
-    if (u != null) {
-      ExpenseEntityDao.getEntityManager().remove(u);
-    }
-  }
-
-  public static User findUser(int id) {
-    return ExpenseEntityDao.getEntityManager().find(User.class, id);
-  }
-  
   public static User createUser(String name) {
     ExpenseEntityDao.begin();
     try {
@@ -25,7 +14,7 @@ public class UserService {
       ExpenseEntityDao.commit();
       return user;
     } finally {
-      ExpenseEntityDao.close();
     }
   }
+
 }

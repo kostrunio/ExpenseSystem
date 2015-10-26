@@ -16,17 +16,6 @@ import pl.kostro.expensesystem.utils.Filter;
 
 public class ExpenseService {
   
-  public void removeExpense(int id) {
-    Expense ex = findExpense(id);
-    if (ex != null) {
-      ExpenseEntityDao.getEntityManager().remove(ex);
-    }
-  }
-
-  public static Expense findExpense(int id) {
-    return ExpenseEntityDao.getEntityManager().find(Expense.class, id);
-  }
-  
   public static List<Expense> findAllExpense(ExpenseSheet expenseSheet) {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     for(Expense expense : ExpenseEntityDao.findByNamedQueryWithParameters(
@@ -64,7 +53,6 @@ public class ExpenseService {
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
       ExpenseEntityDao.commit();
     } finally {
-      ExpenseEntityDao.close();
     }
   }
 
@@ -73,11 +61,10 @@ public class ExpenseService {
     ExpenseEntityDao.begin();
     try {
       ExpenseSheetService.removeExpense(expenseSheet, expense);
-      ExpenseEntityDao.getEntityManager().remove(findExpense(expense.getId()));
+      ExpenseEntityDao.getEntityManager().remove(expense);
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
       ExpenseEntityDao.commit();
     } finally {
-      ExpenseEntityDao.close();
     }
   }
 
@@ -105,7 +92,6 @@ public class ExpenseService {
       expense = ExpenseEntityDao.getEntityManager().merge(expense);
       ExpenseEntityDao.commit();
     } finally {
-      ExpenseEntityDao.close();
     }
     return expense;
   }

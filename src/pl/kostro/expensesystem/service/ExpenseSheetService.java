@@ -27,16 +27,12 @@ public class ExpenseSheetService {
   private static ExpenseService expenseService = new ExpenseService();
 
   public static void removeExpenseSheet(ExpenseSheet expenseSheet) {
-    ExpenseSheet attached = findExpenseSheet(expenseSheet.getId());
-    if (attached != null) {
-      ExpenseEntityDao.begin();
-      try {
-        RealUserService.removeExpenseSheet(attached);
-        ExpenseEntityDao.getEntityManager().remove(attached);
-        ExpenseEntityDao.commit();
-      } finally {
-        ExpenseEntityDao.close();
-      }
+    ExpenseEntityDao.begin();
+    try {
+      RealUserService.removeExpenseSheet(expenseSheet);
+      ExpenseEntityDao.getEntityManager().remove(expenseSheet);
+      ExpenseEntityDao.commit();
+    } finally {
     }
   }
 
@@ -58,7 +54,6 @@ public class ExpenseSheetService {
       ExpenseEntityDao.getEntityManager().merge(owner);
       ExpenseEntityDao.commit();
     } finally {
-      ExpenseEntityDao.close();
     }
     if (owner.getDefaultExpenseSheet() == null)
       RealUserService.setDefaultExpenseSheet(owner, expenseSheet);
@@ -218,7 +213,6 @@ public class ExpenseSheetService {
       ExpenseEntityDao.commit();
       ExpenseEntityDao.getEntityManager().refresh(expenseSheet);
     } finally {
-      ExpenseEntityDao.close();
     }
     return expenseSheet;
   }
@@ -239,7 +233,6 @@ public class ExpenseSheetService {
       ExpenseEntityDao.commit();
       ExpenseEntityDao.getEntityManager().refresh(expenseSheet);
     } finally {
-      ExpenseEntityDao.close();
     }
     return expenseSheet;
   }
@@ -256,7 +249,6 @@ public class ExpenseSheetService {
       ExpenseEntityDao.commit();
       ExpenseEntityDao.getEntityManager().refresh(expenseSheet);
     } finally {
-      ExpenseEntityDao.close();
     }
     return expenseSheet;
   }

@@ -23,13 +23,6 @@ public class RealUserService {
     }
   }
 
-  public void removeRealUser(int id) {
-    RealUser rU = findRealUser(id);
-    if (rU != null) {
-      ExpenseEntityDao.getEntityManager().remove(rU);
-    }
-  }
-
   public static RealUser findRealUser(int id) {
     return ExpenseEntityDao.getEntityManager().find(RealUser.class, id);
   }
@@ -45,20 +38,16 @@ public class RealUserService {
       ExpenseEntityDao.getEntityManager().persist(realUser);
       ExpenseEntityDao.commit();
     } finally {
-      ExpenseEntityDao.close();
     }
   }
 
   public static void setDefaultExpenseSheet(RealUser realUser, ExpenseSheet expenseSheet) {
     ExpenseEntityDao.begin();
-    realUser.setDefaultExpenseSheet(expenseSheet);
     try {
-      RealUser loggedUser = findRealUser(realUser.getId());
-      loggedUser.setDefaultExpenseSheet(expenseSheet);
-      ExpenseEntityDao.getEntityManager().merge(loggedUser);
+      realUser.setDefaultExpenseSheet(expenseSheet);
+      ExpenseEntityDao.getEntityManager().merge(realUser);
       ExpenseEntityDao.commit();
     } finally {
-      ExpenseEntityDao.close();
     }
   }
 
@@ -71,7 +60,6 @@ public class RealUserService {
       ExpenseEntityDao.commit();
     } catch (NoResultException e) {
     } finally {
-      ExpenseEntityDao.close();
     }
     return loggedUser;
   }
@@ -85,7 +73,6 @@ public class RealUserService {
     } catch (NoResultException e) {
 
     } finally {
-      ExpenseEntityDao.close();
     }
     return loggedUser;
   }

@@ -19,17 +19,6 @@ public class UserSummaryService {
     return monthsName;
   }
 
-  public static void removeUserSummary(int id) {
-    UserSummary uS = findUserSummary(id);
-    if (uS != null) {
-      ExpenseEntityDao.getEntityManager().remove(uS);
-    }
-  }
-
-  public static UserSummary findUserSummary(int id) {
-    return ExpenseEntityDao.getEntityManager().find(UserSummary.class, id);
-  }
-
   public static UserSummary createUserSummary(UserLimit userLimit, Date date) {
     ExpenseEntityDao.begin();
     try {
@@ -40,7 +29,6 @@ public class UserSummaryService {
       ExpenseEntityDao.commit();
       return userSummary;
     } finally {
-      ExpenseEntityDao.close();
     }
   }
 
@@ -51,7 +39,6 @@ public class UserSummaryService {
       ExpenseEntityDao.commit();
       return userSummary;
     } finally {
-      ExpenseEntityDao.close();
     }
   }
 

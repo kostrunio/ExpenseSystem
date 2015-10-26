@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -43,11 +42,11 @@ public class ExpenseSheet extends AbstractEntity {
   private RealUser owner;
   @Column(name="es_name")
   private String name;
-  @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+  @OneToMany(cascade=CascadeType.REMOVE)
   @JoinColumn(name="c_es_id") 
   @OrderBy("order")
   private List<Category> categoryList;
-  @OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
+  @OneToMany(cascade=CascadeType.REMOVE)
   @JoinColumn(name="ul_es_id")
   @OrderBy("order")
   private List<UserLimit> userLimitList;

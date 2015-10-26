@@ -5,9 +5,9 @@ import java.util.List;
 
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
+import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.service.UserLimitService;
-import pl.kostro.expensesystem.views.ExpenseMenu;
 import pl.kostro.expensesystem.views.settingsPage.AddUserWindow;
 
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
@@ -67,7 +67,8 @@ public class UserLimitGrid extends Grid {
           @Override
           public void onClose(ConfirmDialog dialog) {
             if (dialog.isConfirmed()) {
-              VaadinSession.getCurrent().getAttribute(ExpenseMenu.class).refresh();
+              ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+              UserLimitService.removeUserLimit(expenseSheet, getItem());
               UI.getCurrent().getNavigator().navigateTo("settings");
             }
           }

@@ -38,7 +38,6 @@ public class ExpenseSystemUI extends UI {
   public void updateContent() {
     RealUser user = VaadinSession.getCurrent().getAttribute(RealUser.class);
     if (user != null) {
-      // Authenticated user
       setContent(new MainPage());
       getNavigator().navigateTo(getNavigator().getState());
     } else {
