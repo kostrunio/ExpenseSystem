@@ -3,6 +3,7 @@ package pl.kostro.expensesystem.service;
 import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
 
 public class UserLimitService {
@@ -19,17 +20,16 @@ public class UserLimitService {
     }
   }
 
-  public static void createUserLimit(ExpenseSheet expenseSheet, UserLimit userLimit) {
+  public static void createUserLimit(ExpenseSheet expenseSheet, User user) {
     ExpenseEntityDao.begin();
     try {
-      userLimit = ExpenseEntityDao.getEntityManager().merge(userLimit);
+      UserLimit userLimit = ExpenseEntityDao.getEntityManager().merge(new UserLimit(user, expenseSheet.getUserLimitList().size()));
       expenseSheet.getUserLimitList().add(userLimit);
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
 
-      if (userLimit.getUser() instanceof RealUser) {
-        RealUser persistUser = ExpenseEntityDao.getEntityManager().find(RealUser.class, userLimit.getUser().getId());
-        persistUser.getExpenseSheetList().add(expenseSheet);
-        ExpenseEntityDao.getEntityManager().merge(persistUser);
+      if (user instanceof RealUser) {
+        ((RealUser)user).getExpenseSheetList().add(expenseSheet);
+        ExpenseEntityDao.getEntityManager().merge(user);
       }
       ExpenseEntityDao.commit();
     } finally {

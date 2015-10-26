@@ -46,9 +46,10 @@ public class UserLimit extends AbstractEntity {
     super();
   }
 
-  public UserLimit(User user, BigDecimal limit) {
+  public UserLimit(User user, int order) {
     this.user = user;
-    this.limit = limit;
+    this.limit = new BigDecimal(0);
+    this.order = order;
   }
 
   public int getId() {

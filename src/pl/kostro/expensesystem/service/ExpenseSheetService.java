@@ -1,6 +1,5 @@
 package pl.kostro.expensesystem.service;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -44,7 +43,7 @@ public class ExpenseSheetService {
     ExpenseEntityDao.begin();
     ExpenseSheet expenseSheet = new ExpenseSheet();
     try {
-      UserLimit userLimit = new UserLimit(owner, new BigDecimal(0));
+      UserLimit userLimit = new UserLimit(owner, 0);
       ExpenseEntityDao.getEntityManager().persist(userLimit);
       expenseSheet.setOwner(owner);
       expenseSheet.setName(name);

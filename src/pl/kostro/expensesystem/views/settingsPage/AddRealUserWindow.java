@@ -1,11 +1,8 @@
 package pl.kostro.expensesystem.views.settingsPage;
 
-import java.math.BigDecimal;
-
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
-import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.service.RealUserService;
 import pl.kostro.expensesystem.service.UserLimitService;
@@ -66,7 +63,7 @@ public class AddRealUserWindow extends Window {
           return;
         }
         ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-        UserLimitService.createUserLimit(expenseSheet, new UserLimit(realUser, new BigDecimal(0)));
+        UserLimitService.createUserLimit(expenseSheet, realUser);
         UI.getCurrent().getNavigator().navigateTo("settings");
         close();
       }
