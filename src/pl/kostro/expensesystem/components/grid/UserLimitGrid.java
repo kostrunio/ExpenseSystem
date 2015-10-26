@@ -97,6 +97,7 @@ public class UserLimitGrid extends Grid {
       @Override
       public void postCommit(CommitEvent commitEvent) throws CommitException {
         UserLimitService.merge(((BeanItem<UserLimit>)commitEvent.getFieldBinder().getItemDataSource()).getBean());
+        UI.getCurrent().getNavigator().navigateTo("settings");
       }
     });
     

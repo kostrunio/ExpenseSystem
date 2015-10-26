@@ -58,4 +58,10 @@ public class ShowNotification {
     setErrorStyle(notification);
   }
 
+  public static void removeOwnerProblem() {
+    Notification notification = new Notification(Msg.get("notification.removeOwnerProblem"));
+    notification.setDescription(Msg.get("notification.removeOwnerDesc"));
+    setErrorStyle(notification);
+  }
+
 }

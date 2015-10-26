@@ -7,6 +7,7 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.service.UserLimitService;
 import pl.kostro.expensesystem.views.settingsPage.AddRealUserWindow;
 
@@ -68,6 +69,10 @@ public class RealUserLimitGrid extends Grid {
           public void onClose(ConfirmDialog dialog) {
             if (dialog.isConfirmed()) {
               ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+              if (expenseSheet.getOwner().equals(getItem().getUser())) {
+                ShowNotification.removeOwnerProblem();
+                return;
+              }
               UserLimitService.removeUserLimit(expenseSheet, getItem());
               UI.getCurrent().getNavigator().navigateTo("settings");
             }
@@ -97,6 +102,7 @@ public class RealUserLimitGrid extends Grid {
       @Override
       public void postCommit(CommitEvent commitEvent) throws CommitException {
         UserLimitService.merge(((BeanItem<UserLimit>)commitEvent.getFieldBinder().getItemDataSource()).getBean());
+        UI.getCurrent().getNavigator().navigateTo("settings");
       }
     });
     
