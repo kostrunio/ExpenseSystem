@@ -15,8 +15,8 @@ import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitHandler;
 import com.vaadin.data.util.BeanItem;
 import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.event.ItemClickEvent;
-import com.vaadin.event.ItemClickEvent.ItemClickListener;
+import com.vaadin.event.SelectionEvent;
+import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Grid;
@@ -68,7 +68,7 @@ public class RealUserLimitGrid extends Grid {
           public void onClose(ConfirmDialog dialog) {
             if (dialog.isConfirmed()) {
               VaadinSession.getCurrent().getAttribute(ExpenseMenu.class).refresh();
-              UI.getCurrent().getNavigator().navigateTo("");
+              UI.getCurrent().getNavigator().navigateTo("settings");
             }
           }
         });
@@ -99,11 +99,11 @@ public class RealUserLimitGrid extends Grid {
       }
     });
     
-    addItemClickListener(new ItemClickListener() {
-      private static final long serialVersionUID = 8360036685403681818L;
+    addSelectionListener(new SelectionListener() {
+      private static final long serialVersionUID = -2500863327214583026L;
 
       @Override
-      public void itemClick(ItemClickEvent event) {
+      public void select(SelectionEvent event) {
         deleteUserLimitButton.setEnabled(getSelectedRow()!=null);
       }
     });
