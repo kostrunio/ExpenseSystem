@@ -27,7 +27,7 @@ import pl.kostro.expensesystem.utils.Calculator;
       ),
   @NamedQuery(
       name = "findFirstExpense",
-      query = "select e from ExpenseSheet es join es.expenseList e where es = :expenseSheet and e.date = (select min(e1.date) from Expense e1 where e1.expenseSheet = e.expenseSheet) and rownum = 1"
+      query = "select e from ExpenseSheet es join es.expenseList e where es = :expenseSheet and e.date = (select min(e1.date) from Expense e1 where e1.expenseSheet = e.expenseSheet)"
       ),
   @NamedQuery(
       name = "findExpenseByDates",
