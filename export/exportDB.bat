@@ -1,5 +1,5 @@
 timeout 60
-expdp expenseSystem/expenseSystem SCHEMAS=expenseSystem DIRECTORY=exp_dir  DUMPFILE=%date%.dmp LOGFILE=expschema.log
+C:\"Program Files"\PostgreSQL\9.4\bin\pg_dump.exe -U postgres -C -f C:\Users\magdalenka\git\ExpenseSystem\export\%date%.dmp postgres
 if %ERRORLEVEL% EQU 0 (
-  xcopy C:\Users\magdalenka\workspace\ExpenseSystem\export \\dns\sklad\backup\expenseSystem /D /Y
+  xcopy C:\Users\magdalenka\git\ExpenseSystem\export \\dns\sklad\backup\expenseSystem /D /Y
 )
