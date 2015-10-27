@@ -131,6 +131,12 @@ public class FindExpenseView extends CustomComponent {
     
     expenseGrid.setContainerDataSource(new BeanItemContainer<>(Expense.class));
     expenseGrid.setColumnOrder(new Object[]{"date", "category", "user", "formula", "value", "comment"});
+    expenseGrid.getColumn("date").setHeaderCaption(Msg.get("findPage.date"));
+    expenseGrid.getColumn("category").setHeaderCaption(Msg.get("findPage.category"));
+    expenseGrid.getColumn("user").setHeaderCaption(Msg.get("findPage.user"));
+    expenseGrid.getColumn("formula").setHeaderCaption(Msg.get("findPage.formula"));
+    expenseGrid.getColumn("value").setHeaderCaption(Msg.get("findPage.value"));
+    expenseGrid.getColumn("comment").setHeaderCaption(Msg.get("findPage.comment"));
     expenseGrid.removeColumn("expenseSheet");
     expenseGrid.removeColumn("id");
     expenseGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
