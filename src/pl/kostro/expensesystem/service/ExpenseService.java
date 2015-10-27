@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.gwt.thirdparty.guava.common.collect.ImmutableMap;
-
 import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
@@ -18,31 +16,36 @@ public class ExpenseService {
   
   public static List<Expense> findAllExpense(ExpenseSheet expenseSheet) {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
-    for(Expense expense : ExpenseEntityDao.findByNamedQueryWithParameters(
-        "findAllExpense",
-        ImmutableMap.of("expenseSheet", expenseSheet),
-        Expense.class)) {
+    for(Expense expense : expenseSheet.getExpenseList())
       if (Filter.matchFilter(expense, expenseSheet.getFilter()))
         expenseListToReturn.add(expense);
-    }
     return expenseListToReturn;
   }
   
-  public Expense findFirstExpense(ExpenseSheet expenseSheet) {
-	  Expense firstExpense = ExpenseEntityDao.findByNamedQueryWithParameters("findFirstExpense", ImmutableMap.of("expenseSheet", expenseSheet), Expense.class).get(0);
-	  if (firstExpense == null) {
-		  firstExpense = new Expense();
-		  firstExpense.setDate(new Date());
-	  }
+  public static Expense findFirstExpense(ExpenseSheet expenseSheet) {
+    Expense firstExpense = new Expense();
+    firstExpense.setDate(new Date());
+    for (Expense expense : expenseSheet.getExpenseList())
+      if (expense.getDate().before(firstExpense.getDate()))
+        firstExpense = expense;
 	  return firstExpense;
   }
   
-  public List<Expense> findExpenseForDates(ExpenseSheet expenseSheet) {
-    return ExpenseEntityDao.findByNamedQueryWithParameters("findExpenseByDates", ImmutableMap.of("expenseSheet", expenseSheet.getId(), "startDate", expenseSheet.getFirstDate(), "endDate", expenseSheet.getLastDate()), Expense.class);
+  public static List<Expense> findExpenseForDates(ExpenseSheet expenseSheet) {
+    List<Expense> expenseListToReturn = new ArrayList<Expense>();
+    for(Expense expense : expenseSheet.getExpenseList())
+      if (!expense.getDate().before(expenseSheet.getFirstDate())
+          && !expense.getDate().after(expenseSheet.getLastDate()))
+        expenseListToReturn.add(expense);
+    return expenseListToReturn;
   }
   
-  public List<Expense> findExpenseByCategory(ExpenseSheet expenseSheet, Category category) {
-    return ExpenseEntityDao.findByNamedQueryWithParameters("findExpenseByCategory", ImmutableMap.of("expenseSheet", expenseSheet.getId(), "category", category), Expense.class);
+  public static List<Expense> findExpenseByCategory(ExpenseSheet expenseSheet, Category category) {
+    List<Expense> expenseListToReturn = new ArrayList<Expense>();
+    for(Expense expense : expenseSheet.getExpenseList())
+      if (expense.getCategory().equals(category))
+        expenseListToReturn.add(expense);
+    return expenseListToReturn;
   }
   
   public static void creteExpense(ExpenseSheet expenseSheet, Expense expense) {

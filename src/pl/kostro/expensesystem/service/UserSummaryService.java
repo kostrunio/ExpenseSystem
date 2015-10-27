@@ -10,6 +10,7 @@ import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.UserSummary;
+import pl.kostro.expensesystem.notification.ShowNotification;
 
 public class UserSummaryService {
   
@@ -109,9 +110,10 @@ public class UserSummaryService {
       BigDecimal exSummary = new BigDecimal(0);
       if (expenseSheet.getUserLimitExpenseMap().get(userLimit) != null)
         exSummary = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
-      if (!userSummary.getSum().equals(exSummary)) {
+      if (userSummary.getSum().doubleValue() != exSummary.doubleValue()) {
+        ShowNotification.changeSummary(userLimit.getUser().getName(), userSummary.getSum(), exSummary);
         userSummary.setSum(exSummary);
-        	save(userSummary);
+        save(userSummary);
       }
     }
   }

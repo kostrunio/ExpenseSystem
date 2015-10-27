@@ -43,7 +43,7 @@ public class UserLimitExpense {
 	}
 	
 	public void addExpense(Expense expense) {
-		setSum(getSum().add(expense.getValue().multiply(expense.getCategory().getMultiplier())));
+		setSum(getSum().add(expense.getValue().multiply(expense.getCategory().getMultiplier()).setScale(2)));
 		getExpenseList().add(expense);
 	}
 	public void removeExpense(Expense expense) {

@@ -233,11 +233,11 @@ public class ExpenseView extends VerticalLayout implements View {
 
   @Override
   public void enter(ViewChangeEvent event) {
+    RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
     if (event.getParameters().isEmpty()) {
-      RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
       expenseSheet = loggedUser.getDefaultExpenseSheet();
     } else {
-      expenseSheet = ExpenseSheetService.findExpenseSheet(Integer.parseInt(event.getParameters()));
+      expenseSheet = ExpenseSheetService.findExpenseSheet(loggedUser, Integer.parseInt(event.getParameters()));
     }
     VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
     removeAllComponents();

@@ -23,8 +23,8 @@ public class RealUserService {
     }
   }
 
-  public static RealUser findRealUser(int id) {
-    return ExpenseEntityDao.getEntityManager().find(RealUser.class, id);
+  public static void refresh(RealUser realUser) {
+    ExpenseEntityDao.getEntityManager().refresh(realUser);
   }
 
   public void createRealUser(String name, String password, String email) {

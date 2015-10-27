@@ -60,7 +60,7 @@ public class DateExpense {
 	}
 	
 	public void addExpense(Expense expense) {
-		setSum(getSum().add(expense.getValue().multiply(expense.getCategory().getMultiplier())));
+		setSum(getSum().add(expense.getValue().multiply(expense.getCategory().getMultiplier()).setScale(2)));
 		CategoryExpense categoryExpense = getCategoryExpenseMap().get(expense.getCategory());
 		if (categoryExpense == null) {
 			categoryExpense = new CategoryExpense(expense.getCategory());

@@ -23,8 +23,6 @@ import pl.kostro.expensesystem.utils.UserLimitExpense;
 
 public class ExpenseSheetService {
 
-  private static ExpenseService expenseService = new ExpenseService();
-
   public static void removeExpenseSheet(ExpenseSheet expenseSheet) {
     ExpenseEntityDao.begin();
     try {
@@ -35,8 +33,11 @@ public class ExpenseSheetService {
     }
   }
 
-  public static ExpenseSheet findExpenseSheet(int id) {
-    return ExpenseEntityDao.getEntityManager().find(ExpenseSheet.class, id);
+  public static ExpenseSheet findExpenseSheet(RealUser realUser, int id) {
+    for (ExpenseSheet expenseSheet : realUser.getExpenseSheetList())
+      if (expenseSheet.getId() == id)
+        return expenseSheet;
+    return null;
   }
 
   public static ExpenseSheet createExpenseSheet(RealUser owner, String name) {
@@ -61,8 +62,7 @@ public class ExpenseSheetService {
 
   private static List<Expense> getExpenseList(ExpenseSheet expenseSheet) {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
-    expenseSheet.setExpenseList(expenseService.findExpenseForDates(expenseSheet));
-    for (Expense expense : expenseSheet.getExpenseList())
+    for (Expense expense : ExpenseService.findExpenseForDates(expenseSheet))
       if (Filter.matchFilter(expense, expenseSheet.getFilter()))
         expenseListToReturn.add(expense);
     return expenseListToReturn;
@@ -136,7 +136,7 @@ public class ExpenseSheetService {
 
   public static Set<String> getAllComments(ExpenseSheet expenseSheet) {
     Set<String> commentList = new TreeSet<String>();
-    for (Expense expense : ExpenseService.findAllExpense(expenseSheet))
+    for (Expense expense : expenseSheet.getExpenseList())
       if (expense.getComment() != null && !expense.getComment().equals(""))
         commentList.add(expense.getComment());
     return commentList;
@@ -144,7 +144,7 @@ public class ExpenseSheetService {
 
   public static Set<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
     Set<String> commentList = new TreeSet<String>();
-    for (Expense expense : expenseService.findExpenseByCategory(expenseSheet, category))
+    for (Expense expense : ExpenseService.findExpenseByCategory(expenseSheet, category))
       if (expense.getComment() != null && !expense.getComment().equals(""))
         commentList.add(expense.getComment());
     return commentList;
@@ -155,7 +155,7 @@ public class ExpenseSheetService {
     int thisYear = new GregorianCalendar().get(Calendar.YEAR);
     int firstYear = thisYear;
     Calendar date = new GregorianCalendar();
-    date.setTime(expenseService.findFirstExpense(expenseSheet).getDate());
+    date.setTime(ExpenseService.findFirstExpense(expenseSheet).getDate());
     int year = date.get(Calendar.YEAR);
     if (year < firstYear)
       firstYear = year;
@@ -186,14 +186,6 @@ public class ExpenseSheetService {
         commentsList.add(expense.getComment());
     }
     return commentsList;
-  }
-
-  public static ExpenseSheet getExpenseSheet(RealUser loggedUser, String expenseSheetName) {
-    for (ExpenseSheet expenseSheet : loggedUser.getExpenseSheetList()) {
-      if (expenseSheet.getName().equals(expenseSheetName))
-        return expenseSheet;
-    }
-    return null;
   }
 
   public static ExpenseSheet moveCategoryUp(ExpenseSheet expenseSheet, Category category) {

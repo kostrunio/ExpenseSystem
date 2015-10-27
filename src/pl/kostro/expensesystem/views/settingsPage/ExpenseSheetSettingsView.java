@@ -152,7 +152,7 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
             if (dialog.isConfirmed()) {
               ExpenseSheetService.removeExpenseSheet(expenseSheet);
               RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
-              VaadinSession.getCurrent().setAttribute(RealUser.class, RealUserService.findRealUser(loggedUser.getId()));
+              RealUserService.refresh(loggedUser);
               if (loggedUser.getDefaultExpenseSheet() == null && loggedUser.getExpenseSheetList().size() != 0)
                 RealUserService.setDefaultExpenseSheet(loggedUser, loggedUser.getExpenseSheetList().get(0));
               VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, null);
