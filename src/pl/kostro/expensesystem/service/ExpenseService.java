@@ -29,7 +29,7 @@ public class ExpenseService {
   }
   
   public Expense findFirstExpense(ExpenseSheet expenseSheet) {
-	  Expense firstExpense = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findFirstExpense", ImmutableMap.of("expenseSheet", expenseSheet), Expense.class);
+	  Expense firstExpense = ExpenseEntityDao.findByNamedQueryWithParameters("findFirstExpense", ImmutableMap.of("expenseSheet", expenseSheet), Expense.class).get(0);
 	  if (firstExpense == null) {
 		  firstExpense = new Expense();
 		  firstExpense.setDate(new Date());
