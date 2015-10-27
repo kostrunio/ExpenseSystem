@@ -157,6 +157,7 @@ public class ExpenseView extends VerticalLayout implements View {
     monthMenu = new MenuBar();
     monthMenu.setImmediate(false);
     for (String monthName : UserSummaryService.getMonthsName())
+      if (!monthName.isEmpty())
       monthMenu.addItem(monthName, monthCommand);
     monthMenu.setSizeUndefined();
 
