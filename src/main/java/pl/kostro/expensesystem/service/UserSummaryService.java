@@ -1,11 +1,11 @@
 package pl.kostro.expensesystem.service;
 
 import java.math.BigDecimal;
-import java.text.DateFormatSymbols;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
+import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
@@ -14,7 +14,19 @@ import pl.kostro.expensesystem.notification.ShowNotification;
 
 public class UserSummaryService {
   
-  private static String[] monthsName = new DateFormatSymbols().getMonths();
+  private static String[] monthsName = new String[]{
+    Msg.get("month.1"),
+    Msg.get("month.2"),
+    Msg.get("month.3"),
+    Msg.get("month.4"),
+    Msg.get("month.5"),
+    Msg.get("month.6"),
+    Msg.get("month.7"),
+    Msg.get("month.8"),
+    Msg.get("month.9"),
+    Msg.get("month.10"),
+    Msg.get("month.11"),
+    Msg.get("month.12")};
   
   public static String[] getMonthsName() {
     return monthsName;
