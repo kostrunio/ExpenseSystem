@@ -37,7 +37,7 @@ public class ExpenseSheetService {
     for (ExpenseSheet expenseSheet : realUser.getExpenseSheetList())
       if (expenseSheet.getId() == id)
         return expenseSheet;
-    return null;
+    return realUser.getDefaultExpenseSheet();
   }
 
   public static ExpenseSheet createExpenseSheet(RealUser owner, String name) {
