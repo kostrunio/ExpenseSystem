@@ -16,7 +16,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.vaadin.server.VaadinSession;
+
 import pl.kostro.expensesystem.utils.Calculator;
+import pl.kostro.expensesystem.utils.Encryption;
 
 @Entity
 @Table(name="expenses")
@@ -61,6 +64,8 @@ public class Expense extends AbstractEntity {
   private User user;
   @Column(name="e_comment")
   private String comment;
+  @Column(name="e_encrypted")
+  private boolean encrypted;
   @ManyToOne
   @JoinColumn(name="e_es_id")
   private ExpenseSheet expenseSheet;
@@ -74,7 +79,7 @@ public class Expense extends AbstractEntity {
     setFormula(formula);
     this.category = category;
     this.user = user;
-    this.comment = comment;
+    setComment(comment);
     this.expenseSheet = expenseSheet;
   }
   
@@ -127,11 +132,17 @@ public class Expense extends AbstractEntity {
   }
 
   public String getComment() {
+    if (encrypted) {
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+      return enc.decryption(comment);
+    }
     return comment;
   }
 
   public void setComment(String comment) {
-    this.comment = comment;
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+    this.comment = enc.encryption(comment);
+    this.encrypted = true;
   }
   
   public ExpenseSheet getExpenseSheet() {
@@ -140,6 +151,14 @@ public class Expense extends AbstractEntity {
 
   public void setExpenseSheet(ExpenseSheet expenseSheet) {
     this.expenseSheet = expenseSheet;
+  }
+  
+  public boolean getEncrypted() {
+    return encrypted;
+  }
+
+  public void setEncrypted(boolean encrypted) {
+    this.encrypted = encrypted;
   }
 
   @Override

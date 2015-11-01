@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.utils;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +8,9 @@ import java.util.List;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 
-public class CategoryExpense {
+public class CategoryExpense implements Serializable {
+	private static final long serialVersionUID = -9100864716099257673L;
+
 	private Category category;
 	private List<Expense> expenseList;
 	private BigDecimal sum = new BigDecimal(0);

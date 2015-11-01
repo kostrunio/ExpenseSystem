@@ -21,8 +21,11 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.vaadin.server.VaadinSession;
+
 import pl.kostro.expensesystem.utils.CategoryExpense;
 import pl.kostro.expensesystem.utils.DateExpense;
+import pl.kostro.expensesystem.utils.Encryption;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.UserLimitExpense;
 
@@ -55,6 +58,8 @@ public class ExpenseSheet extends AbstractEntity {
   private List<Expense> expenseList;
   @Column(name="es_reload_day")
   private int reloadDay;
+  @Column(name="es_encrypted")
+  private boolean encrypted;
   @Transient
   private Map<Date, DateExpense> dateExpenseMap;
   @Transient
@@ -84,11 +89,17 @@ public class ExpenseSheet extends AbstractEntity {
   }
 
   public String getName() {
+    if (encrypted) {
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+      return enc.decryption(name);
+    }
     return name;
   }
 
   public void setName(String name) {
-    this.name = name;
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+    this.name = enc.encryption(name);
+    this.encrypted = true;
   }
 
   public List<Category> getCategoryList() {
@@ -149,6 +160,14 @@ public class ExpenseSheet extends AbstractEntity {
 
   public void setReloadDay(int reloadDay) {
     this.reloadDay = reloadDay;
+  }
+  
+  public boolean getEncrypted() {
+    return encrypted;
+  }
+
+  public void setEncrypted(boolean encrypted) {
+    this.encrypted = encrypted;
   }
 
   public Map<Date, DateExpense> getDateExpenseMap() {

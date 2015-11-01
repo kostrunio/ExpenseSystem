@@ -10,6 +10,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.vaadin.server.VaadinSession;
+
+import pl.kostro.expensesystem.utils.Encryption;
+
 @Entity
 @Table(name = "categories")
 public class Category extends AbstractEntity {
@@ -23,10 +27,12 @@ public class Category extends AbstractEntity {
   private int id;
   @Column(name = "c_name")
   private String name;
-  @Column(name="c_multiplier")
+  @Column(name = "c_multiplier")
   private BigDecimal multiplier;
   @Column(name = "c_order")
   private int order;
+  @Column(name = "c_encrypted")
+  private boolean encrypted;
 
   public Category() {
     super();
@@ -34,14 +40,14 @@ public class Category extends AbstractEntity {
 
   public Category(String name, int order) {
     super();
-    this.name = name;
+    setName(name);
     this.multiplier = new BigDecimal(1);
     this.order = order;
   }
   
   public Category(String name, BigDecimal multiplier, int order) {
     super();
-    this.name = name;
+    setName(name);
     this.multiplier = multiplier;
     this.order = order;
   }
@@ -55,11 +61,17 @@ public class Category extends AbstractEntity {
   }
 
   public String getName() {
+    if (encrypted) {
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+      return enc.decryption(name);
+    }
     return name;
   }
 
   public void setName(String name) {
-    this.name = name;
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+    this.name = enc.encryption(name);
+    this.encrypted = true;
   }
   
   public BigDecimal getMultiplier() {
@@ -76,6 +88,14 @@ public class Category extends AbstractEntity {
 
   public void setOrder(int order) {
     this.order = order;
+  }
+  
+  public boolean getEncrypted() {
+    return encrypted;
+  }
+
+  public void setEncrypted(boolean encrypted) {
+    this.encrypted = encrypted;
   }
 
   @Override
