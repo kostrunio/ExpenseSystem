@@ -11,6 +11,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import pl.kostro.expensesystem.utils.Encryption;
+
+import com.vaadin.server.VaadinSession;
+
 @Entity
 @Table(name="users_summaries")
 public class UserSummary extends AbstractEntity {
@@ -26,8 +30,12 @@ public class UserSummary extends AbstractEntity {
   private Date date;
   @Column(name="us_limit")
   private BigDecimal limit;
+  @Column(name="us_limit_byte")
+  private byte[] limit_byte;
   @Column(name="us_sum")
   private BigDecimal sum;
+  @Column(name="us_sum_byte")
+  private byte[] sum_byte;
   
   public UserSummary() {
     super();
@@ -35,8 +43,8 @@ public class UserSummary extends AbstractEntity {
 
   public UserSummary(Date date, BigDecimal limit) {
     this.date = date;
-    this.limit = limit;
-    this.sum = new BigDecimal(0);
+    setLimit(limit);
+    setSum(new BigDecimal(0));
   }
 
   public int getId() {
@@ -55,18 +63,30 @@ public class UserSummary extends AbstractEntity {
   }
 
   public BigDecimal getLimit() {
+    if (limit_byte != null) {
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+      limit = new BigDecimal(enc.decryption(limit_byte));
+    }
     return limit;
   }
 
   public void setLimit(BigDecimal limit) {
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+    this.limit_byte = enc.encryption(limit.toString());
     this.limit = limit;
   }
   
   public BigDecimal getSum() {
+    if (sum_byte != null) {
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+      sum = new BigDecimal(enc.decryption(sum_byte));
+    }
     return sum;
   }
 
   public void setSum(BigDecimal sum) {
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+    this.sum_byte = enc.encryption(sum.toString());
     this.sum = sum;
   }
 

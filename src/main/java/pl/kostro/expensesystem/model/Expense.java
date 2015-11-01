@@ -54,8 +54,12 @@ public class Expense extends AbstractEntity {
   private Date date;
   @Column(name="e_formula")
   private String formula;
+  @Column(name="e_formula_byte")
+  private byte[] formula_byte;
   @Column(name="e_value")
   private BigDecimal value;
+  @Column(name="e_value_byte")
+  private byte[] value_byte;
   @OneToOne
   @JoinColumn(name="e_c_id")
   private Category category;
@@ -64,8 +68,8 @@ public class Expense extends AbstractEntity {
   private User user;
   @Column(name="e_comment")
   private String comment;
-  @Column(name="e_encrypted")
-  private boolean encrypted;
+  @Column(name="e_comment_byte")
+  private byte[] comment_byte;
   @ManyToOne
   @JoinColumn(name="e_es_id")
   private ExpenseSheet expenseSheet;
@@ -99,19 +103,31 @@ public class Expense extends AbstractEntity {
   }
 
   public String getFormula() {
+    if (formula_byte != null) {
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+      formula = enc.decryption(formula_byte);
+    }
     return formula;
   }
 
   public void setFormula(String formula) {
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+    this.formula_byte = enc.encryption(formula);
     this.formula = formula;
-    this.value = Calculator.getResult(formula);
+    setValue(Calculator.getResult(formula));
   }
 
   public BigDecimal getValue() {
+    if (value_byte != null) {
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+      value = new BigDecimal(enc.decryption(value_byte));
+    }
     return value;
   }
 
   public void setValue(BigDecimal value) {
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+    this.value_byte = enc.encryption(value.toString());
     this.value = value;
   }
   
@@ -132,17 +148,17 @@ public class Expense extends AbstractEntity {
   }
 
   public String getComment() {
-    if (encrypted) {
+    if (comment_byte != null) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
-      return enc.decryption(comment);
+      comment = enc.decryption(comment_byte);
     }
     return comment;
   }
 
   public void setComment(String comment) {
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
-    this.comment = enc.encryption(comment);
-    this.encrypted = true;
+    this.comment_byte = enc.encryption(comment);
+    this.comment = comment;
   }
   
   public ExpenseSheet getExpenseSheet() {
@@ -153,13 +169,6 @@ public class Expense extends AbstractEntity {
     this.expenseSheet = expenseSheet;
   }
   
-  public boolean getEncrypted() {
-    return encrypted;
-  }
-
-  public void setEncrypted(boolean encrypted) {
-    this.encrypted = encrypted;
-  }
 
   @Override
   public String toString() {

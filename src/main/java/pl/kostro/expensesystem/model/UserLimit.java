@@ -17,6 +17,10 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import pl.kostro.expensesystem.utils.Encryption;
+
+import com.vaadin.server.VaadinSession;
+
 @Entity
 @Table(name="users_limits")
 public class UserLimit extends AbstractEntity {
@@ -33,6 +37,8 @@ public class UserLimit extends AbstractEntity {
   private User user;
   @Column(name="ul_limit")
   private BigDecimal limit;
+  @Column(name="ul_limit_byte")
+  private byte[] limit_byte;
   @Column(name="ul_order")
   private int order;
   @OneToMany(cascade=CascadeType.REMOVE)
@@ -48,7 +54,7 @@ public class UserLimit extends AbstractEntity {
 
   public UserLimit(User user, int order) {
     this.user = user;
-    this.limit = new BigDecimal(0);
+    setLimit(new BigDecimal(0));
     this.order = order;
   }
 
@@ -68,10 +74,16 @@ public class UserLimit extends AbstractEntity {
   }
 
   public BigDecimal getLimit() {
+    if (limit_byte != null) {
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+      limit = new BigDecimal(enc.decryption(limit_byte));
+    }
     return limit;
   }
 
   public void setLimit(BigDecimal limit) {
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+    this.limit_byte = enc.encryption(limit.toString());
     this.limit = limit;
   }
   

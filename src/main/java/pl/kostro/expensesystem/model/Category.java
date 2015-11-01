@@ -27,12 +27,12 @@ public class Category extends AbstractEntity {
   private int id;
   @Column(name = "c_name")
   private String name;
+  @Column(name = "c_name_byte")
+  private byte[] name_byte;
   @Column(name = "c_multiplier")
   private BigDecimal multiplier;
   @Column(name = "c_order")
   private int order;
-  @Column(name = "c_encrypted")
-  private boolean encrypted;
 
   public Category() {
     super();
@@ -61,17 +61,17 @@ public class Category extends AbstractEntity {
   }
 
   public String getName() {
-    if (encrypted) {
+    if (name_byte != null) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
-      return enc.decryption(name);
+      name = enc.decryption(name_byte);
     }
     return name;
   }
 
   public void setName(String name) {
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
-    this.name = enc.encryption(name);
-    this.encrypted = true;
+    this.name_byte = enc.encryption(name);
+    this.name = name;
   }
   
   public BigDecimal getMultiplier() {
@@ -88,14 +88,6 @@ public class Category extends AbstractEntity {
 
   public void setOrder(int order) {
     this.order = order;
-  }
-  
-  public boolean getEncrypted() {
-    return encrypted;
-  }
-
-  public void setEncrypted(boolean encrypted) {
-    this.encrypted = encrypted;
   }
 
   @Override

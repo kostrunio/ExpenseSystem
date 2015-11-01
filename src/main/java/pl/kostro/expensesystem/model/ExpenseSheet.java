@@ -45,6 +45,8 @@ public class ExpenseSheet extends AbstractEntity {
   private RealUser owner;
   @Column(name="es_name")
   private String name;
+  @Column(name = "es_name_byte")
+  private byte[] name_byte;
   @OneToMany(cascade=CascadeType.REMOVE)
   @JoinColumn(name="c_es_id") 
   @OrderBy("order")
@@ -58,8 +60,6 @@ public class ExpenseSheet extends AbstractEntity {
   private List<Expense> expenseList;
   @Column(name="es_reload_day")
   private int reloadDay;
-  @Column(name="es_encrypted")
-  private boolean encrypted;
   @Transient
   private Map<Date, DateExpense> dateExpenseMap;
   @Transient
@@ -89,17 +89,17 @@ public class ExpenseSheet extends AbstractEntity {
   }
 
   public String getName() {
-    if (encrypted) {
+    if (name_byte != null) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
-      return enc.decryption(name);
+      name = enc.decryption(name_byte);
     }
     return name;
   }
 
   public void setName(String name) {
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
-    this.name = enc.encryption(name);
-    this.encrypted = true;
+    this.name_byte = enc.encryption(name);
+    this.name = name;
   }
 
   public List<Category> getCategoryList() {
@@ -162,14 +162,6 @@ public class ExpenseSheet extends AbstractEntity {
     this.reloadDay = reloadDay;
   }
   
-  public boolean getEncrypted() {
-    return encrypted;
-  }
-
-  public void setEncrypted(boolean encrypted) {
-    this.encrypted = encrypted;
-  }
-
   public Map<Date, DateExpense> getDateExpenseMap() {
     if (dateExpenseMap == null)
       dateExpenseMap = new HashMap<Date, DateExpense>();
