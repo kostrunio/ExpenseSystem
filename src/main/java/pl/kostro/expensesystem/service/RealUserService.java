@@ -61,6 +61,9 @@ public class RealUserService {
         es.setKey(password);
       ExpenseEntityDao.commit();
     } catch (NoResultException e) {
+    } catch (Exception e) {
+      ExpenseEntityDao.close();
+      ExpenseEntityDao.begin();
     } finally {
     }
     return loggedUser;
