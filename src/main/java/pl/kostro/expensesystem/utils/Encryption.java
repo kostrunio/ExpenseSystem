@@ -27,6 +27,7 @@ public class Encryption {
   }
 
   public byte[] encryption(String input) {
+    if (input == null) return null;
     try {
       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
       cipher.init(Cipher.ENCRYPT_MODE, key);
