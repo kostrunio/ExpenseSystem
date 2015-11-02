@@ -242,6 +242,8 @@ public class ExpenseView extends VerticalLayout implements View {
       expenseSheet = ExpenseSheetService.findExpenseSheet(loggedUser, Integer.parseInt(event.getParameters()));
     }
     VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
+    if (!expenseSheet.getEncrypted())
+      ExpenseSheetService.encrypt(expenseSheet);
     removeAllComponents();
     mainView.removeAllComponents();
     prepareView();
