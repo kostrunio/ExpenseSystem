@@ -27,5 +27,15 @@ public class CategoryService {
     }
   }
 
+  public static void encrypt(Category category) {
+    ExpenseEntityDao.begin();
+    try {
+      category.setName(category.getName());
+      ExpenseEntityDao.getEntityManager().merge(category);
+      ExpenseEntityDao.commit();
+    } finally {
+    }
+  }
+
 
 }

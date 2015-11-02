@@ -21,11 +21,9 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.vaadin.server.VaadinSession;
 
 import pl.kostro.expensesystem.utils.CategoryExpense;
 import pl.kostro.expensesystem.utils.DateExpense;
-import pl.kostro.expensesystem.utils.Encryption;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.UserLimitExpense;
 
@@ -45,8 +43,6 @@ public class ExpenseSheet extends AbstractEntity {
   private RealUser owner;
   @Column(name="es_name")
   private String name;
-  @Column(name = "es_name_byte")
-  private byte[] name_byte;
   @OneToMany(cascade=CascadeType.REMOVE)
   @JoinColumn(name="c_es_id") 
   @OrderBy("order")
@@ -60,6 +56,10 @@ public class ExpenseSheet extends AbstractEntity {
   private List<Expense> expenseList;
   @Column(name="es_reload_day")
   private int reloadDay;
+  @Column(name="es_encrypted")
+  private boolean encrypted;
+  @Transient
+  private String key;
   @Transient
   private Map<Date, DateExpense> dateExpenseMap;
   @Transient
@@ -89,16 +89,10 @@ public class ExpenseSheet extends AbstractEntity {
   }
 
   public String getName() {
-    if (name_byte != null) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
-      name = enc.decryption(name_byte);
-    }
     return name;
   }
 
   public void setName(String name) {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
-    this.name_byte = enc.encryption(name);
     this.name = name;
   }
 
@@ -160,6 +154,22 @@ public class ExpenseSheet extends AbstractEntity {
 
   public void setReloadDay(int reloadDay) {
     this.reloadDay = reloadDay;
+  }
+  
+  public boolean getEncrypted() {
+    return encrypted;
+  }
+
+  public void setEncrypted(boolean encrypted) {
+    this.encrypted = encrypted;
+  }
+  
+  public String getKey() {
+    return key;
+  }
+
+  public void setKey(String key) {
+    this.key = key;
   }
   
   public Map<Date, DateExpense> getDateExpenseMap() {

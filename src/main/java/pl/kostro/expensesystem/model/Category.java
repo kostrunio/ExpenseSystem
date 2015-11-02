@@ -62,14 +62,14 @@ public class Category extends AbstractEntity {
 
   public String getName() {
     if (name_byte != null) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       name = enc.decryption(name_byte);
     }
     return name;
   }
 
   public void setName(String name) {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.name_byte = enc.encryption(name);
     this.name = name;
   }

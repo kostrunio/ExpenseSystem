@@ -45,7 +45,7 @@ public class UserSummaryService {
     }
   }
 
-  public static UserSummary save(UserSummary userSummary) {
+  public static UserSummary merge(UserSummary userSummary) {
     ExpenseEntityDao.begin();
     try {
       ExpenseEntityDao.getEntityManager().merge(userSummary);
@@ -125,8 +125,19 @@ public class UserSummaryService {
       if (userSummary.getSum().doubleValue() != exSummary.doubleValue()) {
         ShowNotification.changeSummary(userLimit.getUser().getName(), userSummary.getSum(), exSummary);
         userSummary.setSum(exSummary);
-        save(userSummary);
+        merge(userSummary);
       }
+    }
+  }
+
+  public static void encrypt(UserSummary userSummary) {
+    ExpenseEntityDao.begin();
+    try {
+      userSummary.setLimit(userSummary.getLimit());
+      userSummary.setSum(userSummary.getSum());
+      ExpenseEntityDao.getEntityManager().merge(userSummary);
+      ExpenseEntityDao.commit();
+    } finally {
     }
   }
 

@@ -104,14 +104,14 @@ public class Expense extends AbstractEntity {
 
   public String getFormula() {
     if (formula_byte != null) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       formula = enc.decryption(formula_byte);
     }
     return formula;
   }
 
   public void setFormula(String formula) {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.formula_byte = enc.encryption(formula);
     this.formula = formula;
     setValue(Calculator.getResult(formula));
@@ -119,14 +119,14 @@ public class Expense extends AbstractEntity {
 
   public BigDecimal getValue() {
     if (value_byte != null) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       value = new BigDecimal(enc.decryption(value_byte));
     }
     return value;
   }
 
   public void setValue(BigDecimal value) {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.value_byte = enc.encryption(value.toString());
     this.value = value;
   }
@@ -149,14 +149,14 @@ public class Expense extends AbstractEntity {
 
   public String getComment() {
     if (comment_byte != null) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       comment = enc.decryption(comment_byte);
     }
     return comment;
   }
 
   public void setComment(String comment) {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.comment_byte = enc.encryption(comment);
     this.comment = comment;
   }

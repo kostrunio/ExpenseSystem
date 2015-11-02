@@ -99,4 +99,15 @@ public class ExpenseService {
     return expense;
   }
 
+  public static void encrypt(Expense expense) {
+    ExpenseEntityDao.begin();
+    try {
+      expense.setFormula(expense.getFormula());
+      expense.setComment(expense.getComment());
+      expense = ExpenseEntityDao.getEntityManager().merge(expense);
+      ExpenseEntityDao.commit();
+    } finally {
+    }
+  }
+
 }

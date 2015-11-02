@@ -5,6 +5,7 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserSummary;
 
 public class UserLimitService {
 
@@ -39,6 +40,18 @@ public class UserLimitService {
   public static void merge(UserLimit userLimit) {
     ExpenseEntityDao.begin();
     try {
+      ExpenseEntityDao.getEntityManager().merge(userLimit);
+      ExpenseEntityDao.commit();
+    } finally {
+    }
+  }
+
+  public static void encrypt(UserLimit userLimit) {
+    ExpenseEntityDao.begin();
+    try {
+      userLimit.setLimit(userLimit.getLimit());
+      for (UserSummary userSummary : userLimit.getUserSummaryList())
+        UserSummaryService.encrypt(userSummary);
       ExpenseEntityDao.getEntityManager().merge(userLimit);
       ExpenseEntityDao.commit();
     } finally {

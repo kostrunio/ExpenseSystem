@@ -15,10 +15,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import pl.kostro.expensesystem.utils.Encryption;
-
-import com.vaadin.server.VaadinSession;
-
 @Entity
 @Table(name="users")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
@@ -35,8 +31,6 @@ public class User extends AbstractEntity {
   private int id;
   @Column(name="u_name")
   private String name;
-  @Column(name = "es_name_byte")
-  private byte[] name_byte;
   @Column(name="u_creation_date")
   private Date creationDate = new Date();
   
@@ -57,16 +51,10 @@ public class User extends AbstractEntity {
   }
 
   public String getName() {
-    if (name_byte != null) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
-      name = enc.decryption(name_byte);
-    }
     return name;
   }
 
   public void setName(String name) {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(RealUser.class).getKeyString());
-    this.name_byte = enc.encryption(name);
     this.name = name;
   }
   

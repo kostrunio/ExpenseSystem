@@ -243,5 +243,14 @@ public class ExpenseSheetService {
     }
     return expenseSheet;
   }
+  
+  public static void encrypt(ExpenseSheet expenseSheet) {
+    for (Category category : expenseSheet.getCategoryList())
+      CategoryService.encrypt(category);
+    for (Expense expense : expenseSheet.getExpenseList())
+      ExpenseService.encrypt(expense);
+    for (UserLimit userLimit : expenseSheet.getUserLimitList())
+      UserLimitService.encrypt(userLimit);
+  }
 
 }

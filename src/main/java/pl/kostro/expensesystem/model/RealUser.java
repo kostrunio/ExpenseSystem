@@ -13,7 +13,6 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
-import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue(value="2")
@@ -51,8 +50,6 @@ public class RealUser extends User {
   @OneToOne
   @JoinColumn(name="u_default_es_id")
   private ExpenseSheet defaultExpenseSheet;
-  @Transient
-  private String keyString;
   
   public RealUser() {
     super();
@@ -96,12 +93,4 @@ public class RealUser extends User {
 	  this.defaultExpenseSheet = defaultExpenseSheet;
   }
 
-  public String getKeyString() {
-    return keyString;
-  }
-
-  public void setKeyString(String keyString) {
-    this.keyString = keyString;
-  }
-  
 }
