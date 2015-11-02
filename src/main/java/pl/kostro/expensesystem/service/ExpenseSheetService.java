@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.vaadin.server.VaadinSession;
+
 import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
@@ -40,9 +42,12 @@ public class ExpenseSheetService {
     return realUser.getDefaultExpenseSheet();
   }
 
-  public static ExpenseSheet createExpenseSheet(RealUser owner, String name) {
+  public static ExpenseSheet createExpenseSheet(RealUser owner, String name, String key) {
     ExpenseEntityDao.begin();
     ExpenseSheet expenseSheet = new ExpenseSheet();
+    expenseSheet.setEncrypted(true);
+    expenseSheet.setKey(key);
+    VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
     try {
       UserLimit userLimit = new UserLimit(owner, 0);
       ExpenseEntityDao.getEntityManager().persist(userLimit);
@@ -202,7 +207,6 @@ public class ExpenseSheetService {
     try {
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
       ExpenseEntityDao.commit();
-      ExpenseEntityDao.getEntityManager().refresh(expenseSheet);
     } finally {
     }
     return expenseSheet;
@@ -222,7 +226,6 @@ public class ExpenseSheetService {
     try {
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
       ExpenseEntityDao.commit();
-      ExpenseEntityDao.getEntityManager().refresh(expenseSheet);
     } finally {
     }
     return expenseSheet;
@@ -238,7 +241,6 @@ public class ExpenseSheetService {
       expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
       ExpenseEntityDao.getEntityManager().remove(ExpenseEntityDao.getEntityManager().find(Category.class, category.getId()));
       ExpenseEntityDao.commit();
-      ExpenseEntityDao.getEntityManager().refresh(expenseSheet);
     } finally {
     }
     return expenseSheet;
@@ -251,6 +253,13 @@ public class ExpenseSheetService {
       ExpenseService.encrypt(expense);
     for (UserLimit userLimit : expenseSheet.getUserLimitList())
       UserLimitService.encrypt(userLimit);
+    ExpenseEntityDao.begin();
+    try {
+      expenseSheet.setEncrypted(true);
+      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
+      ExpenseEntityDao.commit();
+    } finally {
+    }
   }
 
 }
