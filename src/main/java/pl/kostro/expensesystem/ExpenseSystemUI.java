@@ -1,5 +1,7 @@
 package pl.kostro.expensesystem;
 
+import java.util.Locale;
+
 import javax.servlet.annotation.WebServlet;
 
 import pl.kostro.expensesystem.model.RealUser;
@@ -29,6 +31,7 @@ public class ExpenseSystemUI extends UI {
 
   @Override
   protected void init(VaadinRequest request) {
+    setLocale(new Locale("pl", "PL"));
     Responsive.makeResponsive(this);
     addStyleName(ValoTheme.UI_WITH_MENU);
 
