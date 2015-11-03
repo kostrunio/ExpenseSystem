@@ -69,6 +69,7 @@ public class Category extends AbstractEntity {
   }
 
   public void setName(String name) {
+    if (name_byte != null && name.equals(this.name)) return;
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.name_byte = enc.encryption(name);
     this.name = name;
