@@ -13,6 +13,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
+import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
@@ -50,12 +51,12 @@ public class RegisterPage extends VerticalLayout {
     nameField.setIcon(FontAwesome.USER);
     registerForm.addComponent(nameField);
     
-    final TextField passwordField = new TextField(Msg.get("registerPage.password"));
+    final PasswordField passwordField = new PasswordField(Msg.get("registerPage.password"));
     passwordField.setRequired(true);
     passwordField.setIcon(FontAwesome.LOCK);
     registerForm.addComponent(passwordField);
     
-    final TextField rePasswordField = new TextField(Msg.get("registerPage.passwordRep"));
+    final PasswordField rePasswordField = new PasswordField(Msg.get("registerPage.passwordRep"));
     rePasswordField.setRequired(true);
     rePasswordField.setIcon(FontAwesome.LOCK);
     registerForm.addComponent(rePasswordField);
