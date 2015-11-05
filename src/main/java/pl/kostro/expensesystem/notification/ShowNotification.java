@@ -21,7 +21,7 @@ public class ShowNotification {
   
   public static void registerProblem() {
     Notification notification = new Notification(Msg.get("notification.registerProblem"));
-    notification.setDescription(Msg.get("notification.resiterDesc"));
+    notification.setDescription(Msg.get("notification.registerDesc"));
     setErrorStyle(notification);
   }
 
