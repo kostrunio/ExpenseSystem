@@ -221,12 +221,13 @@ public class ExpenseView extends VerticalLayout implements View {
     return searchLayout;
   }
   
-  private void prepareSearchLayout() {    
+  private void prepareSearchLayout() {
     categoryCombo.removeAllItems();
     categoryCombo.addItems(expenseSheet.getCategoryList());
     userCombo.removeAllItems();
     userCombo.addItems(expenseSheet.getUserLimitList());
     formulaField.clear();
+    commentCombo.setNewItemsAllowed(true);
     commentCombo.setNullSelectionAllowed(true);
     commentCombo.removeAllItems();
     commentCombo.addItems(ExpenseSheetService.getCommentsList(expenseSheet));

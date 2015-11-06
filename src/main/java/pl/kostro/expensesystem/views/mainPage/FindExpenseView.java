@@ -88,6 +88,7 @@ public class FindExpenseView extends CustomComponent {
     toDateField.setValue(UserSummaryService.getLastDay(calendar.getTime()));
     categoryBox.addItems(expenseSheet.getCategoryList());
     userBox.addItems(expenseSheet.getUserLimitList());
+    commentBox.setNewItemsAllowed(true);
     commentBox.setFilteringMode(FilteringMode.CONTAINS);
     commentBox.addItems(ExpenseSheetService.getAllComments(expenseSheet));
     expenseSheet.setFilter(new Filter(
@@ -197,7 +198,7 @@ public class FindExpenseView extends CustomComponent {
     // fromDateField
     fromDateField = new PopupDateField();
     fromDateField.setCaption(Msg.get("findPage.dateFrom"));
-    fromDateField.setDateFormat("dd-MM-yyyy");
+    fromDateField.setDateFormat("yyyy-MM-dd");
     fromDateField.setImmediate(false);
     fromDateField.setWidth("-1px");
     fromDateField.setHeight("-1px");
@@ -206,7 +207,7 @@ public class FindExpenseView extends CustomComponent {
     // toDateField
     toDateField = new PopupDateField();
     toDateField.setCaption(Msg.get("findPage.dateTo"));
-    toDateField.setDateFormat("dd-MM-yyyy");
+    toDateField.setDateFormat("yyyy-MM-dd");
     toDateField.setImmediate(false);
     toDateField.setWidth("-1px");
     toDateField.setHeight("-1px");
