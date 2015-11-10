@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.utils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +44,7 @@ public class UserLimitExpense {
 	}
 	
 	public void addExpense(Expense expense) {
-		setSum(getSum().add(expense.getValue().multiply(expense.getCategory().getMultiplier()).setScale(2)));
+		setSum(getSum().add(expense.getValue().multiply(expense.getCategory().getMultiplier()).setScale(2, RoundingMode.HALF_UP)));
 		getExpenseList().add(expense);
 	}
 	public void removeExpense(Expense expense) {

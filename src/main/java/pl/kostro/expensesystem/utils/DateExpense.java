@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.utils;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,7 +61,7 @@ public class DateExpense {
 	}
 	
 	public void addExpense(Expense expense) {
-		setSum(getSum().add(expense.getValue().multiply(expense.getCategory().getMultiplier()).setScale(2)));
+		setSum(getSum().add(expense.getValue().multiply(expense.getCategory().getMultiplier()).setScale(2, RoundingMode.HALF_UP)));
 		CategoryExpense categoryExpense = getCategoryExpenseMap().get(expense.getCategory());
 		if (categoryExpense == null) {
 			categoryExpense = new CategoryExpense(expense.getCategory());
