@@ -96,6 +96,13 @@
 			<artifactId>loginform</artifactId>
 			<version>0.6.1</version>
 		</dependency>
+		<dependency>
+			<groupId>bouncycastle</groupId>
+			<artifactId>org.bouncycastle</artifactId>
+			<version>153</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/bcprov-jdk15on-153.jar</systemPath>
+		</dependency>
 	</dependencies>
 	<profiles>
 		<profile>
