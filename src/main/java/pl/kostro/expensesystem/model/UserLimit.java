@@ -36,7 +36,7 @@ public class UserLimit extends AbstractEntity {
   @OneToOne
   @JoinColumn(name="ul_u_id")
   private User user;
-  @Transient
+  @Column(name="ul_limit")
   private BigDecimal limit;
   @Column(name="ul_limit_byte")
   private byte[] limit_byte;
@@ -79,6 +79,8 @@ public class UserLimit extends AbstractEntity {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       limit = new BigDecimal(enc.decryption(limit_byte));
     }
+    if (limit != null && limit_byte == null)
+      setLimit(limit);
     return limit;
   }
 

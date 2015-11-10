@@ -53,7 +53,7 @@ public class Expense extends AbstractEntity {
   private int id;
   @Column(name="e_date")
   private Date date;
-  @Transient
+  @Column(name="e_formula")
   private String formula;
   @Column(name="e_formula_byte")
   private byte[] formula_byte;
@@ -65,7 +65,7 @@ public class Expense extends AbstractEntity {
   @OneToOne
   @JoinColumn(name="e_u_id")
   private User user;
-  @Transient
+  @Column(name="e_comment")
   private String comment;
   @Column(name="e_comment_byte")
   private byte[] comment_byte;
@@ -106,6 +106,8 @@ public class Expense extends AbstractEntity {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       formula = enc.decryption(formula_byte);
     }
+    if (formula != null && formula_byte == null)
+      setFormula(formula);
     return formula;
   }
 
@@ -143,6 +145,8 @@ public class Expense extends AbstractEntity {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       comment = enc.decryption(comment_byte);
     }
+    if (comment != null && comment_byte == null)
+      setComment(comment);
     return comment;
   }
 
