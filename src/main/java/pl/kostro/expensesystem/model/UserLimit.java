@@ -130,7 +130,7 @@ public class UserLimit extends AbstractEntity {
   public int hashCode() {
 	  int hash = id;
 	  hash += user.hashCode();
-	  hash += limit.hashCode();
+	  hash += getLimit().hashCode();
 	  hash += order;
 	  return hash;
   }
