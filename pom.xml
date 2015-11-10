@@ -108,23 +108,11 @@
 			<!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
 			<id>openshift</id>
 			<build>
-				<finalName>new</finalName>
+				<finalName>ExpenseSystem</finalName>
 				<plugins>
 					<plugin>
 						<groupId>com.vaadin</groupId>
 						<artifactId>vaadin-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>clean</goal>
-									<goal>resources</goal>
-									<goal>update-theme</goal>
-									<goal>update-widgetset</goal>
-									<goal>compile-theme</goal>
-									<goal>compile</goal>
-								</goals>
-							</execution>
-						</executions>
 					</plugin>
 					<plugin>
 						<artifactId>maven-war-plugin</artifactId>
