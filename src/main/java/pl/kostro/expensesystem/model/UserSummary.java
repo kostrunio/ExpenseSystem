@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -28,11 +29,11 @@ public class UserSummary extends AbstractEntity {
   private int id;
   @Column(name="us_date")
   private Date date;
-  @Column(name="us_limit")
+  @Transient
   private BigDecimal limit;
   @Column(name="us_limit_byte")
   private byte[] limit_byte;
-  @Column(name="us_sum")
+  @Transient
   private BigDecimal sum;
   @Column(name="us_sum_byte")
   private byte[] sum_byte;
@@ -63,7 +64,7 @@ public class UserSummary extends AbstractEntity {
   }
 
   public BigDecimal getLimit() {
-    if (limit_byte != null) {
+    if (limit == null && limit_byte != null) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       limit = new BigDecimal(enc.decryption(limit_byte));
     }
@@ -78,7 +79,7 @@ public class UserSummary extends AbstractEntity {
   }
   
   public BigDecimal getSum() {
-    if (sum_byte != null) {
+    if (sum == null && sum_byte != null) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       sum = new BigDecimal(enc.decryption(sum_byte));
     }

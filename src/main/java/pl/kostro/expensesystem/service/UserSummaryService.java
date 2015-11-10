@@ -131,12 +131,10 @@ public class UserSummaryService {
   }
 
   public static void encrypt(UserSummary userSummary) {
-    ExpenseEntityDao.begin();
     try {
       userSummary.setLimit(userSummary.getLimit());
       userSummary.setSum(userSummary.getSum());
       ExpenseEntityDao.getEntityManager().merge(userSummary);
-      ExpenseEntityDao.commit();
     } finally {
     }
   }

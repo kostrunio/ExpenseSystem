@@ -13,6 +13,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -52,21 +53,19 @@ public class Expense extends AbstractEntity {
   private int id;
   @Column(name="e_date")
   private Date date;
-  @Column(name="e_formula")
+  @Transient
   private String formula;
   @Column(name="e_formula_byte")
   private byte[] formula_byte;
-  @Column(name="e_value")
+  @Transient
   private BigDecimal value;
-  @Column(name="e_value_byte")
-  private byte[] value_byte;
   @OneToOne
   @JoinColumn(name="e_c_id")
   private Category category;
   @OneToOne
   @JoinColumn(name="e_u_id")
   private User user;
-  @Column(name="e_comment")
+  @Transient
   private String comment;
   @Column(name="e_comment_byte")
   private byte[] comment_byte;
@@ -103,7 +102,7 @@ public class Expense extends AbstractEntity {
   }
 
   public String getFormula() {
-    if (formula_byte != null) {
+    if ((formula == null || formula.isEmpty()) && formula_byte != null) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       formula = enc.decryption(formula_byte);
     }
@@ -115,24 +114,14 @@ public class Expense extends AbstractEntity {
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.formula_byte = enc.encryption(formula);
     this.formula = formula;
-    setValue(Calculator.getResult(formula));
   }
 
   public BigDecimal getValue() {
-    if (value_byte != null) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
-      value = new BigDecimal(enc.decryption(value_byte));
-    }
+    if (getFormula() != null && !formula.isEmpty())
+      value = Calculator.getOperationResult(formula);
     return value;
   }
 
-  public void setValue(BigDecimal value) {
-    if (value_byte != null && value.equals(this.value)) return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
-    this.value_byte = enc.encryption(value.toString());
-    this.value = value;
-  }
-  
   public Category getCategory() {
     return category;
   }
@@ -150,7 +139,7 @@ public class Expense extends AbstractEntity {
   }
 
   public String getComment() {
-    if (comment_byte != null) {
+    if ((comment == null || comment.isEmpty()) && comment_byte != null) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       comment = enc.decryption(comment_byte);
     }

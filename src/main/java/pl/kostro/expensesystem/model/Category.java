@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -25,7 +26,7 @@ public class Category extends AbstractEntity {
   @GenericGenerator(name = "increment", strategy = "increment")
   @Column(name = "c_id")
   private int id;
-  @Column(name = "c_name")
+  @Transient
   private String name;
   @Column(name = "c_name_byte")
   private byte[] name_byte;
@@ -61,7 +62,7 @@ public class Category extends AbstractEntity {
   }
 
   public String getName() {
-    if (name_byte != null) {
+    if ((name == null || name.isEmpty()) && name_byte != null) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       name = enc.decryption(name_byte);
     }

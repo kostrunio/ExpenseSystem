@@ -247,10 +247,13 @@ public class ExpenseSheetService {
   }
   
   public static void encrypt(ExpenseSheet expenseSheet) {
+    System.out.println("encrypt: category");
     for (Category category : expenseSheet.getCategoryList())
       CategoryService.encrypt(category);
+    System.out.println("encrypt: expense");
     for (Expense expense : expenseSheet.getExpenseList())
       ExpenseService.encrypt(expense);
+    System.out.println("encrypt: userLimit");
     for (UserLimit userLimit : expenseSheet.getUserLimitList())
       UserLimitService.encrypt(userLimit);
     ExpenseEntityDao.begin();

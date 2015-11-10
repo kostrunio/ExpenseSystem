@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -35,7 +36,7 @@ public class UserLimit extends AbstractEntity {
   @OneToOne
   @JoinColumn(name="ul_u_id")
   private User user;
-  @Column(name="ul_limit")
+  @Transient
   private BigDecimal limit;
   @Column(name="ul_limit_byte")
   private byte[] limit_byte;
@@ -74,7 +75,7 @@ public class UserLimit extends AbstractEntity {
   }
 
   public BigDecimal getLimit() {
-    if (limit_byte != null) {
+    if (limit == null && limit_byte != null) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       limit = new BigDecimal(enc.decryption(limit_byte));
     }
