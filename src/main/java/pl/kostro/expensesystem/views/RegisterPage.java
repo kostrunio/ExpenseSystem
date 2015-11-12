@@ -77,6 +77,10 @@ public class RegisterPage extends VerticalLayout {
 
       @Override
       public void buttonClick(ClickEvent event) {
+        if (!nameField.getValue().isEmpty())
+          if (RealUserService.findRealUser(nameField.getValue()) != null) {
+            ShowNotification.registerProblem(nameField.getValue());
+          }
         if (!nameField.getValue().isEmpty() &&
             !passwordField.getValue().isEmpty() &&
             passwordField.getValue().equals(rePasswordField.getValue())) {

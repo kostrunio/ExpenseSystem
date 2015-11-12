@@ -19,6 +19,12 @@ public class ShowNotification {
     notification.show(Page.getCurrent());
   }
   
+  public static void registerProblem(String user) {
+    Notification notification = new Notification(Msg.get("notification.registerUserProblem"));
+    notification.setDescription(MessageFormat.format(Msg.get("notification.registerUserDesc"), user));
+    setErrorStyle(notification);
+  }
+  
   public static void registerProblem() {
     Notification notification = new Notification(Msg.get("notification.registerProblem"));
     notification.setDescription(Msg.get("notification.registerDesc"));
@@ -33,7 +39,7 @@ public class ShowNotification {
   
   public static void dbProblem(String msg) {
     Notification notification = new Notification(Msg.get("notification.dbProblem"));
-    notification.setDescription((MessageFormat.format(Msg.get("notification.dbDesc"), new Object[] {msg})));
+    notification.setDescription((MessageFormat.format(Msg.get("notification.dbDesc"), msg)));
     setErrorStyle(notification);
   }
   
@@ -48,13 +54,13 @@ public class ShowNotification {
 
   public static void fieldEmpty(String fieldName) {
     Notification notification = new Notification(Msg.get("notification.formProblem"));
-    notification.setDescription(MessageFormat.format(Msg.get("notification.formDesc"), new Object[] {fieldName}));
+    notification.setDescription(MessageFormat.format(Msg.get("notification.formDesc"), fieldName));
     setErrorStyle(notification);
   }
 
   public static void noSuchUser(String name) {
     Notification notification = new Notification(Msg.get("notification.noSuchUserProblem"));
-    notification.setDescription(MessageFormat.format(Msg.get("notification.noSuchUserDesc"), new Object[] {name}));
+    notification.setDescription(MessageFormat.format(Msg.get("notification.noSuchUserDesc"), name));
     setErrorStyle(notification);
   }
 
