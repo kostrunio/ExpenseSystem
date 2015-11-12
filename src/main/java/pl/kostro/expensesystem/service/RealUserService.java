@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -59,6 +60,8 @@ public class RealUserService {
       loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName, "password", new String(messageDigest.digest())), RealUser.class);
       for (ExpenseSheet es : loggedUser.getExpenseSheetList())
         es.setKey(password);
+      loggedUser.setLogDate(new Date());
+      ExpenseEntityDao.getEntityManager().merge(loggedUser);
       ExpenseEntityDao.commit();
     } catch (NoResultException e) {
     } catch (Exception e) {
