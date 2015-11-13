@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.views.mainPage;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import pl.kostro.expensesystem.components.calendar.ExpenseCalendar;
 import pl.kostro.expensesystem.components.table.CategoryTable;
@@ -157,7 +158,7 @@ public class MonthView extends HorizontalSplitPanel {
 
   public void showCalendar(ExpenseSheet expenseSheet, java.util.Calendar calendar) {
     thisMonthField.setReadOnly(false);
-    thisMonthField.setValue(new SimpleDateFormat("MMMM yyyy").format(calendar.getTime()));
+    thisMonthField.setValue(new SimpleDateFormat("MMMM yyyy", new Locale("pl", "PL")).format(calendar.getTime()));
     thisMonthField.setReadOnly(true);
     firstDateField.setValue(UserSummaryService.getFirstDay(calendar.getTime()));
     lastDateField.setValue(UserSummaryService.getLastDay(calendar.getTime()));

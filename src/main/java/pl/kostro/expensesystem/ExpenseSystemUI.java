@@ -1,6 +1,6 @@
 package pl.kostro.expensesystem;
 
-import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -33,7 +33,7 @@ public class ExpenseSystemUI extends UI {
 
   @Override
   protected void init(VaadinRequest request) {
-    setLocale(new Locale("pl", "PL"));
+    TimeZone.setDefault(TimeZone.getTimeZone("Europe/Warsaw"));
     Responsive.makeResponsive(this);
     addStyleName(ValoTheme.UI_WITH_MENU);
 
