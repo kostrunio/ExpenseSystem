@@ -26,7 +26,7 @@ public class Category extends AbstractEntity {
   @GenericGenerator(name = "increment", strategy = "increment")
   @Column(name = "c_id")
   private int id;
-  @Column(name = "c_name")
+  @Transient
   private String name;
   @Column(name = "c_name_byte")
   private byte[] name_byte;
@@ -66,8 +66,6 @@ public class Category extends AbstractEntity {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       name = enc.decryption(name_byte);
     }
-    if (name != null && name_byte == null)
-      setName(name);
     return name;
   }
 

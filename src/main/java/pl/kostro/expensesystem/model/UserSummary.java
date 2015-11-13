@@ -29,11 +29,11 @@ public class UserSummary extends AbstractEntity {
   private int id;
   @Column(name="us_date")
   private Date date;
-  @Column(name="us_limit")
+  @Transient
   private BigDecimal limit;
   @Column(name="us_limit_byte")
   private byte[] limit_byte;
-  @Column(name="us_sum")
+  @Transient
   private BigDecimal sum;
   @Column(name="us_sum_byte")
   private byte[] sum_byte;
@@ -68,8 +68,6 @@ public class UserSummary extends AbstractEntity {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       limit = new BigDecimal(enc.decryption(limit_byte));
     }
-    if (limit != null && limit_byte == null)
-      setLimit(limit);
     return limit;
   }
 
@@ -85,8 +83,6 @@ public class UserSummary extends AbstractEntity {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       sum = new BigDecimal(enc.decryption(sum_byte));
     }
-    if (sum != null && sum_byte == null)
-      setSum(sum);
     return sum;
   }
 
