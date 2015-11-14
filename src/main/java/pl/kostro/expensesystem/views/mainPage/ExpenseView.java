@@ -85,7 +85,7 @@ public class ExpenseView extends VerticalLayout implements View {
 
     // filterButton
     final Button filterButton = new Button();
-    filterButton.setCaption("Filtrowanie");
+    filterButton.setCaption(Msg.get("expense.filter"));
     filterButton.setImmediate(true);
     filterButton.addClickListener(new Button.ClickListener() {
 
