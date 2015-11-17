@@ -17,6 +17,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
 public class MonthView extends HorizontalSplitPanel {
@@ -157,7 +158,7 @@ public class MonthView extends HorizontalSplitPanel {
 
   public void showCalendar(ExpenseSheet expenseSheet, java.util.Calendar calendar) {
     thisMonthField.setReadOnly(false);
-    thisMonthField.setValue(new SimpleDateFormat("MMMM yyyy").format(calendar.getTime()));
+    thisMonthField.setValue(new SimpleDateFormat("MMMM yyyy", UI.getCurrent().getLocale()).format(calendar.getTime()));
     thisMonthField.setReadOnly(true);
     firstDateField.setValue(UserSummaryService.getFirstDay(calendar.getTime()));
     lastDateField.setValue(UserSummaryService.getLastDay(calendar.getTime()));

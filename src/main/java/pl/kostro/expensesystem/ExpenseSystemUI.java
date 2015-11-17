@@ -34,7 +34,7 @@ public class ExpenseSystemUI extends UI {
 
   @Override
   protected void init(VaadinRequest request) {
-    setLocale(new Locale("pl", "PL"));
+    Locale.setDefault(getLocale());
     TimeZone.setDefault(TimeZone.getTimeZone("Europe/Warsaw"));
     Responsive.makeResponsive(this);
     addStyleName(ValoTheme.UI_WITH_MENU);
