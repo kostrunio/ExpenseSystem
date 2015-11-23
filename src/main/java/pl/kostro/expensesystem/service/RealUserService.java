@@ -58,12 +58,14 @@ public class RealUserService {
     try {
       messageDigest.update(password.getBytes());
       loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName, "password", new String(messageDigest.digest())), RealUser.class);
+      loggedUser.setClearPassword(password);
       for (ExpenseSheet es : loggedUser.getExpenseSheetList())
         es.setKey(password);
       loggedUser.setLogDate(new Date());
+      if (loggedUser.getPasswordByte() == null)
+        loggedUser.setPasswordByte(messageDigest.digest());
       ExpenseEntityDao.getEntityManager().merge(loggedUser);
       ExpenseEntityDao.commit();
-    } catch (NoResultException e) {
     } catch (Exception e) {
       ExpenseEntityDao.close();
       ExpenseEntityDao.begin();

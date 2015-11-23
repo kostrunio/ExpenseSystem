@@ -64,11 +64,5 @@ public class Encryption {
     if (i==0) return "";
     else return new String(Arrays.copyOf(plainText, i));
   }
-  
-  public static void main(String[] args) {
-    Encryption encryption = new Encryption("NitcheWa02stx_RC98Mike007!");
-    byte[] encryptionByte = encryption.encryption("www.java2s.com");
-    System.out.println(encryption.decryption(encryptionByte));
-  }
 
 }

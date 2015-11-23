@@ -14,6 +14,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
+import javax.persistence.Transient;
 
 @Entity
 @DiscriminatorValue(value="2")
@@ -37,6 +38,8 @@ public class RealUser extends User {
 
   @Column(name="u_password")
   private String password;
+  @Column(name="u_password_byte")
+  private byte[] password_byte;
   @Column(name="u_email")
   private String email;
   @Column(name="u_log_date")
@@ -53,6 +56,8 @@ public class RealUser extends User {
   @OneToOne
   @JoinColumn(name="u_default_es_id")
   private ExpenseSheet defaultExpenseSheet;
+  @Transient
+  String clearPassword;
   
   public RealUser() {
     super();
@@ -68,6 +73,14 @@ public class RealUser extends User {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+  
+  public byte[] getPasswordByte() {
+    return password_byte;
+  }
+
+  public void setPasswordByte(byte[] password_byte) {
+    this.password_byte = password_byte;
   }
 
   public String getEmail() {
@@ -102,6 +115,14 @@ public class RealUser extends User {
   
   public void setDefaultExpenseSheet(ExpenseSheet defaultExpenseSheet) {
 	  this.defaultExpenseSheet = defaultExpenseSheet;
+  }
+  
+  public String getClearPassword() {
+    return clearPassword;
+  }
+
+  public void setClearPassword(String clearPassword) {
+    this.clearPassword = clearPassword;
   }
 
 }

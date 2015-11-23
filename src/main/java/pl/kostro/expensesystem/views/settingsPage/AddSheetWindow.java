@@ -58,7 +58,7 @@ public class AddSheetWindow extends Window {
           return;
         }
         RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
-        ExpenseSheet expenseSheet = ExpenseSheetService.createExpenseSheet(loggedUser, newSheetField.getValue(), loggedUser.getPassword());
+        ExpenseSheet expenseSheet = ExpenseSheetService.createExpenseSheet(loggedUser, newSheetField.getValue(), loggedUser.getClearPassword());
         VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
         VaadinSession.getCurrent().getAttribute(ExpenseMenu.class).refresh();
         UI.getCurrent().getNavigator().navigateTo("settings");
