@@ -1,6 +1,8 @@
 package pl.kostro.expensesystem.views.settingsPage;
 
 
+import java.text.MessageFormat;
+
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.components.grid.CategoryGrid;
@@ -142,7 +144,11 @@ public class ExpenseSheetSettingsView extends CustomComponent implements View {
 
       @Override
       public void buttonClick(ClickEvent event) {
-        ConfirmDialog.show(getUI(), "Usuniecie arkusza", "Czy na pewno chcesz usunac caly arkusz: " + expenseSheet.getName() + "\n i wszystkie jego wydatki?", "Tak, wiem co robie", "Nie",
+        ConfirmDialog.show(getUI(),
+            Msg.get("settingsPage.removeSheetLabel"),
+            MessageFormat.format(Msg.get("settingsPage.removeSheetQuestion"), new Object[] {expenseSheet.getName()}),
+            Msg.get("settingsPage.removeSheetYes"),
+            Msg.get("settingsPage.removeSheetNo"),
             new ConfirmDialog.Listener() {
 
           private static final long serialVersionUID = 3844318339125611876L;
