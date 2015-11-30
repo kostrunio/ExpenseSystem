@@ -12367,7 +12367,8 @@ div.v-layout.v-horizontal.v-widget {
 
 .expensesystem .valo-menu-subtitle {
 	color: #657ba2;
-	margin: 6px 0 6px 15px;
+	margin: 6px 0 6px 0px;
+	text-align: center;
 	border-bottom: 1px solid #505d74;
 }
 
