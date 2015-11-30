@@ -20,9 +20,7 @@ public class MainPage extends HorizontalLayout {
 
     ComponentContainer content = new CssLayout();
     content.setPrimaryStyleName("valo-content");
-    content.addStyleName("v-scrollable");
     content.setSizeFull();
-    
     addComponent(content);
     setExpandRatio(content, 1.0f);
     

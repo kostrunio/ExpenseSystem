@@ -45,6 +45,7 @@ public class MyLoginForm extends LoginForm {
 
     userNameField.setIcon(FontAwesome.USER);
     userNameField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+    userNameField.focus();
 
     passwordField.setIcon(FontAwesome.LOCK);
     passwordField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);

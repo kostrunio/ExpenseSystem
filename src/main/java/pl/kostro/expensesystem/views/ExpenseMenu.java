@@ -25,10 +25,9 @@ public class ExpenseMenu extends CustomComponent {
 
   private static final long serialVersionUID = -2718336134775274630L;
 
-  CssLayout menuItemsLayout = new CssLayout();
+  private CssLayout menuItemsLayout = new CssLayout();
 
   public ExpenseMenu() {
-
     setPrimaryStyleName(ValoTheme.MENU_ROOT);
     setSizeUndefined();
 
@@ -41,9 +40,11 @@ public class ExpenseMenu extends CustomComponent {
     menuLayout.addStyleName(ValoTheme.MENU_PART);
     menuLayout.addStyleName("no-vertical-drag-hints");
     menuLayout.addStyleName("no-horizontal-drag-hints");
+    menuLayout.setWidth(null);
     menuLayout.setHeight("100%");
 
     menuLayout.addComponent(buildTitle());
+    menuLayout.addComponent(buildToggleButton());
     menuLayout.addComponent(buildMenuItems());
     return menuLayout;
   }
@@ -57,23 +58,40 @@ public class ExpenseMenu extends CustomComponent {
     return logoWrapper;
   }
 
+  private Component buildToggleButton() {
+    Button valoMenuToggleButton = new Button(Msg.get("menu"), new ClickListener() {
+      private static final long serialVersionUID = -2516134629337123428L;
+
+      @Override
+      public void buttonClick(final ClickEvent event) {
+        if (getCompositionRoot().getStyleName().contains("menu-valo-visible")) {
+          getCompositionRoot().removeStyleName("menu-valo-visible");
+        } else {
+          getCompositionRoot().addStyleName("menu-valo-visible");
+        }
+      }
+    });
+    valoMenuToggleButton.setIcon(FontAwesome.LIST);
+    valoMenuToggleButton.addStyleName("valo-menu-toggle");
+    valoMenuToggleButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+    valoMenuToggleButton.addStyleName(ValoTheme.BUTTON_SMALL);
+    return valoMenuToggleButton;
+  }
+
   private Component buildMenuItems() {
     RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
-    
-    menuItemsLayout.setHeight("100%");
+
     menuItemsLayout.setStyleName("valo-menuitems");
-    
+
     Label sheetLabel = new Label(Msg.get("menu.sheets"));
     sheetLabel.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
-    sheetLabel.addStyleName(ValoTheme.LABEL_H4);
     menuItemsLayout.addComponent(sheetLabel);
 
     for (final ExpenseSheet expenseSheet : loggedUser.getExpenseSheetList()) {
       final Button b = new Button(expenseSheet.getName());
-      b.addStyleName(ValoTheme.MENU_ITEM);
-      b.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+      b.setPrimaryStyleName(ValoTheme.MENU_ITEM);
       if (expenseSheet.equals(loggedUser.getDefaultExpenseSheet()))
-          b.setIcon(FontAwesome.HOME);
+        b.setIcon(FontAwesome.HOME);
       else
         b.setIcon(FontAwesome.FILE_O);
       b.addClickListener(new ClickListener() {
@@ -87,18 +105,16 @@ public class ExpenseMenu extends CustomComponent {
 
       menuItemsLayout.addComponent(b);
     }
-    
+
     Label settingsLabel = new Label(Msg.get("menu.settingsLabel"));
     settingsLabel.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
-    settingsLabel.addStyleName(ValoTheme.LABEL_H4);
     menuItemsLayout.addComponent(settingsLabel);
 
     final Button settingButton = new Button(Msg.get("menu.settingsButton"));
-    settingButton.addStyleName(ValoTheme.MENU_ITEM);
-    settingButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+    settingButton.setPrimaryStyleName(ValoTheme.MENU_ITEM);
     settingButton.setIcon(FontAwesome.FILES_O);
     settingButton.addClickListener(new ClickListener() {
-      
+
       private static final long serialVersionUID = -722003682240462618L;
 
       @Override
@@ -107,13 +123,12 @@ public class ExpenseMenu extends CustomComponent {
       }
     });
     menuItemsLayout.addComponent(settingButton);
-    
+
     final Button logoutButton = new Button(Msg.get("menu.logout"));
-    logoutButton.addStyleName(ValoTheme.MENU_ITEM);
-    logoutButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+    logoutButton.setPrimaryStyleName(ValoTheme.MENU_ITEM);
     logoutButton.setIcon(FontAwesome.EJECT);
     logoutButton.addClickListener(new ClickListener() {
-      
+
       private static final long serialVersionUID = -1813471548646140303L;
 
       @Override
@@ -121,11 +136,11 @@ public class ExpenseMenu extends CustomComponent {
         VaadinSession.getCurrent().setAttribute(RealUser.class, null);
         VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, null);
         ExpenseEntityDao.close();
-        ((ExpenseSystemUI)getUI()).updateContent();
+        ((ExpenseSystemUI) getUI()).updateContent();
       }
     });
     menuItemsLayout.addComponent(logoutButton);
-    
+
     return menuItemsLayout;
 
   }
