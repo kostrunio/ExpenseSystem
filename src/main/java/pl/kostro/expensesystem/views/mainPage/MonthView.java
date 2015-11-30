@@ -9,18 +9,18 @@ import pl.kostro.expensesystem.components.table.UserLimitTable;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.service.UserSummaryService;
 
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
-public class MonthView extends HorizontalSplitPanel {
+public class MonthView extends HorizontalLayout {
 
   private ExpenseSheet expenseSheet;
 
@@ -43,9 +43,9 @@ public class MonthView extends HorizontalSplitPanel {
     setSizeFull();
 
     // calendarLayout
+    setWidthUndefined();
     addComponent(buildCalendarLayout());
     addComponent(buildSummaryLayout());
-    setSplitPosition(70);
 
     showCalendar(expenseSheet, calendar);
   }
@@ -56,6 +56,7 @@ public class MonthView extends HorizontalSplitPanel {
 
     // navigationLayout
     HorizontalLayout navigationLayout = buildNavigationLayout();
+    navigationLayout.setSizeUndefined();
     calendarLayout.addComponent(navigationLayout);
     calendarLayout.setComponentAlignment(navigationLayout, Alignment.MIDDLE_CENTER);
 
@@ -70,11 +71,12 @@ public class MonthView extends HorizontalSplitPanel {
     // common part: create layout
     HorizontalLayout navigationLayout = new HorizontalLayout();
     navigationLayout.setSpacing(true);
-    navigationLayout.setWidth("100%");    
+    navigationLayout.setWidth("100%");
 
     // previousMonthButton
     Button previousMonthButton = new Button();
     previousMonthButton.setCaption("<");
+    previousMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_LEFT);
     previousMonthButton.setImmediate(true);
     previousMonthButton.addClickListener(new Button.ClickListener() {
       private static final long serialVersionUID = -8048895457148394023L;
@@ -95,6 +97,7 @@ public class MonthView extends HorizontalSplitPanel {
     // nextMonthButton
     Button nextMonthButton = new Button();
     nextMonthButton.setCaption(">");
+    nextMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_RIGHT);
     nextMonthButton.setImmediate(true);
     nextMonthButton.addClickListener(new Button.ClickListener() {
       private static final long serialVersionUID = -8048895457148394023L;
@@ -113,6 +116,7 @@ public class MonthView extends HorizontalSplitPanel {
   private VerticalLayout buildSummaryLayout() {
     // common part: create layout
     VerticalLayout summaryLayout = new VerticalLayout();
+    summaryLayout.setSizeUndefined();
     summaryLayout.setSpacing(true);
 
     // dateLayout
