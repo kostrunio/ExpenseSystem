@@ -10,7 +10,6 @@ import com.vaadin.server.Responsive;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.PasswordField;
@@ -35,39 +34,52 @@ public class RegisterPage extends VerticalLayout {
 	private Component buildRegisterForm() {
     final Panel registerPanel = new Panel(Msg.get("registerPage.label"));
     registerPanel.setSizeUndefined();
-    Responsive.makeResponsive(registerPanel);
+
     final VerticalLayout contentLayout = new VerticalLayout();
+    registerPanel.setContent(contentLayout);
+
     contentLayout.setSizeUndefined();
     contentLayout.setSpacing(true);
     contentLayout.setMargin(true);
     Responsive.makeResponsive(contentLayout);
-    registerPanel.setContent(contentLayout);
     
-    final FormLayout registerForm = new FormLayout();
-    contentLayout.addComponent(registerForm);
+    contentLayout.addComponent(buildFields());
+    
+    return registerPanel;
+  }
+
+  private Component buildFields() {
+    VerticalLayout fields = new VerticalLayout();
+    fields.setSpacing(true);
+    fields.addStyleName("fields");
     
     final TextField nameField = new TextField(Msg.get("registerPage.user"));
     nameField.setRequired(true);
     nameField.setIcon(FontAwesome.USER);
-    registerForm.addComponent(nameField);
+    nameField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+    fields.addComponent(nameField);
     
     final PasswordField passwordField = new PasswordField(Msg.get("registerPage.password"));
     passwordField.setRequired(true);
     passwordField.setIcon(FontAwesome.LOCK);
-    registerForm.addComponent(passwordField);
+    passwordField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+    fields.addComponent(passwordField);
     
     final PasswordField rePasswordField = new PasswordField(Msg.get("registerPage.passwordRep"));
     rePasswordField.setRequired(true);
     rePasswordField.setIcon(FontAwesome.LOCK);
-    registerForm.addComponent(rePasswordField);
+    rePasswordField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+    fields.addComponent(rePasswordField);
     
     final TextField emailField = new TextField(Msg.get("registerPage.email"));
     emailField.setRequired(true);
-    registerForm.addComponent(emailField);
+    emailField.setIcon(FontAwesome.ENVELOPE);
+    emailField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+    fields.addComponent(emailField);
     
     final HorizontalLayout buttonsLayout = new HorizontalLayout();
     buttonsLayout.setSpacing(true);
-    registerForm.addComponent(buttonsLayout);
+    fields.addComponent(buttonsLayout);
     
     final Button saveButton = new Button(Msg.get("registerPage.save"));
     saveButton.setStyleName(ValoTheme.BUTTON_SMALL);
@@ -110,7 +122,8 @@ public class RegisterPage extends VerticalLayout {
     
     buttonsLayout.addComponent(cancelButton);
     buttonsLayout.setComponentAlignment(cancelButton, Alignment.MIDDLE_CENTER);
-    return registerPanel;
+    
+    return fields;
   }
 
 }
