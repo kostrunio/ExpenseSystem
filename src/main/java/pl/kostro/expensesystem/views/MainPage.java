@@ -19,7 +19,7 @@ public class MainPage extends HorizontalLayout {
     addComponent(expenseMenu);
 
     ComponentContainer content = new CssLayout();
-    content.setPrimaryStyleName("valo-content");
+    content.addStyleName("view-content");
     content.setSizeFull();
     addComponent(content);
     setExpandRatio(content, 1.0f);
