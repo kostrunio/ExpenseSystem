@@ -14,21 +14,28 @@ import pl.kostro.expensesystem.utils.Filter;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.MenuBar.MenuItem;
+import com.vaadin.ui.themes.ValoTheme;
 
-public class ExpenseView extends VerticalLayout implements View {
+public class ExpenseView extends Panel implements View {
 
   private static final long serialVersionUID = -7668118300710655240L;
+  private final VerticalLayout root;
+  private Label titleLabel;
+  private VerticalLayout expensePanels;
 
   private Calendar calendar = Calendar.getInstance();
   private ExpenseSheet expenseSheet;
@@ -42,20 +49,68 @@ public class ExpenseView extends VerticalLayout implements View {
   private MenuBar monthMenu;
 
   public ExpenseView() {
+    addStyleName(ValoTheme.PANEL_BORDERLESS);
+    setSizeFull();
+    root = new VerticalLayout();
+    root.setSizeFull();
+    root.setMargin(true);
+    root.addStyleName("expense-view");
+    setContent(root);
+    Responsive.makeResponsive(root);
   }
-  
-  private void prepareView() {
-    setMargin(true);
-    setSpacing(true);
 
-    addComponent(buildYearMenu());
-    addComponent(buildMonthMenu());
-    addComponent(buildSearchLayout());
-    
-    addComponent(mainView);
+  private void prepareView() {
+    root.addComponent(buildHeader());
+    Component content = buildContent();
+    root.addComponent(content);
+    root.setExpandRatio(content, 1);
 
     calendar.set(Calendar.DAY_OF_MONTH, 1);
     mainView.addComponent(new MonthView(calendar));
+  }
+
+  private Component buildHeader() {
+    HorizontalLayout header = new HorizontalLayout();
+    header.addStyleName("viewheader");
+    header.setSpacing(true);
+
+    titleLabel = new Label(expenseSheet.getName());
+    titleLabel.setSizeUndefined();
+    titleLabel.addStyleName(ValoTheme.LABEL_H1);
+    titleLabel.addStyleName(ValoTheme.LABEL_NO_MARGIN);
+    header.addComponent(titleLabel);
+
+/*    Component edit = buildEditButton();
+    HorizontalLayout tools = new HorizontalLayout(edit);
+    tools.setSpacing(true);
+    tools.addStyleName("toolbar");
+    header.addComponent(tools);*/
+
+    return header;
+  }
+
+/*  private Component buildEditButton() {
+    Button result = new Button();
+    result.setIcon(FontAwesome.EDIT);
+    result.addStyleName("icon-edit");
+    result.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+    result.setDescription("Edit ExpenseSheet");
+    return result;
+  }*/
+  
+  private Component buildContent() {
+    expensePanels = new VerticalLayout();
+    expensePanels.setSpacing(true);
+    expensePanels.addStyleName("expense-panels");
+    Responsive.makeResponsive(expensePanels);
+
+    expensePanels.addComponent(buildYearMenu());
+    expensePanels.addComponent(buildMonthMenu());
+    expensePanels.addComponent(buildSearchLayout());
+
+    expensePanels.addComponent(mainView);
+
+    return expensePanels;
   }
 
   private Component buildYearMenu() {
@@ -70,7 +125,7 @@ public class ExpenseView extends VerticalLayout implements View {
         mainView.addComponent(new MonthView(calendar));
       }
     };
-    
+
     final HorizontalLayout menuLayout = new HorizontalLayout();
     menuLayout.setImmediate(false);
     menuLayout.setSpacing(true);
@@ -80,7 +135,7 @@ public class ExpenseView extends VerticalLayout implements View {
     yearMenu.setImmediate(false);
     for (String year : ExpenseSheetService.getYearList(expenseSheet))
       yearMenu.addItem(year, yearCommand);
-    
+
     menuLayout.addComponent(yearMenu);
 
     // filterButton
@@ -153,12 +208,12 @@ public class ExpenseView extends VerticalLayout implements View {
       }
 
     };
-    
+
     monthMenu = new MenuBar();
     monthMenu.setImmediate(false);
     for (String monthName : UserSummaryService.getMonthsName())
       if (!monthName.isEmpty())
-      monthMenu.addItem(monthName, monthCommand);
+        monthMenu.addItem(monthName, monthCommand);
     monthMenu.setSizeUndefined();
 
     return monthMenu;
@@ -195,6 +250,7 @@ public class ExpenseView extends VerticalLayout implements View {
     searchButton.setCaption(Msg.get("expense.search"));
     searchButton.addClickListener(new Button.ClickListener() {
       private static final long serialVersionUID = 1L;
+
       @Override
       public void buttonClick(ClickEvent event) {
         User filterUser = null;
@@ -220,7 +276,7 @@ public class ExpenseView extends VerticalLayout implements View {
 
     return searchLayout;
   }
-  
+
   private void prepareSearchLayout() {
     categoryCombo.removeAllItems();
     categoryCombo.addItems(expenseSheet.getCategoryList());
@@ -244,7 +300,7 @@ public class ExpenseView extends VerticalLayout implements View {
     VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
     if (!expenseSheet.getEncrypted())
       ExpenseSheetService.encrypt(expenseSheet);
-    removeAllComponents();
+    root.removeAllComponents();
     mainView.removeAllComponents();
     prepareView();
   }

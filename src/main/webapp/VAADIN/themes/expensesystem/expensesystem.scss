@@ -27,11 +27,14 @@ $v-selection-item-border-radius: 0;
 // Example variants can be copy/pasted from https://vaadin.com/wiki/-/wiki/Main/Valo+Examples
 
 @import "../valo/valo.scss";
+@import "common";
 @import "view/login.scss";
+@import "view/expenseview.scss";
 
 @mixin expensesystem {
   @include valo;
   @include expense-login-view;
+  @include expense-expense-view;
 
   // Insert your own theme rules here
   .v-calendar .v-calendar-event-1-all-day {

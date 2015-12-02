@@ -1515,6 +1515,36 @@ div.v-layout.v-horizontal.v-widget {
 	vertical-align: top;
 }
 
+@-webkit-keyframes animate-in-scale-up {
+		0% {
+		-webkit-transform: scale(0);
+	}
+	}
+
+@-moz-keyframes animate-in-scale-up {
+		0% {
+		-moz-transform: scale(0);
+	}
+	}
+
+@keyframes animate-in-scale-up {
+		0% {
+		-webkit-transform: scale(0);
+		-moz-transform: scale(0);
+		-ms-transform: scale(0);
+		-o-transform: scale(0);
+		transform: scale(0);
+	}
+	}
+
+.expensesystem {
+	@media screen and (max-width: 480px) {
+	.notifications.v-window {
+		right: $view-padding;
+	}
+}
+}
+
 .expensesystem.v-app, .expensesystem.v-app-loading {
 	font: 400 14px/1.55 Helvetica, Arial, "lucida grande", tahoma, verdana, arial, sans-serif;
 	color: #37404E;
@@ -12870,6 +12900,218 @@ div.v-layout.v-horizontal.v-widget {
 	color: #fff;
 	text-decoration: none;
 	border-bottom: 1px solid #888;
+}
+
+.expensesystem .expense-view.expense-view {
+	padding: $view-padding;
+	overflow: visible;
+}
+
+.expensesystem .expense-view.expense-view .sparks {
+	background: #fff;
+	color: #474747;
+	border-radius: 3px;
+	border: 1px solid #c5c8ce;
+	-webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.04);
+	margin-bottom: $view-padding;
+}
+
+.expensesystem .expense-view.expense-view .sparks[width-range~="0-680px"] .spark {
+	width: 50%;
+}
+
+.expensesystem .expense-view.expense-view .sparks[width-range~="0-680px"] .spark:nth-child(2n+1) {
+	border-left: none;
+}
+
+.expensesystem .expense-view.expense-view .sparks[width-range~="0-680px"] .spark:nth-child(n+3) {
+	border-top: 1px solid #eaeaea;
+}
+
+.expensesystem .expense-view.expense-view .sparks[width-range~="0-270px"] .spark {
+	width: 100%;
+	border-left: none;
+	border-top: 1px solid #eaeaea;
+}
+
+.expensesystem .expense-view.expense-view .sparks[width-range~="0-270px"] .spark:first-child {
+	border-top: none;
+}
+
+.expensesystem .expense-view.expense-view .spark {
+	float: left;
+	text-align: center;
+	width: 25%;
+	padding: 10px 10px;
+	border-left: 1px solid #eaeaea;
+	line-height: 1.35;
+}
+
+.expensesystem .expense-view.expense-view .spark  > tbody {
+	display: inline-block;
+}
+
+.expensesystem .expense-view.expense-view .spark:first-child {
+	border-left: none;
+}
+
+.expensesystem .expense-view.expense-view .expense-panel-toolbar {
+	padding: 1px 0 1px 17px;
+	height: 32px;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels {
+	display: block;
+	height: 100%;
+	margin: 0 $view-padding;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels .card {
+	height: 100%;
+	overflow: hidden;
+	padding: 32px $view-padding 0;
+	position: relative;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels .card .v-table, .expensesystem .expense-view.expense-view .expense-panels .card .v-table-table {
+	background: transparent;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels .top10-revenue .card {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels .top10-revenue .v-table-table {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels .top10-revenue .v-table-cell-wrapper {
+	padding-left: $view-padding;
+	padding-right: $view-padding;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels .top10-revenue .v-table-cell-content {
+	border-color: #eaeaea;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels .top10-revenue .v-table-cell-content-rowheader {
+	color: #7387a9;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels .top10-revenue .v-table-cell-content-rowheader .v-table-cell-wrapper {
+	padding-right: 0;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels .expense-panel-slot {
+	padding: $view-padding;
+	min-height: 220px;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels[width-range~="0-700px"] .expense-panel-slot {
+	width: 100% !important;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels[width-range~="701px-"] .expense-panel-slot {
+	width: 50% !important;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels[height-range~="0-440px"] .expense-panel-slot {
+	height: 100%;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels[height-range~="441px-"] .expense-panel-slot {
+	height: 50%;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels .expense-panel-slot.max {
+	width: 100% !important;
+	height: 100%;
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels .notes .card {
+	padding: 32px 0 0;
+}
+
+.expensesystem .expense-view.expense-view .expense-panels .notes .v-textarea {
+	border-top: 1px solid #dfdfdf;
+	padding: 20px 20px 0;
+	line-height: 20px;
+	font-size: 13px;
+	background: #fffdf2 url(img/notes-bg.png) repeat;
+	background-attachment: local;
+	color: #545145;
+	overflow: auto;
+}
+
+.expensesystem .expense-view[width-range~="0-480px"] {
+	padding-left: $view-padding;
+	padding-right: $view-padding;
+}
+
+.expensesystem .notifications.v-window {
+	overflow: visible !important;
+	right: $view-padding;
+	left: auto !important;
+	max-width: 90%;
+	-webkit-transform-origin: 246px -7px;
+	-moz-transform-origin: 246px -7px;
+	-ms-transform-origin: 246px -7px;
+	-o-transform-origin: 246px -7px;
+	transform-origin: 246px -7px;
+}
+
+.expensesystem .notifications.v-window.v-window-animate-in {
+	-webkit-animation: animate-in-scale-up 260ms cubic-bezier(0.68, 0.37, 0.51, 1.37);
+	-moz-animation: animate-in-scale-up 260ms cubic-bezier(0.68, 0.37, 0.51, 1.37);
+	animation: animate-in-scale-up 260ms cubic-bezier(0.68, 0.37, 0.51, 1.37);
+}
+
+.expensesystem .notifications.v-window:before, .expensesystem .notifications.v-window:after {
+	content: "";
+	position: absolute;
+	top: -14px;
+	right: 50px;
+	border: 7px solid transparent;
+	width: 0;
+	height: 0;
+	border-bottom-color: #fff;
+}
+
+.expensesystem .notifications.v-window:before {
+	top: -17px;
+	margin-right: -1px;
+	border-width: 8px;
+	border-bottom-width: 8px;
+	border-bottom-color: rgba(0, 0, 0, 0.14);
+}
+
+.expensesystem .notifications.v-window .v-window-header {
+	color: #3b5998;
+}
+
+.expensesystem .notifications.v-window .v-window-outerheader:after, .expensesystem .notifications.v-window .v-scrollable:before {
+	display: none;
+}
+
+.expensesystem .notifications.v-window .notification-item {
+	font-size: 13px;
+}
+
+.expensesystem .notifications.v-window .notification-title {
+	font-weight: 600;
+}
+
+.expensesystem .notifications.v-window .notification-time {
+	font-size: 11px;
+	color: gray;
 }
 
 .expensesystem .v-calendar .v-calendar-event-1-all-day {
