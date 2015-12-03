@@ -59,8 +59,6 @@ public class RealUserService {
       messageDigest.update(password.getBytes());
       loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName, "password", new String(messageDigest.digest())), RealUser.class);
       loggedUser.setClearPassword(password);
-      for (ExpenseSheet es : loggedUser.getExpenseSheetList())
-        es.setKey(password);
       loggedUser.setLogDate(new Date());
       if (loggedUser.getPasswordByte() == null)
         loggedUser.setPasswordByte(messageDigest.digest());

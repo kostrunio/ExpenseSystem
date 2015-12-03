@@ -10,6 +10,7 @@ import pl.kostro.expensesystem.service.CategoryService;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.views.ExpenseMenu;
 import pl.kostro.expensesystem.views.settingsPage.AddCategoryWindow;
+import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsChangeListener;
 
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -28,13 +29,15 @@ public class CategoryGrid extends Grid {
   private static final long serialVersionUID = -1289032915572715567L;
   
   private ExpenseSheet expenseSheet;
+  private ExpenseSheetSettingsChangeListener listener;
   
   private Button addCategoryButton;
   private Button moveUpCategoryButton;
   private Button moveDownCategoryButton;
   private Button deleteCategoryButton;
   
-  public CategoryGrid() {
+  public CategoryGrid(ExpenseSheetSettingsChangeListener listener) {
+    this.listener = listener;
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setImmediate(true);
     setEditorEnabled(true);
@@ -49,7 +52,7 @@ public class CategoryGrid extends Grid {
 
       @Override
       public void buttonClick(ClickEvent event) {
-        UI.getCurrent().addWindow(new AddCategoryWindow());
+        UI.getCurrent().addWindow(new AddCategoryWindow(listener));
       }
     });
   }

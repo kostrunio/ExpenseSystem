@@ -10,6 +10,7 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.service.UserLimitService;
 import pl.kostro.expensesystem.views.settingsPage.AddRealUserWindow;
+import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsChangeListener;
 
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -27,10 +28,12 @@ import com.vaadin.ui.Button.ClickEvent;
 public class RealUserLimitGrid extends Grid {
   private static final long serialVersionUID = 5378642683850471251L;
 
+  private ExpenseSheetSettingsChangeListener listener;
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
   
-  public RealUserLimitGrid() {
+  public RealUserLimitGrid(ExpenseSheetSettingsChangeListener listener) {
+    this.listener = listener;
     setImmediate(true);
     setEditorEnabled(true);
     setEditorSaveCaption(Msg.get("settingsPage.realUserSave"));
@@ -44,7 +47,7 @@ public class RealUserLimitGrid extends Grid {
 
       @Override
       public void buttonClick(ClickEvent event) {
-        UI.getCurrent().addWindow(new AddRealUserWindow());
+        UI.getCurrent().addWindow(new AddRealUserWindow(listener));
       }
     });
   }

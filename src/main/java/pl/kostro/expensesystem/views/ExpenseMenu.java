@@ -110,20 +110,6 @@ public class ExpenseMenu extends CustomComponent {
     settingsLabel.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
     menuItemsLayout.addComponent(settingsLabel);
 
-    final Button settingButton = new Button(Msg.get("menu.settingsButton"));
-    settingButton.setPrimaryStyleName(ValoTheme.MENU_ITEM);
-    settingButton.setIcon(FontAwesome.FILES_O);
-    settingButton.addClickListener(new ClickListener() {
-
-      private static final long serialVersionUID = -722003682240462618L;
-
-      @Override
-      public void buttonClick(ClickEvent event) {
-        UI.getCurrent().getNavigator().navigateTo("settings");
-      }
-    });
-    menuItemsLayout.addComponent(settingButton);
-
     final Button logoutButton = new Button(Msg.get("menu.logout"));
     logoutButton.setPrimaryStyleName(ValoTheme.MENU_ITEM);
     logoutButton.setIcon(FontAwesome.EJECT);

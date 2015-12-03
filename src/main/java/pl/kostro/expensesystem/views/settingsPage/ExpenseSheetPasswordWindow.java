@@ -1,10 +1,10 @@
 package pl.kostro.expensesystem.views.settingsPage;
 
+import java.text.MessageFormat;
+
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.notification.ShowNotification;
-import pl.kostro.expensesystem.service.UserLimitService;
-import pl.kostro.expensesystem.service.UserService;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
@@ -14,18 +14,22 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
+/**
+ * Simple name editor Window.
+ */
 @SuppressWarnings("serial")
-public class AddUserWindow extends Window {
+public class ExpenseSheetPasswordWindow extends Window {
 
-  private final TextField nameField = new TextField(Msg.get("newUser.label"));
+  private final PasswordField nameField = new PasswordField();
   private ExpenseSheetSettingsChangeListener listener;
 
-  public AddUserWindow(ExpenseSheetSettingsChangeListener listener) {
+  public ExpenseSheetPasswordWindow(ExpenseSheetSettingsChangeListener listener) {
     this.listener = listener;
     setModal(true);
     setClosable(false);
@@ -42,6 +46,7 @@ public class AddUserWindow extends Window {
     result.setMargin(true);
     result.setSpacing(true);
 
+    nameField.setCaption(MessageFormat.format(Msg.get("expenseSheetPassord.label"), VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getName()));
     nameField.addStyleName("caption-on-left");
     nameField.focus();
 
@@ -57,7 +62,7 @@ public class AddUserWindow extends Window {
     footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
     footer.setWidth(100.0f, Unit.PERCENTAGE);
 
-    Button cancel = new Button(Msg.get("newUser.cancel"));
+    Button cancel = new Button(Msg.get("expenseSheetPassord.cancel"));
     cancel.setClickShortcut(KeyCode.ESCAPE, null);
     cancel.addClickListener(new ClickListener() {
       @Override
@@ -66,19 +71,24 @@ public class AddUserWindow extends Window {
       }
     });
 
-    Button save = new Button(Msg.get("newUser.save"));
+    Button save = new Button(Msg.get("expenseSheetPassord.save"));
     save.addStyleName(ValoTheme.BUTTON_PRIMARY);
     save.setClickShortcut(KeyCode.ENTER, null);
     save.addClickListener(new ClickListener() {
       @Override
       public void buttonClick(final ClickEvent event) {
-        if (nameField.isEmpty()) {
-          ShowNotification.fieldEmpty(nameField.getCaption());
-          return;
-        }
         ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-        UserLimitService.createUserLimit(expenseSheet, UserService.createUser(nameField.getValue()));
-        listener.expenseSheetSettingsChange();
+        expenseSheet.setKey(nameField.getValue());
+        if (expenseSheet.getUserLimitList().size() > 0) {
+          try {
+            expenseSheet.getUserLimitList().get(0).getLimit();
+          } catch (NullPointerException e) {
+            ShowNotification.badSheetPassword();
+            expenseSheet.setKey(null);
+            return;
+          }
+          listener.expenseSheetSettingsChange();
+        }
         close();
       }
     });
@@ -87,6 +97,10 @@ public class AddUserWindow extends Window {
     footer.setExpandRatio(cancel, 1);
     footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
     return footer;
+  }
+
+  public interface ExpenseSheetEditListener {
+    void expenseSheetNameEdited(TextField nameField);
   }
 
 }

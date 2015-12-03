@@ -57,6 +57,7 @@ public class RegisterPage extends VerticalLayout {
     nameField.setRequired(true);
     nameField.setIcon(FontAwesome.USER);
     nameField.addStyleName(ValoTheme.TEXTFIELD_INLINE_ICON);
+    nameField.focus();
     fields.addComponent(nameField);
     
     final PasswordField passwordField = new PasswordField(Msg.get("registerPage.password"));
@@ -92,6 +93,7 @@ public class RegisterPage extends VerticalLayout {
         if (!nameField.getValue().isEmpty())
           if (RealUserService.findRealUser(nameField.getValue()) != null) {
             ShowNotification.registerProblem(nameField.getValue());
+            return;
           }
         if (!nameField.getValue().isEmpty() &&
             !passwordField.getValue().isEmpty() &&

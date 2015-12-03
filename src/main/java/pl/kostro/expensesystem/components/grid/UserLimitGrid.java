@@ -9,6 +9,7 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.service.UserLimitService;
 import pl.kostro.expensesystem.views.settingsPage.AddUserWindow;
+import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsChangeListener;
 
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -26,10 +27,12 @@ import com.vaadin.ui.Button.ClickEvent;
 public class UserLimitGrid extends Grid {
   private static final long serialVersionUID = 5378642683850471251L;
 
+  private ExpenseSheetSettingsChangeListener listener;
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
   
-  public UserLimitGrid() {
+  public UserLimitGrid(ExpenseSheetSettingsChangeListener listener) {
+    this.listener = listener;
     setImmediate(true);
     setEditorEnabled(true);
     setEditorSaveCaption(Msg.get("settingsPage.userSave"));
@@ -43,7 +46,7 @@ public class UserLimitGrid extends Grid {
 
       @Override
       public void buttonClick(ClickEvent event) {
-        UI.getCurrent().addWindow(new AddUserWindow());
+        UI.getCurrent().addWindow(new AddUserWindow(listener));
       }
     });
   }

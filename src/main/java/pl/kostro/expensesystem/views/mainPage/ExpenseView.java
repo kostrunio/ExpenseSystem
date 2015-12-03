@@ -11,9 +11,13 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Filter;
+import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetPasswordWindow;
+import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsChangeListener;
+import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsView;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -25,12 +29,14 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
+import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.ValoTheme;
 
-public class ExpenseView extends Panel implements View {
+public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChangeListener {
 
   private static final long serialVersionUID = -7668118300710655240L;
   private final VerticalLayout root;
@@ -80,23 +86,32 @@ public class ExpenseView extends Panel implements View {
     titleLabel.addStyleName(ValoTheme.LABEL_NO_MARGIN);
     header.addComponent(titleLabel);
 
-/*    Component edit = buildEditButton();
+    Component edit = buildEditButton();
     HorizontalLayout tools = new HorizontalLayout(edit);
     tools.setSpacing(true);
     tools.addStyleName("toolbar");
-    header.addComponent(tools);*/
+    header.addComponent(tools);
 
     return header;
   }
 
-/*  private Component buildEditButton() {
+  private Component buildEditButton() {
     Button result = new Button();
     result.setIcon(FontAwesome.EDIT);
     result.addStyleName("icon-edit");
     result.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-    result.setDescription("Edit ExpenseSheet");
+    result.setDescription(Msg.get("expenseSheet.edit"));
+    result.addClickListener(new ClickListener() {
+      private static final long serialVersionUID = 1792451562271503948L;
+
+      @Override
+      public void buttonClick(final ClickEvent event) {
+        root.removeAllComponents();
+        root.addComponent(new ExpenseSheetSettingsView());
+      }
+  });
     return result;
-  }*/
+  }
   
   private Component buildContent() {
     expensePanels = new VerticalLayout();
@@ -297,12 +312,26 @@ public class ExpenseView extends Panel implements View {
     } else {
       expenseSheet = ExpenseSheetService.findExpenseSheet(loggedUser, Integer.parseInt(event.getParameters()));
     }
+    if (expenseSheet == null) {
+      root.addComponent(new ExpenseSheetSettingsView());
+      return;
+    }
     VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
+    if (expenseSheet.getKey() == null) {
+      UI.getCurrent().addWindow(new ExpenseSheetPasswordWindow(ExpenseView.this));
+      return;
+    }
     if (!expenseSheet.getEncrypted())
       ExpenseSheetService.encrypt(expenseSheet);
     root.removeAllComponents();
     mainView.removeAllComponents();
     prepareView();
+  }
+
+  @Override
+  public void expenseSheetSettingsChange() {
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    UI.getCurrent().getNavigator().navigateTo("expenseSheet/"+expenseSheet.getId());
   }
 
 }

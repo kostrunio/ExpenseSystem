@@ -265,4 +265,13 @@ public class ExpenseSheetService {
     }
   }
 
+  public static void merge(ExpenseSheet expenseSheet) {
+    ExpenseEntityDao.begin();
+    try {
+      ExpenseEntityDao.getEntityManager().merge(expenseSheet);
+      ExpenseEntityDao.commit();
+    } finally {
+    }
+  }
+
 }

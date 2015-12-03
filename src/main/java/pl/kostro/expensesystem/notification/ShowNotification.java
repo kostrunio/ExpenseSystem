@@ -70,4 +70,10 @@ public class ShowNotification {
     setErrorStyle(notification);
   }
 
+  public static void badSheetPassword() {
+    Notification notification = new Notification(Msg.get("notification.badSheetPasswordProblem"));
+    notification.setDescription(Msg.get("notification.badSheetPasswordDesc"));
+    setErrorStyle(notification);
+  }
+
 }
