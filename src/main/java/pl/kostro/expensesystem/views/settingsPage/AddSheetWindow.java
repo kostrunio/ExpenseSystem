@@ -15,6 +15,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
@@ -24,6 +25,8 @@ import com.vaadin.ui.themes.ValoTheme;
 public class AddSheetWindow extends Window {
 
   private final TextField nameField = new TextField(Msg.get("newSheet.label"));
+  private final PasswordField passwordField = new PasswordField(Msg.get("newSheet.password"));
+  private final PasswordField rePasswordField = new PasswordField(Msg.get("newSheet.repassword"));
   private ExpenseSheetSettingsChangeListener listener;
 
   public AddSheetWindow(ExpenseSheetSettingsChangeListener listener) {
@@ -45,8 +48,11 @@ public class AddSheetWindow extends Window {
 
     nameField.addStyleName("caption-on-left");
     nameField.focus();
+    
+    passwordField.addStyleName("caption-on-left");
+    rePasswordField.addStyleName("caption-on-left");
 
-    result.addComponent(nameField);
+    result.addComponents(nameField, passwordField, rePasswordField);
     result.addComponent(buildFooter());
 
     return result;
@@ -77,8 +83,14 @@ public class AddSheetWindow extends Window {
           ShowNotification.fieldEmpty(nameField.getCaption());
           return;
         }
+        if (passwordField.getValue().isEmpty()
+            || rePasswordField.getValue().isEmpty()
+            || !passwordField.getValue().equals(rePasswordField.getValue())) {
+          ShowNotification.passwordProblem(passwordField.getCaption());
+          return;
+        }
         RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
-        ExpenseSheet expenseSheet = ExpenseSheetService.createExpenseSheet(loggedUser, nameField.getValue(), loggedUser.getClearPassword());
+        ExpenseSheet expenseSheet = ExpenseSheetService.createExpenseSheet(loggedUser, nameField.getValue(), passwordField.getValue());
         VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
         VaadinSession.getCurrent().getAttribute(ExpenseMenu.class).refresh();
         listener.expenseSheetSettingsChange();

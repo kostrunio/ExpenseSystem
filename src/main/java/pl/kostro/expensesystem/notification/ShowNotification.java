@@ -76,4 +76,10 @@ public class ShowNotification {
     setErrorStyle(notification);
   }
 
+  public static void passwordProblem(String caption) {
+    Notification notification = new Notification(Msg.get("notification.newSheetProblem"));
+    notification.setDescription(Msg.get("notification.newSheetDesc"));
+    setErrorStyle(notification);
+  }
+
 }
