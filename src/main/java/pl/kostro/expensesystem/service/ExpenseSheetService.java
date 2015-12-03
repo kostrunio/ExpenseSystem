@@ -202,13 +202,11 @@ public class ExpenseSheetService {
         if (!cat.equals(category))
           cat.setOrder(cat.getOrder() + 1);
     }
+    Category tmp = expenseSheet.getCategoryList().get(category.getOrder());
+    expenseSheet.getCategoryList().set(category.getOrder()+1, tmp);
+    expenseSheet.getCategoryList().set(category.getOrder(), category);
 
-    ExpenseEntityDao.begin();
-    try {
-      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
+    merge(expenseSheet);
     return expenseSheet;
   }
   
@@ -221,13 +219,11 @@ public class ExpenseSheetService {
         if (!cat.equals(category))
           cat.setOrder(cat.getOrder() - 1);
     }
-
-    ExpenseEntityDao.begin();
-    try {
-      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
+    Category tmp = expenseSheet.getCategoryList().get(category.getOrder());
+    expenseSheet.getCategoryList().set(category.getOrder()-1, tmp);
+    expenseSheet.getCategoryList().set(category.getOrder(), category);
+    
+    merge(expenseSheet);
     return expenseSheet;
   }
 

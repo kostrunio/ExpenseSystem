@@ -72,7 +72,7 @@ public class UserLimitGrid extends Grid {
             if (dialog.isConfirmed()) {
               ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
               UserLimitService.removeUserLimit(expenseSheet, getItem());
-              UI.getCurrent().getNavigator().navigateTo("settings");
+              listener.expenseSheetSettingsChange();
             }
           }
         });
@@ -100,7 +100,7 @@ public class UserLimitGrid extends Grid {
       @Override
       public void postCommit(CommitEvent commitEvent) throws CommitException {
         UserLimitService.merge(((BeanItem<UserLimit>)commitEvent.getFieldBinder().getItemDataSource()).getBean());
-        UI.getCurrent().getNavigator().navigateTo("settings");
+        listener.expenseSheetSettingsChange();
       }
     });
     

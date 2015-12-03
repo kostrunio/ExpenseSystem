@@ -77,7 +77,7 @@ public class RealUserLimitGrid extends Grid {
                 return;
               }
               UserLimitService.removeUserLimit(expenseSheet, getItem());
-              UI.getCurrent().getNavigator().navigateTo("settings");
+              listener.expenseSheetSettingsChange();
             }
           }
         });
@@ -105,7 +105,7 @@ public class RealUserLimitGrid extends Grid {
       @Override
       public void postCommit(CommitEvent commitEvent) throws CommitException {
         UserLimitService.merge(((BeanItem<UserLimit>)commitEvent.getFieldBinder().getItemDataSource()).getBean());
-        UI.getCurrent().getNavigator().navigateTo("settings");
+        listener.expenseSheetSettingsChange();
       }
     });
     

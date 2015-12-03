@@ -66,7 +66,7 @@ public class CategoryGrid extends Grid {
       public void buttonClick(ClickEvent event) {
         expenseSheet = ExpenseSheetService.moveCategoryUp(expenseSheet, getItem());
         VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
-        UI.getCurrent().getNavigator().navigateTo("settings");
+        listener.expenseSheetSettingsChange();
       }
     });
   }
@@ -80,7 +80,7 @@ public class CategoryGrid extends Grid {
       public void buttonClick(ClickEvent event) {
         expenseSheet = ExpenseSheetService.moveCategoryDown(expenseSheet, getItem());
         VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
-        UI.getCurrent().getNavigator().navigateTo("settings");
+        listener.expenseSheetSettingsChange();
       }
     });
   }
@@ -106,7 +106,7 @@ public class CategoryGrid extends Grid {
             if (dialog.isConfirmed()) {
               expenseSheet = ExpenseSheetService.removeCategory(expenseSheet, getItem());
               VaadinSession.getCurrent().getAttribute(ExpenseMenu.class).refresh();
-              UI.getCurrent().getNavigator().navigateTo("settings");
+              listener.expenseSheetSettingsChange();
             }
           }
         });
