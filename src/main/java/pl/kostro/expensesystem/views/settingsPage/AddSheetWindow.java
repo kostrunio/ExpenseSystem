@@ -86,7 +86,7 @@ public class AddSheetWindow extends Window {
         if (passwordField.getValue().isEmpty()
             || rePasswordField.getValue().isEmpty()
             || !passwordField.getValue().equals(rePasswordField.getValue())) {
-          ShowNotification.passwordProblem(passwordField.getCaption());
+          ShowNotification.passwordProblem();
           return;
         }
         RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);

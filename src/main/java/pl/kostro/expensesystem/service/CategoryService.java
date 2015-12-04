@@ -26,15 +26,14 @@ public class CategoryService {
     } finally {
     }
   }
+  
+  public static void decrypt(Category category) {
+    category.getName();
+  }
 
   public static void encrypt(Category category) {
-    ExpenseEntityDao.begin();
-    try {
-      category.setName(category.getName());
-      ExpenseEntityDao.getEntityManager().merge(category);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
+    category.setName(category.getName(true), true);
+    ExpenseEntityDao.getEntityManager().merge(category);
   }
 
 

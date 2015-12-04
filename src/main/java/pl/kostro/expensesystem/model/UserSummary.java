@@ -62,32 +62,48 @@ public class UserSummary extends AbstractEntity {
   public void setDate(Date date) {
     this.date = date;
   }
-
+  
   public BigDecimal getLimit() {
-    if (limit == null && limit_byte != null) {
+    return getLimit(false);
+  }
+
+  public BigDecimal getLimit(boolean encrypt) {
+    if (limit == null && limit_byte != null && !encrypt) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       limit = new BigDecimal(enc.decryption(limit_byte));
     }
     return limit;
   }
-
+  
   public void setLimit(BigDecimal limit) {
-    if (limit_byte != null && limit.equals(this.limit)) return;
+    setLimit(limit, false);
+  }
+
+  public void setLimit(BigDecimal limit, boolean encrypt) {
+    if (limit_byte != null && limit.equals(this.limit) && !encrypt) return;
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.limit_byte = enc.encryption(limit.toString());
     this.limit = limit;
   }
   
   public BigDecimal getSum() {
-    if (sum == null && sum_byte != null) {
+    return getSum(false);
+  }
+  
+  public BigDecimal getSum(boolean encrypt) {
+    if (sum == null && sum_byte != null && !encrypt) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       sum = new BigDecimal(enc.decryption(sum_byte));
     }
     return sum;
   }
-
+  
   public void setSum(BigDecimal sum) {
-    if (sum_byte != null && sum.equals(this.sum)) return;
+    setSum(sum, false);
+  }
+
+  public void setSum(BigDecimal sum, boolean encrypt) {
+    if (sum_byte != null && sum.equals(this.sum) && !encrypt) return;
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.sum_byte = enc.encryption(sum.toString());
     this.sum = sum;

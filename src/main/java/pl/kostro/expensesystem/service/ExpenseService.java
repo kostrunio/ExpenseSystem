@@ -98,16 +98,16 @@ public class ExpenseService {
     }
     return expense;
   }
+  
+  public static void decrypt(Expense expense) {
+    expense.getFormula();
+    expense.getComment();
+  }
 
   public static void encrypt(Expense expense) {
-    ExpenseEntityDao.begin();
-    try {
-      expense.setFormula(expense.getFormula());
-      expense.setComment(expense.getComment());
-      expense = ExpenseEntityDao.getEntityManager().merge(expense);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
+    expense.setFormula(expense.getFormula(true), true);
+    expense.setComment(expense.getComment(true), true);
+    expense = ExpenseEntityDao.getEntityManager().merge(expense);
   }
 
 }

@@ -15,7 +15,6 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
@@ -97,10 +96,6 @@ public class ExpenseSheetPasswordWindow extends Window {
     footer.setExpandRatio(cancel, 1);
     footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
     return footer;
-  }
-
-  public interface ExpenseSheetEditListener {
-    void expenseSheetNameEdited(TextField nameField);
   }
 
 }

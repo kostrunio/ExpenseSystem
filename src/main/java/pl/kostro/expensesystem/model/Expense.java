@@ -100,17 +100,25 @@ public class Expense extends AbstractEntity {
   public void setDate(Date date) {
     this.date = date;
   }
-
+  
   public String getFormula() {
-    if ((formula == null || formula.isEmpty()) && formula_byte != null) {
+    return getFormula(false);
+  }
+
+  public String getFormula(boolean encrypt) {
+    if ((formula == null || formula.isEmpty()) && formula_byte != null && !encrypt) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       formula = enc.decryption(formula_byte);
     }
     return formula;
   }
-
+  
   public void setFormula(String formula) {
-    if (formula_byte != null && formula.equals(this.formula)) return;
+    setFormula(formula, false);
+  }
+
+  public void setFormula(String formula, boolean encrypt) {
+    if (formula_byte != null && formula.equals(this.formula) && !encrypt) return;
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.formula_byte = enc.encryption(formula);
     this.formula = formula;
@@ -137,17 +145,25 @@ public class Expense extends AbstractEntity {
   public void setUser(User user) {
     this.user = user;
   }
-
+  
   public String getComment() {
-    if ((comment == null || comment.isEmpty()) && comment_byte != null) {
+    return getComment(false);
+  }
+
+  public String getComment(boolean encrypt) {
+    if ((comment == null || comment.isEmpty()) && comment_byte != null && !encrypt) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       comment = enc.decryption(comment_byte);
     }
     return comment;
   }
-
+  
   public void setComment(String comment) {
-    if (comment_byte != null && comment.equals(this.comment)) return;
+    setComment(comment, false);
+  }
+
+  public void setComment(String comment, boolean encrypt) {
+    if (comment_byte != null && comment.equals(this.comment) && !encrypt) return;
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.comment_byte = enc.encryption(comment);
     this.comment = comment;

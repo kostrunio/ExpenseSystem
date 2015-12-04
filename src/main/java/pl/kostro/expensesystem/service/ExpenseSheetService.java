@@ -203,13 +203,13 @@ public class ExpenseSheetService {
           cat.setOrder(cat.getOrder() + 1);
     }
     Category tmp = expenseSheet.getCategoryList().get(category.getOrder());
-    expenseSheet.getCategoryList().set(category.getOrder()+1, tmp);
+    expenseSheet.getCategoryList().set(category.getOrder() + 1, tmp);
     expenseSheet.getCategoryList().set(category.getOrder(), category);
 
     merge(expenseSheet);
     return expenseSheet;
   }
-  
+
   public static ExpenseSheet moveCategoryDown(ExpenseSheet expenseSheet, Category category) {
     if (category.getOrder() == expenseSheet.getCategoryList().size())
       return expenseSheet;
@@ -220,9 +220,9 @@ public class ExpenseSheetService {
           cat.setOrder(cat.getOrder() - 1);
     }
     Category tmp = expenseSheet.getCategoryList().get(category.getOrder());
-    expenseSheet.getCategoryList().set(category.getOrder()-1, tmp);
+    expenseSheet.getCategoryList().set(category.getOrder() - 1, tmp);
     expenseSheet.getCategoryList().set(category.getOrder(), category);
-    
+
     merge(expenseSheet);
     return expenseSheet;
   }
@@ -241,23 +241,35 @@ public class ExpenseSheetService {
     }
     return expenseSheet;
   }
-  
-  public static void encrypt(ExpenseSheet expenseSheet) {
-    System.out.println("encrypt: category");
+
+  public static void decrypt(ExpenseSheet expenseSheet) {
+    System.out.println("decrypt: category");
     for (Category category : expenseSheet.getCategoryList())
-      CategoryService.encrypt(category);
-    System.out.println("encrypt: expense");
+      CategoryService.decrypt(category);
+    System.out.println("decrypt: expense");
     for (Expense expense : expenseSheet.getExpenseList())
-      ExpenseService.encrypt(expense);
-    System.out.println("encrypt: userLimit");
+      ExpenseService.decrypt(expense);
+    System.out.println("decrypt: userLimit");
     for (UserLimit userLimit : expenseSheet.getUserLimitList())
-      UserLimitService.encrypt(userLimit);
+      UserLimitService.decrypt(userLimit);
+  }
+
+  public static void encrypt(ExpenseSheet expenseSheet) {
     ExpenseEntityDao.begin();
     try {
-      expenseSheet.setEncrypted(true);
-      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
+      System.out.println("encrypt: category");
+      for (Category category : expenseSheet.getCategoryList())
+        CategoryService.encrypt(category);
+      System.out.println("encrypt: expense");
+      for (Expense expense : expenseSheet.getExpenseList())
+        ExpenseService.encrypt(expense);
+      System.out.println("encrypt: userLimit");
+      for (UserLimit userLimit : expenseSheet.getUserLimitList())
+        UserLimitService.encrypt(userLimit);
       ExpenseEntityDao.commit();
-    } finally {
+    } catch (Exception e) {
+      e.printStackTrace();
+      ExpenseEntityDao.rollback();
     }
   }
 

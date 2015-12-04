@@ -60,17 +60,25 @@ public class Category extends AbstractEntity {
   public void setId(int id) {
     this.id = id;
   }
-
+  
   public String getName() {
-    if ((name == null || name.isEmpty()) && name_byte != null) {
+    return getName(false);
+  }
+
+  public String getName(boolean encrypt) {
+    if ((name == null || name.isEmpty()) && name_byte != null && !encrypt) {
       Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
       name = enc.decryption(name_byte);
     }
     return name;
   }
-
+  
   public void setName(String name) {
-    if (name_byte != null && name.equals(this.name)) return;
+    setName(name, false);
+  }
+
+  public void setName(String name, boolean encrypt) {
+    if (name_byte != null && name.equals(this.name) && !encrypt) return;
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.name_byte = enc.encryption(name);
     this.name = name;

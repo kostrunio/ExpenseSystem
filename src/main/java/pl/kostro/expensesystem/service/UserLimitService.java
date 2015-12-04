@@ -46,16 +46,17 @@ public class UserLimitService {
     }
   }
 
+  public static void decrypt(UserLimit userLimit) {
+    userLimit.getLimit();
+    for (UserSummary userSummary : userLimit.getUserSummaryList())
+      UserSummaryService.decrypt(userSummary);
+  }
+
   public static void encrypt(UserLimit userLimit) {
-    ExpenseEntityDao.begin();
-    try {
-      userLimit.setLimit(userLimit.getLimit());
-      for (UserSummary userSummary : userLimit.getUserSummaryList())
-        UserSummaryService.encrypt(userSummary);
-      ExpenseEntityDao.getEntityManager().merge(userLimit);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
+    userLimit.setLimit(userLimit.getLimit(true), true);
+    for (UserSummary userSummary : userLimit.getUserSummaryList())
+      UserSummaryService.encrypt(userSummary);
+    ExpenseEntityDao.getEntityManager().merge(userLimit);
   }
 
 }

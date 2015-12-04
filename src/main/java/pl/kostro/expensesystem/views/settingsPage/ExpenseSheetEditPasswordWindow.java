@@ -5,13 +5,14 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextField;
+import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
@@ -20,12 +21,14 @@ import com.vaadin.ui.themes.ValoTheme;
  * Simple name editor Window.
  */
 @SuppressWarnings("serial")
-public class ExpenseSheetEditWindow extends Window {
+public class ExpenseSheetEditPasswordWindow extends Window {
 
-  private final TextField nameField = new TextField(Msg.get("expenseSheet.name"));
-  private ExpenseSheetEditListener listener;
+  private final PasswordField oldPasswordField = new PasswordField(Msg.get("expenseSheet.oldPassword"));
+  private final PasswordField newPasswordField = new PasswordField(Msg.get("expenseSheet.newPassword"));
+  private final PasswordField reNewPasswordField = new PasswordField(Msg.get("expenseSheet.reNewPassword"));
+  private ExpenseSheetPasswordChangeListener listener;
 
-  public ExpenseSheetEditWindow(ExpenseSheetEditListener listener, ExpenseSheet expenseSheet) {
+  public ExpenseSheetEditPasswordWindow(ExpenseSheetPasswordChangeListener listener) {
     this.listener = listener;
     setCaption(Msg.get("expenseSheet.edit"));
     setModal(true);
@@ -35,19 +38,21 @@ public class ExpenseSheetEditWindow extends Window {
 
     addStyleName("edit-expensesheet");
 
-    setContent(buildContent(expenseSheet.getName()));
+    setContent(buildContent());
   }
 
-  private Component buildContent(final String currentName) {
+  private Component buildContent() {
     VerticalLayout result = new VerticalLayout();
     result.setMargin(true);
     result.setSpacing(true);
 
-    nameField.setValue(currentName);
-    nameField.addStyleName("caption-on-left");
-    nameField.focus();
+    oldPasswordField.addStyleName("caption-on-left");
+    oldPasswordField.focus();
+    
+    newPasswordField.addStyleName("caption-on-left");
+    reNewPasswordField.addStyleName("caption-on-left");
 
-    result.addComponent(nameField);
+    result.addComponents(oldPasswordField, newPasswordField, reNewPasswordField);
     result.addComponent(buildFooter());
 
     return result;
@@ -74,11 +79,25 @@ public class ExpenseSheetEditWindow extends Window {
     save.addClickListener(new ClickListener() {
       @Override
       public void buttonClick(final ClickEvent event) {
-        if (nameField.getValue().isEmpty()) {
-          ShowNotification.fieldEmpty(nameField.getCaption());
+        ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+        if (oldPasswordField.getValue().isEmpty()) {
+          ShowNotification.fieldEmpty(oldPasswordField.getCaption());
           return;
         }
-        listener.expenseSheetNameEdited(nameField);
+        if (newPasswordField.getValue().isEmpty()) {
+          ShowNotification.fieldEmpty(newPasswordField.getCaption());
+          return;
+        }
+        if (reNewPasswordField.getValue().isEmpty()) {
+          ShowNotification.fieldEmpty(reNewPasswordField.getCaption());
+          return;
+        }
+        if (!oldPasswordField.getValue().equals(expenseSheet.getKey())
+            || !newPasswordField.getValue().equals(reNewPasswordField.getValue())) {
+          ShowNotification.passwordProblem();
+          return;
+        }
+        listener.expenseSheetPasswordChanged(newPasswordField.getValue());
         close();
       }
     });
@@ -89,8 +108,8 @@ public class ExpenseSheetEditWindow extends Window {
     return footer;
   }
   
-  public interface ExpenseSheetEditListener {
-    void expenseSheetNameEdited(TextField nameField);
+  public interface ExpenseSheetPasswordChangeListener {
+    void expenseSheetPasswordChanged(String newPassword);
   }
 
 }

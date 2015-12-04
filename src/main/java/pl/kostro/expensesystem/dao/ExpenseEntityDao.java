@@ -44,6 +44,10 @@ public class ExpenseEntityDao {
   public static void commit() {
     getTransaction().commit();
   }
+  
+  public static void rollback() {
+    getTransaction().rollback();
+  }
 
   public static void close() {
     getEntityManager().close();

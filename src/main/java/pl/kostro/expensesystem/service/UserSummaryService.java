@@ -117,13 +117,15 @@ public class UserSummaryService {
     }
   }
 
+  public static void decrypt(UserSummary userSummary) {
+    userSummary.getLimit();
+    userSummary.getSum();
+  }
+
   public static void encrypt(UserSummary userSummary) {
-    try {
-      userSummary.setLimit(userSummary.getLimit());
-      userSummary.setSum(userSummary.getSum());
-      ExpenseEntityDao.getEntityManager().merge(userSummary);
-    } finally {
-    }
+    userSummary.setLimit(userSummary.getLimit(true), true);
+    userSummary.setSum(userSummary.getSum(true), true);
+    ExpenseEntityDao.getEntityManager().merge(userSummary);
   }
 
 }
