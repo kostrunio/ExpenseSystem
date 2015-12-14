@@ -3,6 +3,13 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/persistence">
 	<persistence-unit name="expenseSystem">
+		<class>pl.kostro.expensesystem.model.User</class>
+		<class>pl.kostro.expensesystem.model.ExpenseSheet</class>
+		<class>pl.kostro.expensesystem.model.Expense</class>
+		<class>pl.kostro.expensesystem.model.UserSummary</class>
+		<class>pl.kostro.expensesystem.model.Category</class>
+		<class>pl.kostro.expensesystem.model.RealUser</class>
+		<class>pl.kostro.expensesystem.model.UserLimit</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
 			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres" />
