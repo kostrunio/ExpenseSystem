@@ -1,1 +1,0 @@
-$wnd.pl_kostro_expensesystem_widgetset_ExpensesystemWidgetset.runAsyncCallback2('Afb(1551,1,AVd);_.Qd=function $cc(){_$b((!U$b&&(U$b=new e_b),U$b),this.a.d)};EOd(ul)(2);\n//# sourceURL=pl.kostro.expensesystem.widgetset.ExpensesystemWidgetset-2.js\n')
