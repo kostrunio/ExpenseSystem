@@ -1,4 +1,3 @@
 rm -r /var/lib/openshift/563290442d5271db2c000084/app-deployments/*
-rm -r /var/lib/openshift/563290442d5271db2c000084/app-root/runtime/build-dependencies/.m2/repository/*
 rm -r /var/lib/openshift/563290442d5271db2c000084/app-root/runtime/repo/target/*
 rm -r /var/lib/openshift/563290442d5271db2c000084/app-root/runtime/repo/webapps/*
