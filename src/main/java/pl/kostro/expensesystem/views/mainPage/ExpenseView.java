@@ -318,8 +318,16 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
     }
     VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
     if (expenseSheet.getKey() == null) {
-      UI.getCurrent().addWindow(new ExpenseSheetPasswordWindow(ExpenseView.this));
-      return;
+      expenseSheet.setKey(loggedUser.getClearPassword());
+      if (expenseSheet.getUserLimitList().size() > 0) {
+        try {
+          expenseSheet.getUserLimitList().get(0).getLimit();
+        } catch (NullPointerException e) {
+          expenseSheet.setKey(null);
+          UI.getCurrent().addWindow(new ExpenseSheetPasswordWindow(ExpenseView.this));
+          return;
+        }
+      }
     }
     if (!expenseSheet.getEncrypted())
       ExpenseSheetService.encrypt(expenseSheet);
