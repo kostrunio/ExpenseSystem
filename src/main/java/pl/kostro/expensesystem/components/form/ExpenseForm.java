@@ -131,7 +131,7 @@ public class ExpenseForm extends FormLayout {
         if (commentBox.getValue() != null && !commentBox.getValue().toString().isEmpty())
           expense.setComment(commentBox.getValue().toString());
         expense.setExpenseSheet(expenseSheet);
-        ExpenseService.merge(expense);
+        expense = ExpenseService.merge(expense);
         if (!expenseSheet.getExpenseList().contains(expense))
           expenseSheet.getExpenseList().add(expense);
         view.refreshExpenses();
