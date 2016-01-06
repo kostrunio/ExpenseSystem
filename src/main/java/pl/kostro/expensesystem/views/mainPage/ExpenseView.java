@@ -2,6 +2,8 @@ package pl.kostro.expensesystem.views.mainPage;
 
 import java.util.Calendar;
 
+import org.vaadin.teemu.VaadinIcons;
+
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -11,13 +13,13 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Filter;
+import pl.kostro.expensesystem.views.chart.ChartSheetView;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetPasswordWindow;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsChangeListener;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsView;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -87,7 +89,8 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
     header.addComponent(titleLabel);
 
     Component edit = buildEditButton();
-    HorizontalLayout tools = new HorizontalLayout(edit);
+    Component chart = buildChartButton();
+    HorizontalLayout tools = new HorizontalLayout(edit, chart);
     tools.setSpacing(true);
     tools.addStyleName("toolbar");
     header.addComponent(tools);
@@ -97,7 +100,7 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
 
   private Component buildEditButton() {
     Button result = new Button();
-    result.setIcon(FontAwesome.EDIT);
+    result.setIcon(VaadinIcons.EDIT);
     result.addStyleName("icon-edit");
     result.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     result.setDescription(Msg.get("expenseSheet.edit"));
@@ -108,6 +111,24 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
       public void buttonClick(final ClickEvent event) {
         root.removeAllComponents();
         root.addComponent(new ExpenseSheetSettingsView());
+      }
+  });
+    return result;
+  }
+  
+  private Component buildChartButton() {
+    Button result = new Button();
+    result.setIcon(VaadinIcons.CHART);
+    result.addStyleName("icon-edit");
+    result.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+    result.setDescription(Msg.get("expenseSheet.chart"));
+    result.addClickListener(new ClickListener() {
+      private static final long serialVersionUID = 1792451562271503948L;
+
+      @Override
+      public void buttonClick(final ClickEvent event) {
+        root.removeAllComponents();
+        root.addComponent(new ChartSheetView());
       }
   });
     return result;

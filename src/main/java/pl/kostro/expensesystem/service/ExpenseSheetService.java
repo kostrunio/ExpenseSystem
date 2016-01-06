@@ -22,6 +22,7 @@ import pl.kostro.expensesystem.utils.CategoryExpense;
 import pl.kostro.expensesystem.utils.DateExpense;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.UserLimitExpense;
+import pl.kostro.expensesystem.utils.YearCategory;
 
 public class ExpenseSheetService {
 
@@ -280,6 +281,30 @@ public class ExpenseSheetService {
       ExpenseEntityDao.commit();
     } finally {
     }
+  }
+
+  public static List<YearCategory> prepareYearCategoryList(ExpenseSheet expenseSheet) {
+    List<YearCategory> yearCategoryList = new ArrayList<YearCategory>();
+    Calendar firstDay = Calendar.getInstance();
+    for (String year : ExpenseSheetService.getYearList(expenseSheet)) {
+      YearCategory yearCategory = new YearCategory(Integer.parseInt(year), expenseSheet.getCategoryList());
+      UserSummaryService.setFirstDay(firstDay, year);
+      for (int m=0; m<=11; m++) {
+        firstDay.set(Calendar.MONTH, m);
+        ExpenseSheetService.prepareExpenseMap(expenseSheet,
+            firstDay.getTime(),
+            UserSummaryService.getLastDay(firstDay.getTime()),
+            firstDay.getTime(),
+            UserSummaryService.getLastDay(firstDay.getTime()));
+        for (Category category : expenseSheet.getCategoryList()) {
+          CategoryExpense categoryExpense = ExpenseSheetService.getCategoryExpenseMap(expenseSheet, category);
+          if (categoryExpense != null)
+            yearCategory.getCategory(m, categoryExpense.getCategory()).setSum(categoryExpense.getSum());
+        }
+      }
+      yearCategoryList.add(yearCategory);
+    }
+    return yearCategoryList;
   }
 
 }
