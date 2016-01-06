@@ -31,14 +31,14 @@ public class MonthView extends HorizontalLayout {
   private ExpenseCalendar monthCalendar;
   private TextField thisMonthField;
 
-  private Calendar calendar;
+  private Calendar date;
 
   private static final long serialVersionUID = 2594978831652398190L;
 
   public MonthView(Calendar date) {
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    this.calendar = date;
-    UserSummaryService.setFirstDay(calendar);
+    this.date = date;
+    UserSummaryService.setFirstDay(date);
 
     setSizeFull();
 
@@ -47,7 +47,7 @@ public class MonthView extends HorizontalLayout {
     addComponent(buildCalendarLayout());
     addComponent(buildSummaryLayout());
 
-    showCalendar(expenseSheet, calendar);
+    showCalendar(date);
   }
 
   private VerticalLayout buildCalendarLayout() {
@@ -61,7 +61,7 @@ public class MonthView extends HorizontalLayout {
     calendarLayout.setComponentAlignment(navigationLayout, Alignment.MIDDLE_CENTER);
 
     // monthCalendar
-    monthCalendar = new ExpenseCalendar(this, expenseSheet, calendar, categoryTable);
+    monthCalendar = new ExpenseCalendar(this, expenseSheet, date, categoryTable);
     calendarLayout.addComponent(monthCalendar);
 
     return calendarLayout;
@@ -82,8 +82,8 @@ public class MonthView extends HorizontalLayout {
       private static final long serialVersionUID = -8048895457148394023L;
       @Override
       public void buttonClick(ClickEvent event) {
-        calendar.add(java.util.Calendar.MONTH, -1);
-        showCalendar(expenseSheet, calendar);
+        date.add(java.util.Calendar.MONTH, -1);
+        showCalendar(date);
       }
     });
     navigationLayout.addComponent(previousMonthButton);
@@ -103,8 +103,8 @@ public class MonthView extends HorizontalLayout {
       private static final long serialVersionUID = -8048895457148394023L;
       @Override
       public void buttonClick(ClickEvent event) {
-        calendar.add(java.util.Calendar.MONTH, 1);
-        showCalendar(expenseSheet, calendar);
+        date.add(java.util.Calendar.MONTH, 1);
+        showCalendar(date);
       }
     });
     navigationLayout.addComponent(nextMonthButton);
@@ -160,7 +160,7 @@ public class MonthView extends HorizontalLayout {
     return dateLayout;
   }
 
-  public void showCalendar(ExpenseSheet expenseSheet, java.util.Calendar calendar) {
+  public void showCalendar(java.util.Calendar calendar) {
     thisMonthField.setReadOnly(false);
     thisMonthField.setValue(new SimpleDateFormat("MMMM yyyy", UI.getCurrent().getLocale()).format(calendar.getTime()));
     thisMonthField.setReadOnly(true);
@@ -172,7 +172,7 @@ public class MonthView extends HorizontalLayout {
 
   public void fulfillTables() {
     categoryTable.fulfill();
-    userLimitTable.fulfill(calendar);
+    userLimitTable.fulfill(date);
   }
 
   
