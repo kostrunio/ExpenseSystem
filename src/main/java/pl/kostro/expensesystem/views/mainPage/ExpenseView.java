@@ -334,7 +334,6 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
       expenseSheet = ExpenseSheetService.findExpenseSheet(loggedUser, Integer.parseInt(event.getParameters()));
     }
     if (expenseSheet == null) {
-      root.addComponent(new ExpenseSheetSettingsView());
       return;
     }
     VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);

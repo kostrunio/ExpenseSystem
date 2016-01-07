@@ -27,10 +27,8 @@ public class AddSheetWindow extends Window {
   private final TextField nameField = new TextField(Msg.get("newSheet.label"));
   private final PasswordField passwordField = new PasswordField(Msg.get("newSheet.password"));
   private final PasswordField rePasswordField = new PasswordField(Msg.get("newSheet.repassword"));
-  private ExpenseSheetSettingsChangeListener listener;
 
-  public AddSheetWindow(ExpenseSheetSettingsChangeListener listener) {
-    this.listener = listener;
+  public AddSheetWindow() {
     setModal(true);
     setClosable(false);
     setResizable(false);
@@ -93,7 +91,6 @@ public class AddSheetWindow extends Window {
         ExpenseSheet expenseSheet = ExpenseSheetService.createExpenseSheet(loggedUser, nameField.getValue(), passwordField.getValue());
         VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
         VaadinSession.getCurrent().getAttribute(ExpenseMenu.class).refresh();
-        listener.expenseSheetSettingsChange();
         close();
       }
     });

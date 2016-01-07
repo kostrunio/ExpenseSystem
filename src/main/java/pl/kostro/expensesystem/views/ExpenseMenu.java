@@ -5,6 +5,7 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.views.settingsPage.AddSheetWindow;
 
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinSession;
@@ -110,11 +111,23 @@ public class ExpenseMenu extends CustomComponent {
     settingsLabel.setPrimaryStyleName(ValoTheme.MENU_SUBTITLE);
     menuItemsLayout.addComponent(settingsLabel);
 
+    final Button addSheetButton = new Button(Msg.get("menu.addSheet"));
+    addSheetButton.setPrimaryStyleName(ValoTheme.MENU_ITEM);
+    addSheetButton.setIcon(FontAwesome.PLUS_SQUARE);
+    addSheetButton.addClickListener(new Button.ClickListener() {
+      private static final long serialVersionUID = 8671045294811634046L;
+
+      @Override
+      public void buttonClick(ClickEvent event) {
+        UI.getCurrent().addWindow(new AddSheetWindow());
+      }
+    });
+    menuItemsLayout.addComponent(addSheetButton);
+
     final Button logoutButton = new Button(Msg.get("menu.logout"));
     logoutButton.setPrimaryStyleName(ValoTheme.MENU_ITEM);
     logoutButton.setIcon(FontAwesome.EJECT);
     logoutButton.addClickListener(new ClickListener() {
-
       private static final long serialVersionUID = -1813471548646140303L;
 
       @Override
