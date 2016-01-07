@@ -7,7 +7,7 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
-import pl.kostro.expensesystem.service.UserSummaryService;
+//import pl.kostro.expensesystem.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.CategoryExpense;
 import pl.kostro.expensesystem.utils.DateExpense;
 
@@ -79,9 +79,9 @@ public class DayView extends CustomComponent {
 		// TODO add user code here
 		thisDateField.setImmediate(true);
 		thisDateField.setDateFormat("dd-MM-yyyy");
-		thisDateField.setTextFieldEnabled(false);
-		thisDateField.setRangeStart(UserSummaryService.getFirstDay(calendar.getTime()));
-		thisDateField.setRangeEnd(UserSummaryService.getLastDay(calendar.getTime()));
+//		thisDateField.setTextFieldEnabled(false);
+//		thisDateField.setRangeStart(UserSummaryService.getFirstDay(calendar.getTime()));
+//		thisDateField.setRangeEnd(UserSummaryService.getLastDay(calendar.getTime()));
 		previousDayButton.addClickListener(new Button.ClickListener() {
       
       private static final long serialVersionUID = -8048895457148394023L;
