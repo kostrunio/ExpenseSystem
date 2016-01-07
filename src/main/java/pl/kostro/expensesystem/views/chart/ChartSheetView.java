@@ -109,7 +109,7 @@ public class ChartSheetView extends CustomComponent {
     
     // top-level component properties
     setWidth("100.0%");
-    setHeight("100.0%");
+    setHeight("200.0%");
     
     return mainLayout;
   }
