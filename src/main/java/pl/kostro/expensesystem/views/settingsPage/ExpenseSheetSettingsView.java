@@ -250,7 +250,7 @@ public class ExpenseSheetSettingsView extends CustomComponent implements Expense
     result.setIcon(FontAwesome.EDIT);
     result.addStyleName("icon-edit");
     result.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-    result.setDescription(Msg.get("expenseSheet.changeName"));
+    result.setDescription(Msg.get("settingsPage.changeName"));
     result.addClickListener(new ClickListener() {
       private static final long serialVersionUID = 1792451562271503948L;
 
@@ -267,7 +267,7 @@ public class ExpenseSheetSettingsView extends CustomComponent implements Expense
     result.setIcon(FontAwesome.LOCK);
     result.addStyleName("icon-edit");
     result.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-    result.setDescription(Msg.get("expenseSheet.changePassword"));
+    result.setDescription(Msg.get("settingsPage.changePassword"));
     result.addClickListener(new ClickListener() {
       private static final long serialVersionUID = 1792451562271503948L;
 
