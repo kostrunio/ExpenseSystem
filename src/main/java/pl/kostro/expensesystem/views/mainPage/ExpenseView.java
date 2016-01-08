@@ -50,6 +50,7 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
   private Calendar calendar = Calendar.getInstance();
   private ExpenseSheet expenseSheet;
 
+  private Panel searchPanel = new Panel();
   private HorizontalLayout searchLayout = new HorizontalLayout();
   final VerticalLayout mainView = new VerticalLayout();
   private ComboBox categoryCombo;
@@ -186,8 +187,8 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
 
       @Override
       public void buttonClick(ClickEvent event) {
-        searchLayout.setVisible(!searchLayout.isVisible());
-        if (searchLayout.isVisible()) {
+        searchPanel.setVisible(!searchPanel.isVisible());
+        if (searchPanel.isVisible()) {
           prepareSearchLayout();
         } else {
           expenseSheet.setFilter(null);
@@ -258,10 +259,11 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
   }
 
   private Component buildSearchLayout() {
+    searchPanel.setVisible(false);
+    searchPanel.setContent(searchLayout);
     searchLayout.removeAllComponents();
     searchLayout.setMargin(true);
     searchLayout.setSpacing(true);
-    searchLayout.setVisible(false);
 
     // categoryCombo
     categoryCombo = new ComboBox();
@@ -316,7 +318,7 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
     searchLayout.addComponent(searchButton);
     searchLayout.setComponentAlignment(searchButton, Alignment.BOTTOM_RIGHT);
 
-    return searchLayout;
+    return searchPanel;
   }
 
   private void prepareSearchLayout() {
@@ -342,6 +344,7 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
     if (expenseSheet == null) {
       return;
     }
+    expenseSheet.setFilter(null);
     VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
     if (expenseSheet.getKey() == null) {
       expenseSheet.setKey(loggedUser.getClearPassword());
