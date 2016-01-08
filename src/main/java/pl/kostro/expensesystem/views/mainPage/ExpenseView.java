@@ -1,6 +1,8 @@
 package pl.kostro.expensesystem.views.mainPage;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import org.vaadin.teemu.VaadinIcons;
 
@@ -301,7 +303,11 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
         if (commentCombo.getValue() != null) {
           filterComment = commentCombo.getValue().toString();
         }
-        expenseSheet.setFilter(new Filter((Category) categoryCombo.getValue(), filterUser, filterFormula, filterComment));
+        List<Category> categories = new ArrayList<Category>();
+        categories.add((Category) categoryCombo.getValue());
+        List<User> users = new ArrayList<User>();
+        users.add((User) filterUser);
+        expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));
         mainView.removeAllComponents();
         mainView.addComponent(new MonthView(calendar));
       }

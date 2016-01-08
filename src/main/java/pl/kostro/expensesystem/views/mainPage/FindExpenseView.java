@@ -1,6 +1,8 @@
 package pl.kostro.expensesystem.views.mainPage;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.form.ExpenseForm;
@@ -91,10 +93,12 @@ public class FindExpenseView extends CustomComponent {
     commentBox.setNewItemsAllowed(true);
     commentBox.setFilteringMode(FilteringMode.CONTAINS);
     commentBox.addItems(ExpenseSheetService.getAllComments(expenseSheet));
+    List<Category> categories = new ArrayList<Category>();
+    categories.add((Category) categoryBox.getValue());
     expenseSheet.setFilter(new Filter(
         fromDateField.getValue(),
         toDateField.getValue(),
-        (Category) categoryBox.getValue(),
+        categories,
         null,
         formulaField.getValue(),
         (String)commentBox.getValue()));
@@ -109,11 +113,15 @@ public class FindExpenseView extends CustomComponent {
         if (userBox.getValue() instanceof UserLimit) {
           filterUser = ((UserLimit) userBox.getValue()).getUser();
         }
+        List<Category> categories = new ArrayList<Category>();
+        categories.add((Category) categoryBox.getValue());
+        List<User> users = new ArrayList<User>();
+        users.add((User) filterUser);
         expenseSheet.setFilter(new Filter(
             fromDateField.getValue(),
             toDateField.getValue(),
-            (Category) categoryBox.getValue(),
-            filterUser,
+            categories,
+            users,
             formulaField.getValue(),
             (String)commentBox.getValue()));
         refreshExpenses();
