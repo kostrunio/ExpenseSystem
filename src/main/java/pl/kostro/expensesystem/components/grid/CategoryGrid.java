@@ -8,9 +8,8 @@ import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.service.CategoryService;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
-import pl.kostro.expensesystem.views.ExpenseMenu;
 import pl.kostro.expensesystem.views.settingsPage.AddCategoryWindow;
-import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsChangeListener;
+import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -25,19 +24,17 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 
-public class CategoryGrid extends Grid {
+public class CategoryGrid extends Grid implements SettingsChangeListener{
   private static final long serialVersionUID = -1289032915572715567L;
   
   private ExpenseSheet expenseSheet;
-  private ExpenseSheetSettingsChangeListener listener;
   
   private Button addCategoryButton;
   private Button moveUpCategoryButton;
   private Button moveDownCategoryButton;
   private Button deleteCategoryButton;
   
-  public CategoryGrid(ExpenseSheetSettingsChangeListener listener) {
-    this.listener = listener;
+  public CategoryGrid() {
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setImmediate(true);
     setEditorEnabled(true);
@@ -52,7 +49,7 @@ public class CategoryGrid extends Grid {
 
       @Override
       public void buttonClick(ClickEvent event) {
-        UI.getCurrent().addWindow(new AddCategoryWindow(listener));
+        UI.getCurrent().addWindow(new AddCategoryWindow(CategoryGrid.this));
       }
     });
   }
@@ -65,8 +62,7 @@ public class CategoryGrid extends Grid {
       @Override
       public void buttonClick(ClickEvent event) {
         expenseSheet = ExpenseSheetService.moveCategoryUp(expenseSheet, getItem());
-        VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
-        listener.expenseSheetSettingsChange();
+        refreshValues();
       }
     });
   }
@@ -79,8 +75,7 @@ public class CategoryGrid extends Grid {
       @Override
       public void buttonClick(ClickEvent event) {
         expenseSheet = ExpenseSheetService.moveCategoryDown(expenseSheet, getItem());
-        VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
-        listener.expenseSheetSettingsChange();
+        refreshValues();
       }
     });
   }
@@ -105,8 +100,7 @@ public class CategoryGrid extends Grid {
           public void onClose(ConfirmDialog dialog) {
             if (dialog.isConfirmed()) {
               expenseSheet = ExpenseSheetService.removeCategory(expenseSheet, getItem());
-              VaadinSession.getCurrent().getAttribute(ExpenseMenu.class).refresh();
-              listener.expenseSheetSettingsChange();
+              refreshValues();
             }
           }
         });
@@ -114,7 +108,7 @@ public class CategoryGrid extends Grid {
     });
   }
   
-  public void filCategoryGrid() {
+  public void refreshValues() {
     getContainerDataSource().removeAllItems();
     BeanItemContainer <Category> container = new BeanItemContainer<Category>(Category.class, expenseSheet.getCategoryList());
     setContainerDataSource(container);

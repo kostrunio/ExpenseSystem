@@ -22,9 +22,9 @@ import com.vaadin.ui.themes.ValoTheme;
 public class AddCategoryWindow extends Window {
 
   private final TextField nameField = new TextField(Msg.get("newCategory.label"));
-  private ExpenseSheetSettingsChangeListener listener;
+  private SettingsChangeListener listener;
 
-  public AddCategoryWindow(ExpenseSheetSettingsChangeListener listener) {
+  public AddCategoryWindow(SettingsChangeListener listener) {
     this.listener = listener;
     setModal(true);
     setClosable(false);
@@ -77,7 +77,7 @@ public class AddCategoryWindow extends Window {
         }
         ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
         CategoryService.createCategory(expenseSheet, nameField.getValue());
-        listener.expenseSheetSettingsChange();
+        listener.refreshValues();
         close();
       }
     });

@@ -9,7 +9,7 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.service.UserLimitService;
 import pl.kostro.expensesystem.views.settingsPage.AddUserWindow;
-import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsChangeListener;
+import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -24,15 +24,16 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 
-public class UserLimitGrid extends Grid {
+public class UserLimitGrid extends Grid implements SettingsChangeListener {
   private static final long serialVersionUID = 5378642683850471251L;
 
-  private ExpenseSheetSettingsChangeListener listener;
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
   
-  public UserLimitGrid(ExpenseSheetSettingsChangeListener listener) {
-    this.listener = listener;
+  private ExpenseSheet expenseSheet;
+  
+  public UserLimitGrid() {
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setImmediate(true);
     setEditorEnabled(true);
     setEditorSaveCaption(Msg.get("settingsPage.userSave"));
@@ -46,7 +47,7 @@ public class UserLimitGrid extends Grid {
 
       @Override
       public void buttonClick(ClickEvent event) {
-        UI.getCurrent().addWindow(new AddUserWindow(listener));
+        UI.getCurrent().addWindow(new AddUserWindow(UserLimitGrid.this));
       }
     });
   }
@@ -72,7 +73,7 @@ public class UserLimitGrid extends Grid {
             if (dialog.isConfirmed()) {
               ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
               UserLimitService.removeUserLimit(expenseSheet, getItem());
-              listener.expenseSheetSettingsChange();
+              refreshValues();
             }
           }
         });
@@ -80,7 +81,8 @@ public class UserLimitGrid extends Grid {
     });
   }
   
-  public void filUserLimitGrid(List<UserLimit> userLimitList) {
+  public void refreshValues() {
+    List<UserLimit> userLimitList = expenseSheet.getUserLimitList();
     getContainerDataSource().removeAllItems();
     BeanItemContainer <UserLimit> container = new BeanItemContainer<UserLimit>(UserLimit.class, userLimitList);
     container.addNestedContainerBean("user");
@@ -100,7 +102,7 @@ public class UserLimitGrid extends Grid {
       @Override
       public void postCommit(CommitEvent commitEvent) throws CommitException {
         UserLimitService.merge(((BeanItem<UserLimit>)commitEvent.getFieldBinder().getItemDataSource()).getBean());
-        listener.expenseSheetSettingsChange();
+        refreshValues();
       }
     });
     

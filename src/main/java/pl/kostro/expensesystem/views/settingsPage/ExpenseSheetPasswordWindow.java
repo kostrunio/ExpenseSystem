@@ -26,10 +26,8 @@ import com.vaadin.ui.themes.ValoTheme;
 public class ExpenseSheetPasswordWindow extends Window {
 
   private final PasswordField nameField = new PasswordField();
-  private ExpenseSheetSettingsChangeListener listener;
 
-  public ExpenseSheetPasswordWindow(ExpenseSheetSettingsChangeListener listener) {
-    this.listener = listener;
+  public ExpenseSheetPasswordWindow() {
     setModal(true);
     setClosable(false);
     setResizable(false);
@@ -86,7 +84,6 @@ public class ExpenseSheetPasswordWindow extends Window {
             expenseSheet.setKey(null);
             return;
           }
-          listener.expenseSheetSettingsChange();
         }
         close();
       }

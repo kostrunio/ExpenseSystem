@@ -17,11 +17,11 @@ import pl.kostro.expensesystem.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.views.chart.ChartSheetView;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetPasswordWindow;
-import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsChangeListener;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsView;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -40,7 +40,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.ValoTheme;
 
-public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChangeListener {
+public class ExpenseView extends Panel implements View {
 
   private static final long serialVersionUID = -7668118300710655240L;
   private final VerticalLayout root;
@@ -50,8 +50,8 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
   private Calendar calendar = Calendar.getInstance();
   private ExpenseSheet expenseSheet;
 
-  private Panel searchPanel = new Panel();
-  private HorizontalLayout searchLayout = new HorizontalLayout();
+  private Panel searchPanel;
+  private HorizontalLayout searchLayout;
   final VerticalLayout mainView = new VerticalLayout();
   private ComboBox categoryCombo;
   private ComboBox userCombo;
@@ -91,9 +91,7 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
     titleLabel.addStyleName(ValoTheme.LABEL_NO_MARGIN);
     header.addComponent(titleLabel);
 
-    Component edit = buildEditButton();
-    Component chart = buildChartButton();
-    HorizontalLayout tools = new HorizontalLayout(edit, chart);
+    HorizontalLayout tools = new HorizontalLayout(buildEditButton(), buildChartButton());
     tools.setSpacing(true);
     tools.addStyleName("toolbar");
     header.addComponent(tools);
@@ -103,7 +101,7 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
 
   private Component buildEditButton() {
     Button result = new Button();
-    result.setIcon(VaadinIcons.EDIT);
+    result.setIcon(FontAwesome.EDIT);
     result.addStyleName("icon-edit");
     result.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     result.setDescription(Msg.get("expenseSheet.edit"));
@@ -212,6 +210,7 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
 
       @Override
       public void buttonClick(ClickEvent event) {
+        searchPanel.setVisible(false);
         mainView.removeAllComponents();
         if (yearMenu.isEnabled()) {
           yearMenu.setEnabled(false);
@@ -259,11 +258,13 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
   }
 
   private Component buildSearchLayout() {
+    searchPanel = new Panel();
     searchPanel.setVisible(false);
-    searchPanel.setContent(searchLayout);
-    searchLayout.removeAllComponents();
+    searchLayout = new HorizontalLayout();
+    searchLayout.setWidthUndefined();
     searchLayout.setMargin(true);
     searchLayout.setSpacing(true);
+    searchPanel.setContent(searchLayout);
 
     // categoryCombo
     categoryCombo = new ComboBox();
@@ -353,7 +354,7 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
           expenseSheet.getUserLimitList().get(0).getLimit();
         } catch (NullPointerException e) {
           expenseSheet.setKey(null);
-          UI.getCurrent().addWindow(new ExpenseSheetPasswordWindow(ExpenseView.this));
+          UI.getCurrent().addWindow(new ExpenseSheetPasswordWindow());
           return;
         }
       }
@@ -363,12 +364,6 @@ public class ExpenseView extends Panel implements View, ExpenseSheetSettingsChan
     root.removeAllComponents();
     mainView.removeAllComponents();
     prepareView();
-  }
-
-  @Override
-  public void expenseSheetSettingsChange() {
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    UI.getCurrent().getNavigator().navigateTo("expenseSheet/"+expenseSheet.getId());
   }
 
 }

@@ -23,9 +23,9 @@ import com.vaadin.ui.themes.ValoTheme;
 public class AddUserWindow extends Window {
 
   private final TextField nameField = new TextField(Msg.get("newUser.label"));
-  private ExpenseSheetSettingsChangeListener listener;
+  private SettingsChangeListener listener;
 
-  public AddUserWindow(ExpenseSheetSettingsChangeListener listener) {
+  public AddUserWindow(SettingsChangeListener listener) {
     this.listener = listener;
     setModal(true);
     setClosable(false);
@@ -78,7 +78,7 @@ public class AddUserWindow extends Window {
         }
         ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
         UserLimitService.createUserLimit(expenseSheet, UserService.createUser(nameField.getValue()));
-        listener.expenseSheetSettingsChange();
+        listener.refreshValues();
         close();
       }
     });
