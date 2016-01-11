@@ -37,9 +37,38 @@ public class CategoryGrid extends Grid implements SettingsChangeListener{
   public CategoryGrid() {
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setImmediate(true);
+    
+    setColumns("name", "multiplier");
+    getColumn("name").setHeaderCaption(Msg.get("settingsPage.categoryName"));
+    getColumn("multiplier").setHeaderCaption(Msg.get("settingsPage.categoryMultiplier"));
+    
     setEditorEnabled(true);
     setEditorSaveCaption(Msg.get("settingsPage.categorySave"));
     setEditorCancelCaption(Msg.get("settingsPage.categoryCancel"));
+    
+    getEditorFieldGroup().addCommitHandler(new CommitHandler() {
+      private static final long serialVersionUID = 7645963700451879164L;
+
+      @Override
+      public void preCommit(CommitEvent commitEvent) throws CommitException {}
+      
+      @SuppressWarnings("unchecked")
+      @Override
+      public void postCommit(CommitEvent commitEvent) throws CommitException {
+        CategoryService.merge(((BeanItem<Category>)commitEvent.getFieldBinder().getItemDataSource()).getBean());
+      }
+    });
+    
+    addSelectionListener(new SelectionListener() {
+      private static final long serialVersionUID = 8360036685403681818L;
+
+      @Override
+      public void select(SelectionEvent event) {
+        moveUpCategoryButton.setEnabled(getSelectedRow()!=null);
+        moveDownCategoryButton.setEnabled(getSelectedRow()!=null);
+        deleteCategoryButton.setEnabled(getSelectedRow()!=null);
+      }
+    });
   }
   
   public void setAddCategoryButton(Button button) {
@@ -61,7 +90,8 @@ public class CategoryGrid extends Grid implements SettingsChangeListener{
 
       @Override
       public void buttonClick(ClickEvent event) {
-        expenseSheet = ExpenseSheetService.moveCategoryUp(expenseSheet, getItem());
+        Category category = getItem();
+        expenseSheet = ExpenseSheetService.moveCategoryUp(expenseSheet, category);
         refreshValues();
       }
     });
@@ -74,7 +104,8 @@ public class CategoryGrid extends Grid implements SettingsChangeListener{
 
       @Override
       public void buttonClick(ClickEvent event) {
-        expenseSheet = ExpenseSheetService.moveCategoryDown(expenseSheet, getItem());
+        Category category = getItem();
+        expenseSheet = ExpenseSheetService.moveCategoryDown(expenseSheet, category);
         refreshValues();
       }
     });
@@ -113,32 +144,6 @@ public class CategoryGrid extends Grid implements SettingsChangeListener{
     BeanItemContainer <Category> container = new BeanItemContainer<Category>(Category.class, expenseSheet.getCategoryList());
     setContainerDataSource(container);
     recalculateColumnWidths();
-    setColumns("name", "multiplier");
-    getColumn("name").setHeaderCaption(Msg.get("settingsPage.categoryName"));
-    getColumn("multiplier").setHeaderCaption(Msg.get("settingsPage.categoryMultiplier"));
-    getEditorFieldGroup().addCommitHandler(new CommitHandler() {
-      private static final long serialVersionUID = 7645963700451879164L;
-
-      @Override
-      public void preCommit(CommitEvent commitEvent) throws CommitException {}
-      
-      @SuppressWarnings("unchecked")
-      @Override
-      public void postCommit(CommitEvent commitEvent) throws CommitException {
-        CategoryService.merge(((BeanItem<Category>)commitEvent.getFieldBinder().getItemDataSource()).getBean());
-      }
-    });
-    
-    addSelectionListener(new SelectionListener() {
-      private static final long serialVersionUID = 8360036685403681818L;
-
-      @Override
-      public void select(SelectionEvent event) {
-        moveUpCategoryButton.setEnabled(getSelectedRow()!=null);
-        moveDownCategoryButton.setEnabled(getSelectedRow()!=null);
-        deleteCategoryButton.setEnabled(getSelectedRow()!=null);
-      }
-    });
   }
 
   @SuppressWarnings("unchecked")

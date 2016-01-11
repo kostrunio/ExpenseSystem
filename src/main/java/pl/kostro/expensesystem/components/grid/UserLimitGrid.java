@@ -35,6 +35,34 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
   public UserLimitGrid() {
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setImmediate(true);
+    
+    setColumns("user.name", "limit", "order");
+    getColumn("user.name").setHeaderCaption(Msg.get("settingsPage.userName"));
+    getColumn("limit").setHeaderCaption(Msg.get("settingsPage.userLimit"));
+    getColumn("order").setHeaderCaption(Msg.get("settingsPage.userOrder"));
+    getEditorFieldGroup().addCommitHandler(new CommitHandler() {
+      private static final long serialVersionUID = 7645963700451879164L;
+
+      @Override
+      public void preCommit(CommitEvent commitEvent) throws CommitException {}
+      
+      @SuppressWarnings("unchecked")
+      @Override
+      public void postCommit(CommitEvent commitEvent) throws CommitException {
+        UserLimitService.merge(((BeanItem<UserLimit>)commitEvent.getFieldBinder().getItemDataSource()).getBean());
+        refreshValues();
+      }
+    });
+    
+    addSelectionListener(new SelectionListener() {
+      private static final long serialVersionUID = 8360036685403681818L;
+
+      @Override
+      public void select(SelectionEvent event) {
+        deleteUserLimitButton.setEnabled(getSelectedRow()!=null);
+      }
+    });
+    
     setEditorEnabled(true);
     setEditorSaveCaption(Msg.get("settingsPage.userSave"));
     setEditorCancelCaption(Msg.get("settingsPage.userCancel"));
@@ -82,38 +110,12 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
   }
   
   public void refreshValues() {
-    List<UserLimit> userLimitList = expenseSheet.getUserLimitList();
+    List<UserLimit> userLimitList = expenseSheet.getUserLimitListNotRealUser();
     getContainerDataSource().removeAllItems();
     BeanItemContainer <UserLimit> container = new BeanItemContainer<UserLimit>(UserLimit.class, userLimitList);
     container.addNestedContainerBean("user");
     setContainerDataSource(container);
     recalculateColumnWidths();
-    setColumns("user.name", "limit", "order");
-    getColumn("user.name").setHeaderCaption(Msg.get("settingsPage.userName"));
-    getColumn("limit").setHeaderCaption(Msg.get("settingsPage.userLimit"));
-    getColumn("order").setHeaderCaption(Msg.get("settingsPage.userOrder"));
-    getEditorFieldGroup().addCommitHandler(new CommitHandler() {
-      private static final long serialVersionUID = 7645963700451879164L;
-
-      @Override
-      public void preCommit(CommitEvent commitEvent) throws CommitException {}
-      
-      @SuppressWarnings("unchecked")
-      @Override
-      public void postCommit(CommitEvent commitEvent) throws CommitException {
-        UserLimitService.merge(((BeanItem<UserLimit>)commitEvent.getFieldBinder().getItemDataSource()).getBean());
-        refreshValues();
-      }
-    });
-    
-    addSelectionListener(new SelectionListener() {
-      private static final long serialVersionUID = 8360036685403681818L;
-
-      @Override
-      public void select(SelectionEvent event) {
-        deleteUserLimitButton.setEnabled(getSelectedRow()!=null);
-      }
-    });
   }
   
   @SuppressWarnings("unchecked")

@@ -99,8 +99,7 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
       mainLayout.addComponent(buildHeader());
     
     gridLayout = new HorizontalLayout();
-    gridLayout.setWidth("100%");
-    gridLayout.setHeight("80%");
+    gridLayout.setSizeFull();
     gridLayout.setSpacing(true);
     mainLayout.addComponent(gridLayout);
     
@@ -220,7 +219,7 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
     categoryPanel = new Panel(Msg.get("settingsPage.categoryLabel"));
     categoryPanel.setImmediate(false);
     categoryPanel.setWidth("100.0%");
-    categoryPanel.setHeightUndefined();
+    categoryPanel.setHeight("30%");
     
     // categoryLayout
     categoryLayout = buildCategoryLayout();
@@ -232,8 +231,7 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
   private VerticalLayout buildCategoryLayout() {
     // common part: create layout
     categoryLayout = new VerticalLayout();
-    categoryLayout.setWidth("100.0%");
-    categoryLayout.setHeightUndefined();
+    categoryLayout.setSizeFull();
     categoryLayout.setMargin(true);
     
     // categoryGrid
@@ -292,7 +290,7 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
     realUserPanel = new Panel(Msg.get("settingsPage.realUserLabel"));
     realUserPanel.setImmediate(false);
     realUserPanel.setWidth("100.0%");
-    realUserPanel.setHeightUndefined();
+    realUserPanel.setHeight("30%");
     
     // realUserLayout
     realUserLayout = buildRealUserLayout();
@@ -304,12 +302,12 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
   private VerticalLayout buildRealUserLayout() {
     // common part: create layout
     realUserLayout = new VerticalLayout();
-    realUserLayout.setWidth("100.0%");
-    realUserLayout.setHeightUndefined();
+    realUserLayout.setSizeFull();
     realUserLayout.setMargin(true);
     
     // realUserGrid
     realUserGrid = new RealUserLimitGrid();
+    realUserGrid.setSizeFull();
     realUserLayout.addComponent(realUserGrid);
     
     // realUserButtonLayout
@@ -347,7 +345,7 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
     // common part: create layout
     userPanel = new Panel(Msg.get("settingsPage.userLabel"));
     userPanel.setWidth("100.0%");
-    userPanel.setHeightUndefined();
+    userPanel.setHeight("30%");
     
     // userLayout
     userLayout = buildUserLayout();
@@ -359,8 +357,7 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
   private VerticalLayout buildUserLayout() {
     // common part: create layout
     userLayout = new VerticalLayout();
-    userLayout.setWidth("100.0%");
-    userLayout.setHeightUndefined();
+    userLayout.setSizeFull();
     userLayout.setMargin(true);
     
     // userGrid
