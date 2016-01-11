@@ -53,9 +53,9 @@ public class ChartSheetView extends CustomComponent {
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setCompositionRoot(buildMainLayout());
 
-    if (expenseSheet.getFilter() == null)
+//    if (expenseSheet.getFilter() == null)
       expenseSheet.setFilter(new Filter(null, null, null, null));
-    showCharts();
+    refreshFilter();
     
   }
   
@@ -165,28 +165,30 @@ public class ChartSheetView extends CustomComponent {
       @SuppressWarnings("unchecked")
       @Override
       public void buttonClick(ClickEvent event) {
-        User filterUser = null;
-        String filterFormula = null;
-        String filterComment = null;
-        List<User> users = new ArrayList<User>();
-        Set<UserLimit> setUserLimit = (Set<UserLimit>) userCombo.getValue();
-        for(Iterator<UserLimit> iter = setUserLimit.iterator(); iter.hasNext();)
-          users.add(iter.next().getUser());
-        users.add((User) filterUser);
-        
-        List<Category> categories = new ArrayList<Category>();
-        Set<Category> setCategory = (Set<Category>) categoryCombo.getValue();
-        for(Iterator<Category> iter = setCategory.iterator(); iter.hasNext();)
-          categories.add(iter.next());
-        
-        expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));
-        showCharts();
+        refreshFilter();
       }
     });
 
     searchLayout.addComponent(searchButton);
 
     return searchPanel;
+  }
+  
+  private void refreshFilter() {
+    String filterFormula = null;
+    String filterComment = null;
+    List<User> users = new ArrayList<User>();
+    Set<UserLimit> setUserLimit = (Set<UserLimit>) userCombo.getValue();
+    for(Iterator<UserLimit> iter = setUserLimit.iterator(); iter.hasNext();)
+      users.add(iter.next().getUser());
+    
+    List<Category> categories = new ArrayList<Category>();
+    Set<Category> setCategory = (Set<Category>) categoryCombo.getValue();
+    for(Iterator<Category> iter = setCategory.iterator(); iter.hasNext();)
+      categories.add(iter.next());
+    
+    expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));
+    showCharts();
   }
 
 }
