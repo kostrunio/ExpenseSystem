@@ -115,9 +115,9 @@ public class ChartSheetView extends CustomComponent {
     mainLayout.setSizeFull();
     Component chart = buildChartLayout();
     mainLayout.addComponent(chart);
-    mainLayout.setExpandRatio(chart, 1);
     Component search = buildSearchLayout();
     mainLayout.addComponent(search);
+    mainLayout.setExpandRatio(chart, 1);
 //    mainLayout.setExpandRatio(search, 1);
     // top-level component properties
     setWidth("100%");
@@ -129,7 +129,7 @@ public class ChartSheetView extends CustomComponent {
   private Component buildChartLayout() {
     chartLayout = new VerticalLayout();
     chartLayout.setHeight("100%");
-    chartLayout.setWidth("85%");
+    chartLayout.setWidth("100%");
     return chartLayout;
   }
   
