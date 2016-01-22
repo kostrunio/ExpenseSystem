@@ -57,6 +57,7 @@ public class ExpenseView extends Panel implements View {
   private ComboBox userCombo;
   private TextField formulaField;
   private ComboBox commentCombo;
+  private MenuBar yearMenu;
   private MenuBar monthMenu;
 
   public ExpenseView() {
@@ -160,6 +161,10 @@ public class ExpenseView extends Panel implements View {
         UserSummaryService.setFirstDay(calendar, selectedItem.getText());
         mainView.removeAllComponents();
         mainView.addComponent(new MonthView(calendar));
+        for (MenuItem item : yearMenu.getItems()) {
+          item.setChecked(false);
+        }
+        selectedItem.setChecked(true);
       }
     };
 
@@ -168,10 +173,10 @@ public class ExpenseView extends Panel implements View {
     menuLayout.setSpacing(true);
 
     // yearMenu
-    final MenuBar yearMenu = new MenuBar();
+    yearMenu = new MenuBar();
     yearMenu.setImmediate(false);
     for (String year : ExpenseSheetService.getYearList(expenseSheet))
-      yearMenu.addItem(year, yearCommand);
+      yearMenu.addItem(year, yearCommand).setCheckable(true);
 
     menuLayout.addComponent(yearMenu);
 
@@ -243,6 +248,10 @@ public class ExpenseView extends Panel implements View {
         mainView.removeAllComponents();
         UserSummaryService.setFirstDay(calendar, UserSummaryService.getMonthNumber(selectedItem.getText()));
         mainView.addComponent(new MonthView(calendar));
+        for (MenuItem item : monthMenu.getItems()) {
+          item.setChecked(false);
+        }
+        selectedItem.setChecked(true);
       }
 
     };
@@ -251,7 +260,7 @@ public class ExpenseView extends Panel implements View {
     monthMenu.setImmediate(false);
     for (String monthName : UserSummaryService.getMonthsName())
       if (!monthName.isEmpty())
-        monthMenu.addItem(monthName, monthCommand);
+        monthMenu.addItem(monthName, monthCommand).setCheckable(true);
     monthMenu.setSizeUndefined();
 
     return monthMenu;
