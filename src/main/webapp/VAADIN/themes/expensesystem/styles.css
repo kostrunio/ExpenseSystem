@@ -12741,7 +12741,6 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .valo-menu-responsive[width-range~="0-1100px"] .valo-menu {
-  font-size: 20px;
   border-right: none;
 }
 
@@ -12750,12 +12749,10 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .valo-menu-responsive[width-range~="0-1100px"] .valo-menu-toggle {
-  font-size: 20px;
   display: inline-block;
 }
 
 .expensesystem .valo-menu-responsive[width-range~="0-1100px"] .valo-menu-title {
-  font-size: 20px;
   position: fixed;
   z-index: 100;
   top: 0;
@@ -12894,12 +12891,7 @@ div.v-layout.v-horizontal.v-widget {
   box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
 }
 
-.expensesystem .v-ui[width-range~="0-1100px"] .v-caption {
-  font-size: 150%;
-}
-
 .expensesystem .v-ui[width-range~="0-1100px"] .login-screen {
-  font-size: 20px;
   height: auto;
   min-height: 100%;
 }
@@ -12928,7 +12920,6 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-form {
-  font-size: 20px;
   width: 80%;
   max-width: 100%;
 }
@@ -12938,7 +12929,6 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-form .v-textfield {
-  font-size: 20px;
   width: 100% !important;
 }
 
