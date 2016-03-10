@@ -12,9 +12,14 @@
 		<class>pl.kostro.expensesystem.model.UserLimit</class>
 		<properties>
 			<property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres" />
-			<property name="javax.persistence.jdbc.user" value="expensesystem" />
-			<property name="javax.persistence.jdbc.password" value="expenseSystem" />
+<!-- 
+			<property name="javax.persistence.jdbc.url" value="jdbc:postgresql://127.12.74.130:5432/new" />
+			<property name="javax.persistence.jdbc.user" value="adminkbldyne" />
+			<property name="javax.persistence.jdbc.password" value="2-9SVyTWYSSR" />
+ -->
+      <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/postgres" />
+      <property name="javax.persistence.jdbc.user" value="expensesystem" />
+      <property name="javax.persistence.jdbc.password" value="expenseSystem" />
 			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
  			<property name="hibernate.connection.provider_class" value="org.hibernate.connection.C3P0ConnectionProvider" />

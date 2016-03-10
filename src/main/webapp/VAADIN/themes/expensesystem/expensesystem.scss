@@ -1,73 +1,251 @@
+// If you edit this file you need to compile the theme. See README.md for details.
+
 // Global variable overrides. Must be declared before importing Valo.
 
-$v-app-loading-text: "Expense System Application";
-$v-background-color: #fafafa;
-$v-app-background-color: #e7ebf2;
-$v-panel-background-color: #fff;
-$v-focus-color: #3b5998;
-$v-focus-style: 0 0 1px 1px rgba($v-focus-color, .5);
-$v-border-radius: 3px;
-$v-textfield-border-radius: 0;
-$v-font-family: Helvetica, Arial, 'lucida grande', tahoma, verdana, arial, sans-serif;
-$v-font-size: 14px;
-$v-font-color: #37404E;
-$v-font-weight: 400;
-$v-link-text-decoration: none;
-$v-shadow: 0 1px 0 (v-shade 0.2);
-$v-bevel: inset 0 1px 0 v-tint;
-$v-unit-size: 30px;
-$v-gradient: v-linear 12%;
-$v-overlay-shadow: 0 3px 8px v-shade, 0 0 0 1px (v-shade 0.7);
-$v-shadow-opacity: 20%;
-$v-selection-overlay-padding-horizontal: 0;
-$v-selection-overlay-padding-vertical: 6px;
-$v-selection-item-border-radius: 0;
+// Defines the plaintext font size, weight and family. Font size affects general component sizing.
+//$v-font-size: 16px;
+//$v-font-weight: 300;
+//$v-font-family: "Open Sans", sans-serif;
+
+// Defines the border used by all components.
+//$v-border: 1px solid (v-shade 0.7);
+//$v-border-radius: 4px;
+
+// Affects the color of some component elements, e.g Button, Panel title, etc
+//$v-background-color: hsl(210, 0%, 98%);
+// Affects the color of content areas, e.g  Panel and Window content, TextField input etc
+//$v-app-background-color: $v-background-color;
+
+// Affects the visual appearance of all components
+//$v-gradient: v-linear 8%;
+//$v-bevel-depth: 30%;
+//$v-shadow-opacity: 5%;
+
+// Defines colors for indicating status (focus, success, failure)
+//$v-focus-color: valo-focus-color(); // Calculates a suitable color automatically
+//$v-friendly-color: #2c9720;
+//$v-error-indicator-color: #ed473b;
 
 // For more information, see: https://vaadin.com/book/-/page/themes.valo.html
 // Example variants can be copy/pasted from https://vaadin.com/wiki/-/wiki/Main/Valo+Examples
 
+$v-luminance-threshold: 180 !default;
+
+$editor-background-color: #3b3f42 !default;
+$valo-menu-background-color: $editor-background-color !default;
+
+$v-focus-color: rgb(96, 160, 234) !default;
+$v-error-indicator-color: #eb2977 !default;
+$v-friendly-color: rgb(54, 185, 85);
+
+$v-font-size: 15px !default;
+$v-font-weight: 400 !default;
+$v-unit-size: 32px !default;
+
+$login-info-width: 300px !default;
+$login-info-opacity: 0.7 !default;
+$login-background-color: $editor-background-color !default;
+// Get more background images from unsplash.com (remember to optimize the filesize)
+$login-background-image: "img/buildings.jpg" !default;
+
+$editor-shadow: 0 0 10px 10px rgba(0,0,0,.1) !default;
+$editor-embed-background-color: darken($editor-background-color, 5%) !default;
+$editor-raised-background-color: lighten($editor-background-color, 10%) !default;
+$editor-caption-font-color: valo-font-color($editor-background-color, 0.5) !default;
+
+$v-layout-margin-top: round($v-unit-size / 1.5) !default;
+$v-layout-margin-right: $v-layout-margin-top !default;
+$v-layout-margin-bottom: $v-layout-margin-top !default;
+$v-layout-margin-left: $v-layout-margin-top !default;
+$v-layout-spacing-vertical: round($v-unit-size / 1.8) !default;
+$v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
+
+
 @import "../valo/valo.scss";
-@import "common";
-@import "view/login.scss";
-@import "view/expenseview.scss";
+
 
 @mixin expensesystem {
   @include valo;
-  @include expense-login-view;
-  @include expense-expense-view;
+
+
+  // login screen - for small screens, see below
+  .login-screen {
+    background: $editor-background-color;
+
+    @if $login-background-image {
+      background-image: url(#{$login-background-image});
+      background-size: cover;
+      background-position: 50% 50%;
+    }
+
+    width: 100%;
+    height: 100%;
+
+    .login-form {
+      @include valo-panel-style;
+      border: none;
+      padding: $v-layout-margin;
+      @include valo-animate-in-fade($duration: 1s);
+    }
+
+    .login-information {
+      display: inline-block;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: $login-info-width;
+      height: 100%;
+      background: $v-selection-color; // For IE8
+      background-color: rgba($v-selection-color, $login-info-opacity);
+      padding: $v-layout-margin;
+      color: valo-font-color($v-selection-color, 0.9);
+      @include animation(valo-animate-in-fade 1s 1s backwards);
+
+      h1 {
+        color: inherit;
+      }
+    }
+
+    .centering-layout {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      padding-left: $login-info-width;
+
+      .v-slot {
+        height: 100%;
+      }
+    }
+  }
+
+  // Enables animation for opening CRUD editor
+  .visible {
+    @include transform(none);
+    @include box-shadow($editor-shadow);
+  }
+
+  // Style rules for smaller display sizes
+
+  // No top menu on the login view, login screen layout changes
+  .v-ui[width-range~="0-800px"] {
+
+    // More compact login screen
+    .login-screen {
+      height: auto;
+      min-height: 100%;
+
+      .login-information {
+        position: static;
+        width: 100%;
+        height: auto;
+
+        .v-label {
+          text-align: center;
+
+          h1 {
+            margin-top: .4em;
+          }
+        }
+      }
+
+      .centering-layout {
+        display: block;
+        width: 100%;
+        height: auto;
+        padding-left: 0;
+        padding-top: 60px;
+        padding-bottom: 60px;
+      }
+
+      .login-form {
+        width: 80%;
+        max-width: 100%;
+
+        table {
+          width: 100%;
+        }
+
+        .v-textfield {
+          width: 100% !important;
+        }
+
+        .v-formlayout-captioncell,
+        .v-formlayout-contentcell,
+        .v-formlayout-errorcell {
+          display: block;
+          text-align: center;
+          padding-top: 0;
+        }
+        .buttons {
+          width: 100%;
+          .v-button {
+            display: block;
+            text-align: center;
+          }
+        }
+      }
+    }
+  }
+
+  // Move logout button to the bottom of the menu on large screens
+  .v-ui[width-range~="801px-"] .valo-menu-part {
+    .user-menu {
+      position: fixed;
+      bottom: 0;
+      margin-bottom: 0;
+    }
+  }
+
+  // Hide spinner buttons from number input
+  input[type=number]::-webkit-inner-spin-button,
+  input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  
+  // For aligning in grid until #15438 is done
+  .align-right {
+    text-align: right;
+  }
 
   // Insert your own theme rules here
   .v-calendar .v-calendar-event-1-all-day {
-  	color: #37404E;
-  	background-color: #ffffff;
+    color: #37404E;
+    background-color: #ffffff;
   }
   .v-calendar .v-calendar-event-2-all-day {
-  	color: #37404E;
-  	background-color: #d7ddea;
+    color: #37404E;
+    background-color: #d7ddea;
   }
   .v-calendar .v-calendar-event-3-all-day {
-  	color: #37404E;
-  	background-color: #c4cde0;
+    color: #37404E;
+    background-color: #c4cde0;
   }
   .v-calendar .v-calendar-event-4-all-day {
-  	color: #ffffff;
-  	background-color: #b0bcd5;
+    color: #ffffff;
+    background-color: #b0bcd5;
   }
   
   .v-table-cell-content-1 {
     color: #37404E;
-  	background-color: #ffffff;
+    background-color: #ffffff;
   }
   .v-table-cell-content-2 {
     color: #37404E;
-  	background-color: #d7ddea;
+    background-color: #d7ddea;
   }
   .v-table-cell-content-3 {
     color: #37404E;
-  	background-color: #c4cde0;
+    background-color: #c4cde0;
   }
   .v-table-cell-content-0 {
     color: #ffffff;
-  	background-color: #b0bcd5;
+    background-color: #b0bcd5;
+  }
+  
+  .valo-menu-subtitle {
+    color: #787f84;
+    margin: 6px 0 6px 0px;
+    border-bottom: 1px solid #585b5e;
   }
 }

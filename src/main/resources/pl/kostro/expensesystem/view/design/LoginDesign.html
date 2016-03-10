@@ -1,0 +1,33 @@
+<!doctype html>
+<html>
+ <head> 
+  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;expensesystem&quot;}">
+  <meta charset="UTF-8" name="package-mapping" content="pl_kostro_expensesystem_components_form:pl.kostro.expensesystem.components.form">
+ </head> 
+ <body> 
+  <vaadin-css-layout style-name="login-screen" responsive size-full> 
+   <vaadin-vertical-layout primary-style-name="centering-layout" size-auto _id="centeringLayout"> 
+    <vaadin-vertical-layout style-name="login-form" size-auto margin _id="loginPanel" :middle :center> 
+     <vaadin-horizontal-layout width-full _id="buttons" :center> 
+      <vaadin-button style-name="borderless" width-full plain-text _id="signIn">
+        SIGN IN 
+      </vaadin-button> 
+      <vaadin-button style-name="borderless-colored" width-full plain-text _id="signUp" :right>
+        SIGN UP 
+      </vaadin-button> 
+     </vaadin-horizontal-layout> 
+     <pl_kostro_expensesystem_components_form-my-login-form style-name="login-form" _id="loginForm" :middle :center></pl_kostro_expensesystem_components_form-my-login-form> 
+     <pl_kostro_expensesystem_components_form-register-form style-name="login-form" visible="false" _id="registerForm" :middle :center></pl_kostro_expensesystem_components_form-register-form> 
+    </vaadin-vertical-layout> 
+   </vaadin-vertical-layout> 
+   <vaadin-css-layout style-name="login-information" _id="loginInformation"> 
+    <vaadin-label _id="loginInfoText"> 
+     <h1>New Expense System</h1> Program jest jeszcze rozwijany, dlatego zachęcam do dzielenia się swoimi spostrzeżeniami i uwagami. Wszelkie wiadomości można wysyłać na adres 
+     <a href="mailto:ExpenseSystem%20%3cexpense_system@mailplus.pl%3e?subject=uwagi">ExpenseSystem</a> 
+     <h1>Prywatność</h1> Wszystkie dane zgromadzone w arkuszu są zaszyfrowane. Nikt poza Tobą nie może ich odczytać. Dlatego 
+     <b>przechowuj hasło w bezpiecznym miejscu</b>. Nie ma też możliwości zresetowania hasła do arkusza, jeśli go zapomnisz. Lepiej tego nie rób. Wszystkie dane zostaną zaszyfrowane na zawsze. 
+    </vaadin-label> 
+   </vaadin-css-layout> 
+  </vaadin-css-layout>  
+ </body>
+</html>

@@ -12,11 +12,31 @@ import com.vaadin.ui.themes.ValoTheme;
 
 public class ShowNotification {
   
+  private static void setSuccessStyle(Notification notification) {
+    notification.setStyleName(ValoTheme.NOTIFICATION_SUCCESS + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
+    notification.setPosition(Position.BOTTOM_CENTER);
+    notification.setDelayMsec(2000);
+    notification.show(Page.getCurrent());
+  }
+  
+  private static void setWarnStyle(Notification notification) {
+    notification.setStyleName(ValoTheme.NOTIFICATION_WARNING + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
+    notification.setPosition(Position.BOTTOM_CENTER);
+    notification.setDelayMsec(2000);
+    notification.show(Page.getCurrent());
+  }
+  
   private static void setErrorStyle(Notification notification) {
     notification.setStyleName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
     notification.setPosition(Position.BOTTOM_CENTER);
     notification.setDelayMsec(5000);
     notification.show(Page.getCurrent());
+  }
+  
+  public static void registerOK() {
+    Notification notification = new Notification(Msg.get("notification.registerOK"));
+    notification.setDescription(Msg.get("notification.registerUserOK"));
+    setSuccessStyle(notification);
   }
   
   public static void registerProblem(String user) {
@@ -46,10 +66,7 @@ public class ShowNotification {
   public static void changeSummary(String userName, BigDecimal actSum, BigDecimal newSum) {
     Notification notification = new Notification(Msg.get("notification.sum"));
     notification.setDescription(MessageFormat.format(Msg.get("notification.sumDesc"), new Object[] {userName, actSum, newSum}));
-    notification.setStyleName(ValoTheme.NOTIFICATION_WARNING + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
-    notification.setPosition(Position.BOTTOM_CENTER);
-    notification.setDelayMsec(2000);
-    notification.show(Page.getCurrent());
+    setWarnStyle(notification);
   }
 
   public static void fieldEmpty(String fieldName) {

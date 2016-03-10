@@ -162,7 +162,6 @@ public class ChartSheetView extends CustomComponent {
     searchButton.addClickListener(new Button.ClickListener() {
       private static final long serialVersionUID = 1L;
 
-      @SuppressWarnings("unchecked")
       @Override
       public void buttonClick(ClickEvent event) {
         refreshFilter();
@@ -174,6 +173,7 @@ public class ChartSheetView extends CustomComponent {
     return searchPanel;
   }
   
+  @SuppressWarnings("unchecked")
   private void refreshFilter() {
     String filterFormula = null;
     String filterComment = null;
