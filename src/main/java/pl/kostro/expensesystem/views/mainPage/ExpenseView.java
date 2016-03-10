@@ -65,11 +65,9 @@ public class ExpenseView extends Panel implements View {
     addStyleName(ValoTheme.PANEL_BORDERLESS);
     setSizeFull();
     root = new VerticalLayout();
-    root.setSizeFull();
+    root.setSizeUndefined();
     root.setMargin(true);
-    root.addStyleName("expense-view");
     setContent(root);
-    Responsive.makeResponsive(root);
   }
 
   private void prepareView() {
@@ -95,7 +93,6 @@ public class ExpenseView extends Panel implements View {
 
     HorizontalLayout tools = new HorizontalLayout(buildEditButton(), buildChartButton());
     tools.setSpacing(true);
-    tools.addStyleName("toolbar");
     header.addComponent(tools);
 
     return header;
@@ -104,7 +101,6 @@ public class ExpenseView extends Panel implements View {
   private Component buildEditButton() {
     Button result = new Button();
     result.setIcon(FontAwesome.EDIT);
-    result.addStyleName("icon-edit");
     result.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     result.setDescription(Msg.get("expenseSheet.edit"));
     result.addClickListener(new ClickListener() {
@@ -122,7 +118,6 @@ public class ExpenseView extends Panel implements View {
   private Component buildChartButton() {
     Button result = new Button();
     result.setIcon(VaadinIcons.CHART);
-    result.addStyleName("icon-edit");
     result.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     result.setDescription(Msg.get("expenseSheet.chart"));
     result.addClickListener(new ClickListener() {
