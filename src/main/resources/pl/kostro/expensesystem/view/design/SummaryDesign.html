@@ -1,0 +1,17 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;expensesystem&quot;}">
+  <meta charset="UTF-8" name="package-mapping" content="pl_kostro_expensesystem_components_table:pl.kostro.expensesystem.components.table">
+ </head> 
+ <body> 
+  <vaadin-vertical-layout width-auto height-full> 
+   <vaadin-horizontal-layout spacing width-full> 
+    <vaadin-date-field _id="firstDateField"></vaadin-date-field> 
+    <vaadin-date-field _id="lastDateField" :right></vaadin-date-field> 
+   </vaadin-horizontal-layout> 
+   <pl_kostro_expensesystem_components_table-category-table _id="categoryTable" :center></pl_kostro_expensesystem_components_table-category-table> 
+   <pl_kostro_expensesystem_components_table-user-limit-table _id="userLimitTable" :center></pl_kostro_expensesystem_components_table-user-limit-table> 
+  </vaadin-vertical-layout>  
+ </body>
+</html>
