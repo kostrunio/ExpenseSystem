@@ -14,7 +14,6 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.view.LoginView;
@@ -28,8 +27,9 @@ import pl.kostro.expensesystem.view.MainView;
 @Widgetset("pl.kostro.expensesystem.ExpenseSystemWidgetset")
 public class ExpenseSystemUI extends UI {
 
-  @Override
-  protected void init(VaadinRequest vaadinRequest) {
+  private MainView mainView;
+
+  @Override protected void init(VaadinRequest vaadinRequest) {
     Locale.setDefault(vaadinRequest.getLocale());
     TimeZone.setDefault(TimeZone.getTimeZone("Europe/Warsaw"));
     Responsive.makeResponsive(this);
@@ -39,7 +39,6 @@ public class ExpenseSystemUI extends UI {
   public void updateContent() {
     RealUser user = VaadinSession.getCurrent().getAttribute(RealUser.class);
     if (user != null) {
-      addStyleName(ValoTheme.UI_WITH_MENU);
       setContent(new MainView(this));
       getNavigator().navigateTo(getNavigator().getState());
     } else {
@@ -49,6 +48,14 @@ public class ExpenseSystemUI extends UI {
 
   public void updateContent(Component component) {
     setContent(component);
+  }
+  
+  public void setMainView(MainView mainView) {
+    this.mainView = mainView;
+  }
+  
+  public MainView getMainView() {
+    return mainView;
   }
 
   @WebServlet(urlPatterns = "/*", name = "ExpenseSystemUIServlet", asyncSupported = true)

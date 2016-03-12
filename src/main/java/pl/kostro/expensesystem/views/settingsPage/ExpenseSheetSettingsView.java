@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.views.settingsPage;
 
 import java.text.MessageFormat;
 
+import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.components.grid.CategoryGrid;
@@ -11,7 +12,6 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.service.RealUserService;
-import pl.kostro.expensesystem.view.MenuView;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetEditPasswordWindow.ExpenseSheetPasswordChangeListener;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetEditWindow.ExpenseSheetEditListener;
 
@@ -204,7 +204,7 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
               if (loggedUser.getDefaultExpenseSheet() == null && loggedUser.getExpenseSheetList().size() != 0)
                 RealUserService.setDefaultExpenseSheet(loggedUser, loggedUser.getExpenseSheetList().get(0));
               VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, null);
-              VaadinSession.getCurrent().getAttribute(MenuView.class).refresh();
+              ((ExpenseSystemUI)getUI()).getMainView().refresh();
               UI.getCurrent().getNavigator().navigateTo("");
             }
           }
@@ -400,7 +400,7 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
   public void expenseSheetNameEdited(TextField nameField) {
     expenseSheet.setName(nameField.getValue());
     ExpenseSheetService.merge(expenseSheet);
-    VaadinSession.getCurrent().getAttribute(MenuView.class).refresh();
+    ((ExpenseSystemUI)getUI()).getMainView().refresh();
     titleLabel.setValue(nameField.getValue());
   }
 

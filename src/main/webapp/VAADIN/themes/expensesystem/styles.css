@@ -1,3 +1,7 @@
+#responsive-application-template.valo-menu-responsive .valo-menu-part .valo-menu-item span.v-icon {
+	opacity: 1;
+}
+
 /**
  * Checks if a list contains a certain value.
  * 
@@ -1583,6 +1587,17 @@ div.v-layout.v-horizontal.v-widget {
 	margin-left: -22px;
 	background: #fff url(../valo/shared/img/spinner.gif) no-repeat 50%;
 	border-radius: 4px;
+}
+
+.expensesystem .v-app-loading:after {
+	position: fixed;
+	z-index: 100;
+	top: 45%;
+	padding-top: 44px;
+	text-align: center;
+	left: 0;
+	right: 0;
+	content: "Expense System Application";
 }
 
 .expensesystem .v-loading-indicator {
@@ -12902,6 +12917,11 @@ div.v-layout.v-horizontal.v-widget {
 	color: inherit;
 }
 
+.expensesystem .logout-menu {
+	position: fixed;
+	bottom: 0;
+}
+
 .expensesystem .v-ui[width-range~="0-1100px"] .login-screen {
 	height: auto;
 	min-height: 100%;
@@ -12949,6 +12969,7 @@ div.v-layout.v-horizontal.v-widget {
 	position: static;
 	width: 100%;
 	height: auto;
+	padding: 21px 21px 21px 21px;
 }
 
 .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-information .v-label {
@@ -12957,11 +12978,6 @@ div.v-layout.v-horizontal.v-widget {
 
 .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-information .v-label h1 {
 	margin-top: 0.4em;
-}
-.expensesystem .v-ui[width-range~="1101px-"] .valo-menu-part .user-menu {
-  position: fixed;
-  bottom: 0;
-  margin-bottom: 0;
 }
 
 .expensesystem input[type=number]::-webkit-inner-spin-button, .expensesystem input[type=number]::-webkit-outer-spin-button {

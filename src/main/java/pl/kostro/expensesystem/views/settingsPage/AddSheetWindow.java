@@ -1,11 +1,11 @@
 package pl.kostro.expensesystem.views.settingsPage;
 
+import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
-import pl.kostro.expensesystem.view.MenuView;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
@@ -90,7 +90,7 @@ public class AddSheetWindow extends Window {
         RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
         ExpenseSheet expenseSheet = ExpenseSheetService.createExpenseSheet(loggedUser, nameField.getValue(), passwordField.getValue());
         VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
-        VaadinSession.getCurrent().getAttribute(MenuView.class).refresh();
+        ((ExpenseSystemUI)getUI()).getMainView().refresh();
         close();
       }
     });

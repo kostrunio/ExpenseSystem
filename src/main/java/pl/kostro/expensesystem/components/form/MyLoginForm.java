@@ -20,6 +20,8 @@ import com.vaadin.ui.themes.ValoTheme;
 @SuppressWarnings("serial")
 public class MyLoginForm extends LoginForm {
 
+  private Button loginButton;
+
   protected String getUserNameFieldCaption() {
     return Msg.get("loginPage.userName");
   }
@@ -34,6 +36,7 @@ public class MyLoginForm extends LoginForm {
 
   @Override
   protected Component createContent(TextField userNameField, PasswordField passwordField, Button loginButton) {
+    this.loginButton = loginButton;
     FormLayout loginForm = new FormLayout();
 
     userNameField.setWidth(15, Unit.EM);
@@ -61,12 +64,14 @@ public class MyLoginForm extends LoginForm {
       loggedUser = RealUserService.getUserData(userName, password);
       if (loggedUser == null) {
         ShowNotification.logonProblem();
+        loginButton.setEnabled(true);
       } else {
         VaadinSession.getCurrent().setAttribute(RealUser.class, loggedUser);
       }
       ((ExpenseSystemUI) getUI()).updateContent();
     } catch (Exception e) {
       ShowNotification.dbProblem(e.getMessage());
+      loginButton.setEnabled(true);
     }
   }
 

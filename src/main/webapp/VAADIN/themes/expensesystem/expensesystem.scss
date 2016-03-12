@@ -28,6 +28,7 @@
 
 // For more information, see: https://vaadin.com/book/-/page/themes.valo.html
 // Example variants can be copy/pasted from https://vaadin.com/wiki/-/wiki/Main/Valo+Examples
+$v-app-loading-text: "Expense System Application";
 
 $v-luminance-threshold: 180 !default;
 
@@ -140,6 +141,11 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
     }
   }
   
+  .logout-menu {
+    position: fixed;
+    bottom: 0;
+  }
+  
   // No top menu on the login view, login screen layout changes
   .v-ui[width-range~="0-1100px"] {
     
@@ -201,6 +207,24 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
           }
         }
       }
+    }
+    
+    .logout-menu {
+      @include valo-menu-item-style;
+    }
+  }
+  
+  // No top menu on the login view, login screen layout changes
+  .v-ui[width-range~="0-800px"] {
+    .logout-menu {
+        position: fixed;
+        z-index: 100;
+        top: 0;
+        right: 0;
+        margin: 0;
+        padding: 0;
+        height: 32px;
+        color: #f2f6fa;
     }
   }
 }
