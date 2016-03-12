@@ -191,6 +191,7 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
         position: static;
         width: 100%;
         height: auto;
+        padding: $v-layout-margin;
 
         .v-label {
           text-align: center;
