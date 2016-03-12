@@ -12828,46 +12828,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .login-screen {
-  background: #3b3f42;
+  width: 100%;
+  height: 100%;
   background-image: url(img/buildings.jpg);
   background-size: cover;
   background-position: 50% 50%;
-  width: 100%;
-  height: 100%;
-}
-
-.expensesystem .login-screen .login-form {
-  background: white;
-  color: #474747;
-  border-radius: 4px;
-  border: 1px solid #d5d5d5;
-  -webkit-box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
-  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
-  border: none;
-  padding: $v-layout-margin;
-  -webkit-animation: valo-animate-in-fade 1s backwards;
-  -moz-animation: valo-animate-in-fade 1s backwards;
-  animation: valo-animate-in-fade 1s backwards;
-}
-
-.expensesystem .login-screen .login-information {
-  display: inline-block;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 300px;
-  height: 100%;
-  background: #60a0ea;
-  background-color: rgba(96, 160, 234, 0.7);
-  padding: $v-layout-margin;
-  color: #f2f6fa;
-  -webkit-animation: valo-animate-in-fade 1s 1s backwards;
-  -moz-animation: valo-animate-in-fade 1s 1s backwards;
-  animation: valo-animate-in-fade 1s 1s backwards;
-}
-
-.expensesystem .login-screen .login-information h1 {
-  color: inherit;
 }
 
 .expensesystem .login-screen .centering-layout {
@@ -12881,19 +12846,103 @@ div.v-layout.v-horizontal.v-widget {
   height: 100%;
 }
 
-.expensesystem .visible {
-  -webkit-transform: none;
-  -moz-transform: none;
-  -ms-transform: none;
-  -o-transform: none;
-  transform: none;
-  -webkit-box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.1);
+.expensesystem .login-screen .login-panel {
+  background: white;
+  opacity: 0.9;
+  padding: 21px 21px 21px 21px;
+  border-radius: 10px;
+  -webkit-animation: valo-animate-in-slide-up 800ms 10ms backwards, valo-animate-in-fade 600ms 100ms backwards;
+  -moz-animation: valo-animate-in-slide-up 800ms 10ms backwards, valo-animate-in-fade 600ms 100ms backwards;
+  animation: valo-animate-in-slide-up 800ms 10ms backwards, valo-animate-in-fade 600ms 100ms backwards;
+}
+
+.expensesystem .login-screen .login-panel .borderless-colored {
+  opacity: 1;
+}
+
+.expensesystem .login-screen .login-panel .borderless {
+  opacity: 0.7;
+}
+
+.expensesystem .login-screen .login-panel .login-form {
+  padding: 21px 21px 21px 21px;
+}
+
+.expensesystem .login-screen .login-panel .login-form .buttons {
+  width: 100%;
+}
+
+.expensesystem .login-screen .login-panel .login-form .buttons .v-button {
+  width: 100% !important;
+}
+
+.expensesystem .login-screen .login-information {
+  display: inline-block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 300px;
+  height: 100%;
+  background: #60a0ea;
+  background-color: rgba(96, 160, 234, 0.7);
+  padding: 21px 21px 21px 21px;
+  color: #f2f6fa;
+  -webkit-animation: valo-animate-in-fade 1s 1s backwards;
+  -moz-animation: valo-animate-in-fade 1s 1s backwards;
+  animation: valo-animate-in-fade 1s 1s backwards;
+}
+
+.expensesystem .login-screen .login-information h1 {
+  color: inherit;
+  margin-top: 1em;
+  margin-bottom: 0em;
+}
+
+.expensesystem .login-screen .login-information a {
+  color: inherit;
 }
 
 .expensesystem .v-ui[width-range~="0-1100px"] .login-screen {
   height: auto;
   min-height: 100%;
+  font-size: 30px;
+}
+
+.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .v-caption {
+  font-size: 28px;
+}
+
+.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .v-button, .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .v-textfield {
+  height: 64px;
+}
+
+.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .centering-layout {
+  display: block;
+  width: 100%;
+  height: auto;
+  padding-left: 0;
+  padding-top: 60px;
+  padding-bottom: 60px;
+}
+
+.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel {
+  width: 80%;
+  max-width: 100%;
+}
+
+.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .login-form {
+  width: 80%;
+  max-width: 100%;
+}
+
+.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .login-form .v-textfield {
+  width: 100% !important;
+}
+
+.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .login-form .v-formlayout-captioncell, .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .login-form .v-formlayout-contentcell, .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .login-form .v-formlayout-errorcell {
+  display: block;
+  text-align: center;
+  padding-top: 0;
 }
 
 .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-information {
@@ -12908,43 +12957,6 @@ div.v-layout.v-horizontal.v-widget {
 
 .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-information .v-label h1 {
   margin-top: 0.4em;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .centering-layout {
-  display: block;
-  width: 100%;
-  height: auto;
-  padding-left: 0;
-  padding-top: 60px;
-  padding-bottom: 60px;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-form {
-  width: 80%;
-  max-width: 100%;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-form table {
-  width: 100%;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-form .v-textfield {
-  width: 100% !important;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-form .v-formlayout-captioncell, .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-form .v-formlayout-contentcell, .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-form .v-formlayout-errorcell {
-  display: block;
-  text-align: center;
-  padding-top: 0;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-form .buttons {
-  width: 100%;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-form .buttons .v-button {
-  display: block;
-  text-align: center;
 }
 
 .expensesystem .v-ui[width-range~="1101px-"] .valo-menu-part .user-menu {

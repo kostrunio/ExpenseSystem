@@ -60,34 +60,61 @@ $v-layout-margin-left: $v-layout-margin-top !default;
 $v-layout-spacing-vertical: round($v-unit-size / 1.8) !default;
 $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
 
-
 @import "../valo/valo.scss";
 
 
 @mixin expensesystem {
   @include valo;
 
-
   // login screen - for small screens, see below
   .login-screen {
-    background: $editor-background-color;
-
+    width: 100%;
+    height: 100%;
+  
     @if $login-background-image {
       background-image: url(#{$login-background-image});
       background-size: cover;
       background-position: 50% 50%;
     }
-
-    width: 100%;
-    height: 100%;
-
-    .login-form {
-      @include valo-panel-style;
-      border: none;
-      padding: $v-layout-margin;
-      @include valo-animate-in-fade($duration: 1s);
+    
+    .centering-layout {
+      display: inline-block;
+      width: 100%;
+      height: 100%;
+      padding-left: $login-info-width;
+      
+      .v-slot {
+        height: 100%;
+      }
     }
-
+    
+    .login-panel {
+      background: $v-panel-background-color;
+      opacity: 0.9;
+      padding: $v-layout-margin;
+      border-radius: 10px;
+      @include animation(valo-animate-in-slide-up 800ms 10ms backwards, valo-animate-in-fade 600ms 100ms backwards);
+      
+      .borderless-colored {
+        opacity: 1;
+      }
+      
+      .borderless {
+        opacity: 0.7;
+      }
+      
+      .login-form {
+        padding: $v-layout-margin;
+        
+        .buttons {
+          width: 100%;
+          .v-button {
+            width: 100% !important;
+          }
+        }
+      }
+    }
+    
     .login-information {
       display: inline-block;
       position: absolute;
@@ -100,40 +127,66 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
       padding: $v-layout-margin;
       color: valo-font-color($v-selection-color, 0.9);
       @include animation(valo-animate-in-fade 1s 1s backwards);
-
+      
       h1 {
+        color: inherit;
+        margin-top: 1.0em;
+        margin-bottom: 0em;
+      }
+      
+      a {
         color: inherit;
       }
     }
-
-    .centering-layout {
-      display: inline-block;
-      width: 100%;
-      height: 100%;
-      padding-left: $login-info-width;
-
-      .v-slot {
-        height: 100%;
-      }
-    }
   }
-
-  // Enables animation for opening CRUD editor
-  .visible {
-    @include transform(none);
-    @include box-shadow($editor-shadow);
-  }
-
-  // Style rules for smaller display sizes
-
+  
   // No top menu on the login view, login screen layout changes
-  .v-ui[width-range~="0-800px"] {
-
+  .v-ui[width-range~="0-1100px"] {
+    
     // More compact login screen
     .login-screen {
       height: auto;
       min-height: 100%;
-
+      
+      font-size: 30px;
+      
+      .v-caption {
+        font-size: 28px;
+      }
+      
+      .v-button, .v-textfield {
+        height: 64px;
+      }
+      
+      .centering-layout {
+        display: block;
+        width: 100%;
+        height: auto;
+        padding-left: 0;
+        padding-top: 60px;
+        padding-bottom: 60px;
+      }
+      
+      .login-panel {
+        width: 80%;
+        max-width: 100%;
+        
+        .login-form {
+          width: 80%;
+          max-width: 100%;
+          
+          .v-textfield {
+            width: 100% !important;
+          }
+          
+          .v-formlayout-captioncell, .v-formlayout-contentcell, .v-formlayout-errorcell {
+            display: block;
+            text-align: center;
+            padding-top: 0;
+          }
+        }
+      }
+      
       .login-information {
         position: static;
         width: 100%;
@@ -147,105 +200,6 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
           }
         }
       }
-
-      .centering-layout {
-        display: block;
-        width: 100%;
-        height: auto;
-        padding-left: 0;
-        padding-top: 60px;
-        padding-bottom: 60px;
-      }
-
-      .login-form {
-        width: 80%;
-        max-width: 100%;
-
-        table {
-          width: 100%;
-        }
-
-        .v-textfield {
-          width: 100% !important;
-        }
-
-        .v-formlayout-captioncell,
-        .v-formlayout-contentcell,
-        .v-formlayout-errorcell {
-          display: block;
-          text-align: center;
-          padding-top: 0;
-        }
-        .buttons {
-          width: 100%;
-          .v-button {
-            display: block;
-            text-align: center;
-          }
-        }
-      }
     }
-  }
-
-  // Move logout button to the bottom of the menu on large screens
-  .v-ui[width-range~="801px-"] .valo-menu-part {
-    .user-menu {
-      position: fixed;
-      bottom: 0;
-      margin-bottom: 0;
-    }
-  }
-
-  // Hide spinner buttons from number input
-  input[type=number]::-webkit-inner-spin-button,
-  input[type=number]::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  
-  // For aligning in grid until #15438 is done
-  .align-right {
-    text-align: right;
-  }
-
-  // Insert your own theme rules here
-  .v-calendar .v-calendar-event-1-all-day {
-    color: #37404E;
-    background-color: #ffffff;
-  }
-  .v-calendar .v-calendar-event-2-all-day {
-    color: #37404E;
-    background-color: #d7ddea;
-  }
-  .v-calendar .v-calendar-event-3-all-day {
-    color: #37404E;
-    background-color: #c4cde0;
-  }
-  .v-calendar .v-calendar-event-4-all-day {
-    color: #ffffff;
-    background-color: #b0bcd5;
-  }
-  
-  .v-table-cell-content-1 {
-    color: #37404E;
-    background-color: #ffffff;
-  }
-  .v-table-cell-content-2 {
-    color: #37404E;
-    background-color: #d7ddea;
-  }
-  .v-table-cell-content-3 {
-    color: #37404E;
-    background-color: #c4cde0;
-  }
-  .v-table-cell-content-0 {
-    color: #ffffff;
-    background-color: #b0bcd5;
-  }
-  
-  .valo-menu-subtitle {
-    color: #787f84;
-    margin: 6px 0 6px 0px;
-    border-bottom: 1px solid #585b5e;
   }
 }

@@ -41,20 +41,20 @@ public class LoginView extends LoginDesign {
   }
 
   private void signInEnable() {
-    signIn.removeStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-    signIn.setStyleName(ValoTheme.BUTTON_BORDERLESS);
+    signIn.removeStyleName(ValoTheme.BUTTON_BORDERLESS);
+    signIn.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
 
     signUp.setEnabled(true);
-    signUp.removeStyleName(ValoTheme.BUTTON_BORDERLESS);
-    signUp.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+    signUp.removeStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+    signUp.setStyleName(ValoTheme.BUTTON_BORDERLESS);
   }
 
   private void signUpEnable() {
-    signUp.removeStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-    signUp.setStyleName(ValoTheme.BUTTON_BORDERLESS);
+    signUp.removeStyleName(ValoTheme.BUTTON_BORDERLESS);
+    signUp.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
 
     signIn.setEnabled(true);
-    signIn.removeStyleName(ValoTheme.BUTTON_BORDERLESS);
-    signIn.setStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+    signIn.removeStyleName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+    signIn.setStyleName(ValoTheme.BUTTON_BORDERLESS);
   }
 }
