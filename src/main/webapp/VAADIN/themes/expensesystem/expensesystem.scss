@@ -148,14 +148,14 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
       height: auto;
       min-height: 100%;
       
-      font-size: 30px;
+      font-size: 45px;
       
       .v-caption {
-        font-size: 28px;
+        font-size: 42px;
       }
       
       .v-button, .v-textfield {
-        height: 64px;
+        height: 96px;
       }
       
       .centering-layout {
@@ -168,11 +168,11 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
       }
       
       .login-panel {
-        width: 80%;
+        width: 100%;
         max-width: 100%;
         
         .login-form {
-          width: 80%;
+          width: 95%;
           max-width: 100%;
           
           .v-textfield {
