@@ -67,8 +67,8 @@ public class MyLoginForm extends LoginForm {
         loginButton.setEnabled(true);
       } else {
         VaadinSession.getCurrent().setAttribute(RealUser.class, loggedUser);
+        ((ExpenseSystemUI) getUI()).updateContent();
       }
-      ((ExpenseSystemUI) getUI()).updateContent();
     } catch (Exception e) {
       ShowNotification.dbProblem(e.getMessage());
       loginButton.setEnabled(true);
