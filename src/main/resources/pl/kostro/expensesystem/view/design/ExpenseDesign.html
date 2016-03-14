@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+ <head> 
+  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;expensesystem&quot;}">
+  <meta charset="UTF-8" name="package-mapping" content="pl_kostro_expensesystem_components_calendar:pl.kostro.expensesystem.components.calendar">
+ </head> 
+ <body> 
+  <vaadin-css-layout style-name="root-layout dashboard-view-template-vaadin" responsive width-full _id="root_layout"> 
+   <vaadin-vertical-layout spacing size-auto _id="root"> 
+    <vaadin-horizontal-layout spacing style-name="header-label" width-full> 
+     <vaadin-label size-auto plain-text _id="titleLabel">
+       WYDATKI 
+     </vaadin-label> 
+     <vaadin-horizontal-layout spacing :expand> 
+      <vaadin-button icon="fonticon://FontAwesome/f044" style-name="icon-only borderless" plain-text _id="editButton">
+        edit 
+      </vaadin-button> 
+      <vaadin-button icon="fonticon://FontAwesome/f201" style-name="icon-only borderless" plain-text _id="chartButton">
+        chart 
+      </vaadin-button> 
+     </vaadin-horizontal-layout> 
+    </vaadin-horizontal-layout> 
+    <vaadin-vertical-layout spacing size-auto _id="expensePanels" :expand> 
+     <vaadin-horizontal-layout spacing _id="menuLayout"> 
+      <vaadin-menu-bar plain-text _id="yearMenu"></vaadin-menu-bar> 
+      <vaadin-horizontal-layout spacing :expand> 
+       <vaadin-button icon="fonticon://FontAwesome/f0b0" style-name="icon-only borderless" plain-text _id="filterButton">
+         filter 
+       </vaadin-button> 
+       <vaadin-button icon="fonticon://FontAwesome/f0ce" style-name="icon-only borderless" plain-text _id="findButton">
+         find 
+       </vaadin-button> 
+      </vaadin-horizontal-layout> 
+     </vaadin-horizontal-layout> 
+     <vaadin-horizontal-layout spacing width-full> 
+      <vaadin-menu-bar width-full plain-text _id="monthMenu"></vaadin-menu-bar> 
+     </vaadin-horizontal-layout> 
+     <vaadin-panel style-name="header-label" _id="searchPanel"> 
+      <vaadin-css-layout width-full> 
+       <vaadin-combo-box item-caption-mode="id" caption="category" _id="categoryCombo"> 
+        <option>Option 1</option> 
+        <option>Option 2</option> 
+        <option>Option 3</option> 
+       </vaadin-combo-box> 
+       <vaadin-combo-box item-caption-mode="id" caption="user" _id="userCombo"> 
+        <option>Option 1</option> 
+        <option>Option 2</option> 
+        <option>Option 3</option> 
+       </vaadin-combo-box> 
+       <vaadin-text-field caption="formula" _id="formulaField"></vaadin-text-field> 
+       <vaadin-combo-box item-caption-mode="id" caption="comment" _id="commentCombo"> 
+        <option>Option 1</option> 
+        <option>Option 2</option> 
+        <option>Option 3</option> 
+       </vaadin-combo-box> 
+       <vaadin-button icon="fonticon://FontAwesome/f002" style-name="icon-only borderless" plain-text _id="searchButton">
+         search 
+       </vaadin-button> 
+      </vaadin-css-layout> 
+     </vaadin-panel> 
+     <vaadin-vertical-layout size-auto _id="mainView"> 
+      <vaadin-horizontal-layout spacing width-full _id="navigationLayout" :middle :center> 
+       <vaadin-button icon="fonticon://FontAwesome/f053" style-name="icon-only" plain-text _id="previousMonthButton" :middle :right>
+         prev 
+       </vaadin-button> 
+       <vaadin-date-field resolution="month" width="200px" _id="thisMonthField" :middle :center></vaadin-date-field> 
+       <vaadin-button icon="fonticon://FontAwesome/f054" style-name="icon-only" plain-text _id="nextMonthButton" :middle>
+         next 
+       </vaadin-button> 
+      </vaadin-horizontal-layout> 
+     </vaadin-vertical-layout> 
+    </vaadin-vertical-layout> 
+   </vaadin-vertical-layout> 
+  </vaadin-css-layout>  
+ </body>
+</html>

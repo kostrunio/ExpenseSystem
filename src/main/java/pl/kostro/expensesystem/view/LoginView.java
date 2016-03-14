@@ -12,7 +12,6 @@ public class LoginView extends LoginDesign {
 
   public LoginView() {
     setCaption();
-    signIn.setEnabled(false);
     signIn.setDisableOnClick(true);
     signUp.setDisableOnClick(true);
 
