@@ -28,6 +28,7 @@ import pl.kostro.expensesystem.views.settingsPage.AddSheetWindow;
 @SuppressWarnings("serial")
 public class MainView extends MainDesign {
 
+  private static final String VALO_MENU_SELECTED = "selected";
   private static final String VALO_MENU_VISIBLE = "valo-menu-visible";
 
   private Map<String, Button> viewButtons = new HashMap<String, Button>();
@@ -121,11 +122,11 @@ public class MainView extends MainDesign {
 
   public void setActiveView(String viewName) {
     for (Button button : viewButtons.values()) {
-      button.removeStyleName("selected");
+      button.removeStyleName(VALO_MENU_SELECTED);
     }
     Button selected = viewButtons.get(viewName);
     if (selected != null) {
-      selected.addStyleName("selected");
+      selected.addStyleName(VALO_MENU_SELECTED);
     }
     menuPart.removeStyleName(VALO_MENU_VISIBLE);
   }
