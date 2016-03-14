@@ -13160,50 +13160,47 @@ div.v-layout.v-horizontal.v-widget {
 	margin-top: 0.4em;
 }
 
-.expensesystem .logout-menu {
-	position: fixed;
-	bottom: 0;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part {
-	min-width: 192px;
-	max-width: 288px;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-title {
-	font-size: 33px;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .v-menubar-user-menu {
-	font-size: 33px;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .v-menubar-user-menu img.v-icon {
-	width: 75px;
-	height: 75px;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-item {
-	font-size: 72px;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-item [class*="caption"] {
-	font-size: 24px;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part [class*="subtitle"] {
-	font-size: 24px;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="0-800px"] {
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"], .expensesystem .valo-menu-responsive[width-range~="0-800px"] {
 	padding-top: 96px;
 }
 
-.expensesystem .valo-menu-responsive[width-range~="0-800px"] .v-loading-indicator {
-	top: 96px;
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part {
+	min-width: 0;
 }
 
-.expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-title {
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-item, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part .valo-menu-item {
+	font-size: 48px;
+	text-align: left;
+}
+
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-item [class*="caption"], .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part .valo-menu-item [class*="caption"] {
+	display: inline;
+	font-size: 36px;
+}
+
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part [class*="subtitle"], .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part [class*="subtitle"] {
+	margin: 8px 0 0;
+	padding: 6px 21px 6px 8px;
+	line-height: 1;
+	border: none;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	font-size: 36px;
+	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+}
+
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .v-menubar-menuitem, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part .v-menubar-menuitem {
+	line-height: 93px;
+}
+
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part img.v-icon, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part img.v-icon {
+	margin: 0 15px 0 0;
+	width: 48px;
+	height: 48px;
+	border-radius: 24px;
+}
+
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-title, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part .valo-menu-title {
 	font-size: 36px;
 	position: fixed;
 	z-index: 100;
@@ -13216,7 +13213,24 @@ div.v-layout.v-horizontal.v-widget {
 	-webkit-backface-visibility: hidden;
 }
 
-.expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu .v-menubar-user-menu {
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .v-loading-indicator, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .v-loading-indicator {
+	top: 96px;
+}
+
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-title, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-title {
+	font-size: 36px;
+	position: fixed;
+	z-index: 100;
+	top: 0;
+	left: 0;
+	right: 0;
+	height: 96px !important;
+	padding-top: 0;
+	padding-bottom: 0;
+	-webkit-backface-visibility: hidden;
+}
+
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu .v-menubar-user-menu, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu .v-menubar-user-menu {
 	position: fixed;
 	z-index: 100;
 	top: 0;
@@ -13227,18 +13241,8 @@ div.v-layout.v-horizontal.v-widget {
 	max-width: 30%;
 }
 
-.expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu .v-menubar-user-menu .v-menubar-menuitem {
-	line-height: 93px;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu .v-menubar-user-menu img.v-icon {
-	margin: 0 15px 0 0;
-	width: 48px;
-	height: 48px;
-	border-radius: 24px;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menuitems {
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menuitems, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menuitems {
+	background-color: #3b3f42;
 	height: 100%;
 	font-size: 42px;
 	line-height: 78px;
@@ -13260,7 +13264,7 @@ div.v-layout.v-horizontal.v-widget {
 	transition: all 300ms;
 }
 
-.expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-visible .valo-menuitems {
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-visible .valo-menuitems, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-visible .valo-menuitems {
 	-webkit-transform: translatex(0%);
 	-moz-transform: translatex(0%);
 	-ms-transform: translatex(0%);
@@ -13268,93 +13272,11 @@ div.v-layout.v-horizontal.v-widget {
 	transform: translatex(0%);
 }
 
-.expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-toggle {
+.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-toggle, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-toggle {
+	display: inline-block;
 	height: 64px;
 	font-size: 24px;
 	margin-top: 15px;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .logout-menu {
-	outline: none;
-	font-weight: 500;
-	padding: 0 32px 0 16px;
-	cursor: pointer;
-	position: relative;
-	overflow: hidden;
-	text-shadow: 0 2px 0 rgba(0, 0, 0, 0.05);
-	-webkit-transition: background-color 300ms, color 60ms;
-	-moz-transition: background-color 300ms, color 60ms;
-	transition: background-color 300ms, color 60ms;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .logout-menu [class*="caption"] {
-	vertical-align: middle;
-	display: inline-block;
-	width: 90%;
-	max-width: 15em;
-	padding-right: 16px;
-	text-overflow: ellipsis;
-	overflow: hidden;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .logout-menu [class*="badge"] {
-	color: #60a0ea;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .logout-menu.selected {
-	background: #34373a;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .logout-menu.selected .v-icon {
-	color: #60a0ea;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .logout-menu.selected [class*="badge"] {
-	background-color: #60a0ea;
-	background-image: -webkit-linear-gradient(top, #67a7eb 2%, #5491de 98%);
-	background-image: linear-gradient(to bottom,#67a7eb 2%, #5491de 98%);
-	color: #d9e5f2;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .logout-menu:focus, .expensesystem .v-ui[width-range~="0-1100px"] .logout-menu:hover, .expensesystem .v-ui[width-range~="0-1100px"] .logout-menu.selected {
-	color: white;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .logout-menu span.v-icon {
-	min-width: 1em;
-	margin-right: 16px;
-	text-align: center;
-	vertical-align: middle;
-	-webkit-mask-image: -webkit-gradient(linear, left top, left bottom, from(black), to(rgba(0, 0, 0, 0.75)));
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .logout-menu span.v-icon  + span {
-	margin-left: 0;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .logout-menu [class*="badge"] {
-	background-color: #474c4f;
-	-webkit-transition: background-color 300ms;
-	-moz-transition: background-color 300ms;
-	transition: background-color 300ms;
-	line-height: 1;
-	padding: 4px 5px;
-	min-width: 10px;
-	text-align: center;
-	top: 2px;
-	border-radius: 4px;
-}
-
-.expensesystem .v-ui[width-range~="0-800px"] .logout-menu {
-	position: fixed;
-	z-index: 100;
-	top: 30px;
-	right: 0;
-	margin: 0;
-	padding: 0;
-	height: 36px;
-	font-size: 24px;
-	color: #f2f6fa;
 }
 
 .expensesystem .v-calendar .v-calendar-event-1-all-day, .expensesystem .v-table-cell-content-1 {

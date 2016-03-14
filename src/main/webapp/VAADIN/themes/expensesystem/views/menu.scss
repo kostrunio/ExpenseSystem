@@ -1,43 +1,57 @@
 @mixin menu {
-  .logout-menu {
-    position: fixed;
-    bottom: 0;
-  }
-  
-  .valo-menu-responsive[width-range~="801px-1100px"] {
+
+  .valo-menu-responsive[width-range~="801px-1100px"],
+  .valo-menu-responsive[width-range~="0-800px"] {
+    padding-top: 96px;
+    
     .valo-menu-part {
-      min-width: 192px;
-      max-width: 288px;
-      
-      .valo-menu-title {
-        font-size: 33px;
-      }
-      
-      .v-menubar-user-menu {
-        font-size: 33px;
-        
-        img.v-icon {
-          width: 75px;
-          height: 75px;
-        }
-      }
+      min-width: 0;
       
       .valo-menu-item {
-        font-size: 72px;
+        font-size: 48px;
+        text-align: left;
         
         [class*="caption"] {
-          font-size: 24px;
+          display: inline;
+          font-size: 36px;
         }
       }
       
       [class*="subtitle"] {
-        font-size: 24px;
+        margin: 8px 0 0;
+        padding: 6px 21px 6px 8px;
+        line-height: 1;
+        border: none;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        font-size: 36px;
+        box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
+      }
+      
+      .v-menubar-menuitem {
+        line-height: 93px;
+      }
+      
+      img.v-icon {
+        margin: 0 15px 0 0;
+        width: 48px;
+        height: 48px;
+        border-radius: 24px;
+      }
+      
+      .valo-menu-title {
+        font-size: 36px;
+        position: fixed;
+        z-index: 100;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 96px !important;
+        padding-top: 0;
+        padding-bottom: 0;
+        -webkit-backface-visibility: hidden;
       }
     }
-  }
-
-  .valo-menu-responsive[width-range~="0-800px"] {
-    padding-top: 96px;
     
     .v-loading-indicator {
       top: 96px;
@@ -66,21 +80,11 @@
         padding: 0;
         height: 96px;
         max-width: 30%;
-        
-        .v-menubar-menuitem {
-          line-height: 93px;
-        }
-        
-        img.v-icon {
-          margin: 0 15px 0 0;
-          width: 48px;
-          height: 48px;
-          border-radius: 24px;
-        }
       }
     }
     
     .valo-menuitems {
+      background-color: #3b3f42;
       height: 100%;
       font-size: 42px;
       line-height: 78px;
@@ -113,25 +117,10 @@
     }
     
     .valo-menu-toggle {
+      display: inline-block;
       height: 64px;
       font-size: 24px;
       margin-top: 15px;
     }
-  }
-
-  .v-ui[width-range~="0-1100px"] .logout-menu {
-    @include valo-menu-item-style;
-  }
-  
-  .v-ui[width-range~="0-800px"] .logout-menu {
-      position: fixed;
-      z-index: 100;
-      top: 30px;
-      right: 0;
-      margin: 0;
-      padding: 0;
-      height: 36px;
-      font-size: 24px;
-      color: #f2f6fa;
   }
 }
