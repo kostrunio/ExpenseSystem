@@ -6,6 +6,7 @@ import java.util.TimeZone;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
+import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.Responsive;
@@ -23,6 +24,7 @@ import pl.kostro.expensesystem.view.MainView;
  *
  */
 @SuppressWarnings("serial")
+@Title("Expense System Application")
 @Theme("expensesystem")
 @Widgetset("pl.kostro.expensesystem.ExpenseSystemWidgetset")
 public class ExpenseSystemUI extends UI {
