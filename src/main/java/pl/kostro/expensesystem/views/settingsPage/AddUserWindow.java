@@ -32,8 +32,6 @@ public class AddUserWindow extends Window {
     setResizable(false);
     setWidth(300.0f, Unit.PIXELS);
 
-    addStyleName("edit-expensesheet");
-
     setContent(buildContent());
   }
 
@@ -42,7 +40,6 @@ public class AddUserWindow extends Window {
     result.setMargin(true);
     result.setSpacing(true);
 
-    nameField.addStyleName("caption-on-left");
     nameField.focus();
 
     result.addComponent(nameField);

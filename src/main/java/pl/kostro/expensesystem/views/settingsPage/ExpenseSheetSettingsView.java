@@ -93,7 +93,6 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
     mainLayout = new VerticalLayout();
     mainLayout.setWidth("100%");
     mainLayout.setHeightUndefined();
-    mainLayout.addStyleName("expense-view");
     
     if (expenseSheet != null)
       mainLayout.addComponent(buildHeader());
@@ -124,7 +123,6 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
   
   private Component buildHeader() {
     HorizontalLayout header = new HorizontalLayout();
-    header.addStyleName("viewheader");
     header.setSpacing(true);
 
     titleLabel = new Label(expenseSheet.getName());
@@ -135,7 +133,6 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
 
     HorizontalLayout tools = new HorizontalLayout(buildEditButton(), buildPasswordButton(), buildDelButton());
     tools.setSpacing(true);
-    tools.addStyleName("toolbar");
     header.addComponent(tools);
 
     return header;
@@ -144,7 +141,6 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
   private Component buildEditButton() {
     Button edit = new Button();
     edit.setIcon(FontAwesome.EDIT);
-    edit.addStyleName("icon-edit");
     edit.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     edit.setDescription(Msg.get("settingsPage.changeName"));
     edit.addClickListener(new ClickListener() {
@@ -161,7 +157,6 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
   private Component buildPasswordButton() {
     Button password = new Button();
     password.setIcon(FontAwesome.LOCK);
-    password.addStyleName("icon-edit");
     password.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     password.setDescription(Msg.get("settingsPage.changePassword"));
     password.addClickListener(new ClickListener() {
@@ -178,7 +173,6 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
   private Component buildDelButton() {
     Button delete = new Button();
     delete.setIcon(FontAwesome.TRASH_O);
-    delete.addStyleName("icon-edit");
     delete.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     delete.setDescription(Msg.get("settingsPage.removeSheet"));
     delete.addClickListener(new Button.ClickListener() {

@@ -36,8 +36,6 @@ public class ExpenseSheetEditPasswordWindow extends Window {
     setResizable(false);
     setWidth(300.0f, Unit.PIXELS);
 
-    addStyleName("edit-expensesheet");
-
     setContent(buildContent());
   }
 
@@ -46,12 +44,8 @@ public class ExpenseSheetEditPasswordWindow extends Window {
     result.setMargin(true);
     result.setSpacing(true);
 
-    oldPasswordField.addStyleName("caption-on-left");
     oldPasswordField.focus();
     
-    newPasswordField.addStyleName("caption-on-left");
-    reNewPasswordField.addStyleName("caption-on-left");
-
     result.addComponents(oldPasswordField, newPasswordField, reNewPasswordField);
     result.addComponent(buildFooter());
 

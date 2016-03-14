@@ -33,8 +33,6 @@ public class ExpenseSheetEditWindow extends Window {
     setResizable(false);
     setWidth(300.0f, Unit.PIXELS);
 
-    addStyleName("edit-expensesheet");
-
     setContent(buildContent(expenseSheet.getName()));
   }
 
@@ -44,7 +42,6 @@ public class ExpenseSheetEditWindow extends Window {
     result.setSpacing(true);
 
     nameField.setValue(currentName);
-    nameField.addStyleName("caption-on-left");
     nameField.focus();
 
     result.addComponent(nameField);

@@ -24,7 +24,6 @@ import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsView;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FontAwesome;
-import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -83,7 +82,6 @@ public class ExpenseView extends Panel implements View {
 
   private Component buildHeader() {
     HorizontalLayout header = new HorizontalLayout();
-    header.addStyleName("viewheader");
     header.setSpacing(true);
 
     titleLabel = new Label(expenseSheet.getName());
@@ -136,8 +134,6 @@ public class ExpenseView extends Panel implements View {
   private Component buildContent() {
     expensePanels = new VerticalLayout();
     expensePanels.setSpacing(true);
-    expensePanels.addStyleName("expense-panels");
-    Responsive.makeResponsive(expensePanels);
 
     expensePanels.addComponent(buildYearMenu());
     expensePanels.addComponent(buildMonthMenu());
