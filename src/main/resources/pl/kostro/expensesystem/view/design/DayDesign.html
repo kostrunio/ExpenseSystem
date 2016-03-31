@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;expensesystem&quot;}">
+ </head> 
+ <body> 
+  <vaadin-vertical-layout size-full> 
+   <vaadin-horizontal-layout spacing _id="navigationLayout" :center> 
+    <vaadin-button icon="fonticon://FontAwesome/f060" style-name="icon-only borderless" plain-text _id="previousDayButton" :right>
+      Button 
+    </vaadin-button> 
+    <vaadin-date-field _id="thisDateField" :center></vaadin-date-field> 
+    <vaadin-button icon="fonticon://FontAwesome/f061" style-name="icon-only borderless" plain-text _id="nextDayButton">
+      Button 
+    </vaadin-button> 
+   </vaadin-horizontal-layout> 
+   <vaadin-horizontal-layout _id="workingLayout"> 
+    <vaadin-vertical-layout size-auto _id="showLayout"> 
+     <vaadin-grid-layout spacing margin _id="categoryGrid"></vaadin-grid-layout> 
+     <vaadin-button plain-text _id="backButton">
+       Powrót 
+     </vaadin-button> 
+    </vaadin-vertical-layout> 
+    <vaadin-vertical-layout spacing size-auto _id="categoryLayout"> 
+     <vaadin-label size-auto _id="categoryLabel" :center></vaadin-label> 
+     <vaadin-horizontal-layout _id="expenseLayout" :center> 
+      <vaadin-grid-layout spacing _id="expenseGrid"></vaadin-grid-layout> 
+     </vaadin-horizontal-layout> 
+     <vaadin-horizontal-layout spacing _id="newExpenseLayout"> 
+      <vaadin-combo-box invalid-allowed="false" item-caption-mode="id" _id="userBox"></vaadin-combo-box> 
+      <vaadin-text-field _id="formulaField"></vaadin-text-field> 
+      <vaadin-combo-box item-caption-mode="id" _id="commentBox"> 
+       <option>Option 1</option> 
+       <option>Option 2</option> 
+       <option>Option 3</option> 
+      </vaadin-combo-box> 
+     </vaadin-horizontal-layout> 
+     <vaadin-horizontal-layout _id="buttonLayout"> 
+      <vaadin-button enabled="false" style-name="friendly" plain-text _id="saveButton">
+        Zapisz 
+      </vaadin-button> 
+     </vaadin-horizontal-layout> 
+    </vaadin-vertical-layout> 
+   </vaadin-horizontal-layout> 
+  </vaadin-vertical-layout>  
+ </body>
+</html>
