@@ -69,6 +69,7 @@ public class LoginForm extends com.ejt.vaadin.loginform.LoginForm {
         ((ExpenseSystemUI) getUI()).updateContent();
       }
     } catch (Exception e) {
+      e.printStackTrace();
       ShowNotification.dbProblem(e.getMessage());
       loginButton.setEnabled(true);
     }
