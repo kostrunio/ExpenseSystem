@@ -69,7 +69,7 @@ public class ExpenseView extends ExpenseDesign implements View {
         yearMenu.setEnabled(false);
         monthMenu.setEnabled(false);
         filterButton.setEnabled(false);
-        mainView.addComponent(new TableView(calendar));
+        mainView.addComponent(new TableView());
       } else {
         expenseSheet.setFilter(null);
         yearMenu.setEnabled(true);
