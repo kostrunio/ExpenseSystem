@@ -11,8 +11,8 @@ import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Converter;
 import pl.kostro.expensesystem.utils.DateExpense;
-import pl.kostro.expensesystem.views.mainPage.DayView;
-import pl.kostro.expensesystem.views.mainPage.MonthView;
+import pl.kostro.expensesystem.view.DayView;
+import pl.kostro.expensesystem.view.MonthView;
 
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.DateClickEvent;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventClick;

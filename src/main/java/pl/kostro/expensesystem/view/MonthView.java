@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.views.mainPage;
+package pl.kostro.expensesystem.view;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

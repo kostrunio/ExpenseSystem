@@ -8,7 +8,7 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.service.ExpenseService;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Calculator;
-import pl.kostro.expensesystem.views.mainPage.FindExpenseView;
+import pl.kostro.expensesystem.view.FindExpenseView;
 
 import com.vaadin.data.Property;
 import com.vaadin.event.ShortcutAction;

@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.views.mainPage;
+package pl.kostro.expensesystem.view;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -16,7 +16,6 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Filter;
-import pl.kostro.expensesystem.view.MainView;
 import pl.kostro.expensesystem.views.chart.ChartSheetView;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetPasswordWindow;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsView;

@@ -22,7 +22,6 @@ import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.view.design.MainDesign;
-import pl.kostro.expensesystem.views.mainPage.ExpenseView;
 import pl.kostro.expensesystem.views.settingsPage.AddSheetWindow;
 
 @SuppressWarnings("serial")
