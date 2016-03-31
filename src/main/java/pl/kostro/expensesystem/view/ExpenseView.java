@@ -56,7 +56,7 @@ public class ExpenseView extends ExpenseDesign implements View {
       } else {
         expenseSheet.setFilter(null);
         mainView.removeAllComponents();
-        mainView.addComponent(new MonthView(calendar));
+        mainView.addComponent(new MonthView());
       }
     }
   };
@@ -75,7 +75,7 @@ public class ExpenseView extends ExpenseDesign implements View {
         yearMenu.setEnabled(true);
         monthMenu.setEnabled(true);
         filterButton.setEnabled(true);
-        mainView.addComponent(new MonthView(calendar));
+        mainView.addComponent(new MonthView());
       }
     }
   };
@@ -100,7 +100,7 @@ public class ExpenseView extends ExpenseDesign implements View {
       users.add((User) filterUser);
       expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));
       mainView.removeAllComponents();
-      mainView.addComponent(new MonthView(calendar));
+      mainView.addComponent(new MonthView());
     }
   };
   private MenuBar.Command yearCommand = new MenuBar.Command() {
@@ -108,7 +108,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     public void menuSelected(MenuItem selectedItem) {
       UserSummaryService.setFirstDay(calendar, selectedItem.getText());
       mainView.removeAllComponents();
-      mainView.addComponent(new MonthView(calendar));
+      mainView.addComponent(new MonthView());
       for (MenuItem item : yearMenu.getItems()) {
         item.setChecked(false);
       }
@@ -120,13 +120,26 @@ public class ExpenseView extends ExpenseDesign implements View {
     public void menuSelected(MenuItem selectedItem) {
       mainView.removeAllComponents();
       UserSummaryService.setFirstDay(calendar, UserSummaryService.getMonthNumber(selectedItem.getText()));
-      mainView.addComponent(new MonthView(calendar));
+      mainView.addComponent(new MonthView());
       for (MenuItem item : monthMenu.getItems()) {
         item.setChecked(false);
       }
       selectedItem.setChecked(true);
     }
   };
+
+  private void prepareSearchLayout() {
+    categoryCombo.removeAllItems();
+    categoryCombo.addItems(expenseSheet.getCategoryList());
+    userCombo.removeAllItems();
+    userCombo.addItems(expenseSheet.getUserLimitList());
+    formulaField.clear();
+    commentCombo.setNewItemsAllowed(true);
+    commentCombo.setNullSelectionAllowed(true);
+    commentCombo.removeAllItems();
+    commentCombo.addItems(ExpenseSheetService.getCommentsList(expenseSheet));
+  }
+
   private void prepareView() {
     root.addComponent(buildHeader(expenseSheet.getName()));
     editButton.addClickListener(editClick);
@@ -144,19 +157,8 @@ public class ExpenseView extends ExpenseDesign implements View {
     root.setExpandRatio(content, 1);
 
     calendar.set(Calendar.DAY_OF_MONTH, 1);
-    mainView.addComponent(new MonthView(calendar));
-  }
-
-  private void prepareSearchLayout() {
-    categoryCombo.removeAllItems();
-    categoryCombo.addItems(expenseSheet.getCategoryList());
-    userCombo.removeAllItems();
-    userCombo.addItems(expenseSheet.getUserLimitList());
-    formulaField.clear();
-    commentCombo.setNewItemsAllowed(true);
-    commentCombo.setNullSelectionAllowed(true);
-    commentCombo.removeAllItems();
-    commentCombo.addItems(ExpenseSheetService.getCommentsList(expenseSheet));
+    VaadinSession.getCurrent().setAttribute(Calendar.class, calendar);
+    mainView.addComponent(new MonthView());
   }
 
   @Override

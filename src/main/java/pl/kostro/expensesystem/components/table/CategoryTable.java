@@ -9,14 +9,15 @@ import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.CategoryExpense;
 
 import com.vaadin.data.Item;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Table;
 
 @SuppressWarnings("serial")
 public class CategoryTable extends Table {
   private ExpenseSheet expenseSheet;
 
-  public CategoryTable(ExpenseSheet expenseSheet) {
-    this.expenseSheet = expenseSheet;
+  public CategoryTable() {
+    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
     setPageLength(expenseSheet.getCategoryList().size());
     addContainerProperty(Msg.get("categoryTable.category"), String.class, null);
     addContainerProperty(Msg.get("categoryTable.sum"), BigDecimal.class, null);

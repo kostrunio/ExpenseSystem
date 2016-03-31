@@ -9,14 +9,15 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.service.UserSummaryService;
 
 import com.vaadin.data.Item;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Table;
 
 @SuppressWarnings("serial")
 public class UserLimitTable extends Table {
   private ExpenseSheet expenseSheet;
 
-  public UserLimitTable(ExpenseSheet expenseSheet) {
-    this.expenseSheet = expenseSheet;
+  public UserLimitTable() {
+    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
     setPageLength(expenseSheet.getUserLimitList().size());
     addContainerProperty(Msg.get("userLimitTable.user"), String.class, null);
     addContainerProperty(Msg.get("userLimitTable.sum"), BigDecimal.class, null);

@@ -110,7 +110,7 @@ public class DayView extends CustomComponent {
     backButton.addClickListener(new Button.ClickListener() {
       @Override
       public void buttonClick(ClickEvent event) {
-        setCompositionRoot(new MonthView(calendar));
+        setCompositionRoot(new MonthView());
       }
 
     });
