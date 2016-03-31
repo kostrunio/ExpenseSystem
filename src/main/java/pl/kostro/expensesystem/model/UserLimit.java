@@ -22,12 +22,10 @@ import pl.kostro.expensesystem.utils.Encryption;
 
 import com.vaadin.server.VaadinSession;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="users_limits")
 public class UserLimit extends AbstractEntity {
-
-  private static final long serialVersionUID = 3781249751926840458L;
-
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")

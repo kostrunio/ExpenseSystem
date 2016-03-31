@@ -20,6 +20,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+@SuppressWarnings("serial")
 public class MonthView extends HorizontalLayout {
 
   private ExpenseSheet expenseSheet;
@@ -32,9 +33,6 @@ public class MonthView extends HorizontalLayout {
   private TextField thisMonthField;
 
   private Calendar date;
-
-  private static final long serialVersionUID = 2594978831652398190L;
-
   public MonthView(Calendar date) {
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.date = date;
@@ -79,7 +77,6 @@ public class MonthView extends HorizontalLayout {
     previousMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_LEFT);
     previousMonthButton.setImmediate(true);
     previousMonthButton.addClickListener(new Button.ClickListener() {
-      private static final long serialVersionUID = -8048895457148394023L;
       @Override
       public void buttonClick(ClickEvent event) {
         date.add(java.util.Calendar.MONTH, -1);
@@ -100,7 +97,6 @@ public class MonthView extends HorizontalLayout {
     nextMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_RIGHT);
     nextMonthButton.setImmediate(true);
     nextMonthButton.addClickListener(new Button.ClickListener() {
-      private static final long serialVersionUID = -8048895457148394023L;
       @Override
       public void buttonClick(ClickEvent event) {
         date.add(java.util.Calendar.MONTH, 1);

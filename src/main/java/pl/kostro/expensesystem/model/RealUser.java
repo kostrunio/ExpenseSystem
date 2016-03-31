@@ -16,6 +16,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
 
+@SuppressWarnings("serial")
 @Entity
 @DiscriminatorValue(value="2")
 @NamedQueries({
@@ -33,9 +34,6 @@ import javax.persistence.Transient;
       )
 })
 public class RealUser extends User {
-
-  private static final long serialVersionUID = 8197867574179477991L;
-
   @Column(name="u_password")
   private String password;
   @Column(name="u_password_byte")

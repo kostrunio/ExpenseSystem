@@ -29,6 +29,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.themes.ValoTheme;
 
+@SuppressWarnings("serial")
 public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditListener, ExpenseSheetPasswordChangeListener {
 
   private VerticalLayout mainLayout;
@@ -58,9 +59,6 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
   private HorizontalLayout userButtonLayout;
   private Button addUserButton;
   private Button deleteUserButton;
-  
-  private static final long serialVersionUID = -4661152658922847492L;
-
   private ExpenseSheet expenseSheet;
 
   public ExpenseSheetSettingsView() {
@@ -144,8 +142,6 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
     edit.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     edit.setDescription(Msg.get("settingsPage.changeName"));
     edit.addClickListener(new ClickListener() {
-      private static final long serialVersionUID = 1792451562271503948L;
-
       @Override
       public void buttonClick(final ClickEvent event) {
         UI.getCurrent().addWindow(new ExpenseSheetEditWindow(ExpenseSheetSettingsView.this, expenseSheet));
@@ -160,8 +156,6 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
     password.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     password.setDescription(Msg.get("settingsPage.changePassword"));
     password.addClickListener(new ClickListener() {
-      private static final long serialVersionUID = 1792451562271503948L;
-
       @Override
       public void buttonClick(final ClickEvent event) {
         UI.getCurrent().addWindow(new ExpenseSheetEditPasswordWindow(ExpenseSheetSettingsView.this));
@@ -176,8 +170,6 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
     delete.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     delete.setDescription(Msg.get("settingsPage.removeSheet"));
     delete.addClickListener(new Button.ClickListener() {
-      private static final long serialVersionUID = 8619201598088375093L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         ConfirmDialog.show(getUI(),
@@ -186,9 +178,6 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
             Msg.get("settingsPage.removeSheetYes"),
             Msg.get("settingsPage.removeSheetNo"),
             new ConfirmDialog.Listener() {
-
-          private static final long serialVersionUID = 3844318339125611876L;
-
           @Override
           public void onClose(ConfirmDialog dialog) {
             if (dialog.isConfirmed()) {

@@ -23,16 +23,12 @@ import com.vaadin.ui.components.calendar.event.CalendarEventProvider;
 import com.vaadin.ui.components.calendar.handler.BasicDateClickHandler;
 import com.vaadin.ui.components.calendar.handler.BasicWeekClickHandler;
 
+@SuppressWarnings("serial")
 public class ExpenseCalendar extends com.vaadin.ui.Calendar {
 
-  private static final long serialVersionUID = -7763299334451153708L;
-  
   public ExpenseCalendar(final MonthView monthView, final ExpenseSheet expenseSheet, final Calendar calendar, final CategoryTable categoryTable) {
     
     setEventProvider(new CalendarEventProvider() {
-
-      private static final long serialVersionUID = -2219052651460350955L;
-
       @Override
       public List<CalendarEvent> getEvents(Date startDate, Date endDate) {
         Map<Date, DateExpense> eventToShow = ExpenseSheetService.prepareExpenseMap(expenseSheet, startDate, endDate,
@@ -44,9 +40,6 @@ public class ExpenseCalendar extends com.vaadin.ui.Calendar {
     });
     
     setHandler(new BasicDateClickHandler() {
-
-      private static final long serialVersionUID = 2426375506359469533L;
-
       @Override
       public void dateClick(DateClickEvent event) {
         calendar.setTime(event.getDate());
@@ -56,9 +49,6 @@ public class ExpenseCalendar extends com.vaadin.ui.Calendar {
     });
     
     setHandler(new BasicWeekClickHandler() {
-
-      private static final long serialVersionUID = -5488623945839839169L;
-
       @Override
       protected void setDates(WeekClick event, Date start, Date end) {
         // Do nothing
@@ -66,9 +56,6 @@ public class ExpenseCalendar extends com.vaadin.ui.Calendar {
     });
 
     setHandler(new EventClickHandler() {
-
-      private static final long serialVersionUID = -5971206190211782099L;
-
       @Override
       public void eventClick(EventClick event) {
         calendar.setTime(event.getCalendarEvent().getStart());

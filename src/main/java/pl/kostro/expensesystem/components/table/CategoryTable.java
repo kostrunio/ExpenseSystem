@@ -11,10 +11,8 @@ import pl.kostro.expensesystem.utils.CategoryExpense;
 import com.vaadin.data.Item;
 import com.vaadin.ui.Table;
 
+@SuppressWarnings("serial")
 public class CategoryTable extends Table {
-
-  private static final long serialVersionUID = -6138656372402163480L;
-  
   private ExpenseSheet expenseSheet;
 
   public CategoryTable(ExpenseSheet expenseSheet) {

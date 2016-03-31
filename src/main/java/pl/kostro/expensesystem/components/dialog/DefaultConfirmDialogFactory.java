@@ -29,10 +29,8 @@ import com.vaadin.ui.themes.ValoTheme;
  * @author Sami Ekblad
  *
  */
+@SuppressWarnings("serial")
 public class DefaultConfirmDialogFactory implements Factory {
-
-    /** Generated serial UID. */
-    private static final long serialVersionUID = -5412321247707480466L;
 
     // System wide defaults
     protected static final String DEFAULT_CAPTION = "Confirm";
@@ -59,12 +57,7 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         // Close listener implementation
         confirm.addCloseListener(new Window.CloseListener() {
-
-            private static final long serialVersionUID = 1971800928047045825L;
-
             public void windowClose(CloseEvent ce) {
-
-                // Only process if still enabled
                 if (confirm.isEnabled()) {
                     confirm.setEnabled(false); // avoid double processing
                     confirm.setConfirmed(false);
@@ -133,8 +126,6 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         // Create a listener for buttons
         Button.ClickListener cb = new Button.ClickListener() {
-            private static final long serialVersionUID = 3525060915814334881L;
-
             public void buttonClick(ClickEvent event) {
                 // Copy the button date to window for passing through either
                 // "OK" or "CANCEL". Only process id still enabled.

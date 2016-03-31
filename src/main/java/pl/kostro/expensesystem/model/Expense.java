@@ -22,6 +22,7 @@ import com.vaadin.server.VaadinSession;
 import pl.kostro.expensesystem.utils.Calculator;
 import pl.kostro.expensesystem.utils.Encryption;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="expenses")
 @NamedQueries({
@@ -43,9 +44,6 @@ import pl.kostro.expensesystem.utils.Encryption;
       )
 })
 public class Expense extends AbstractEntity {
-
-  private static final long serialVersionUID = 3149559648002478493L;
-
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")

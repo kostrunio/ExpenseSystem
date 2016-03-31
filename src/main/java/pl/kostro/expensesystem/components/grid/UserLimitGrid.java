@@ -24,9 +24,8 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 
+@SuppressWarnings("serial")
 public class UserLimitGrid extends Grid implements SettingsChangeListener {
-  private static final long serialVersionUID = 5378642683850471251L;
-
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
   
@@ -41,8 +40,6 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
     getColumn("limit").setHeaderCaption(Msg.get("settingsPage.userLimit"));
     getColumn("order").setHeaderCaption(Msg.get("settingsPage.userOrder"));
     getEditorFieldGroup().addCommitHandler(new CommitHandler() {
-      private static final long serialVersionUID = 7645963700451879164L;
-
       @Override
       public void preCommit(CommitEvent commitEvent) throws CommitException {}
       
@@ -55,8 +52,6 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
     });
     
     addSelectionListener(new SelectionListener() {
-      private static final long serialVersionUID = 8360036685403681818L;
-
       @Override
       public void select(SelectionEvent event) {
         deleteUserLimitButton.setEnabled(getSelectedRow()!=null);
@@ -71,8 +66,6 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
   public void setAddUserLimitButton(Button button) {
     addUserLimitButton = button;
     addUserLimitButton.addClickListener(new Button.ClickListener() {
-      private static final long serialVersionUID = -7924703303108271795L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         UI.getCurrent().addWindow(new AddUserWindow(UserLimitGrid.this));
@@ -83,8 +76,6 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
   public void setDeleteUserLimitButton(Button button) {
     deleteUserLimitButton = button;
     deleteUserLimitButton.addClickListener(new Button.ClickListener() {
-      private static final long serialVersionUID = 8360036685403681818L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         ConfirmDialog.show(getUI(),
@@ -93,9 +84,6 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
             Msg.get("settingsPage.removeUserYes"),
             Msg.get("settingsPage.removeUserNo"),
             new ConfirmDialog.Listener() {
-
-          private static final long serialVersionUID = 3844318339125611876L;
-
           @Override
           public void onClose(ConfirmDialog dialog) {
             if (dialog.isConfirmed()) {

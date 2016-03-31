@@ -11,10 +11,8 @@ import pl.kostro.expensesystem.service.UserSummaryService;
 import com.vaadin.data.Item;
 import com.vaadin.ui.Table;
 
+@SuppressWarnings("serial")
 public class UserLimitTable extends Table {
-
-  private static final long serialVersionUID = -8885139846860909089L;
-  
   private ExpenseSheet expenseSheet;
 
   public UserLimitTable(ExpenseSheet expenseSheet) {
@@ -24,9 +22,6 @@ public class UserLimitTable extends Table {
     addContainerProperty(Msg.get("userLimitTable.sum"), BigDecimal.class, null);
     addContainerProperty(Msg.get("userLimitTable.left"), BigDecimal.class, null);
     setCellStyleGenerator(new Table.CellStyleGenerator() {
-
-      private static final long serialVersionUID = 446697675167120127L;
-
       @Override
       public String getStyle(Table source, Object itemId, Object propertyId) {
         int rows = source.getVisibleItemIds().size();

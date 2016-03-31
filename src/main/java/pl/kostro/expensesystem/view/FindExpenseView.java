@@ -34,6 +34,7 @@ import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
+@SuppressWarnings("serial")
 public class FindExpenseView extends CustomComponent {
 
   private VerticalLayout mainLayout;
@@ -51,9 +52,6 @@ public class FindExpenseView extends CustomComponent {
   private ExpenseForm expenseForm;
   private Grid expenseGrid;
   private Button filterButton;
-  
-  private static final long serialVersionUID = -7426045263916627689L;
-  
   private Calendar calendar;
   private ExpenseSheet expenseSheet;
   
@@ -166,9 +164,6 @@ public class FindExpenseView extends CustomComponent {
     // filterButton
     filterButton = new Button(Msg.get("findPage.filter"));
     filterButton.addClickListener(new ClickListener() {
-      
-      private static final long serialVersionUID = -3483592868382478228L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         User filterUser = null;
@@ -196,9 +191,6 @@ public class FindExpenseView extends CustomComponent {
     newExpenseButton = new Button(Msg.get("findPage.add"));
     newExpenseButton.setImmediate(true);
     newExpenseButton.addClickListener(new ClickListener() {
-      
-      private static final long serialVersionUID = -3483592868382478228L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         expenseForm.edit(new Expense());
@@ -231,9 +223,6 @@ public class FindExpenseView extends CustomComponent {
     expenseGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
     expenseGrid.setImmediate(true);
     expenseGrid.addSelectionListener(new SelectionListener() {
-      
-      private static final long serialVersionUID = -1208315732962434122L;
-
       @Override
       public void select(SelectionEvent event) {
         expenseForm.edit((Expense)expenseGrid.getSelectedRow());

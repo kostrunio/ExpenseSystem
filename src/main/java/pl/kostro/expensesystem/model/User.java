@@ -15,15 +15,13 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="users")
 @Inheritance(strategy=InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name="u_type", discriminatorType=DiscriminatorType.INTEGER)
 @DiscriminatorValue(value="1")
 public class User extends AbstractEntity {
-  
-  private static final long serialVersionUID = -2614536668038640488L;
-
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")

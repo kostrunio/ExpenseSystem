@@ -24,9 +24,8 @@ import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 
+@SuppressWarnings("serial")
 public class CategoryGrid extends Grid implements SettingsChangeListener{
-  private static final long serialVersionUID = -1289032915572715567L;
-  
   private ExpenseSheet expenseSheet;
   
   private Button addCategoryButton;
@@ -47,8 +46,6 @@ public class CategoryGrid extends Grid implements SettingsChangeListener{
     setEditorCancelCaption(Msg.get("settingsPage.categoryCancel"));
     
     getEditorFieldGroup().addCommitHandler(new CommitHandler() {
-      private static final long serialVersionUID = 7645963700451879164L;
-
       @Override
       public void preCommit(CommitEvent commitEvent) throws CommitException {}
       
@@ -60,8 +57,6 @@ public class CategoryGrid extends Grid implements SettingsChangeListener{
     });
     
     addSelectionListener(new SelectionListener() {
-      private static final long serialVersionUID = 8360036685403681818L;
-
       @Override
       public void select(SelectionEvent event) {
         moveUpCategoryButton.setEnabled(getSelectedRow()!=null);
@@ -74,8 +69,6 @@ public class CategoryGrid extends Grid implements SettingsChangeListener{
   public void setAddCategoryButton(Button button) {
     addCategoryButton = button;
     addCategoryButton.addClickListener(new Button.ClickListener() {
-      private static final long serialVersionUID = 8671045294811634046L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         UI.getCurrent().addWindow(new AddCategoryWindow(CategoryGrid.this));
@@ -86,8 +79,6 @@ public class CategoryGrid extends Grid implements SettingsChangeListener{
   public void setMoveUpCategoryButton(Button button) {
     moveUpCategoryButton = button;
     moveUpCategoryButton.addClickListener(new Button.ClickListener() {
-      private static final long serialVersionUID = -2706798565406087014L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         Category category = getItem();
@@ -100,8 +91,6 @@ public class CategoryGrid extends Grid implements SettingsChangeListener{
   public void setMoveDownCategoryButton(Button button) {
     moveDownCategoryButton = button;
     moveDownCategoryButton.addClickListener(new Button.ClickListener() {
-      private static final long serialVersionUID = 4157916927704412169L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         Category category = getItem();
@@ -114,8 +103,6 @@ public class CategoryGrid extends Grid implements SettingsChangeListener{
   public void setDeleteCategoryButton(Button button) {
     deleteCategoryButton = button;
     deleteCategoryButton.addClickListener(new Button.ClickListener() {
-      private static final long serialVersionUID = 8360036685403681818L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         ConfirmDialog.show(getUI(),
@@ -124,9 +111,6 @@ public class CategoryGrid extends Grid implements SettingsChangeListener{
             Msg.get("settingsPage.removeCategoryYes"),
             Msg.get("settingsPage.removeCategoryNo"),
             new ConfirmDialog.Listener() {
-
-          private static final long serialVersionUID = 3844318339125611876L;
-
           @Override
           public void onClose(ConfirmDialog dialog) {
             if (dialog.isConfirmed()) {

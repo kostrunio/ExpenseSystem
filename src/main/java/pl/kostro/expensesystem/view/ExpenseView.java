@@ -40,9 +40,8 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.themes.ValoTheme;
 
+@SuppressWarnings("serial")
 public class ExpenseView extends Panel implements View {
-
-  private static final long serialVersionUID = -7668118300710655240L;
   private final VerticalLayout root;
   private Label titleLabel;
   private VerticalLayout expensePanels;
@@ -102,34 +101,30 @@ public class ExpenseView extends Panel implements View {
     result.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     result.setDescription(Msg.get("expenseSheet.edit"));
     result.addClickListener(new ClickListener() {
-      private static final long serialVersionUID = 1792451562271503948L;
-
       @Override
       public void buttonClick(final ClickEvent event) {
         root.removeAllComponents();
         root.addComponent(new ExpenseSheetSettingsView());
       }
-  });
+    });
     return result;
   }
-  
+
   private Component buildChartButton() {
     Button result = new Button();
     result.setIcon(VaadinIcons.CHART);
     result.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     result.setDescription(Msg.get("expenseSheet.chart"));
     result.addClickListener(new ClickListener() {
-      private static final long serialVersionUID = 1792451562271503948L;
-
       @Override
       public void buttonClick(final ClickEvent event) {
         root.removeAllComponents();
         root.addComponent(new ChartSheetView());
       }
-  });
+    });
     return result;
   }
-  
+
   private Component buildContent() {
     expensePanels = new VerticalLayout();
     expensePanels.setSpacing(true);
@@ -145,9 +140,6 @@ public class ExpenseView extends Panel implements View {
 
   private Component buildYearMenu() {
     MenuBar.Command yearCommand = new MenuBar.Command() {
-
-      private static final long serialVersionUID = -5557223656934648266L;
-
       @Override
       public void menuSelected(MenuItem selectedItem) {
         UserSummaryService.setFirstDay(calendar, selectedItem.getText());
@@ -177,9 +169,6 @@ public class ExpenseView extends Panel implements View {
     filterButton.setCaption(Msg.get("expense.filter"));
     filterButton.setImmediate(true);
     filterButton.addClickListener(new Button.ClickListener() {
-
-      private static final long serialVersionUID = 5300096175827668413L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         searchPanel.setVisible(!searchPanel.isVisible());
@@ -191,7 +180,6 @@ public class ExpenseView extends Panel implements View {
           mainView.addComponent(new MonthView(calendar));
         }
       }
-
     });
 
     menuLayout.addComponent(filterButton);
@@ -202,9 +190,6 @@ public class ExpenseView extends Panel implements View {
     findButton.setCaption(Msg.get("expense.find"));
     findButton.setImmediate(true);
     findButton.addClickListener(new Button.ClickListener() {
-
-      private static final long serialVersionUID = 8661846123260446001L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         searchPanel.setVisible(false);
@@ -232,9 +217,6 @@ public class ExpenseView extends Panel implements View {
 
   private Component buildMonthMenu() {
     MenuBar.Command monthCommand = new MenuBar.Command() {
-
-      private static final long serialVersionUID = 3896360510777453107L;
-
       @Override
       public void menuSelected(MenuItem selectedItem) {
         mainView.removeAllComponents();
@@ -291,8 +273,6 @@ public class ExpenseView extends Panel implements View {
     final Button searchButton = new Button();
     searchButton.setCaption(Msg.get("expense.search"));
     searchButton.addClickListener(new Button.ClickListener() {
-      private static final long serialVersionUID = 1L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         User filterUser = null;
@@ -348,8 +328,8 @@ public class ExpenseView extends Panel implements View {
     }
     expenseSheet.setFilter(null);
     VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
-    MainView menuView = ((ExpenseSystemUI)getUI()).getMainView();
-    menuView.setActiveView("expenseSheet/"+expenseSheet.getId());
+    MainView menuView = ((ExpenseSystemUI) getUI()).getMainView();
+    menuView.setActiveView("expenseSheet/" + expenseSheet.getId());
     if (expenseSheet.getKey() == null) {
       expenseSheet.setKey(loggedUser.getClearPassword());
       if (expenseSheet.getUserLimitList().size() > 0) {

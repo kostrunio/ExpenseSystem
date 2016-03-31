@@ -27,12 +27,10 @@ import pl.kostro.expensesystem.utils.DateExpense;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.UserLimitExpense;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name="expense_sheets")
 public class ExpenseSheet extends AbstractEntity {
-
-  private static final long serialVersionUID = 3614726105787486216L;
-
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")

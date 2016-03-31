@@ -15,12 +15,10 @@ import com.vaadin.server.VaadinSession;
 
 import pl.kostro.expensesystem.utils.Encryption;
 
+@SuppressWarnings("serial")
 @Entity
 @Table(name = "categories")
 public class Category extends AbstractEntity {
-
-  private static final long serialVersionUID = 4537772469034122927L;
-
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")

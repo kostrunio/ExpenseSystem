@@ -8,11 +8,10 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.Window;
 
+@SuppressWarnings("serial")
 public class ConfirmDialog extends Window {
 
-    private static final long serialVersionUID = -2363125714643244070L;
-
-    public interface Factory extends Serializable {
+  public interface Factory extends Serializable {
         ConfirmDialog create(String windowCaption, String message,
                 String okTitle, String cancelTitle, String notOKCaption);
     }
@@ -175,8 +174,6 @@ public class ConfirmDialog extends Window {
         ConfirmDialog d = getFactory().create(windowCaption, message,
                 okCaption, cancelCaption, null);
         d.show(ui, new Listener() {
-            private static final long serialVersionUID = 1L;
-
             public void onClose(ConfirmDialog dialog) {
                 if (dialog.isConfirmed()) {
                     r.run();

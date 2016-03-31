@@ -37,9 +37,8 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
+@SuppressWarnings("serial")
 public class ChartSheetView extends CustomComponent {
-  private static final long serialVersionUID = -7074536397686956050L;
-
   private HorizontalLayout mainLayout;
   private VerticalLayout chartLayout;
   private Panel searchPanel;
@@ -160,8 +159,6 @@ public class ChartSheetView extends CustomComponent {
     final Button searchButton = new Button();
     searchButton.setCaption(Msg.get("expense.search"));
     searchButton.addClickListener(new Button.ClickListener() {
-      private static final long serialVersionUID = 1L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         refreshFilter();

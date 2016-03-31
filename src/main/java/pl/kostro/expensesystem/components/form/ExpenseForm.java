@@ -23,10 +23,8 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
+@SuppressWarnings("serial")
 public class ExpenseForm extends FormLayout {
-
-  private static final long serialVersionUID = -2448059466017092695L;
-
   Button saveButton = new Button(Msg.get("expensForm.save"));
   Button duplicateButton = new Button(Msg.get("expensForm.duplicate"));
   DateField dateField = new DateField(Msg.get("expensForm.date"));
@@ -52,49 +50,34 @@ public class ExpenseForm extends FormLayout {
   private void configureComponents() {
     dateField.setDateFormat("yyyy-MM-dd");
     dateField.addValueChangeListener(new Property.ValueChangeListener() {
-
-      private static final long serialVersionUID = 766164268953228863L;
-
       @Override
       public void valueChange(ValueChangeEvent event) {
         verifyFormula(formulaField.getValue());
       }
-
     });
     
     categoryBox.setNewItemsAllowed(false);
     categoryBox.setNullSelectionAllowed(false);
     categoryBox.addItems(expenseSheet.getCategoryList());
     categoryBox.addValueChangeListener(new Property.ValueChangeListener() {
-
-      private static final long serialVersionUID = -3346130777239048282L;
-
       @Override
       public void valueChange(ValueChangeEvent event) {
         verifyFormula(formulaField.getValue());
       }
-
     });
     
     userBox.setNewItemsAllowed(false);
     userBox.setNullSelectionAllowed(false);
     userBox.addItems(expenseSheet.getUserLimitList());
     userBox.addValueChangeListener(new Property.ValueChangeListener() {
-
-      private static final long serialVersionUID = -7382627003346137188L;
-
       @Override
       public void valueChange(ValueChangeEvent event) {
         verifyFormula(formulaField.getValue());
       }
-
     });
     
     formulaField.focus();
     formulaField.addValueChangeListener(new Property.ValueChangeListener() {
-
-      private static final long serialVersionUID = -7382627003346137188L;
-
       @Override
       public void valueChange(ValueChangeEvent event) {
         verifyFormula(formulaField.getValue());
@@ -105,23 +88,15 @@ public class ExpenseForm extends FormLayout {
     commentBox.setNullSelectionAllowed(true);
     commentBox.addItems(ExpenseSheetService.getAllComments(expenseSheet));
     commentBox.addValueChangeListener(new Property.ValueChangeListener() {
-
-
-      private static final long serialVersionUID = -2428143441766112539L;
-
       @Override
       public void valueChange(ValueChangeEvent event) {
         verifyFormula(formulaField.getValue());
       }
-
     });
     
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
     saveButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
     saveButton.addClickListener(new ClickListener() {
-      
-      private static final long serialVersionUID = 4132777194302109049L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         expense.setDate(dateField.getValue());
@@ -139,9 +114,6 @@ public class ExpenseForm extends FormLayout {
     });
     
     duplicateButton.addClickListener(new ClickListener() {
-      
-      private static final long serialVersionUID = 4132777194302109049L;
-
       @Override
       public void buttonClick(ClickEvent event) {
         Expense newExpense = new Expense(
