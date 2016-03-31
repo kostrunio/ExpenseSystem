@@ -8,7 +8,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
-import pl.kostro.expensesystem.components.form.MyLoginForm;
+import pl.kostro.expensesystem.components.form.LoginForm;
 import pl.kostro.expensesystem.components.form.RegisterForm;
 
 /** 
@@ -28,7 +28,7 @@ public class LoginDesign extends CssLayout {
   protected HorizontalLayout buttons;
   protected Button signIn;
   protected Button signUp;
-  protected MyLoginForm loginForm;
+  protected LoginForm loginForm;
   protected RegisterForm registerForm;
   protected CssLayout loginInformation;
   protected Label loginInfoText;

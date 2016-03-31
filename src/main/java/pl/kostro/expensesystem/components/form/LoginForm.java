@@ -6,7 +6,6 @@ import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.service.RealUserService;
 
-import com.ejt.vaadin.loginform.LoginForm;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
@@ -18,7 +17,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
-public class MyLoginForm extends LoginForm {
+public class LoginForm extends com.ejt.vaadin.loginform.LoginForm {
 
   private Button loginButton;
 
