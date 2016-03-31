@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.vaadin.teemu.VaadinIcons;
+
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Category;
@@ -17,6 +19,7 @@ import pl.kostro.expensesystem.view.design.CategoryExpenseDesign;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.TextField;
 
 @SuppressWarnings("serial")
@@ -26,6 +29,24 @@ public class CategoryExpenseView extends CategoryExpenseDesign {
   private Calendar calendar;
   private Category category;
   private DayView dayView;
+  private Button.ClickListener removeClick = new Button.ClickListener() {
+    @Override
+    public void buttonClick(ClickEvent event) {
+      if (event.getButton().getData() instanceof Expense) {
+        final Expense expense = (Expense) event.getButton().getData();
+        ConfirmDialog.show(getUI(), Msg.get("category.removeLabel"), Msg.get("category.removeQuestion"),
+            Msg.get("category.removeYes"), Msg.get("category.removeNo"), new ConfirmDialog.Listener() {
+              @Override
+              public void onClose(ConfirmDialog dialog) {
+                if (dialog.isConfirmed()) {
+                  ExpenseService.removeExpense(expenseSheet, expense);
+                  dayView.refreshView(calendar, category);
+                }
+              }
+            });
+      }
+    }
+  };
 
   public CategoryExpenseView(Calendar calendar, Category category, DayView dayView) {
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
@@ -63,8 +84,6 @@ public class CategoryExpenseView extends CategoryExpenseDesign {
 
       Button valueButton = new Button(ExpenseService.getValueString(expense));
       valueButton.setImmediate(true);
-      valueButton.setWidth("-1px");
-      valueButton.setHeight("-1px");
       valueButton.setData(expense);
       expenseGrid.addComponent(valueButton, 1, i);
 
@@ -84,31 +103,16 @@ public class CategoryExpenseView extends CategoryExpenseDesign {
       expenseGrid.addComponent(comment, 2, i);
 
       Button removeButton = new Button();
-      removeButton.setCaption("X");
+      removeButton.setIcon(VaadinIcons.TRASH);
+      removeButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+      removeButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
       removeButton.setImmediate(true);
       removeButton.setWidth("-1px");
       removeButton.setHeight("-1px");
       removeButton.setData(expense);
       expenseGrid.addComponent(removeButton, 3, i);
 
-      removeButton.addClickListener(new Button.ClickListener() {
-        @Override
-        public void buttonClick(ClickEvent event) {
-          if (event.getButton().getData() instanceof Expense) {
-            final Expense expense = (Expense) event.getButton().getData();
-            ConfirmDialog.show(getUI(), Msg.get("category.removeLabel"), Msg.get("category.removeQuestion"),
-                Msg.get("category.removeYes"), Msg.get("category.removeNo"), new ConfirmDialog.Listener() {
-                  @Override
-                  public void onClose(ConfirmDialog dialog) {
-                    if (dialog.isConfirmed()) {
-                      ExpenseService.removeExpense(expenseSheet, expense);
-                      dayView.refreshView(calendar, category);
-                    }
-                  }
-                });
-          }
-        }
-      });
+      removeButton.addClickListener(removeClick);
     }
   }
 

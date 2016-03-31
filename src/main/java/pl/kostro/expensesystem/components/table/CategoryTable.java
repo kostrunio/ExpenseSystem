@@ -21,6 +21,7 @@ public class CategoryTable extends Table {
     setPageLength(expenseSheet.getCategoryList().size());
     addContainerProperty(Msg.get("categoryTable.category"), String.class, null);
     addContainerProperty(Msg.get("categoryTable.sum"), BigDecimal.class, null);
+    alwaysRecalculateColumnWidths = true;
   }
   
   @SuppressWarnings("unchecked")

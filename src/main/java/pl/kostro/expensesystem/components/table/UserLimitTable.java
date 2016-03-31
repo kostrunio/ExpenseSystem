@@ -30,6 +30,7 @@ public class UserLimitTable extends Table {
         return "" + row % rows;
       }
     });
+    alwaysRecalculateColumnWidths = true;
   }
   
   @SuppressWarnings("unchecked")

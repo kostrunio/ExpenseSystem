@@ -78,7 +78,7 @@ public class AddNewExpenseDesign extends VerticalLayout {
     saveButton.setImmediate(true);
     saveButton.setEnabled(false);
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-    saveButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
+    saveButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
     buttonLayout.addComponent(saveButton);
 
     return buttonLayout;

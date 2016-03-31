@@ -36,10 +36,12 @@ public class CategoryGrid extends Grid implements SettingsChangeListener{
   public CategoryGrid() {
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setImmediate(true);
-    
     setColumns("name", "multiplier");
     getColumn("name").setHeaderCaption(Msg.get("settingsPage.categoryName"));
+    getColumn("name").setMaximumWidth(200);
     getColumn("multiplier").setHeaderCaption(Msg.get("settingsPage.categoryMultiplier"));
+    getColumn("multiplier").setMaximumWidth(100);
+    setWidth("300px");
     
     setEditorEnabled(true);
     setEditorSaveCaption(Msg.get("settingsPage.categorySave"));
@@ -127,7 +129,6 @@ public class CategoryGrid extends Grid implements SettingsChangeListener{
     getContainerDataSource().removeAllItems();
     BeanItemContainer <Category> container = new BeanItemContainer<Category>(Category.class, expenseSheet.getCategoryList());
     setContainerDataSource(container);
-    recalculateColumnWidths();
   }
 
   @SuppressWarnings("unchecked")

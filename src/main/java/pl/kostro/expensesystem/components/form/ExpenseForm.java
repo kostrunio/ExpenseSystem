@@ -95,7 +95,7 @@ public class ExpenseForm extends FormLayout {
     });
     
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-    saveButton.addStyleName(ValoTheme.BUTTON_PRIMARY);
+    saveButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
     saveButton.addClickListener(new ClickListener() {
       @Override
       public void buttonClick(ClickEvent event) {

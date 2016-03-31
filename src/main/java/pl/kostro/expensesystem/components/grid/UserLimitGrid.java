@@ -37,8 +37,12 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
     
     setColumns("user.name", "limit", "order");
     getColumn("user.name").setHeaderCaption(Msg.get("settingsPage.userName"));
+    getColumn("user.name").setMaximumWidth(100);
     getColumn("limit").setHeaderCaption(Msg.get("settingsPage.userLimit"));
+    getColumn("limit").setMaximumWidth(100);
     getColumn("order").setHeaderCaption(Msg.get("settingsPage.userOrder"));
+    getColumn("order").setMaximumWidth(100);
+    setWidth("300px");
     getEditorFieldGroup().addCommitHandler(new CommitHandler() {
       @Override
       public void preCommit(CommitEvent commitEvent) throws CommitException {}

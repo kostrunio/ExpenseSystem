@@ -102,7 +102,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         ok.setData(true);
         ok.setId(ConfirmDialog.OK_ID);
         ok.setClickShortcut(KeyCode.ENTER, null);
-        ok.setStyleName(ValoTheme.BUTTON_PRIMARY);
+        ok.setStyleName(ValoTheme.BUTTON_DANGER);
         ok.focus();
         buttons.addComponent(ok);
         confirm.setOkButton(ok);

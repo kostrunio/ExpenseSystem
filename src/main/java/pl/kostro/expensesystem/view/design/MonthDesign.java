@@ -1,5 +1,7 @@
 package pl.kostro.expensesystem.view.design;
 
+import org.vaadin.teemu.VaadinIcons;
+
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -7,6 +9,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.PopupDateField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.components.calendar.ExpenseCalendar;
 import pl.kostro.expensesystem.components.table.CategoryTable;
@@ -57,7 +60,9 @@ public class MonthDesign extends HorizontalLayout {
 
     // previousMonthButton
     previousMonthButton = new Button();
-    previousMonthButton.setCaption("<");
+    previousMonthButton.setIcon(VaadinIcons.ARROW_LEFT);
+    previousMonthButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+    previousMonthButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
     previousMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_LEFT);
     previousMonthButton.setImmediate(true);
     navigationLayout.addComponent(previousMonthButton);
@@ -70,7 +75,9 @@ public class MonthDesign extends HorizontalLayout {
 
     // nextMonthButton
     nextMonthButton = new Button();
-    nextMonthButton.setCaption(">");
+    nextMonthButton.setIcon(VaadinIcons.ARROW_RIGHT);
+    nextMonthButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+    nextMonthButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
     nextMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_RIGHT);
     nextMonthButton.setImmediate(true);
     navigationLayout.addComponent(nextMonthButton);

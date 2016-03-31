@@ -2,7 +2,6 @@ package pl.kostro.expensesystem.view.design;
 
 import org.vaadin.teemu.VaadinIcons;
 
-import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
@@ -73,9 +72,9 @@ public class ExpenseDesign extends Panel {
 
   private Component buildEditButton() {
     editButton = new Button();
-    editButton.setIcon(FontAwesome.EDIT);
+    editButton.setIcon(VaadinIcons.EDIT);
     editButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-    editButton.setDescription(Msg.get("expenseSheet.edit"));
+    editButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
     return editButton;
   }
   
@@ -83,7 +82,7 @@ public class ExpenseDesign extends Panel {
     chartButton = new Button();
     chartButton.setIcon(VaadinIcons.CHART);
     chartButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-    chartButton.setDescription(Msg.get("expenseSheet.chart"));
+    chartButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
     return chartButton;
   }
   
@@ -114,6 +113,9 @@ public class ExpenseDesign extends Panel {
 
     // filterButton
     filterButton = new Button();
+    filterButton.setIcon(VaadinIcons.FILTER);
+    filterButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+    filterButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
     filterButton.setCaption(Msg.get("expense.filter"));
     filterButton.setImmediate(true);
 
@@ -122,6 +124,9 @@ public class ExpenseDesign extends Panel {
 
     // findButton
     findButton = new Button();
+    findButton.setIcon(VaadinIcons.TABLE);
+    findButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+    findButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
     findButton.setCaption(Msg.get("expense.find"));
     findButton.setImmediate(true);
 

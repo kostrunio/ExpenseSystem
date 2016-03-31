@@ -201,8 +201,8 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
     // common part: create layout
     categoryPanel = new Panel(Msg.get("settingsPage.categoryLabel"));
     categoryPanel.setImmediate(false);
-    categoryPanel.setWidth("100.0%");
-    categoryPanel.setHeight("30%");
+    categoryPanel.setWidth("320px");
+    categoryPanel.setHeight("100%");
     
     // categoryLayout
     categoryLayout = buildCategoryLayout();
@@ -272,8 +272,8 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
     // common part: create layout
     realUserPanel = new Panel(Msg.get("settingsPage.realUserLabel"));
     realUserPanel.setImmediate(false);
-    realUserPanel.setWidth("100.0%");
-    realUserPanel.setHeight("30%");
+    realUserPanel.setWidth("320px");
+    realUserPanel.setHeight("100%");
     
     // realUserLayout
     realUserLayout = buildRealUserLayout();
@@ -327,8 +327,8 @@ public class ExpenseSheetSettingsView extends Panel implements ExpenseSheetEditL
   private Panel buildUserPanel() {
     // common part: create layout
     userPanel = new Panel(Msg.get("settingsPage.userLabel"));
-    userPanel.setWidth("100.0%");
-    userPanel.setHeight("30%");
+    userPanel.setWidth("320px");
+    userPanel.setHeight("100%");
     
     // userLayout
     userLayout = buildUserLayout();

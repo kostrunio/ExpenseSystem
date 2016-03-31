@@ -66,7 +66,7 @@ public class ExpenseSheetPasswordWindow extends Window {
     });
 
     Button save = new Button(Msg.get("expenseSheetPassord.save"));
-    save.addStyleName(ValoTheme.BUTTON_PRIMARY);
+    save.addStyleName(ValoTheme.BUTTON_FRIENDLY);
     save.setClickShortcut(KeyCode.ENTER, null);
     save.addClickListener(new ClickListener() {
       @Override

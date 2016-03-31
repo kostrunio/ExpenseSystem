@@ -65,7 +65,7 @@ public class AddRealUserWindow extends Window {
     });
 
     Button save = new Button(Msg.get("newRealUser.save"));
-    save.addStyleName(ValoTheme.BUTTON_PRIMARY);
+    save.addStyleName(ValoTheme.BUTTON_FRIENDLY);
     save.setClickShortcut(KeyCode.ENTER, null);
     save.addClickListener(new ClickListener() {
       @Override
