@@ -38,7 +38,7 @@ public class CategoryExpenseView extends CategoryExpenseDesign {
 
     prepareExpenseGrid();
     addNewExpense.buildAddNewExpense(ExpenseService.prepareNewExpense(expenseSheet, calendar.getTime(), category,
-        expenseSheet.getUserLimitList().get(0).getUser()), false, calendar);
+        expenseSheet.getUserLimitList().get(0).getUser()), false);
   }
 
   private void prepareExpenseGrid() {
@@ -72,7 +72,7 @@ public class CategoryExpenseView extends CategoryExpenseDesign {
         @Override
         public void buttonClick(ClickEvent event) {
           if (event.getButton().getData() instanceof Expense) {
-            addNewExpense.buildAddNewExpense((Expense) event.getButton().getData(), true, calendar);
+            addNewExpense.buildAddNewExpense((Expense) event.getButton().getData(), true);
           }
         }
       });
