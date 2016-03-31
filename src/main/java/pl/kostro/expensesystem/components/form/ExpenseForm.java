@@ -8,7 +8,7 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.service.ExpenseService;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Calculator;
-import pl.kostro.expensesystem.view.FindExpenseView;
+import pl.kostro.expensesystem.view.TableView;
 
 import com.vaadin.data.Property;
 import com.vaadin.event.ShortcutAction;
@@ -35,11 +35,11 @@ public class ExpenseForm extends FormLayout {
   
   ExpenseSheet expenseSheet;
   Expense expense;
-  FindExpenseView view;
+  TableView view;
   
   public ExpenseForm() {}
   
-  public void prepare(ExpenseSheet expenseSheet, FindExpenseView view) {
+  public void prepare(ExpenseSheet expenseSheet, TableView view) {
     this.expenseSheet = expenseSheet;
     this.view = view;
     configureComponents();

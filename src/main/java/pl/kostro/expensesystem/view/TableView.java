@@ -35,7 +35,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
-public class FindExpenseView extends CustomComponent {
+public class TableView extends CustomComponent {
 
   private VerticalLayout mainLayout;
   private Panel actionPanel;
@@ -55,7 +55,7 @@ public class FindExpenseView extends CustomComponent {
   private Calendar calendar;
   private ExpenseSheet expenseSheet;
   
-  public FindExpenseView(Calendar date) {
+  public TableView(Calendar date) {
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.calendar = date;
     setCompositionRoot(buildMainLayout());
