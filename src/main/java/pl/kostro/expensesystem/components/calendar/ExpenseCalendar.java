@@ -42,7 +42,7 @@ public class ExpenseCalendar extends com.vaadin.ui.Calendar {
     public void dateClick(DateClickEvent event) {
       calendar.setTime(event.getDate());
       monthView.removeAllComponents();
-      monthView.addComponent(new DayView(expenseSheet, calendar));
+      monthView.addComponent(new DayView());
     }
   };
   private BasicWeekClickHandler weekClick = new BasicWeekClickHandler() {
@@ -56,7 +56,7 @@ public class ExpenseCalendar extends com.vaadin.ui.Calendar {
     public void eventClick(EventClick event) {
       calendar.setTime(event.getCalendarEvent().getStart());
       monthView.removeAllComponents();
-      monthView.addComponent(new DayView(expenseSheet, calendar));
+      monthView.addComponent(new DayView());
     }
   };
 

@@ -28,8 +28,8 @@ public class TableDesign extends VerticalLayout {
   protected Button newExpenseButton;
   
   protected HorizontalLayout horizontalLayout_2;
-  protected ExpenseForm expenseForm;
   protected Grid expenseGrid;
+  protected ExpenseForm expenseForm;
   protected Button filterButton;
   
   public TableDesign() {
