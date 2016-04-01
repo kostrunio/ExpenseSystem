@@ -6,6 +6,7 @@ import java.util.Calendar;
 import pl.kostro.expensesystem.service.UserSummaryService;
 import pl.kostro.expensesystem.view.design.MonthDesign;
 
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.UI;
@@ -33,7 +34,9 @@ public class MonthView extends MonthDesign {
   public MonthView() {
     this.date = VaadinSession.getCurrent().getAttribute(Calendar.class);
     UserSummaryService.setFirstDay(date);
+    previousMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_LEFT);
     previousMonthButton.addClickListener(prevClick);
+    nextMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_RIGHT);
     nextMonthButton.addClickListener(nextClick);
 
     showCalendar();

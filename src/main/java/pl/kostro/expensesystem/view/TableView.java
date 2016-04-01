@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -23,6 +24,7 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Grid;
 
 @SuppressWarnings("serial")
 public class TableView extends TableDesign {
@@ -66,6 +68,9 @@ public class TableView extends TableDesign {
   public TableView() {
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.calendar = VaadinSession.getCurrent().getAttribute(Calendar.class);
+    setCaption();
+    expenseGrid.setContainerDataSource(new BeanItemContainer<Expense>(Expense.class));
+    expenseGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
 
     expenseForm.prepare(expenseSheet, this);
     
@@ -105,6 +110,23 @@ public class TableView extends TableDesign {
         null));
 
     refreshExpenses();
+  }
+  
+  private void setCaption() {
+    fromDateField.setCaption(Msg.get("findPage.dateFrom"));
+    toDateField.setCaption(Msg.get("findPage.dateTo"));
+    categoryBox.setCaption(Msg.get("findPage.category"));
+    userBox.setCaption(Msg.get("findPage.user"));
+    formulaField.setCaption(Msg.get("findPage.formula"));
+    commentBox.setCaption(Msg.get("findPage.comment"));
+    newExpenseButton.setCaption(Msg.get("findPage.add"));
+    expenseGrid.setColumns("date", "category", "user", "formula", "value", "comment");
+    expenseGrid.getColumn("date").setHeaderCaption(Msg.get("findPage.date"));
+    expenseGrid.getColumn("category").setHeaderCaption(Msg.get("findPage.category"));
+    expenseGrid.getColumn("user").setHeaderCaption(Msg.get("findPage.user"));
+    expenseGrid.getColumn("formula").setHeaderCaption(Msg.get("findPage.formula"));
+    expenseGrid.getColumn("value").setHeaderCaption(Msg.get("findPage.value"));
+    expenseGrid.getColumn("comment").setHeaderCaption(Msg.get("findPage.comment"));
   }
   
   public void refreshExpenses() {
