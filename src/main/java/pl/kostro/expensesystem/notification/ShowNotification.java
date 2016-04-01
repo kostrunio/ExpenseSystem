@@ -99,4 +99,15 @@ public class ShowNotification {
     setErrorStyle(notification);
   }
 
+  public static void changeEmailOK() {
+    Notification notification = new Notification(Msg.get("notification.changeOK"));
+    notification.setDescription(Msg.get("notification.emailChangeOK"));
+    setSuccessStyle(notification);
+  }
+
+  public static void changePasswordOK() {
+    Notification notification = new Notification(Msg.get("notification.changeOK"));
+    notification.setDescription(Msg.get("notification.passwordChangeOK"));
+    setSuccessStyle(notification);
+  }
 }

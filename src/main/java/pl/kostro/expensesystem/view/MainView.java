@@ -32,7 +32,7 @@ public class MainView extends MainDesign {
 
   private Map<String, Button> viewButtons = new HashMap<String, Button>();
 
-  private ClickListener showMenuListener = new ClickListener() {
+  private ClickListener showMenuClick = new ClickListener() {
     @Override
     public void buttonClick(final ClickEvent event) {
       if (menuPart.getStyleName().contains(VALO_MENU_VISIBLE)) {
@@ -42,7 +42,19 @@ public class MainView extends MainDesign {
       }
     }
   };
-  private ClickListener logoutListener = new ClickListener() {
+  private ClickListener addSheetClick = new ClickListener() {
+    @Override
+    public void buttonClick(ClickEvent event) {
+      UI.getCurrent().addWindow(new AddSheetWindow());
+    }
+  };
+  private ClickListener accountClick = new ClickListener() {
+    @Override
+    public void buttonClick(ClickEvent event) {
+      UI.getCurrent().getNavigator().navigateTo("account");
+    }
+  };
+  private ClickListener logoutClick = new ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
       ExpenseEntityDao.close();
@@ -62,21 +74,23 @@ public class MainView extends MainDesign {
       return new ExpenseView();
     }
   };
-  private ClickListener addSheetListener = new ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      UI.getCurrent().addWindow(new AddSheetWindow());
-    }
-  };
+
 
   public MainView(UI ui) {
     setCaption();
-    showMenuButton.addClickListener(showMenuListener);
-    logoutButton.addClickListener(logoutListener);
-    addSheetButton.addClickListener(addSheetListener);
+    showMenuButton.addClickListener(showMenuClick);
+    addSheetButton.addClickListener(addSheetClick);
+    accountButton.addClickListener(accountClick);
+    logoutButton.addClickListener(logoutClick);
+    
     buildMenuItems();
+    viewButtons.put(addSheetButton.getCaption(), addSheetButton);
+    viewButtons.put(accountButton.getCaption(), accountButton);
+    viewButtons.put(logoutButton.getCaption(), logoutButton);
+    
     Navigator navigator = new Navigator(ui, content);
     navigator.addView("expenseSheet", new ExpenseView());
+    navigator.addView("account", new AccountView());
     navigator.setErrorProvider(errorProvider);
     ((ExpenseSystemUI) ui).setMainView(this);
   }

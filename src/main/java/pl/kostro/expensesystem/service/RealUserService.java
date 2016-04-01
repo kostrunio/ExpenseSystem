@@ -28,7 +28,19 @@ public class RealUserService {
     ExpenseEntityDao.getEntityManager().refresh(realUser);
   }
 
-  public void createRealUser(String name, String password, String email) {
+  public static void save(RealUser realUser, boolean passwordChange) {
+    ExpenseEntityDao.begin();
+    try {
+      if (passwordChange) {
+        messageDigest.update(realUser.getClearPassword().getBytes());
+        realUser.setPassword(new String(messageDigest.digest()));
+      }
+      ExpenseEntityDao.getEntityManager().merge(realUser);
+      ExpenseEntityDao.commit();
+    } finally {
+    }
+  }
+  public static void createRealUser(String name, String password, String email) {
     ExpenseEntityDao.begin();
     try {
       RealUser realUser = new RealUser();

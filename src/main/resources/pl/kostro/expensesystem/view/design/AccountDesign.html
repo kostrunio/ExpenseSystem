@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;expensesystem&quot;}">
+ </head> 
+ <body> 
+  <vaadin-vertical-layout spacing margin> 
+   <vaadin-label style-name="h1 no-margin" size-auto plain-text _id="titleLabel">
+     Ustawienia konta 
+   </vaadin-label> 
+   <vaadin-text-field enabled="false" caption="Nazwa użytkownika" _id="usernameField"></vaadin-text-field> 
+   <vaadin-panel caption="Adres e-mail" size-auto _id="emailPanel"> 
+    <vaadin-vertical-layout size-auto margin> 
+     <vaadin-text-field caption="e-mail" _id="emailField"></vaadin-text-field> 
+     <vaadin-horizontal-layout spacing _id="emailLayout"> 
+      <vaadin-text-field enabled="false" description="W celu zmiany adresu, wpisz nowy powyżej i tutaj." input-prompt="W celu zmiany adresu, wpisz nowy powyżej i tutaj." caption="Potwierdz e-mail" _id="emailField2"></vaadin-text-field> 
+      <vaadin-button enabled="false" style-name="friendly" plain-text _id="saveEmailButton" :bottom>
+        Zapisz 
+      </vaadin-button> 
+     </vaadin-horizontal-layout> 
+    </vaadin-vertical-layout> 
+   </vaadin-panel> 
+   <vaadin-panel caption="Zmiana hasła" size-auto _id="passwordPanel"> 
+    <vaadin-vertical-layout size-auto margin> 
+     <vaadin-password-field caption="Stare hasło:" _id="oldPasswordField"></vaadin-password-field> 
+     <vaadin-password-field enabled="false" caption="Nowe hasło:" _id="newPasswordField"></vaadin-password-field> 
+     <vaadin-horizontal-layout spacing _id="passwordLayout"> 
+      <vaadin-password-field enabled="false" caption="Potwierdz nowe hasło:" _id="newPasswordField2"></vaadin-password-field> 
+      <vaadin-button enabled="false" style-name="friendly" plain-text _id="savePasswordButton" :bottom>
+        Zapisz 
+      </vaadin-button> 
+     </vaadin-horizontal-layout> 
+    </vaadin-vertical-layout> 
+   </vaadin-panel> 
+  </vaadin-vertical-layout>  
+ </body>
+</html>
