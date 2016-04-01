@@ -7,10 +7,10 @@ import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.service.RealUserService;
-import pl.kostro.expensesystem.view.design.RegisterDesign;
+import pl.kostro.expensesystem.view.design.RegisterFormDesign;
 
 @SuppressWarnings("serial")
-public class RegisterForm extends RegisterDesign {
+public class RegisterForm extends RegisterFormDesign {
   
   private ClickListener saveListener = new ClickListener() {
     @Override
