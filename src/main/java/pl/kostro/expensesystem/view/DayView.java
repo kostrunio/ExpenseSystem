@@ -72,7 +72,7 @@ public class DayView extends DayDesign {
       addComponent(new MonthView());
     }
   };
-  private Button.ClickListener expClick = new Button.ClickListener() {
+  private Button.ClickListener categoryClick = new Button.ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
       if (event.getButton().getData() instanceof Category) {
@@ -141,7 +141,6 @@ public class DayView extends DayDesign {
 
     userBox.setNewItemsAllowed(false);
     userBox.setNullSelectionAllowed(false);
-    formulaField.focus();
     commentBox.setNewItemsAllowed(true);
     commentBox.setNullSelectionAllowed(true);
     commentBox.setFilteringMode(FilteringMode.CONTAINS);
@@ -184,7 +183,7 @@ public class DayView extends DayDesign {
         expButton.setCaption(categoryExpenseMap.getSumString());
       }
       expButton.setData(category);
-      expButton.addClickListener(expClick);
+      expButton.addClickListener(categoryClick);
       expLay.addComponent(expButton);
     }
   }
@@ -254,6 +253,7 @@ public class DayView extends DayDesign {
       userBox.select(expenseSheet.getUserLimitList().get(0));
     userBox.addValueChangeListener(valueChange);
 
+    formulaField.focus();
     formulaField.setValue(expense.getFormula());
     formulaField.addValueChangeListener(valueChange);
 
