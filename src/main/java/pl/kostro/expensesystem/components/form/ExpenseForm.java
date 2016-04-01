@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.components.form;
 
 import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -9,147 +10,129 @@ import pl.kostro.expensesystem.service.ExpenseService;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Calculator;
 import pl.kostro.expensesystem.view.TableView;
+import pl.kostro.expensesystem.view.design.ExpenseFormDesign;
 
 import com.vaadin.data.Property;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.ComboBox;
-import com.vaadin.ui.DateField;
 import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.ui.FormLayout;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
-public class ExpenseForm extends FormLayout {
-  Button saveButton = new Button(Msg.get("expensForm.save"));
-  Button duplicateButton = new Button(Msg.get("expensForm.duplicate"));
-  DateField dateField = new DateField(Msg.get("expensForm.date"));
-  ComboBox categoryBox = new ComboBox(Msg.get("expensForm.category"));
-  ComboBox userBox = new ComboBox(Msg.get("expensForm.user"));
-  TextField formulaField = new TextField(Msg.get("expensForm.formula"));
-  ComboBox commentBox = new ComboBox(Msg.get("expensForm.comment"));
-  
-  ExpenseSheet expenseSheet;
-  Expense expense;
-  TableView view;
-  
-  public ExpenseForm() {}
-  
-  public void prepare(ExpenseSheet expenseSheet, TableView view) {
-    this.expenseSheet = expenseSheet;
-    this.view = view;
+public class ExpenseForm extends ExpenseFormDesign {
+  private ExpenseSheet expenseSheet;
+  private Expense expense;
+  private TableView view;
+  private Property.ValueChangeListener valueChange = new Property.ValueChangeListener() {
+    @Override
+    public void valueChange(ValueChangeEvent event) {
+      verifyFormula(formulaField.getValue());
+    }
+  };
+  private Button.ClickListener saveClick = new ClickListener() {
+    @Override
+    public void buttonClick(ClickEvent event) {
+      expense.setDate(dateField.getValue());
+      expense.setCategory((Category) categoryBox.getValue());
+      expense.setUser(((UserLimit) userBox.getValue()).getUser());
+      expense.setFormula(formulaField.getValue());
+      if (commentBox.getValue() != null && !commentBox.getValue().toString().isEmpty())
+        expense.setComment(commentBox.getValue().toString());
+      expense.setExpenseSheet(expenseSheet);
+      expense = ExpenseService.merge(expense);
+      if (!expenseSheet.getExpenseList().contains(expense))
+        expenseSheet.getExpenseList().add(expense);
+      view.refreshExpenses();
+    }
+  };
+  private Button.ClickListener duplicateClick = new ClickListener() {
+    @Override
+    public void buttonClick(ClickEvent event) {
+      Expense newExpense = new Expense(expense.getDate(), expense.getFormula(), expense.getCategory(),
+          expense.getUser(), expense.getComment(), expense.getExpenseSheet());
+      edit(newExpense);
+      saveButton.setEnabled(false);
+    }
+  };
+  private Button.ClickListener removeClick = new Button.ClickListener() {
+    @Override
+    public void buttonClick(ClickEvent event) {
+      ConfirmDialog.show(getUI(), Msg.get("expensForm.removeLabel"), Msg.get("expensForm.removeQuestion"),
+          Msg.get("expensForm.removeYes"), Msg.get("expensForm.removeNo"), new ConfirmDialog.Listener() {
+            @Override
+            public void onClose(ConfirmDialog dialog) {
+              if (dialog.isConfirmed()) {
+                ExpenseService.removeExpense(expenseSheet, expense);
+                view.refreshExpenses();
+              }
+            }
+          });
+    }
+  };
+
+  public ExpenseForm() {
+    setCaption();
     configureComponents();
-    buildLayout();
   }
-  
+
+  private void setCaption() {
+    saveButton.setCaption(Msg.get("expensForm.save"));
+    duplicateButton.setCaption(Msg.get("expensForm.duplicate"));
+    dateField.setCaption(Msg.get("expensForm.date"));
+    categoryBox.setCaption(Msg.get("expensForm.category"));
+    userBox.setCaption(Msg.get("expensForm.user"));
+    formulaField.setCaption(Msg.get("expensForm.formula"));
+    commentBox.setCaption(Msg.get("expensForm.comment"));
+  }
 
   private void configureComponents() {
     dateField.setDateFormat("yyyy-MM-dd");
-    dateField.addValueChangeListener(new Property.ValueChangeListener() {
-      @Override
-      public void valueChange(ValueChangeEvent event) {
-        verifyFormula(formulaField.getValue());
-      }
-    });
-    
+    dateField.addValueChangeListener(valueChange);
+
     categoryBox.setNewItemsAllowed(false);
     categoryBox.setNullSelectionAllowed(false);
-    categoryBox.addItems(expenseSheet.getCategoryList());
-    categoryBox.addValueChangeListener(new Property.ValueChangeListener() {
-      @Override
-      public void valueChange(ValueChangeEvent event) {
-        verifyFormula(formulaField.getValue());
-      }
-    });
-    
+    categoryBox.addValueChangeListener(valueChange);
+
     userBox.setNewItemsAllowed(false);
     userBox.setNullSelectionAllowed(false);
-    userBox.addItems(expenseSheet.getUserLimitList());
-    userBox.addValueChangeListener(new Property.ValueChangeListener() {
-      @Override
-      public void valueChange(ValueChangeEvent event) {
-        verifyFormula(formulaField.getValue());
-      }
-    });
-    
+    userBox.addValueChangeListener(valueChange);
+
     formulaField.focus();
-    formulaField.addValueChangeListener(new Property.ValueChangeListener() {
-      @Override
-      public void valueChange(ValueChangeEvent event) {
-        verifyFormula(formulaField.getValue());
-      }
-    });
+    formulaField.addValueChangeListener(valueChange);
 
     commentBox.setNewItemsAllowed(true);
     commentBox.setNullSelectionAllowed(true);
-    commentBox.addItems(ExpenseSheetService.getAllComments(expenseSheet));
-    commentBox.addValueChangeListener(new Property.ValueChangeListener() {
-      @Override
-      public void valueChange(ValueChangeEvent event) {
-        verifyFormula(formulaField.getValue());
-      }
-    });
-    
+    commentBox.addValueChangeListener(valueChange);
+
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-    saveButton.addStyleName(ValoTheme.BUTTON_FRIENDLY);
-    saveButton.addClickListener(new ClickListener() {
-      @Override
-      public void buttonClick(ClickEvent event) {
-        expense.setDate(dateField.getValue());
-        expense.setCategory((Category)categoryBox.getValue());
-        expense.setUser(((UserLimit)userBox.getValue()).getUser());
-        expense.setFormula(formulaField.getValue());
-        if (commentBox.getValue() != null && !commentBox.getValue().toString().isEmpty())
-          expense.setComment(commentBox.getValue().toString());
-        expense.setExpenseSheet(expenseSheet);
-        expense = ExpenseService.merge(expense);
-        if (!expenseSheet.getExpenseList().contains(expense))
-          expenseSheet.getExpenseList().add(expense);
-        view.refreshExpenses();
-      }
-    });
-    
-    duplicateButton.addClickListener(new ClickListener() {
-      @Override
-      public void buttonClick(ClickEvent event) {
-        Expense newExpense = new Expense(
-            expense.getDate(),
-            expense.getFormula(),
-            expense.getCategory(),
-            expense.getUser(),
-            expense.getComment(),
-            expense.getExpenseSheet());
-        edit(newExpense);
-        saveButton.setEnabled(false);
-      }
-    });
-    
+    saveButton.addClickListener(saveClick);
+
+    duplicateButton.addClickListener(duplicateClick);
+
+    removeButton.addClickListener(removeClick);
+
     setVisible(false);
   }
-  
+
+  public void prepare(ExpenseSheet expenseSheet, TableView view) {
+    this.expenseSheet = expenseSheet;
+    this.view = view;
+    categoryBox.removeAllItems();
+    categoryBox.addItems(expenseSheet.getCategoryList());
+    userBox.removeAllItems();
+    userBox.addItems(expenseSheet.getUserLimitList());
+    commentBox.removeAllItems();
+    commentBox.addItems(ExpenseSheetService.getAllComments(expenseSheet));
+  }
+
   private void verifyFormula(Object formula) {
-    if (formula != null
-        && !formula.toString().equals("")
-        && Calculator.verifyAllowed(formula.toString()))
+    if (formula != null && !formula.toString().equals("") && Calculator.verifyAllowed(formula.toString()))
       saveButton.setEnabled(true);
     else
       saveButton.setEnabled(false);
   }
-  
-  private void buildLayout() {
-    setSizeUndefined();
-    setMargin(true);
 
-    HorizontalLayout actions = new HorizontalLayout(saveButton, duplicateButton);
-    actions.setSpacing(true);
-
-    addComponents(actions, dateField, categoryBox, userBox, formulaField, commentBox);
-  }
-  
   public void edit(Expense expense) {
     this.expense = expense;
     if (expense != null) {
@@ -159,9 +142,10 @@ public class ExpenseForm extends FormLayout {
       formulaField.setValue(expense.getFormula());
       commentBox.setValue(expense.getComment());
       formulaField.focus();
-      if (expense.getId() == 0)
+      if (expense.getId() == 0) {
         duplicateButton.setEnabled(false);
-      else
+        removeButton.setEnabled(false);
+      } else
         duplicateButton.setEnabled(true);
     } else {
       userBox.select(expenseSheet.getUserLimitList().get(0));
@@ -170,5 +154,5 @@ public class ExpenseForm extends FormLayout {
     setVisible(expense != null);
     saveButton.setEnabled(false);
   }
-  
+
 }

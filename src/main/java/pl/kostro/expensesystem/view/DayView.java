@@ -77,7 +77,7 @@ public class DayView extends DayDesign {
     public void buttonClick(ClickEvent event) {
       if (event.getButton().getData() instanceof Category) {
         category = (Category) event.getButton().getData();
-        prepareExpenseGrid();
+        prepareExpenseListLayout();
       }
     }
   };
@@ -100,7 +100,7 @@ public class DayView extends DayDesign {
               public void onClose(ConfirmDialog dialog) {
                 if (dialog.isConfirmed()) {
                   ExpenseService.removeExpense(expenseSheet, expense);
-                  prepareExpenseGrid();
+                  prepareExpenseListLayout();
                 }
               }
             });
@@ -119,7 +119,7 @@ public class DayView extends DayDesign {
       if (userBox.getValue() instanceof UserLimit) {
         ExpenseService.saveExpense(expenseSheet, expense, (UserLimit) userBox.getValue(), formulaField.getValue(),
             commentBox.getValue(), modify);
-        prepareExpenseGrid();
+        prepareExpenseListLayout();
       }
     }
   };
@@ -136,7 +136,7 @@ public class DayView extends DayDesign {
     thisDateField.addValueChangeListener(dateChange);
     nextDayButton.addClickListener(nextClick);
 
-    prepareCategoryLayout();
+    prepareCategoryListLayout();
     backButton.addClickListener(backClick);
 
     userBox.setNewItemsAllowed(false);
@@ -146,7 +146,7 @@ public class DayView extends DayDesign {
     commentBox.setNullSelectionAllowed(true);
     commentBox.setFilteringMode(FilteringMode.CONTAINS);
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
-    prepareExpenseGrid();
+    prepareExpenseListLayout();
   }
 
   private void setCaption() {
@@ -158,7 +158,7 @@ public class DayView extends DayDesign {
     
   }
 
-  private void prepareCategoryLayout() {
+  private void prepareCategoryListLayout() {
     categoryGrid.removeAllComponents();
     List<Category> categoryList = expenseSheet.getCategoryList();
     categoryGrid.setColumns(5);
@@ -189,7 +189,7 @@ public class DayView extends DayDesign {
     }
   }
 
-  private void prepareExpenseGrid() {
+  private void prepareExpenseListLayout() {
     expenseGrid.removeAllComponents();
     categoryLabel.setValue(category.getName());
     List<Expense> expenseList;
