@@ -15,7 +15,6 @@ import pl.kostro.expensesystem.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.view.design.ExpenseDesign;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetPasswordWindow;
-import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsView;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -36,7 +35,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     @Override
     public void buttonClick(final ClickEvent event) {
       root.removeAllComponents();
-      root.addComponent(new ExpenseSheetSettingsView());
+      root.addComponent(new SettingsView());
     }
   };
   private Button.ClickListener chartClick = new ClickListener() {

@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+ <head> 
+  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;expensesystem&quot;}">
+  <meta charset="UTF-8" name="package-mapping" content="pl_kostro_expensesystem_components_grid:pl.kostro.expensesystem.components.grid">
+ </head> 
+ <body> 
+  <vaadin-vertical-layout size-full> 
+   <vaadin-horizontal-layout spacing _id="headerLayout"> 
+    <vaadin-label style-name="h1 no-margin" caption="wydatki" size-auto _id="titleLabel"></vaadin-label> 
+    <vaadin-horizontal-layout _id="toolsLayout"> 
+     <vaadin-button icon="fonticon://FontAwesome/f044" style-name="icon-only borderless" plain-text _id="editButton"></vaadin-button> 
+     <vaadin-button icon="fonticon://FontAwesome/f023" style-name="icon-only borderless" plain-text _id="passwordButton"></vaadin-button> 
+     <vaadin-button icon="fonticon://FontAwesome/f1f8" style-name="icon-only borderless" plain-text _id="removeButton"></vaadin-button> 
+    </vaadin-horizontal-layout> 
+   </vaadin-horizontal-layout> 
+   <vaadin-horizontal-layout spacing size-full _id="gridLayout"> 
+    <vaadin-panel width="355px" height-full _id="categoryPanel"> 
+     <vaadin-vertical-layout size-full margin _id="categoryLayout"> 
+      <pl_kostro_expensesystem_components_grid-category-grid size-full _id="categoryGrid"></pl_kostro_expensesystem_components_grid-category-grid> 
+      <vaadin-horizontal-layout width-full _id="categoryButtonLayout"> 
+       <vaadin-button icon="fonticon://FontAwesome/f0fe" style-name="icon-only borderless" plain-text _id="addCategoryButton"></vaadin-button> 
+       <vaadin-button icon="fonticon://FontAwesome/f106" style-name="icon-only borderless" plain-text _id="moveUpCategoryButton"></vaadin-button> 
+       <vaadin-button icon="fonticon://FontAwesome/f107" style-name="icon-only borderless" plain-text _id="moveDownCategoryButton"></vaadin-button> 
+       <vaadin-button icon="fonticon://FontAwesome/f146" style-name="icon-only borderless" plain-text _id="deleteCategoryButton"></vaadin-button> 
+      </vaadin-horizontal-layout> 
+     </vaadin-vertical-layout> 
+    </vaadin-panel> 
+    <vaadin-panel width="355px" height-full _id="realUserPanel"> 
+     <vaadin-vertical-layout size-full margin _id="realUserLayout"> 
+      <pl_kostro_expensesystem_components_grid-real-user-limit-grid size-full _id="realUserGrid"></pl_kostro_expensesystem_components_grid-real-user-limit-grid> 
+      <vaadin-horizontal-layout width-full _id="realUserButtonLayout"> 
+       <vaadin-button icon="fonticon://FontAwesome/f0fe" style-name="icon-only borderless" plain-text _id="addRealUserButton"></vaadin-button> 
+       <vaadin-button icon="fonticon://FontAwesome/f146" style-name="icon-only borderless" plain-text _id="deleteRealUserButton"></vaadin-button> 
+      </vaadin-horizontal-layout> 
+     </vaadin-vertical-layout> 
+    </vaadin-panel> 
+    <vaadin-panel width="355px" height-full _id="userPanel"> 
+     <vaadin-vertical-layout size-full margin _id="userLayout"> 
+      <pl_kostro_expensesystem_components_grid-user-limit-grid size-full _id="userGrid"></pl_kostro_expensesystem_components_grid-user-limit-grid> 
+      <vaadin-horizontal-layout width-full _id="userButtonLayout"> 
+       <vaadin-button icon="fonticon://FontAwesome/f0fe" style-name="icon-only borderless" plain-text _id="addUserButton"></vaadin-button> 
+       <vaadin-button icon="fonticon://FontAwesome/f146" style-name="icon-only borderless" plain-text _id="deleteUserButton"></vaadin-button> 
+      </vaadin-horizontal-layout> 
+     </vaadin-vertical-layout> 
+    </vaadin-panel> 
+   </vaadin-horizontal-layout> 
+  </vaadin-vertical-layout>  
+ </body>
+</html>
