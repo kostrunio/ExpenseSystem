@@ -46,7 +46,9 @@ public class ChartView extends ChartDesign {
     expenseSheet.setFilter(new Filter(null, null, null, null));
     setCaption();
     categoryCombo.addItems(expenseSheet.getCategoryList());
+    categoryCombo.setMultiSelect(true);
     userCombo.addItems(expenseSheet.getUserLimitList());
+    userCombo.setMultiSelect(true);
     searchButton.addClickListener(searchClick);
     refreshFilter();
   }
