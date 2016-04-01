@@ -28,40 +28,37 @@ import com.vaadin.ui.Button.ClickEvent;
 public class UserLimitGrid extends Grid implements SettingsChangeListener {
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
-  
+
   private ExpenseSheet expenseSheet;
-  
+
   public UserLimitGrid() {
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setImmediate(true);
-    
+
     setColumns("user.name", "limit", "order");
     getColumn("user.name").setHeaderCaption(Msg.get("settingsPage.userName"));
-    getColumn("user.name").setMaximumWidth(100);
     getColumn("limit").setHeaderCaption(Msg.get("settingsPage.userLimit"));
-    getColumn("limit").setMaximumWidth(100);
     getColumn("order").setHeaderCaption(Msg.get("settingsPage.userOrder"));
-    getColumn("order").setMaximumWidth(100);
-    setWidth("300px");
     getEditorFieldGroup().addCommitHandler(new CommitHandler() {
       @Override
-      public void preCommit(CommitEvent commitEvent) throws CommitException {}
-      
+      public void preCommit(CommitEvent commitEvent) throws CommitException {
+      }
+
       @SuppressWarnings("unchecked")
       @Override
       public void postCommit(CommitEvent commitEvent) throws CommitException {
-        UserLimitService.merge(((BeanItem<UserLimit>)commitEvent.getFieldBinder().getItemDataSource()).getBean());
+        UserLimitService.merge(((BeanItem<UserLimit>) commitEvent.getFieldBinder().getItemDataSource()).getBean());
         refreshValues();
       }
     });
-    
+
     addSelectionListener(new SelectionListener() {
       @Override
       public void select(SelectionEvent event) {
-        deleteUserLimitButton.setEnabled(getSelectedRow()!=null);
+        deleteUserLimitButton.setEnabled(getSelectedRow() != null);
       }
     });
-    
+
     setEditorEnabled(true);
     setEditorSaveCaption(Msg.get("settingsPage.userSave"));
     setEditorCancelCaption(Msg.get("settingsPage.userCancel"));
@@ -82,36 +79,34 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
     deleteUserLimitButton.addClickListener(new Button.ClickListener() {
       @Override
       public void buttonClick(ClickEvent event) {
-        ConfirmDialog.show(getUI(),
-            Msg.get("settingsPage.removeUserLabel"),
-            MessageFormat.format(Msg.get("settingsPage.removeUserQuestion"), new Object[] {getItem().getUser().getName()}),
-            Msg.get("settingsPage.removeUserYes"),
-            Msg.get("settingsPage.removeUserNo"),
-            new ConfirmDialog.Listener() {
-          @Override
-          public void onClose(ConfirmDialog dialog) {
-            if (dialog.isConfirmed()) {
-              ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-              UserLimitService.removeUserLimit(expenseSheet, getItem());
-              refreshValues();
-            }
-          }
-        });
+        ConfirmDialog.show(getUI(), Msg.get("settingsPage.removeUserLabel"),
+            MessageFormat.format(Msg.get("settingsPage.removeUserQuestion"),
+                new Object[] { getItem().getUser().getName() }),
+            Msg.get("settingsPage.removeUserYes"), Msg.get("settingsPage.removeUserNo"), new ConfirmDialog.Listener() {
+              @Override
+              public void onClose(ConfirmDialog dialog) {
+                if (dialog.isConfirmed()) {
+                  ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+                  UserLimitService.removeUserLimit(expenseSheet, getItem());
+                  refreshValues();
+                }
+              }
+            });
       }
     });
   }
-  
+
   public void refreshValues() {
     List<UserLimit> userLimitList = expenseSheet.getUserLimitListNotRealUser();
     getContainerDataSource().removeAllItems();
-    BeanItemContainer <UserLimit> container = new BeanItemContainer<UserLimit>(UserLimit.class, userLimitList);
+    BeanItemContainer<UserLimit> container = new BeanItemContainer<UserLimit>(UserLimit.class, userLimitList);
     container.addNestedContainerBean("user");
     setContainerDataSource(container);
     recalculateColumnWidths();
   }
-  
+
   @SuppressWarnings("unchecked")
   private UserLimit getItem() {
-    return ((BeanItem<UserLimit>)getContainerDataSource().getItem(getSelectedRow())).getBean();
+    return ((BeanItem<UserLimit>) getContainerDataSource().getItem(getSelectedRow())).getBean();
   }
 }

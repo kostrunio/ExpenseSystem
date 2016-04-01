@@ -81,7 +81,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
     disableAllButtons();
     
     if (expenseSheet != null) {
-      titleLabel.setCaption(expenseSheet.getName());
+      titleLabel.setValue(expenseSheet.getName());
       categoryGrid.refreshValues();
       realUserGrid.refreshValues();
       userGrid.refreshValues();
