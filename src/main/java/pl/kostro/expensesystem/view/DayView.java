@@ -100,6 +100,7 @@ public class DayView extends DayDesign {
               public void onClose(ConfirmDialog dialog) {
                 if (dialog.isConfirmed()) {
                   ExpenseService.removeExpense(expenseSheet, expense);
+                  prepareCategoryListLayout();
                   prepareExpenseListLayout();
                 }
               }
@@ -119,6 +120,7 @@ public class DayView extends DayDesign {
       if (userBox.getValue() instanceof UserLimit) {
         ExpenseService.saveExpense(expenseSheet, expense, (UserLimit) userBox.getValue(), formulaField.getValue(),
             commentBox.getValue(), modify);
+        prepareCategoryListLayout();
         prepareExpenseListLayout();
       }
     }
