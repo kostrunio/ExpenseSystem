@@ -14,7 +14,6 @@ import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.view.design.ExpenseDesign;
-import pl.kostro.expensesystem.views.chart.ChartSheetView;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetPasswordWindow;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetSettingsView;
 
@@ -44,7 +43,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     @Override
     public void buttonClick(final ClickEvent event) {
       root.removeAllComponents();
-      root.addComponent(new ChartSheetView());
+      root.addComponent(new ChartView());
     }
   };
   private Button.ClickListener filterClick = new Button.ClickListener() {
