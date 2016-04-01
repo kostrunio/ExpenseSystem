@@ -20,6 +20,7 @@ import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.SelectionEvent;
 import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -133,6 +134,7 @@ public class TableView extends TableDesign {
     expenseGrid.setContainerDataSource(new BeanItemContainer<Expense>(
             Expense.class, ExpenseService.findAllExpense(expenseSheet)));
     expenseGrid.recalculateColumnWidths();
+    expenseGrid.sort("date", SortDirection.DESCENDING);
     expenseForm.setVisible(false);
   }
 }
