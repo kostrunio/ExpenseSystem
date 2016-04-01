@@ -34,13 +34,11 @@ public class DayDesign extends VerticalLayout {
   protected Button backButton;
   protected VerticalLayout categoryLayout;
   protected Label categoryLabel;
-  protected HorizontalLayout expenseLayout;
   protected GridLayout expenseGrid;
   protected HorizontalLayout newExpenseLayout;
   protected ComboBox userBox;
   protected TextField formulaField;
   protected ComboBox commentBox;
-  protected HorizontalLayout buttonLayout;
   protected Button saveButton;
 
   public DayDesign() {
