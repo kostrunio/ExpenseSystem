@@ -58,20 +58,20 @@ public class ExpenseView extends ExpenseDesign implements View {
       }
     }
   };
-  private Button.ClickListener findClick = new Button.ClickListener() {
+  private Button.ClickListener tableClick = new Button.ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
       searchPanel.setVisible(false);
       mainView.removeAllComponents();
       if (yearMenu.isEnabled()) {
         yearMenu.setEnabled(false);
-        monthMenu.setEnabled(false);
+        monthMenu.setVisible(false);
         filterButton.setEnabled(false);
         mainView.addComponent(new TableView());
       } else {
         expenseSheet.setFilter(null);
         yearMenu.setEnabled(true);
-        monthMenu.setEnabled(true);
+        monthMenu.setVisible(true);
         filterButton.setEnabled(true);
         mainView.addComponent(new MonthView());
       }
@@ -146,7 +146,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     for (String year : ExpenseSheetService.getYearList(expenseSheet))
       yearMenu.addItem(year, yearCommand).setCheckable(true);
     filterButton.addClickListener(filterClick);
-    findButton.addClickListener(findClick);
+    tableButton.addClickListener(tableClick);
     for (String monthName : UserSummaryService.getMonthsName())
       if (!monthName.isEmpty())
         monthMenu.addItem(monthName, monthCommand).setCheckable(true);

@@ -38,6 +38,8 @@ public class MonthView extends MonthDesign {
     previousMonthButton.addClickListener(prevClick);
     nextMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_RIGHT);
     nextMonthButton.addClickListener(nextClick);
+    firstDateField.setDateFormat("yyyy-MM-dd");
+    lastDateField.setDateFormat("yyyy-MM-dd");
 
     showCalendar();
   }

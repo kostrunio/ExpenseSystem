@@ -13,6 +13,7 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.service.ExpenseService;
 import pl.kostro.expensesystem.service.ExpenseSheetService;
 import pl.kostro.expensesystem.service.UserSummaryService;
+import pl.kostro.expensesystem.utils.DateConverter;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.view.design.TableDesign;
 
@@ -70,8 +71,11 @@ public class TableView extends TableDesign {
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.calendar = VaadinSession.getCurrent().getAttribute(Calendar.class);
     setCaption();
+    fromDateField.setDateFormat("yyyy-MM-dd");
+    toDateField.setDateFormat("yyyy-MM-dd");
     expenseGrid.setContainerDataSource(new BeanItemContainer<Expense>(Expense.class));
     expenseGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
+    expenseGrid.getColumn("date").setConverter(new DateConverter());
 
     expenseForm.prepare(expenseSheet, this);
     

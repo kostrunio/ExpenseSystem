@@ -132,7 +132,7 @@ public class DayView extends DayDesign {
     this.calendar = VaadinSession.getCurrent().getAttribute(Calendar.class);
 
     setCaption();
-    thisDateField.setDateFormat("dd-MM-yyyy");
+    thisDateField.setDateFormat("yyyy-MM-dd");
     thisDateField.setValue(calendar.getTime());
     previousDayButton.addClickListener(prevClick);
     thisDateField.addValueChangeListener(dateChange);

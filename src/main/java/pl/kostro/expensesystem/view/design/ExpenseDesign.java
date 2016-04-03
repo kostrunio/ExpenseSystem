@@ -29,7 +29,7 @@ public class ExpenseDesign extends Panel {
   protected HorizontalLayout menuLayout;
   protected MenuBar yearMenu;
   protected Button filterButton;
-  protected Button findButton;
+  protected Button tableButton;
   
   protected MenuBar monthMenu;
 
@@ -122,15 +122,15 @@ public class ExpenseDesign extends Panel {
     menuLayout.setComponentAlignment(filterButton, Alignment.MIDDLE_RIGHT);
 
     // findButton
-    findButton = new Button();
-    findButton.setIcon(FontAwesome.TABLE);
-    findButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
-    findButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
-    findButton.setCaption(Msg.get("expense.find"));
-    findButton.setImmediate(true);
+    tableButton = new Button();
+    tableButton.setIcon(FontAwesome.TABLE);
+    tableButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+    tableButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+    tableButton.setCaption(Msg.get("expense.find"));
+    tableButton.setImmediate(true);
 
-    menuLayout.addComponent(findButton);
-    menuLayout.setComponentAlignment(findButton, Alignment.MIDDLE_RIGHT);
+    menuLayout.addComponent(tableButton);
+    menuLayout.setComponentAlignment(tableButton, Alignment.MIDDLE_RIGHT);
 
     return menuLayout;
   }
