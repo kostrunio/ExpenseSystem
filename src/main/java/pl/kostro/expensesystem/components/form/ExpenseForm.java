@@ -12,6 +12,8 @@ import pl.kostro.expensesystem.utils.Calculator;
 import pl.kostro.expensesystem.view.TableView;
 import pl.kostro.expensesystem.view.design.ExpenseFormDesign;
 
+import java.util.Date;
+
 import com.vaadin.data.Property;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Button;
@@ -39,6 +41,7 @@ public class ExpenseForm extends ExpenseFormDesign {
       expense.setFormula(formulaField.getValue());
       if (commentBox.getValue() != null && !commentBox.getValue().toString().isEmpty())
         expense.setComment(commentBox.getValue().toString());
+      expense.setNotify(notifyBox.getValue());
       expense.setExpenseSheet(expenseSheet);
       expense = ExpenseService.merge(expense);
       if (!expenseSheet.getExpenseList().contains(expense))
@@ -50,7 +53,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     @Override
     public void buttonClick(ClickEvent event) {
       Expense newExpense = new Expense(expense.getDate(), expense.getFormula(), expense.getCategory(),
-          expense.getUser(), expense.getComment(), expense.getExpenseSheet());
+          expense.getUser(), expense.getComment(), expense.isNotify(), expense.getExpenseSheet());
       edit(newExpense);
       saveButton.setEnabled(false);
     }
@@ -84,6 +87,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     userBox.setCaption(Msg.get("expensForm.user"));
     formulaField.setCaption(Msg.get("expensForm.formula"));
     commentBox.setCaption(Msg.get("expensForm.comment"));
+    notifyBox.setCaption(Msg.get("expensForm.notify"));
   }
 
   private void configureComponents() {
@@ -139,9 +143,13 @@ public class ExpenseForm extends ExpenseFormDesign {
       dateField.setValue(expense.getDate());
       categoryBox.setValue(expense.getCategory());
       userBox.setValue(ExpenseSheetService.getUserLimitForUser(expenseSheet, expense.getUser()));
+      formulaField.focus();
       formulaField.setValue(expense.getFormula());
       commentBox.setValue(expense.getComment());
-      formulaField.focus();
+      if (expense.isNotify() || expense.getDate().after(new Date())) {
+        notifyBox.setValue(expense.isNotify());
+        notifyBox.setVisible(true);
+      }
       if (expense.getId() == 0) {
         duplicateButton.setEnabled(false);
         removeButton.setEnabled(false);

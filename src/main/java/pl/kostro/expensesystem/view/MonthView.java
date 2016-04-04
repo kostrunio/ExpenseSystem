@@ -1,6 +1,5 @@
 package pl.kostro.expensesystem.view;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import pl.kostro.expensesystem.service.UserSummaryService;
@@ -9,7 +8,6 @@ import pl.kostro.expensesystem.view.design.MonthDesign;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.UI;
 import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
@@ -39,6 +37,7 @@ public class MonthView extends MonthDesign {
     nextMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_RIGHT);
     nextMonthButton.addClickListener(nextClick);
     firstDateField.setDateFormat("yyyy-MM-dd");
+    thisMonthField.setDateFormat("MMMM yyyy");
     lastDateField.setDateFormat("yyyy-MM-dd");
 
     showCalendar();
@@ -46,7 +45,7 @@ public class MonthView extends MonthDesign {
 
   public void showCalendar() {
     thisMonthField.setReadOnly(false);
-    thisMonthField.setValue(new SimpleDateFormat("MMMM yyyy", UI.getCurrent().getLocale()).format(date.getTime()));
+    thisMonthField.setValue(date.getTime());
     thisMonthField.setReadOnly(true);
     firstDateField.setValue(UserSummaryService.getFirstDay(date.getTime()));
     lastDateField.setValue(UserSummaryService.getLastDay(date.getTime()));

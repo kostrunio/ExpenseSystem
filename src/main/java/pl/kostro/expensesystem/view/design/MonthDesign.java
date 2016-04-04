@@ -5,7 +5,6 @@ import com.vaadin.annotations.DesignRoot;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.DateField;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
 import pl.kostro.expensesystem.components.calendar.ExpenseCalendar;
@@ -27,7 +26,7 @@ public class MonthDesign extends HorizontalLayout {
   protected VerticalLayout calendarLayout;
   protected HorizontalLayout navigationLayout;
   protected Button previousMonthButton;
-  protected TextField thisMonthField;
+  protected DateField thisMonthField;
   protected Button nextMonthButton;
   protected ExpenseCalendar monthCalendar;
   protected VerticalLayout summaryLayout;

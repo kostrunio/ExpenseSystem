@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.view;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.vaadin.teemu.VaadinIcons;
@@ -119,7 +120,7 @@ public class DayView extends DayDesign {
     public void buttonClick(ClickEvent event) {
       if (userBox.getValue() instanceof UserLimit) {
         ExpenseService.saveExpense(expenseSheet, expense, (UserLimit) userBox.getValue(), formulaField.getValue(),
-            commentBox.getValue(), modify);
+            commentBox.getValue(), notifyBox.getValue(), modify);
         prepareCategoryListLayout();
         prepareExpenseListLayout();
       }
@@ -143,10 +144,15 @@ public class DayView extends DayDesign {
 
     userBox.setNewItemsAllowed(false);
     userBox.setNullSelectionAllowed(false);
+    userBox.addItems(expenseSheet.getUserLimitList());
+    userBox.addValueChangeListener(valueChange);
+    formulaField.addValueChangeListener(valueChange);
     commentBox.setNewItemsAllowed(true);
     commentBox.setNullSelectionAllowed(true);
     commentBox.setFilteringMode(FilteringMode.CONTAINS);
+    commentBox.addValueChangeListener(valueChange);
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
+    saveButton.addClickListener(saveClick);
     prepareExpenseListLayout();
   }
 
@@ -155,6 +161,7 @@ public class DayView extends DayDesign {
     userBox.setCaption(Msg.get("newExpense.user"));
     formulaField.setCaption(Msg.get("newExpense.formula"));
     commentBox.setCaption(Msg.get("newExpense.comment"));
+    notifyBox.setCaption(Msg.get("newExpense.notify"));
     saveButton.setCaption(Msg.get("newExpense.save"));
     
   }
@@ -200,7 +207,7 @@ public class DayView extends DayDesign {
     else {
       expenseList = dateExpenseMap.getCategoryExpenseMap().get(category).getExpenseList();
     }
-    expenseGrid.setColumns(4);
+    expenseGrid.setColumns(5);
     expenseGrid.setRows(expenseList.size() == 0 ? 1 : expenseList.size());
 
     for (int i = 0; i < expenseList.size(); i++) {
@@ -229,12 +236,17 @@ public class DayView extends DayDesign {
       removeButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
       removeButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
       removeButton.setData(expense);
-      expenseGrid.addComponent(removeButton, 3, i);
-
       removeButton.addClickListener(removeClick);
+      expenseGrid.addComponent(removeButton, 3, i);
+      
+      if (expense.isNotify()) {
+        Label notifyLabel = new Label();
+        notifyLabel.setIcon(VaadinIcons.ENVELOPE);
+        expenseGrid.addComponent(notifyLabel, 4, i);
+      }
     }
     buildAddNewExpense(ExpenseService.prepareNewExpense(expenseSheet, calendar.getTime(), category,
-        expenseSheet.getUserLimitList().get(0).getUser()), false);
+        expenseSheet.getUserLimitList().get(0).getUser(), false), false);
   }
 
   private void verifyFormula(Object formula) {
@@ -247,23 +259,22 @@ public class DayView extends DayDesign {
   public void buildAddNewExpense(Expense expense, Boolean modify) {
     this.expense = expense;
     this.modify = modify;
-    userBox.removeAllItems();
-    userBox.addItems(expenseSheet.getUserLimitList());
+    
     if (expense.getUser() != null)
       userBox.select(ExpenseSheetService.getUserLimitForUser(expenseSheet, expense.getUser()));
     else
       userBox.select(expenseSheet.getUserLimitList().get(0));
-    userBox.addValueChangeListener(valueChange);
 
     formulaField.focus();
     formulaField.setValue(expense.getFormula());
-    formulaField.addValueChangeListener(valueChange);
 
     commentBox.removeAllItems();
     commentBox.addItems(ExpenseSheetService.getCommentForCategory(expenseSheet, expense.getCategory()));
     commentBox.select(expense.getComment());
-    commentBox.addValueChangeListener(valueChange);
-
-    saveButton.addClickListener(saveClick);
+    
+    if (expense.isNotify() || expense.getDate().after(new Date())) {
+      notifyBox.setValue(expense.isNotify());
+      notifyBox.setVisible(true);
+    }
   }
 }

@@ -67,6 +67,8 @@ public class Expense extends AbstractEntity {
   private String comment;
   @Column(name="e_comment_byte")
   private byte[] comment_byte;
+  @Column(name="e_notify")
+  private boolean notify;
   @ManyToOne
   @JoinColumn(name="e_es_id")
   private ExpenseSheet expenseSheet;
@@ -75,12 +77,13 @@ public class Expense extends AbstractEntity {
     super();
   }
 
-  public Expense(Date date, String formula, Category category, User user, String comment, ExpenseSheet expenseSheet) {
+  public Expense(Date date, String formula, Category category, User user, String comment, boolean notify, ExpenseSheet expenseSheet) {
     this.date = date;
     setFormula(formula);
     this.category = category;
     this.user = user;
     setComment(comment);
+    this.notify = notify;
     this.expenseSheet = expenseSheet;
   }
   
@@ -165,6 +168,14 @@ public class Expense extends AbstractEntity {
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.comment_byte = enc.encryption(comment);
     this.comment = comment;
+  }
+  
+  public boolean isNotify() {
+    return notify;
+  }
+
+  public void setNotify(boolean notify) {
+    this.notify = notify;
   }
   
   public ExpenseSheet getExpenseSheet() {

@@ -75,17 +75,18 @@ public class ExpenseService {
     return expense.getValue().toString();
   }
 
-  public static Expense prepareNewExpense(ExpenseSheet expenseSheet, Date date, Category category, User user) {
-    return new Expense(date, "", category, user, "", expenseSheet);
+  public static Expense prepareNewExpense(ExpenseSheet expenseSheet, Date date, Category category, User user, boolean notify) {
+    return new Expense(date, "", category, user, "", notify, expenseSheet);
   }
 
-  public static void saveExpense(ExpenseSheet expenseSheet, Expense expense, UserLimit userLimit, String formula, Object comment, Boolean modify) {
+  public static void saveExpense(ExpenseSheet expenseSheet, Expense expense, UserLimit userLimit, String formula, Object comment, Boolean notify, Boolean modify) {
     if (modify)
       ExpenseService.removeExpense(expenseSheet, expense);
     expense.setUser(userLimit.getUser());
     expense.setFormula(formula.startsWith("=")?formula.substring(1):formula);
     if (comment != null)
       expense.setComment(comment.toString());
+    expense.setNotify(notify);
     ExpenseService.creteExpense(expenseSheet, expense);
   }
   
