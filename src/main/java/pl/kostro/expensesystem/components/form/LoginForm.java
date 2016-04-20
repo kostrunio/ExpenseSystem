@@ -3,8 +3,8 @@ package pl.kostro.expensesystem.components.form;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
-import pl.kostro.expensesystem.service.RealUserService;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;

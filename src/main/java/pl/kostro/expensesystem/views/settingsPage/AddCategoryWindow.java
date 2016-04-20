@@ -2,8 +2,8 @@ package pl.kostro.expensesystem.views.settingsPage;
 
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.service.CategoryService;
 import pl.kostro.expensesystem.notification.ShowNotification;
-import pl.kostro.expensesystem.service.CategoryService;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;

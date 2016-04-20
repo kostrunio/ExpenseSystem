@@ -10,27 +10,30 @@ import pl.kostro.expensesystem.view.design.LoginDesign;
 @SuppressWarnings("serial")
 public class LoginView extends LoginDesign {
 
+  private Button.ClickListener signInClick = new Button.ClickListener() {
+    @Override
+    public void buttonClick(ClickEvent event) {
+      signInEnable();
+      registerForm.setVisible(false);
+      loginForm.setVisible(true);
+    }
+  };
+  private Button.ClickListener signUpClick = new Button.ClickListener() {
+    @Override
+    public void buttonClick(ClickEvent event) {
+      signUpEnable();
+      loginForm.setVisible(false);
+      registerForm.setVisible(true);
+    }
+  };
+
   public LoginView() {
     setCaption();
     signIn.setDisableOnClick(true);
     signUp.setDisableOnClick(true);
 
-    signIn.addClickListener(new Button.ClickListener() {
-      @Override
-      public void buttonClick(ClickEvent event) {
-        signInEnable();
-        registerForm.setVisible(false);
-        loginForm.setVisible(true);
-      }
-    });
-    signUp.addClickListener(new Button.ClickListener() {
-      @Override
-      public void buttonClick(ClickEvent event) {
-        signUpEnable();
-        loginForm.setVisible(false);
-        registerForm.setVisible(true);
-      }
-    });
+    signIn.addClickListener(signInClick);
+    signUp.addClickListener(signUpClick);
   }
 
   private void setCaption() {

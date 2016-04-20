@@ -9,7 +9,7 @@ import java.util.Map;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.UserLimit;
-import pl.kostro.expensesystem.service.ExpenseSheetService;
+import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 
 public class DateExpense {
 	private Date date;

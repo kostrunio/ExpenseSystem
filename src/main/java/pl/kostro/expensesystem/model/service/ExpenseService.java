@@ -1,8 +1,14 @@
-package pl.kostro.expensesystem.service;
+package pl.kostro.expensesystem.model.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.NoResultException;
+
+import com.google.gwt.thirdparty.guava.common.collect.ImmutableMap;
 
 import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.Category;
@@ -75,8 +81,8 @@ public class ExpenseService {
     return expense.getValue().toString();
   }
 
-  public static Expense prepareNewExpense(ExpenseSheet expenseSheet, Date date, Category category, User user, boolean notify) {
-    return new Expense(date, "", category, user, "", notify, expenseSheet);
+  public static Expense prepareNewExpense(ExpenseSheet expenseSheet, Date date, Category category, User user) {
+    return new Expense(date, "", category, user, "", date.after(new Date())?true:false, expenseSheet);
   }
 
   public static void saveExpense(ExpenseSheet expenseSheet, Expense expense, UserLimit userLimit, String formula, Object comment, Boolean notify, Boolean modify) {
@@ -111,4 +117,26 @@ public class ExpenseService {
     expense = ExpenseEntityDao.getEntityManager().merge(expense);
   }
 
+  public static List<Expense> findExpensesToNotify() {
+    ExpenseEntityDao.begin();
+    List<Expense> expenseList = null;
+    Calendar date = Calendar.getInstance();
+    date.set(Calendar.HOUR, 0);
+    date.set(Calendar.MINUTE, 0);
+    date.set(Calendar.SECOND, 0);
+    date.set(Calendar.MILLISECOND, 0);
+//    SimpleDateFormat formater = new SimpleDateFormat("yyyy-mm-dd hh24:mi:ss");
+//    System.out.println("date: " + formater.format(date.getTime()));
+    System.out.println("date: " + date.getTime());
+    try {
+      expenseList = ExpenseEntityDao.findByNamedQueryWithParameters("findExpensesToNotify", ImmutableMap.of("date", date.getTime()), Expense.class);
+      ExpenseEntityDao.commit();
+    } catch (NoResultException e) {
+
+    } finally {
+      ExpenseEntityDao.close();
+    }
+    System.out.println("Found " + expenseList.size() + " expenses to notify");
+    return expenseList;
+  }
 }

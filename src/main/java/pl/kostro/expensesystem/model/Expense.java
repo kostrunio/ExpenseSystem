@@ -27,21 +27,8 @@ import pl.kostro.expensesystem.utils.Encryption;
 @Table(name="expenses")
 @NamedQueries({
   @NamedQuery(
-      name = "findAllExpense",
-      query = "select e from ExpenseSheet es join es.expenseList e where es = :expenseSheet order by e.date desc"
-      ),
-  @NamedQuery(
-      name = "findFirstExpense",
-      query = "select e from ExpenseSheet es join es.expenseList e where es = :expenseSheet and e.date = (select min(e1.date) from Expense e1 where e1.expenseSheet = e.expenseSheet)"
-      ),
-  @NamedQuery(
-      name = "findExpenseByDates",
-      query = "select e from ExpenseSheet es join es.expenseList e where es.id = :expenseSheet and e.date between :startDate and :endDate"
-      ),
-  @NamedQuery(
-      name = "findExpenseByCategory",
-      query = "select e from ExpenseSheet es join es.expenseList e where es.id = :expenseSheet and e.category = :category"
-      )
+      name = "findExpensesToNotify",
+      query = "select e from Expense e where e.notify = true and e.date = :date")
 })
 public class Expense extends AbstractEntity {
   @Id

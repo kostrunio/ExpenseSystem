@@ -17,6 +17,7 @@ import pl.kostro.expensesystem.model.AbstractEntity;
 public class ExpenseEntityDao {
   private static EntityManagerFactory entityManagerFactory;
   private static EntityManager entityManager;
+  private static EntityTransaction transaction;
 
   public static EntityManagerFactory getEntityManagerFactory() {
     if (entityManagerFactory == null)
@@ -31,7 +32,12 @@ public class ExpenseEntityDao {
   }
   
   public static EntityTransaction getTransaction() {
-    if (VaadinSession.getCurrent().getAttribute(EntityTransaction.class) == null)
+    if (VaadinSession.getCurrent() == null) {
+      //transaction not from Vaadin
+      if (transaction == null)
+        transaction = getEntityManager().getTransaction();
+      return transaction;
+    } else if (VaadinSession.getCurrent().getAttribute(EntityTransaction.class) == null)
       VaadinSession.getCurrent().setAttribute(EntityTransaction.class, getEntityManager().getTransaction());
     return VaadinSession.getCurrent().getAttribute(EntityTransaction.class);
   }
@@ -50,8 +56,10 @@ public class ExpenseEntityDao {
   }
 
   public static void close() {
-    getEntityManager().close();
-    VaadinSession.getCurrent().setAttribute(EntityTransaction.class, null);
+    if (VaadinSession.getCurrent() == null)
+      transaction = null;
+    else
+      VaadinSession.getCurrent().setAttribute(EntityTransaction.class, null);
   }
   
   @SuppressWarnings("unchecked")

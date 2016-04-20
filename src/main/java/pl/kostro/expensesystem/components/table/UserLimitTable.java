@@ -6,7 +6,7 @@ import java.util.Calendar;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
-import pl.kostro.expensesystem.service.UserSummaryService;
+import pl.kostro.expensesystem.model.service.UserSummaryService;
 
 import com.vaadin.data.Item;
 import com.vaadin.server.VaadinSession;

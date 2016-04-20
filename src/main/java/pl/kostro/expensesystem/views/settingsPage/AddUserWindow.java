@@ -2,9 +2,9 @@ package pl.kostro.expensesystem.views.settingsPage;
 
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.service.UserLimitService;
+import pl.kostro.expensesystem.model.service.UserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
-import pl.kostro.expensesystem.service.UserLimitService;
-import pl.kostro.expensesystem.service.UserService;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;

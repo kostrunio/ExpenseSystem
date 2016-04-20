@@ -11,8 +11,8 @@ import com.vaadin.ui.Button.ClickListener;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
-import pl.kostro.expensesystem.service.RealUserService;
 import pl.kostro.expensesystem.view.design.AccountDesign;
 
 @SuppressWarnings("serial")

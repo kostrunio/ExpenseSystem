@@ -31,7 +31,8 @@ public class ExpenseSystemUI extends UI {
 
   private MainView mainView;
 
-  @Override protected void init(VaadinRequest vaadinRequest) {
+  @Override
+  protected void init(VaadinRequest vaadinRequest) {
     Locale.setDefault(vaadinRequest.getLocale());
     TimeZone.setDefault(TimeZone.getTimeZone("Europe/Warsaw"));
     Responsive.makeResponsive(this);

@@ -2,7 +2,7 @@ package pl.kostro.expensesystem.view;
 
 import java.util.Calendar;
 
-import pl.kostro.expensesystem.service.UserSummaryService;
+import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.view.design.MonthDesign;
 
 import com.vaadin.event.ShortcutAction;

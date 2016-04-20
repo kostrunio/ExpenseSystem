@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.service.ExpenseSheetService;
-import pl.kostro.expensesystem.service.UserSummaryService;
+import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Converter;
 import pl.kostro.expensesystem.utils.DateExpense;
 import pl.kostro.expensesystem.view.DayView;

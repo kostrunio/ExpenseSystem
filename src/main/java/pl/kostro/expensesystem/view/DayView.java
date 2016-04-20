@@ -13,8 +13,8 @@ import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
-import pl.kostro.expensesystem.service.ExpenseService;
-import pl.kostro.expensesystem.service.ExpenseSheetService;
+import pl.kostro.expensesystem.model.service.ExpenseService;
+import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Calculator;
 import pl.kostro.expensesystem.utils.CategoryExpense;
 import pl.kostro.expensesystem.utils.DateExpense;
@@ -246,7 +246,7 @@ public class DayView extends DayDesign {
       }
     }
     buildAddNewExpense(ExpenseService.prepareNewExpense(expenseSheet, calendar.getTime(), category,
-        expenseSheet.getUserLimitList().get(0).getUser(), false), false);
+        expenseSheet.getUserLimitList().get(0).getUser()), false);
   }
 
   private void verifyFormula(Object formula) {

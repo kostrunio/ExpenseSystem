@@ -6,8 +6,8 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.service.CategoryService;
-import pl.kostro.expensesystem.service.ExpenseSheetService;
+import pl.kostro.expensesystem.model.service.CategoryService;
+import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.views.settingsPage.AddCategoryWindow;
 import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 

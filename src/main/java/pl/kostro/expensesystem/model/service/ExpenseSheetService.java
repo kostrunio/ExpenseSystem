@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.service;
+package pl.kostro.expensesystem.model.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;

@@ -7,8 +7,8 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.notification.ShowNotification;
-import pl.kostro.expensesystem.service.UserLimitService;
 import pl.kostro.expensesystem.views.settingsPage.AddRealUserWindow;
 import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 

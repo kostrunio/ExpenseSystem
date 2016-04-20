@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.service.ExpenseSheetService;
+import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.CategoryExpense;
 
 import com.vaadin.data.Item;

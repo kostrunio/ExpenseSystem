@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.service;
+package pl.kostro.expensesystem.model.service;
 
 import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.User;
