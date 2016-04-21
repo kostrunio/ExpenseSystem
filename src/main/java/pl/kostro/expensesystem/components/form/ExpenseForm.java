@@ -109,6 +109,8 @@ public class ExpenseForm extends ExpenseFormDesign {
     commentBox.setNullSelectionAllowed(true);
     commentBox.addValueChangeListener(valueChange);
 
+    notifyBox.addValueChangeListener(valueChange);
+
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
     saveButton.addClickListener(saveClick);
 
