@@ -1,6 +1,5 @@
 package pl.kostro.expensesystem.model.service;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -121,13 +120,10 @@ public class ExpenseService {
     ExpenseEntityDao.begin();
     List<Expense> expenseList = null;
     Calendar date = Calendar.getInstance();
-    date.set(Calendar.HOUR, 0);
+    date.set(Calendar.HOUR_OF_DAY, 0);
     date.set(Calendar.MINUTE, 0);
     date.set(Calendar.SECOND, 0);
     date.set(Calendar.MILLISECOND, 0);
-//    SimpleDateFormat formater = new SimpleDateFormat("yyyy-mm-dd hh24:mi:ss");
-//    System.out.println("date: " + formater.format(date.getTime()));
-    System.out.println("date: " + date.getTime());
     try {
       expenseList = ExpenseEntityDao.findByNamedQueryWithParameters("findExpensesToNotify", ImmutableMap.of("date", date.getTime()), Expense.class);
       ExpenseEntityDao.commit();

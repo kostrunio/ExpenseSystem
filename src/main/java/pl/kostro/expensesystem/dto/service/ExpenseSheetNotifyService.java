@@ -16,14 +16,16 @@ public class ExpenseSheetNotifyService {
     Map<ExpenseSheet, List<Expense>> eSMap;
     List<Expense> eList;
     for (Expense expense : expenseList) {
-      if (!rUMap.containsKey(expense.getExpenseSheet().getOwner()))
+      if (!rUMap.containsKey(expense.getExpenseSheet().getOwner())) {
         eSMap = new HashMap<ExpenseSheet, List<Expense>>();
-      else
+        rUMap.put(expense.getExpenseSheet().getOwner(), eSMap);
+      } else
         eSMap = rUMap.get(expense.getExpenseSheet().getOwner());
 
-      if (!eSMap.containsKey(expense.getExpenseSheet()))
+      if (!eSMap.containsKey(expense.getExpenseSheet())) {
         eList = new ArrayList<Expense>();
-      else
+        eSMap.put(expense.getExpenseSheet(), eList);
+      } else
         eList = eSMap.get(expense.getExpenseSheet());
 
       eList.add(expense);
