@@ -24,6 +24,11 @@ public class SendNotification implements Job {
       Map<ExpenseSheet, List<Expense>> eSMap = notifyMap.get(realUser);
       for (ExpenseSheet eS : eSMap.keySet()) {
         System.out.println("SendNotification: " + realUser.getName() + "; " + eS.getName() + "; " + eSMap.get(eS).size());
+        SendEmail.expenses(realUser, eS, eSMap.get(eS).size());
+        for (Expense e : eSMap.get(eS)) {
+          e.setNotify(false);
+          ExpenseService.merge(e);
+        }
       }
     }
     System.out.println("SendNotification - finished");

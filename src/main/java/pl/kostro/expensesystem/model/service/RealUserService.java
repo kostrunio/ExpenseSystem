@@ -40,10 +40,10 @@ public class RealUserService {
     } finally {
     }
   }
-  public static void createRealUser(String name, String password, String email) {
+  public static RealUser createRealUser(String name, String password, String email) {
     ExpenseEntityDao.begin();
+    RealUser realUser = new RealUser();
     try {
-      RealUser realUser = new RealUser();
       realUser.setName(name);
       messageDigest.update(password.getBytes());
       realUser.setPassword(new String(messageDigest.digest()));
@@ -52,6 +52,7 @@ public class RealUserService {
       ExpenseEntityDao.commit();
     } finally {
     }
+    return realUser;
   }
 
   public static void setDefaultExpenseSheet(RealUser realUser, ExpenseSheet expenseSheet) {
