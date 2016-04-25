@@ -137,6 +137,7 @@ public class ExpenseDesign extends Panel {
 
   private Component buildMonthMenu() {
     monthMenu = new MenuBar();
+    monthMenu.addStyleName("month-menu");
     monthMenu.setImmediate(false);
     monthMenu.setSizeUndefined();
     return monthMenu;

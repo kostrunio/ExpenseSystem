@@ -64,11 +64,13 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
 @import "../valo/valo.scss";
 @import "views/login.scss";
 @import "views/menu.scss";
+@import "views/main.scss";
 
 @mixin expensesystem {
   @include valo;
   @include login;
   @include menu;
+  @include main;
 
   .v-calendar .v-calendar-event-1-all-day, .v-table-cell-content-1 {
     color: #37404E;
