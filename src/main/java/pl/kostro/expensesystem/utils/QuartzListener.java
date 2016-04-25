@@ -1,9 +1,12 @@
 package pl.kostro.expensesystem.utils;
 
+import java.text.ParseException;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 
+import org.quartz.CronExpression;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;
@@ -25,7 +28,7 @@ public class QuartzListener extends QuartzInitializerListener {
       Scheduler scheduler = factory.getScheduler();
       JobDetail jobDetail = JobBuilder.newJob(SendNotification.class).build();
       Trigger trigger = TriggerBuilder.newTrigger().withIdentity("simple")
-          .withSchedule(CronScheduleBuilder.cronSchedule("0 0/1 * 1/1 * ? *")).startNow().build();
+          .withSchedule(CronScheduleBuilder.cronSchedule("0 0 0/2 * * ? *")).startNow().build();
       scheduler.scheduleJob(jobDetail, trigger);
       scheduler.start();
     } catch (Exception e) {
@@ -33,4 +36,8 @@ public class QuartzListener extends QuartzInitializerListener {
     }
   }
 
+  public static void main(String... args) throws ParseException {
+    CronExpression cron = new CronExpression("0 0 0/2 * * ? *");
+    System.out.println(cron);
+  }
 }
