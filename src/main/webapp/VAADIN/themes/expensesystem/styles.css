@@ -13161,123 +13161,12 @@ div.v-layout.v-horizontal.v-widget {
 	margin-top: 0.4em;
 }
 
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"], .expensesystem .valo-menu-responsive[width-range~="0-800px"] {
-	padding-top: 96px;
+.expensesystem .v-ui[width-range~="0-1100px"] .month-menu {
+	visibility: hidden;
 }
 
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part {
-	min-width: 0;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-item, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part .valo-menu-item {
-	font-size: 48px;
-	text-align: left;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-item [class*="caption"], .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part .valo-menu-item [class*="caption"] {
-	display: inline;
-	font-size: 36px;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part [class*="subtitle"], .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part [class*="subtitle"] {
-	margin: 8px 0 0;
-	padding: 6px 21px 6px 8px;
-	line-height: 1;
-	border: none;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	font-size: 36px;
-	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .v-menubar-menuitem, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part .v-menubar-menuitem {
-	line-height: 93px;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part img.v-icon, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part img.v-icon {
-	margin: 0 15px 0 0;
-	width: 48px;
-	height: 48px;
-	border-radius: 24px;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-title, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-part .valo-menu-title {
-	font-size: 36px;
-	position: fixed;
-	z-index: 100;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: 96px !important;
-	padding-top: 0;
-	padding-bottom: 0;
-	-webkit-backface-visibility: hidden;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .v-loading-indicator, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .v-loading-indicator {
-	top: 96px;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-title, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-title {
-	font-size: 36px;
-	position: fixed;
-	z-index: 100;
-	top: 0;
-	left: 0;
-	right: 0;
-	height: 96px !important;
-	padding-top: 0;
-	padding-bottom: 0;
-	-webkit-backface-visibility: hidden;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu .v-menubar-user-menu, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu .v-menubar-user-menu {
-	position: fixed;
-	z-index: 100;
-	top: 0;
-	right: 0;
-	margin: 0;
-	padding: 0;
-	height: 96px;
-	max-width: 30%;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menuitems, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menuitems {
-	background-color: #3b3f42;
-	height: 100%;
-	font-size: 42px;
-	line-height: 78px;
-	position: fixed;
-	z-index: 9000;
-	top: 96px;
-	bottom: 0;
-	height: auto;
-	max-width: 100%;
-	overflow: auto;
-	padding: 48px 0;
-	-webkit-transform: translatex(-100%);
-	-moz-transform: translatex(-100%);
-	-ms-transform: translatex(-100%);
-	-o-transform: translatex(-100%);
-	transform: translatex(-100%);
-	-webkit-transition: all 300ms;
-	-moz-transition: all 300ms;
-	transition: all 300ms;
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-visible .valo-menuitems, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-visible .valo-menuitems {
-	-webkit-transform: translatex(0%);
-	-moz-transform: translatex(0%);
-	-ms-transform: translatex(0%);
-	-o-transform: translatex(0%);
-	transform: translatex(0%);
-}
-
-.expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-toggle, .expensesystem .valo-menu-responsive[width-range~="0-800px"] .valo-menu-toggle {
-	display: inline-block;
-	height: 64px;
-	font-size: 24px;
-	margin-top: 15px;
+.expensesystem .v-ui[width-range~="0-1100px"] .summary-layout {
+	visibility: hidden;
 }
 
 .expensesystem .v-calendar .v-calendar-event-1-all-day, .expensesystem .v-table-cell-content-1 {
