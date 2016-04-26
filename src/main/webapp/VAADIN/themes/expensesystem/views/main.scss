@@ -1,10 +1,10 @@
 @mixin main {
 
   .v-ui[width-range~="0-1100px"] .month-menu {
-    visibility: hidden;
+    display: none;
   }
-  
+
   .v-ui[width-range~="0-1100px"] .summary-layout {
-    visibility: hidden;
+    display: none;
   }
 }

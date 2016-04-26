@@ -13162,11 +13162,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .v-ui[width-range~="0-1100px"] .month-menu {
-	visibility: hidden;
+	display: none;
 }
 
 .expensesystem .v-ui[width-range~="0-1100px"] .summary-layout {
-	visibility: hidden;
+	display: none;
 }
 
 .expensesystem .v-calendar .v-calendar-event-1-all-day, .expensesystem .v-table-cell-content-1 {
