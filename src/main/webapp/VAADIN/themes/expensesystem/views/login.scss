@@ -1,3 +1,9 @@
+@include keyframes(animate-in-scale-up) {
+  0% {
+    @include transform(scale(0));
+  }
+}
+
 @mixin login {
   // login screen - for small screens, see below
   .login-screen {
@@ -74,19 +80,9 @@
     }
   }
   
-  .v-ui[width-range~="0-1100px"] .login-screen {
+  .v-ui[width-range~="0-800px"] .login-screen {
     height: auto;
     min-height: 100%;
-    
-    font-size: 45px;
-    
-    .v-caption {
-      font-size: 42px;
-    }
-    
-    .v-button, .v-textfield {
-      height: 96px;
-    }
     
     .centering-layout {
       display: block;
@@ -98,8 +94,8 @@
     }
     
     .login-panel {
-      width: 100%;
       max-width: 100%;
+      @include animation(animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards);
       
       .login-form, .register-form {
         width: 95%;
@@ -132,5 +128,3 @@
     }
   }
 }
-
-

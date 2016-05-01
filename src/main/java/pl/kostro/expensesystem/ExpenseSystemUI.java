@@ -3,6 +3,7 @@ package pl.kostro.expensesystem;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 
 import com.vaadin.annotations.Theme;
@@ -64,5 +65,10 @@ public class ExpenseSystemUI extends UI {
   @WebServlet(urlPatterns = "/*", name = "ExpenseSystemUIServlet", asyncSupported = true)
   @VaadinServletConfiguration(ui = ExpenseSystemUI.class, productionMode = false)
   public static class ExpenseSystemUIServlet extends VaadinServlet {
+    @Override
+    protected final void servletInitialized() throws ServletException {
+        super.servletInitialized();
+        getService().addSessionInitListener(new ExpenseSystemSessionInitListener());
+    }
   }
 }

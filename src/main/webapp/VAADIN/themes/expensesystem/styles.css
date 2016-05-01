@@ -1631,6 +1631,28 @@ div.v-layout.v-horizontal.v-widget {
 	vertical-align: top;
 }
 
+@-webkit-keyframes animate-in-scale-up {
+		0% {
+		-webkit-transform: scale(0);
+	}
+	}
+
+@-moz-keyframes animate-in-scale-up {
+		0% {
+		-moz-transform: scale(0);
+	}
+	}
+
+@keyframes animate-in-scale-up {
+		0% {
+		-webkit-transform: scale(0);
+		-moz-transform: scale(0);
+		-ms-transform: scale(0);
+		-o-transform: scale(0);
+		transform: scale(0);
+	}
+	}
+
 @font-face {
 	font-family: "Vaadin-Icons";
 	src: url('fonts/Vaadin-Icons.eot');
@@ -12823,12 +12845,12 @@ div.v-layout.v-horizontal.v-widget {
 
 .expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part {
 	background-color: #3b3f42;
-	min-width: 128px;
-	max-width: 192px;
+	min-width: 64px;
+	max-width: 96px;
 }
 
 .expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-title {
-	font-size: 22px;
+	font-size: 11px;
 }
 
 .expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-title .v-label-undef-w {
@@ -12838,12 +12860,12 @@ div.v-layout.v-horizontal.v-widget {
 .expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .v-menubar-user-menu {
 	margin-left: 0;
 	margin-right: 0;
-	font-size: 22px;
+	font-size: 11px;
 }
 
 .expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .v-menubar-user-menu img.v-icon {
-	width: 50px;
-	height: 50px;
+	width: 25px;
+	height: 25px;
 }
 
 .expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part [class*="subtitle"] {
@@ -12854,7 +12876,7 @@ div.v-layout.v-horizontal.v-widget {
 	text-overflow: ellipsis;
 	overflow: hidden;
 	background: #2d3032;
-	font-size: 24px;
+	font-size: 12px;
 	box-shadow: 0 2px 3px rgba(0, 0, 0, 0.05);
 }
 
@@ -12868,7 +12890,7 @@ div.v-layout.v-horizontal.v-widget {
 
 .expensesystem .valo-menu-responsive[width-range~="801px-1100px"] .valo-menu-part .valo-menu-item {
 	display: block;
-	font-size: 48px;
+	font-size: 24px;
 	line-height: 1;
 	padding: 11px;
 	text-align: center;
@@ -12884,7 +12906,7 @@ div.v-layout.v-horizontal.v-widget {
 	width: auto;
 	margin: 0.3em 0 0;
 	padding: 0;
-	font-size: 22px;
+	font-size: 11px;
 	line-height: 1.3;
 }
 
@@ -13103,21 +13125,12 @@ div.v-layout.v-horizontal.v-widget {
 	color: inherit;
 }
 
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen {
+.expensesystem .v-ui[width-range~="0-800px"] .login-screen {
 	height: auto;
 	min-height: 100%;
-	font-size: 45px;
 }
 
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .v-caption {
-	font-size: 42px;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .v-button, .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .v-textfield {
-	height: 96px;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .centering-layout {
+.expensesystem .v-ui[width-range~="0-800px"] .login-screen .centering-layout {
 	display: block;
 	width: 100%;
 	height: auto;
@@ -13126,38 +13139,40 @@ div.v-layout.v-horizontal.v-widget {
 	padding-bottom: 60px;
 }
 
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel {
-	width: 100%;
+.expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel {
 	max-width: 100%;
+	-webkit-animation: animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards;
+	-moz-animation: animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards;
+	animation: animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards;
 }
 
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .login-form, .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .register-form {
+.expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .login-form, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .register-form {
 	width: 95%;
 	max-width: 100%;
 }
 
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .login-form .v-textfield, .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .register-form .v-textfield {
+.expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .login-form .v-textfield, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .register-form .v-textfield {
 	width: 100% !important;
 }
 
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .login-form .v-formlayout-captioncell, .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .login-form .v-formlayout-contentcell, .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .login-form .v-formlayout-errorcell, .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .register-form .v-formlayout-captioncell, .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .register-form .v-formlayout-contentcell, .expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-panel .register-form .v-formlayout-errorcell {
+.expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .login-form .v-formlayout-captioncell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .login-form .v-formlayout-contentcell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .login-form .v-formlayout-errorcell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .register-form .v-formlayout-captioncell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .register-form .v-formlayout-contentcell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .register-form .v-formlayout-errorcell {
 	display: block;
 	text-align: center;
 	padding-top: 0;
 }
 
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-information {
+.expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-information {
 	position: static;
 	width: 100%;
 	height: auto;
 	padding: 21px 21px 21px 21px;
 }
 
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-information .v-label {
+.expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-information .v-label {
 	text-align: center;
 }
 
-.expensesystem .v-ui[width-range~="0-1100px"] .login-screen .login-information .v-label h1 {
+.expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-information .v-label h1 {
 	margin-top: 0.4em;
 }
 
