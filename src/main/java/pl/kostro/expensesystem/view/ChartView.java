@@ -16,17 +16,14 @@ import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.YearCategory;
 import pl.kostro.expensesystem.view.design.ChartDesign;
-import at.downdrown.vaadinaddons.highchartsapi.HighChart;
-import at.downdrown.vaadinaddons.highchartsapi.HighChartFactory;
-import at.downdrown.vaadinaddons.highchartsapi.exceptions.HighChartsException;
-import at.downdrown.vaadinaddons.highchartsapi.model.Axis;
-import at.downdrown.vaadinaddons.highchartsapi.model.ChartConfiguration;
-import at.downdrown.vaadinaddons.highchartsapi.model.ChartType;
-import at.downdrown.vaadinaddons.highchartsapi.model.data.HighChartsData;
-import at.downdrown.vaadinaddons.highchartsapi.model.data.base.DoubleData;
-import at.downdrown.vaadinaddons.highchartsapi.model.series.ColumnChartSeries;
-import at.downdrown.vaadinaddons.highchartsapi.model.series.LineChartSeries;
 
+import com.vaadin.addon.charts.Chart;
+import com.vaadin.addon.charts.model.Axis;
+import com.vaadin.addon.charts.model.ChartType;
+import com.vaadin.addon.charts.model.Configuration;
+import com.vaadin.addon.charts.model.ListSeries;
+import com.vaadin.addon.charts.model.Series;
+import com.vaadin.addon.charts.model.Tooltip;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -81,49 +78,43 @@ public class ChartView extends ChartDesign {
     chartLayout.removeAllComponents();
     List<YearCategory> yearCategoryList = ExpenseSheetService.prepareYearCategoryList(expenseSheet);
 
-    Axis xAxis = new Axis(Axis.AxisType.xAxis);
-    for (String monthName : UserSummaryService.getMonthsName())
-      xAxis.getCategories().add(monthName);
-
-    ChartConfiguration lineConfiguration = new ChartConfiguration();
+    Chart lineChart = new Chart(ChartType.LINE);
+    Configuration lineConfiguration = lineChart.getConfiguration();
+    
     lineConfiguration.setTitle(Msg.get("chart.tytle1"));
-    lineConfiguration.setChartType(ChartType.LINE);
-    lineConfiguration.setxAxis(xAxis);
+    Axis xAxis1 = lineConfiguration.getxAxis();
+    xAxis1.setCategories(UserSummaryService.getMonthsName());
+    Tooltip tooltip = lineConfiguration.getTooltip();
+    tooltip.setValueSuffix(Msg.get("chart.suffix"));
+    tooltip.setShared(true);
 
-    ChartConfiguration columnConfiguration = new ChartConfiguration();
+
+    Chart columnChart = new Chart(ChartType.COLUMN);
+    Configuration columnConfiguration = columnChart.getConfiguration();
     columnConfiguration.setTitle(Msg.get("chart.tytle2"));
-    columnConfiguration.setChartType(ChartType.COLUMN);
-    columnConfiguration.setxAxis(xAxis);
+    Axis xAxis2 = columnConfiguration.getxAxis();
+    xAxis2.setCategories(UserSummaryService.getMonthsName());
 
     for (YearCategory yearCategory : yearCategoryList) {
       BigDecimal sum = new BigDecimal(0);
-      List<HighChartsData> monthValues1 = new ArrayList<HighChartsData>();
-      List<HighChartsData> monthValues2 = new ArrayList<HighChartsData>();
+      List<Double> monthValues1 = new ArrayList<Double>();
+      List<Double> monthValues2 = new ArrayList<Double>();
       for (int m = 0; m <= 11; m++) {
         BigDecimal value = yearCategory.getMonthValue(m);
         if (value != null) {
           sum = sum.add(value);
-          monthValues1.add(new DoubleData(sum.doubleValue()));
-          monthValues2.add(new DoubleData(value.doubleValue()));
+          monthValues1.add(sum.doubleValue());
+          monthValues2.add(value.doubleValue());
         }
       }
-      LineChartSeries yearLine1 = new LineChartSeries(yearCategory.getYear() + "", monthValues1);
-      ColumnChartSeries yearLine2 = new ColumnChartSeries(yearCategory.getYear() + "", monthValues2);
-      lineConfiguration.getSeriesList().add(yearLine1);
-      columnConfiguration.getSeriesList().add(yearLine2);
+      Series yearLine1 = new ListSeries(yearCategory.getYear() + "", monthValues1.toArray(new Double[0]));
+      Series yearLine2 = new ListSeries(yearCategory.getYear() + "", monthValues2.toArray(new Double[0]));
+      lineConfiguration.addSeries(yearLine1);
+      columnConfiguration.addSeries(yearLine2);
     }
 
-    try {
-      HighChart lineChart = HighChartFactory.renderChart(lineConfiguration);
-      lineChart.setSizeFull();
 
-      HighChart columnChart = HighChartFactory.renderChart(columnConfiguration);
-      columnChart.setSizeFull();
-
-      chartLayout.addComponent(lineChart);
-      chartLayout.addComponent(columnChart);
-    } catch (HighChartsException e) {
-      e.printStackTrace();
-    }
+    chartLayout.addComponent(lineChart);
+    chartLayout.addComponent(columnChart);
   }
 }

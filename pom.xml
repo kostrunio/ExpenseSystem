@@ -118,10 +118,10 @@
 			<version>1.0.1</version>
 		</dependency>
 		<dependency>
-			<groupId>at.downdrown.vaadinaddons</groupId>
-			<artifactId>highchartsapi</artifactId>
-			<version>2.2.1</version>
-		</dependency>
+      <groupId>com.vaadin.addon</groupId>
+      <artifactId>vaadin-charts</artifactId>
+      <version>3.0.0</version>
+    </dependency>
 		<dependency>
 			<groupId>bouncycastle</groupId>
 			<artifactId>org.bouncycastle</artifactId>
