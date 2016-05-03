@@ -4128,9 +4128,9 @@ div.v-layout.v-horizontal.v-widget {
 	position: relative;
 }
 
-.expensesystem .v-formlayout.v-has-width > table, .expensesystem .v-formlayout.v-has-width .v-formlayout-contentcell {
-	width: 100%;
-}
+//.expensesystem .v-formlayout.v-has-width > table, .expensesystem .v-formlayout.v-has-width .v-formlayout-contentcell {
+//	width: 100%;
+//}
 
 .expensesystem .v-formlayout-error-indicator {
 	width: 16px;
