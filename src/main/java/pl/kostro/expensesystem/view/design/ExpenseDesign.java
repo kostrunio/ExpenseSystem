@@ -25,7 +25,8 @@ public class ExpenseDesign extends Panel {
   protected Button editButton;
   protected Button chartButton;
   
-  protected VerticalLayout expensePanels;
+  protected VerticalLayout menusLayout;
+  protected VerticalLayout expenseLayout;
   protected HorizontalLayout menuLayout;
   protected MenuBar yearMenu;
   protected Button filterButton;
@@ -86,17 +87,24 @@ public class ExpenseDesign extends Panel {
   }
   
   protected Component buildContent() {
-    expensePanels = new VerticalLayout();
-    expensePanels.setSpacing(true);
-
-    expensePanels.addComponent(buildYearMenu());
-    expensePanels.addComponent(buildMonthMenu());
-    expensePanels.addComponent(buildSearchLayout());
+    expenseLayout = new VerticalLayout();
+    expenseLayout.setSpacing(true);
+    expenseLayout.addComponent(buildMenus());
 
     mainView = new VerticalLayout();
-    expensePanels.addComponent(mainView);
+    expenseLayout.addComponent(mainView);
 
-    return expensePanels;
+    return expenseLayout;
+  }
+  
+  private Component buildMenus() {
+    menusLayout = new VerticalLayout();
+    menusLayout.addStyleName("menus-layout");
+    menusLayout.setSpacing(true);
+    menusLayout.addComponent(buildYearMenu());
+    menusLayout.addComponent(buildMonthMenu());
+    menusLayout.addComponent(buildSearchLayout());
+    return menusLayout;
   }
   
   private Component buildYearMenu() {
@@ -106,8 +114,6 @@ public class ExpenseDesign extends Panel {
 
     // yearMenu
     yearMenu = new MenuBar();
-    yearMenu.setImmediate(false);
-
     menuLayout.addComponent(yearMenu);
 
     // filterButton
@@ -137,9 +143,6 @@ public class ExpenseDesign extends Panel {
 
   private Component buildMonthMenu() {
     monthMenu = new MenuBar();
-    monthMenu.addStyleName("month-menu");
-    monthMenu.setImmediate(false);
-    monthMenu.setSizeUndefined();
     return monthMenu;
   }
 

@@ -13176,14 +13176,6 @@ div.v-layout.v-horizontal.v-widget {
 	margin-top: 0.4em;
 }
 
-.expensesystem .v-ui[width-range~="0-1100px"] .month-menu {
-	display: none;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .summary-layout {
-	display: none;
-}
-
 .expensesystem .v-calendar .v-calendar-event-1-all-day, .expensesystem .v-table-cell-content-1 {
 	color: #37404E;
 	background-color: #ffffff;
@@ -13204,10 +13196,22 @@ div.v-layout.v-horizontal.v-widget {
 	background-color: #b0bcd5;
 }
 
-.expensesystem .v-ui[width-range~="0-800px"] .v-calendar-day-number {
-	font-size: 30px;
+.expensesystem .v-ui[width-range~="0-1100px"] .menus-layout {
+	display: none;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .v-calendar-header-month {
+	font-size: 10px;
 }
 
 .expensesystem .v-ui[width-range~="0-800px"] .v-calendar-bottom-spacer {
+	visibility: hidden;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .summary-layout {
 	display: none;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .add-expense .fields {
+	display: block;
 }

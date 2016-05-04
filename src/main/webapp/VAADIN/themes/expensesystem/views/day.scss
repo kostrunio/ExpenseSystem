@@ -1,0 +1,7 @@
+@mixin day {
+  .v-ui[width-range~="0-800px"] .add-expense {
+    .fields {
+      display: block;
+    }
+  }
+}

@@ -65,36 +65,12 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
 @import "views/login.scss";
 @import "views/menu.scss";
 @import "views/main.scss";
+@import "views/day.scss";
 
 @mixin expensesystem {
   @include valo;
   @include login;
   @include menu;
   @include main;
-
-  .v-calendar .v-calendar-event-1-all-day, .v-table-cell-content-1 {
-    color: #37404E;
-    background-color: #ffffff;
-  }
-  .v-calendar .v-calendar-event-2-all-day, .v-table-cell-content-2 {
-    color: #37404E;
-    background-color: #d7ddea;
-  }
-  .v-calendar .v-calendar-event-3-all-day, .v-table-cell-content-3 {
-    color: #37404E;
-    background-color: #c4cde0;
-  }
-  .v-calendar .v-calendar-event-4-all-day, .v-table-cell-content-0 {
-    color: #ffffff;
-    background-color: #b0bcd5;
-  }
-
-  .v-ui[width-range~="0-800px"] {
-    .v-calendar-day-number {
-      font-size: 30px;
-    }
-    .v-calendar-bottom-spacer {
-      display: none;
-    }
-  }
+  @include day;
 }
