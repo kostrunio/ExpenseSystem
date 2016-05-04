@@ -2,10 +2,14 @@ package pl.kostro.expensesystem.view;
 
 import java.util.Calendar;
 
+import pl.kostro.expensesystem.event.ExpenseSystemEvent.BrowserResizeEvent;
+import pl.kostro.expensesystem.event.ExpenseSystemEventBus;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.view.design.MonthDesign;
 
+import com.google.common.eventbus.Subscribe;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -30,6 +34,7 @@ public class MonthView extends MonthDesign {
   };
 
   public MonthView() {
+    ExpenseSystemEventBus.register(this);
     this.date = VaadinSession.getCurrent().getAttribute(Calendar.class);
     UserSummaryService.setFirstDay(date);
     previousMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_LEFT);
@@ -40,7 +45,14 @@ public class MonthView extends MonthDesign {
     thisMonthField.setDateFormat("MMMM yyyy");
     lastDateField.setDateFormat("yyyy-MM-dd");
 
+    setCalendarSize();
     showCalendar();
+  }
+
+  @Override
+  public void detach() {
+      super.detach();
+      ExpenseSystemEventBus.unregister(this);
   }
 
   public void showCalendar() {
@@ -59,7 +71,17 @@ public class MonthView extends MonthDesign {
     userLimitTable.fulfill(date);
   }
 
-  
+  private void setCalendarSize() {
+    if (Page.getCurrent().getBrowserWindowWidth() < 800) {
+      monthCalendar.setWidth(Page.getCurrent().getBrowserWindowWidth()-30+"px");
+      monthCalendar.setHeight(Page.getCurrent().getBrowserWindowWidth()-30+"px");
+    }
+  }
+
+  @Subscribe
+  public void browserResized(final BrowserResizeEvent event) {
+    setCalendarSize();
+  }
 
 
 }

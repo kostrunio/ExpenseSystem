@@ -52,7 +52,7 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>3.0.1</version>
-<!-- 			<scope>provided</scope> -->
+			<!-- <scope>provided</scope> -->
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
@@ -118,10 +118,15 @@
 			<version>1.0.1</version>
 		</dependency>
 		<dependency>
-      <groupId>com.vaadin.addon</groupId>
-      <artifactId>vaadin-charts</artifactId>
-      <version>3.0.0</version>
-    </dependency>
+			<groupId>com.vaadin.addon</groupId>
+			<artifactId>vaadin-charts</artifactId>
+			<version>3.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
+		</dependency>
 		<dependency>
 			<groupId>bouncycastle</groupId>
 			<artifactId>org.bouncycastle</artifactId>

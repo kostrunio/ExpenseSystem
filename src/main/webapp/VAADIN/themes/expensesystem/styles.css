@@ -4128,9 +4128,9 @@ div.v-layout.v-horizontal.v-widget {
 	position: relative;
 }
 
-//.expensesystem .v-formlayout.v-has-width > table, .expensesystem .v-formlayout.v-has-width .v-formlayout-contentcell {
-//	width: 100%;
-//}
+.expensesystem .v-formlayout.v-has-width > table, .expensesystem .v-formlayout.v-has-width .v-formlayout-contentcell {
+	width: 100%;
+}
 
 .expensesystem .v-formlayout-error-indicator {
 	width: 16px;
@@ -13140,7 +13140,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel {
-	max-width: 100%;
+	max-width: 95%;
 	-webkit-animation: animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards;
 	-moz-animation: animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards;
 	animation: animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards;

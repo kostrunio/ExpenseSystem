@@ -94,7 +94,7 @@
     }
     
     .login-panel {
-      max-width: 100%;
+      max-width: 95%;
       @include animation(animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards);
       
       .login-form, .register-form {

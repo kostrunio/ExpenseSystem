@@ -23,6 +23,7 @@ import pl.kostro.expensesystem.model.RealUser;
 
 public class SendEmail {
   public static void welcome(RealUser user) {
+    if (user.getEmail().isEmpty()) return;
     try {
       Message message = new MimeMessage(prepareSession());
       message.setFrom(new InternetAddress("ExpenseSystem <expense_system@mailplus.pl>"));
@@ -54,6 +55,7 @@ public class SendEmail {
   }
   
   public static void expenses(RealUser user, ExpenseSheet expenseSheet, int expenses) {
+    if (user.getEmail().isEmpty()) return;
     try {
       Message message = new MimeMessage(prepareSession());
       message.setFrom(new InternetAddress("ExpenseSystem <expense_system@mailplus.pl>"));
