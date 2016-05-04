@@ -88,5 +88,13 @@ $v-layout-spacing-horizontal: round($v-unit-size / 1.8) !default;
     color: #ffffff;
     background-color: #b0bcd5;
   }
-  
+
+  .v-ui[width-range~="0-800px"] {
+    .v-calendar-day-number {
+      font-size: 30px;
+    }
+    .v-calendar-bottom-spacer {
+      display: none;
+    }
+  }
 }
