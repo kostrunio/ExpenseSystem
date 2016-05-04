@@ -49,12 +49,6 @@ public class MonthView extends MonthDesign {
     showCalendar();
   }
 
-  @Override
-  public void detach() {
-      super.detach();
-      ExpenseSystemEventBus.unregister(this);
-  }
-
   public void showCalendar() {
     thisMonthField.setReadOnly(false);
     thisMonthField.setValue(date.getTime());
