@@ -13058,7 +13058,6 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .login-screen .centering-layout {
-	display: inline-block;
 	width: 100%;
 	height: 100%;
 	padding-left: 300px;
@@ -13099,13 +13098,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .login-screen .login-information {
-	display: inline-block;
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 300px;
 	height: 100%;
-	background: #60a0ea;
 	background-color: rgba(96, 160, 234, 0.7);
 	padding: 21px 21px 21px 21px;
 	color: #f2f6fa;
@@ -13131,7 +13128,6 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .v-ui[width-range~="0-800px"] .login-screen .centering-layout {
-	display: block;
 	width: 100%;
 	height: auto;
 	padding-left: 0;
@@ -13140,7 +13136,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel {
-	max-width: 95%;
+	max-width: 90%;
 	-webkit-animation: animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards;
 	-moz-animation: animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards;
 	animation: animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards;
@@ -13158,7 +13154,7 @@ div.v-layout.v-horizontal.v-widget {
 .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .login-form .v-formlayout-captioncell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .login-form .v-formlayout-contentcell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .login-form .v-formlayout-errorcell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .register-form .v-formlayout-captioncell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .register-form .v-formlayout-contentcell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .register-form .v-formlayout-errorcell {
 	display: block;
 	text-align: center;
-	padding-top: 0;
+	padding: 0;
 }
 
 .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-information {
@@ -13212,6 +13208,53 @@ div.v-layout.v-horizontal.v-widget {
 	display: none;
 }
 
-.expensesystem .v-ui[width-range~="0-800px"] .add-expense .fields {
+.expensesystem .categorylist-panel, .expensesystem .expenselist-panel {
+	width: 45%;
+	margin: 21px 21px 21px 21px;
+}
+
+.expensesystem .category-grid {
+	background: white;
+	padding: 0 0 20px 0;
+	border-radius: 20px;
+	margin: 10px;
+}
+
+.expensesystem .category-grid .category-button {
+	display: inline-block;
+	width: 90px;
+	height: 60px;
+	padding: 10px;
+}
+
+.expensesystem .expense-list {
+	background: white;
+	width: 100%;
+	border-radius: 20px;
+	padding: 0;
+}
+
+.expensesystem .add-expense {
+	background: white;
+	width: 100%;
+	padding: 0 0 20px 0;
+	border-radius: 20px;
+}
+
+.expensesystem .add-expense .v-formlayout-captioncell, .expensesystem .add-expense .v-formlayout-contentcell, .expensesystem .add-expense .v-formlayout-errorcell {
+	display: inline-block;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .categorylist-panel, .expensesystem .v-ui[width-range~="0-800px"] .expenselist-panel {
+	width: 100%;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-textfield, .expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-filterselect {
+	width: 100% !important;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-formlayout-captioncell, .expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-formlayout-contentcell, .expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-formlayout-errorcell {
 	display: block;
+	text-align: center;
+	padding: 0;
 }

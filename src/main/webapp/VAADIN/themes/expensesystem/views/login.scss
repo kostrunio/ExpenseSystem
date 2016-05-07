@@ -17,7 +17,6 @@
     }
     
     .centering-layout {
-      display: inline-block;
       width: 100%;
       height: 100%;
       padding-left: $login-info-width;
@@ -55,13 +54,11 @@
     }
     
     .login-information {
-      display: inline-block;
       position: absolute;
       top: 0;
       left: 0;
       width: $login-info-width;
       height: 100%;
-      background: $v-selection-color; // For IE8
       background-color: rgba($v-selection-color, $login-info-opacity);
       padding: $v-layout-margin;
       color: valo-font-color($v-selection-color, 0.9);
@@ -85,7 +82,6 @@
     min-height: 100%;
     
     .centering-layout {
-      display: block;
       width: 100%;
       height: auto;
       padding-left: 0;
@@ -94,7 +90,7 @@
     }
     
     .login-panel {
-      max-width: 95%;
+      max-width: 90%;
       @include animation(animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards);
       
       .login-form, .register-form {
@@ -108,7 +104,7 @@
         .v-formlayout-captioncell, .v-formlayout-contentcell, .v-formlayout-errorcell {
           display: block;
           text-align: center;
-          padding-top: 0;
+          padding: 0;
         }
       }
     }

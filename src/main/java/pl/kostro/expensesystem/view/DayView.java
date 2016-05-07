@@ -26,10 +26,10 @@ import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.combobox.FilteringMode;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.ValoTheme;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
@@ -169,21 +169,21 @@ public class DayView extends DayDesign {
   private void prepareCategoryListLayout() {
     categoryGrid.removeAllComponents();
     List<Category> categoryList = expenseSheet.getCategoryList();
-    categoryGrid.setColumns(5);
-    categoryGrid.setRows(categoryList.size() / 5 + 1);
 
     for (int i = 0; i < categoryList.size(); i++) {
       VerticalLayout vertLay = new VerticalLayout();
-      categoryGrid.addComponent(vertLay, i % 5, i / 5);
+      vertLay.addStyleName("category-button");
+      categoryGrid.addComponent(vertLay);
 
       Category category = categoryList.get(i);
       Label catLabel = new Label();
       catLabel.setValue(category.getName());
       vertLay.addComponent(catLabel);
+      vertLay.setComponentAlignment(catLabel, Alignment.TOP_CENTER);
 
-      HorizontalLayout expLay = new HorizontalLayout();
-      vertLay.addComponent(expLay);
       Button expButton = new Button();
+      vertLay.addComponent(expButton);
+      vertLay.setComponentAlignment(expButton, Alignment.TOP_CENTER);
       DateExpense dateExpenseMap = ExpenseSheetService.getDateExpenseMap(expenseSheet, calendar.getTime());
       if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
         expButton.setCaption("0");
@@ -193,7 +193,6 @@ public class DayView extends DayDesign {
       }
       expButton.setData(category);
       expButton.addClickListener(categoryClick);
-      expLay.addComponent(expButton);
     }
   }
 

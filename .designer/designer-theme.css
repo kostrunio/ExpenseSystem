@@ -13058,7 +13058,6 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .login-screen .centering-layout {
-	display: inline-block;
 	width: 100%;
 	height: 100%;
 	padding-left: 300px;
@@ -13099,13 +13098,11 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .login-screen .login-information {
-	display: inline-block;
 	position: absolute;
 	top: 0;
 	left: 0;
 	width: 300px;
 	height: 100%;
-	background: #60a0ea;
 	background-color: rgba(96, 160, 234, 0.7);
 	padding: 21px 21px 21px 21px;
 	color: #f2f6fa;
@@ -13131,7 +13128,6 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .v-ui[width-range~="0-800px"] .login-screen .centering-layout {
-	display: block;
 	width: 100%;
 	height: auto;
 	padding-left: 0;
@@ -13140,7 +13136,7 @@ div.v-layout.v-horizontal.v-widget {
 }
 
 .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel {
-	max-width: 100%;
+	max-width: 90%;
 	-webkit-animation: animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards;
 	-moz-animation: animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards;
 	animation: animate-in-scale-up 500ms 10ms backwards, valo-animate-in-fade 300ms 100ms backwards;
@@ -13158,7 +13154,7 @@ div.v-layout.v-horizontal.v-widget {
 .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .login-form .v-formlayout-captioncell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .login-form .v-formlayout-contentcell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .login-form .v-formlayout-errorcell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .register-form .v-formlayout-captioncell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .register-form .v-formlayout-contentcell, .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-panel .register-form .v-formlayout-errorcell {
 	display: block;
 	text-align: center;
-	padding-top: 0;
+	padding: 0;
 }
 
 .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-information {
@@ -13174,14 +13170,6 @@ div.v-layout.v-horizontal.v-widget {
 
 .expensesystem .v-ui[width-range~="0-800px"] .login-screen .login-information .v-label h1 {
 	margin-top: 0.4em;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .month-menu {
-	display: none;
-}
-
-.expensesystem .v-ui[width-range~="0-1100px"] .summary-layout {
-	display: none;
 }
 
 .expensesystem .v-calendar .v-calendar-event-1-all-day, .expensesystem .v-table-cell-content-1 {
@@ -13202,4 +13190,90 @@ div.v-layout.v-horizontal.v-widget {
 .expensesystem .v-calendar .v-calendar-event-4-all-day, .expensesystem .v-table-cell-content-0 {
 	color: #ffffff;
 	background-color: #b0bcd5;
+}
+
+.expensesystem .v-ui[width-range~="0-1100px"] .menus-layout {
+	display: none;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .v-calendar-header-month {
+	font-size: 10px;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .v-calendar-bottom-spacer {
+	visibility: hidden;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .summary-layout {
+	display: none;
+}
+
+.expensesystem .categorylist-panel {
+	width: 45%;
+}
+
+.expensesystem .expenselist-panel {
+	width: 45%;
+	margin-left: 21px;
+}
+
+.expensesystem .category-grid {
+	background: white;
+	padding: 0 0 20px 0;
+	border-radius: 20px;
+	margin: 10px;
+}
+
+.expensesystem .category-grid .category-button {
+	display: inline-block;
+	width: 90px;
+	height: 60px;
+	padding: 10px;
+}
+
+.expensesystem .expense-list {
+	background: white;
+	width: 100%;
+	border-radius: 20px;
+	padding: 0;
+}
+
+.expensesystem .add-expense {
+	background: white;
+	width: 100%;
+	padding: 0 0 20px 0;
+	border-radius: 20px;
+}
+
+.expensesystem .add-expense .v-formlayout-captioncell, .expensesystem .add-expense .v-formlayout-contentcell, .expensesystem .add-expense .v-formlayout-errorcell {
+	display: inline-block;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .categorylist-panel {
+	width: 100%;
+	margin-bottom: 21px;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .expenselist-panel {
+	width: 100%;
+	margin-left: 0;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .expense-list .v-textfield {
+	width: 100px;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .add-expense {
+	padding: 21px 21px 21px 21px;
+	margin-top: 21px;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-textfield, .expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-filterselect {
+	width: 100% !important;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-formlayout-captioncell, .expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-formlayout-contentcell, .expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-formlayout-errorcell {
+	display: block;
+	text-align: center;
+	padding: 0;
 }
