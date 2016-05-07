@@ -31,7 +31,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
@@ -211,7 +210,7 @@ public class DayView extends DayDesign {
 
     for (int i = 0; i < expenseList.size(); i++) {
       Expense expense = expenseList.get(i);
-      TextField user = new TextField();
+      Label user = new Label();
       user.setEnabled(false);
       user.setValue(expense.getUser().getName());
       expenseGrid.addComponent(user, 0, i);
@@ -224,9 +223,9 @@ public class DayView extends DayDesign {
 
       valueButton.addClickListener(valueClick);
 
-      TextField comment = new TextField();
+      Label comment = new Label();
       comment.setEnabled(false);
-      comment.setNullRepresentation("");
+//      comment.setNullRepresentation("");
       comment.setValue(expense.getComment());
       expenseGrid.addComponent(comment, 2, i);
 

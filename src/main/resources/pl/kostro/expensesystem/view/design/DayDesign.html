@@ -26,19 +26,17 @@
       </vaadin-label> 
       <vaadin-grid-layout spacing style-name="expense-grid" width-full margin _id="expenseGrid"></vaadin-grid-layout> 
      </vaadin-vertical-layout> 
-     <vaadin-css-layout width-full> 
-      <vaadin-vertical-layout spacing> 
-       <vaadin-css-layout style-name="add-expense" width-full _id="addExpense"> 
-        <vaadin-combo-box item-caption-mode="id" caption="user" _id="userBox"></vaadin-combo-box> 
-        <vaadin-text-field caption="formula" _id="formulaField"></vaadin-text-field> 
-        <vaadin-combo-box item-caption-mode="id" caption="comment" _id="commentBox"></vaadin-combo-box> 
-       </vaadin-css-layout> 
-       <vaadin-check-box caption="notify me" visible="false" _id="notifyBox"></vaadin-check-box> 
-       <vaadin-button style-name="friendly" plain-text _id="saveButton">
-         Save 
-       </vaadin-button> 
-      </vaadin-vertical-layout> 
-     </vaadin-css-layout> 
+     <vaadin-vertical-layout spacing> 
+      <vaadin-horizontal-layout spacing style-name="add-expense" width-full _id="addExpense"> 
+       <vaadin-combo-box style-name="add-expense-field" item-caption-mode="id" caption="user" width-full _id="userBox"></vaadin-combo-box> 
+       <vaadin-text-field style-name="add-expense-field" caption="formula" width-full _id="formulaField"></vaadin-text-field> 
+       <vaadin-combo-box style-name="add-expense-field" item-caption-mode="id" caption="comment" width-full _id="commentBox"></vaadin-combo-box> 
+      </vaadin-horizontal-layout> 
+      <vaadin-check-box caption="notify me" visible="false" _id="notifyBox"></vaadin-check-box> 
+      <vaadin-button style-name="friendly" plain-text _id="saveButton">
+        Save 
+      </vaadin-button> 
+     </vaadin-vertical-layout> 
     </vaadin-css-layout> 
    </vaadin-css-layout> 
   </vaadin-vertical-layout>  

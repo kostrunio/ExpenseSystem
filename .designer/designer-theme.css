@@ -13196,16 +13196,20 @@ div.v-layout.v-horizontal.v-widget {
 	display: none;
 }
 
-.expensesystem .v-ui[width-range~="0-800px"] .v-calendar-header-month {
+.expensesystem .v-ui[width-range~="0-1100px"] .v-calendar-header-month {
 	font-size: 10px;
 }
 
-.expensesystem .v-ui[width-range~="0-800px"] .v-calendar-bottom-spacer {
+.expensesystem .v-ui[width-range~="0-1100px"] .v-calendar-bottom-spacer {
 	visibility: hidden;
 }
 
-.expensesystem .v-ui[width-range~="0-800px"] .summary-layout {
+.expensesystem .v-ui[width-range~="0-1100px"] .summary-layout {
 	display: none;
+}
+
+.expensesystem .day-layout {
+	max-width: 1200px;
 }
 
 .expensesystem .categorylist-panel {
@@ -13221,7 +13225,6 @@ div.v-layout.v-horizontal.v-widget {
 	background: white;
 	padding: 0 0 20px 0;
 	border-radius: 20px;
-	margin: 10px;
 }
 
 .expensesystem .category-grid .category-button {
@@ -13235,18 +13238,18 @@ div.v-layout.v-horizontal.v-widget {
 	background: white;
 	width: 100%;
 	border-radius: 20px;
-	padding: 0;
 }
 
 .expensesystem .add-expense {
 	background: white;
 	width: 100%;
-	padding: 0 0 20px 0;
+	padding: 21px 21px 21px 21px;
 	border-radius: 20px;
+	margin-top: 21px;
 }
 
-.expensesystem .add-expense .v-formlayout-captioncell, .expensesystem .add-expense .v-formlayout-contentcell, .expensesystem .add-expense .v-formlayout-errorcell {
-	display: inline-block;
+.expensesystem .add-expense[width-range~="0-800px"] .add-expense-field {
+	display: block;
 }
 
 .expensesystem .v-ui[width-range~="0-800px"] .categorylist-panel {
@@ -13256,24 +13259,17 @@ div.v-layout.v-horizontal.v-widget {
 
 .expensesystem .v-ui[width-range~="0-800px"] .expenselist-panel {
 	width: 100%;
-	margin-left: 0;
+	margin: 0;
 }
 
-.expensesystem .v-ui[width-range~="0-800px"] .expense-list .v-textfield {
-	width: 100px;
+.expensesystem .v-ui[width-range~="0-800px"] .expenselist-panel  > .v-widget {
+	width: 100%;
 }
 
-.expensesystem .v-ui[width-range~="0-800px"] .add-expense {
-	padding: 21px 21px 21px 21px;
-	margin-top: 21px;
-}
-
-.expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-textfield, .expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-filterselect {
-	width: 100% !important;
-}
-
-.expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-formlayout-captioncell, .expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-formlayout-contentcell, .expensesystem .v-ui[width-range~="0-800px"] .add-expense .v-formlayout-errorcell {
+.expensesystem .v-ui[width-range~="0-800px"] .expenselist-panel .add-expense .v-slot {
 	display: block;
-	text-align: center;
-	padding: 0;
+}
+
+.expensesystem .v-ui[width-range~="0-800px"] .expenselist-panel .add-expense .v-widget {
+	width: 100%;
 }

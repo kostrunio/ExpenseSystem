@@ -38,7 +38,7 @@ public class DayDesign extends VerticalLayout {
   protected VerticalLayout expenseList;
   protected Label categoryLabel;
   protected GridLayout expenseGrid;
-  protected CssLayout addExpense;
+  protected HorizontalLayout addExpense;
   protected ComboBox userBox;
   protected TextField formulaField;
   protected ComboBox commentBox;

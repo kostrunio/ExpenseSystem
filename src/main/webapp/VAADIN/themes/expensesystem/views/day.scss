@@ -1,5 +1,9 @@
 @mixin day {
 
+  .day-layout {
+    max-width: 1200px;
+  }
+
   .categorylist-panel {
     width: 45%;
   }
@@ -13,7 +17,6 @@
     background: $v-panel-background-color;
     padding: 0 0 20px 0;
     border-radius: 20px;
-    margin: 10px;
 
     .category-button {
       display: inline-block;
@@ -27,18 +30,20 @@
     background: $v-panel-background-color;
     width: 100%;
     border-radius: 20px;
-    padding: 0;
   }
 
   .add-expense {
     background: $v-panel-background-color;
     width: 100%;
-    padding: 0 0 20px 0;
+    padding: $v-layout-margin;
     border-radius: 20px;
-    
-    .v-formlayout-captioncell, .v-formlayout-contentcell, .v-formlayout-errorcell {
-      display: inline-block;
-      }
+    margin-top: $v-layout-margin-top;
+  }
+
+  .add-expense[width-range~="0-800px"] {
+    .add-expense-field {
+      display: block;
+    }
   }
 
   .v-ui[width-range~="0-800px"] {
@@ -48,26 +53,20 @@
     }
     .expenselist-panel {
       width: 100%;
-      margin-left: 0;
-    }
-    
-    .expense-list {
-      .v-textfield {
-        width: 100px;
-      }
-    }
-    .add-expense {
-      padding: $v-layout-margin;
-      margin-top: $v-layout-margin-top;
+      margin: 0;
       
-      .v-textfield, .v-filterselect {
-        width: 100% !important;
-      }
+      > .v-widget {
+          width: 100%;
+        }
       
-      .v-formlayout-captioncell, .v-formlayout-contentcell, .v-formlayout-errorcell {
-        display: block;
-        text-align: center;
-        padding: 0;
+      .add-expense {
+        .v-slot {
+          display: block;
+        }
+        
+        .v-widget {
+          width: 100%;
+        }
       }
     }
   }
