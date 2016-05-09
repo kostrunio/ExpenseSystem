@@ -164,7 +164,7 @@
 				<version>${vaadin.plugin.version}</version>
 				<configuration>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<webappDirectory>${basedir}/target/classes/VAADIN/widgetsets</webappDirectory>
+					<webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
 					<draftCompile>false</draftCompile>
 					<compileReport>false</compileReport>
 					<style>OBF</style>
@@ -194,6 +194,12 @@
 				<!-- Clean up also any pre-compiled themes -->
 				<configuration>
 					<filesets>
+						<fileset>
+							<directory>src/main/webapp/VAADIN/gwt-unitCache</directory>
+						</fileset>
+						<fileset>
+							<directory>src/main/webapp/VAADIN/widgetsets</directory>
+						</fileset>
 						<fileset>
 							<directory>src/main/webapp/VAADIN/themes</directory>
 							<includes>
