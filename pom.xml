@@ -12,7 +12,6 @@
 	<properties>
 		<vaadin.version>7.6.5</vaadin.version>
 		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
-		<jetty.plugin.version>9.2.3.v20140905</jetty.plugin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
@@ -132,7 +131,7 @@
 			<artifactId>org.bouncycastle</artifactId>
 			<version>153</version>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/src/main/webapp/WEB-INF/lib/bcprov-jdk15on-153.jar</systemPath>
+			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/bcprov-jdk15on-153.jar</systemPath>
 		</dependency>
 	</dependencies>
 
@@ -205,17 +204,6 @@
 					</filesets>
 				</configuration>
 			</plugin>
-
-			<!-- The Jetty plugin allows us to easily test the development build by 
-				running jetty:run on the command line. -->
-			<plugin>
-				<groupId>org.eclipse.jetty</groupId>
-				<artifactId>jetty-maven-plugin</artifactId>
-				<version>${jetty.plugin.version}</version>
-				<configuration>
-					<scanIntervalSeconds>2</scanIntervalSeconds>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
 
@@ -249,5 +237,4 @@
 			</build>
 		</profile>
 	</profiles>
-
 </project>
