@@ -141,7 +141,7 @@ public class ExpenseForm extends ExpenseFormDesign {
 
   public void edit(Expense expense) {
     this.expense = expense;
-    if (expense != null) {
+    if (expense.getId() != 0) {
       dateField.setValue(expense.getDate());
       categoryBox.setValue(expense.getCategory());
       userBox.setValue(ExpenseSheetService.getUserLimitForUser(expenseSheet, expense.getUser()));
