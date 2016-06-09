@@ -1,0 +1,2 @@
+# Module pl.kostro.expensesystem.ExpenseSystemWidgetset
+# RPC service class, partial path of RPC policy file

@@ -10,8 +10,7 @@
 	<name>ExpenseSystem</name>
 
 	<properties>
-		<vaadin.version>7.6.5</vaadin.version>
-		<vaadin.plugin.version>${vaadin.version}</vaadin.plugin.version>
+		<vaadin.version>7.6.6</vaadin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.7</maven.compiler.source>
 		<maven.compiler.target>1.7</maven.compiler.target>
@@ -136,6 +135,7 @@
 	</dependencies>
 
 	<build>
+	  <finalName>expensesystem</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -161,26 +161,7 @@
 			<plugin>
 				<groupId>com.vaadin</groupId>
 				<artifactId>vaadin-maven-plugin</artifactId>
-				<version>${vaadin.plugin.version}</version>
-				<configuration>
-					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
-					<draftCompile>false</draftCompile>
-					<compileReport>false</compileReport>
-					<style>OBF</style>
-					<strict>true</strict>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>update-theme</goal>
-							<goal>update-widgetset</goal>
-							<goal>compile</goal>
-							<!-- Comment out compile-theme goal to use on-the-fly theme compilation -->
-							<goal>compile-theme</goal>
-						</goals>
-					</execution>
-				</executions>
+				<version>${vaadin.version}</version>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -194,12 +175,6 @@
 				<!-- Clean up also any pre-compiled themes -->
 				<configuration>
 					<filesets>
-						<fileset>
-							<directory>src/main/webapp/VAADIN/gwt-unitCache</directory>
-						</fileset>
-						<fileset>
-							<directory>src/main/webapp/VAADIN/widgetsets</directory>
-						</fileset>
 						<fileset>
 							<directory>src/main/webapp/VAADIN/themes</directory>
 							<includes>
@@ -238,6 +213,62 @@
 							<outputDirectory>webapps</outputDirectory>
 							<warName>ROOT</warName>
 						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+
+		<profile>
+			<id>widget</id>
+			<build>
+				<finalName>expensesystem</finalName>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-clean-plugin</artifactId>
+						<version>2.6.1</version>
+						<!-- Clean up also any pre-compiled themes -->
+						<configuration>
+							<filesets>
+								<fileset>
+									<directory>src/main/webapp/VAADIN/gwt-unitCache</directory>
+								</fileset>
+								<fileset>
+									<directory>src/main/webapp/VAADIN/widgetsets</directory>
+								</fileset>
+								<fileset>
+									<directory>src/main/webapp/VAADIN/themes</directory>
+									<includes>
+										<include>**/styles.css</include>
+										<include>**/styles.scss.cache</include>
+									</includes>
+								</fileset>
+							</filesets>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>com.vaadin</groupId>
+						<artifactId>vaadin-maven-plugin</artifactId>
+						<version>${vaadin.version}</version>
+						<configuration>
+							<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+							<webappDirectory>src/main/webapp/VAADIN/widgetsets</webappDirectory>
+							<draftCompile>false</draftCompile>
+							<compileReport>false</compileReport>
+							<style>OBF</style>
+							<strict>true</strict>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>update-theme</goal>
+									<goal>update-widgetset</goal>
+									<goal>compile</goal>
+									<!-- Comment out compile-theme goal to use on-the-fly theme compilation -->
+									<goal>compile-theme</goal>
+								</goals>
+							</execution>
+						</executions>
 					</plugin>
 				</plugins>
 			</build>
