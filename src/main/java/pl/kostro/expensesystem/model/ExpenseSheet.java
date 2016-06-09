@@ -21,7 +21,6 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
-
 import pl.kostro.expensesystem.utils.CategoryExpense;
 import pl.kostro.expensesystem.utils.DateExpense;
 import pl.kostro.expensesystem.utils.Filter;
@@ -29,32 +28,32 @@ import pl.kostro.expensesystem.utils.UserLimitExpense;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="expense_sheets")
+@Table(name = "expense_sheets")
 public class ExpenseSheet extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
-  @Column(name="es_id")
-  private int id;
+  @Column(name = "es_id")
+  private Long id;
   @OneToOne
-  @JoinColumn(name="es_u_id")
+  @JoinColumn(name = "es_u_id")
   private RealUser owner;
-  @Column(name="es_name")
+  @Column(name = "es_name")
   private String name;
-  @OneToMany(cascade=CascadeType.REMOVE)
-  @JoinColumn(name="c_es_id") 
+  @OneToMany(cascade = CascadeType.REMOVE)
+  @JoinColumn(name = "c_es_id")
   @OrderBy("order")
   private List<Category> categoryList;
-  @OneToMany(cascade=CascadeType.REMOVE)
-  @JoinColumn(name="ul_es_id")
+  @OneToMany(cascade = CascadeType.REMOVE)
+  @JoinColumn(name = "ul_es_id")
   @OrderBy("order")
   private List<UserLimit> userLimitList;
-  @OneToMany(mappedBy="expenseSheet", cascade=CascadeType.REMOVE)
+  @OneToMany(mappedBy = "expenseSheet", cascade = CascadeType.REMOVE)
   @OrderBy
   private List<Expense> expenseList;
-  @Column(name="es_reload_day")
+  @Column(name = "es_reload_day")
   private int reloadDay;
-  @Column(name="es_encrypted")
+  @Column(name = "es_encrypted")
   private boolean encrypted;
   @Transient
   private String key;
@@ -71,13 +70,14 @@ public class ExpenseSheet extends AbstractEntity {
   @Transient
   private Date lastDate;
 
-  public int getId() {
+  public Long getId() {
     return id;
   }
-  public void setId(int id) {
+
+  public void setId(Long id) {
     this.id = id;
   }
-  
+
   public RealUser getOwner() {
     return owner;
   }
@@ -109,13 +109,13 @@ public class ExpenseSheet extends AbstractEntity {
       userLimitList = new ArrayList<UserLimit>();
     return userLimitList;
   }
-  
+
   public List<UserLimit> getUserLimitListDesc() {
-	  List<UserLimit> returnList = new ArrayList<UserLimit>(getUserLimitList());
-	  Collections.reverse(returnList);
-	  return returnList;
+    List<UserLimit> returnList = new ArrayList<UserLimit>(getUserLimitList());
+    Collections.reverse(returnList);
+    return returnList;
   }
-  
+
   public List<UserLimit> getUserLimitListRealUser() {
     List<UserLimit> userLimitList = new ArrayList<UserLimit>();
     for (UserLimit userLimit : getUserLimitList())
@@ -123,7 +123,7 @@ public class ExpenseSheet extends AbstractEntity {
         userLimitList.add(userLimit);
     return userLimitList;
   }
-  
+
   public List<UserLimit> getUserLimitListNotRealUser() {
     List<UserLimit> userLimitList = new ArrayList<UserLimit>();
     for (UserLimit userLimit : getUserLimitList())
@@ -153,7 +153,7 @@ public class ExpenseSheet extends AbstractEntity {
   public void setReloadDay(int reloadDay) {
     this.reloadDay = reloadDay;
   }
-  
+
   public boolean getEncrypted() {
     return encrypted;
   }
@@ -161,7 +161,7 @@ public class ExpenseSheet extends AbstractEntity {
   public void setEncrypted(boolean encrypted) {
     this.encrypted = encrypted;
   }
-  
+
   public String getKey() {
     return key;
   }
@@ -169,7 +169,7 @@ public class ExpenseSheet extends AbstractEntity {
   public void setKey(String key) {
     this.key = key;
   }
-  
+
   public Map<Date, DateExpense> getDateExpenseMap() {
     if (dateExpenseMap == null)
       dateExpenseMap = new HashMap<Date, DateExpense>();
@@ -179,56 +179,49 @@ public class ExpenseSheet extends AbstractEntity {
   public void setDateExpenseMap(Map<Date, DateExpense> dateExpenseMap) {
     this.dateExpenseMap = dateExpenseMap;
   }
-  
+
   public Map<Category, CategoryExpense> getCategoryExpenseMap() {
-	  if (categoryExpenseMap == null)
-		  categoryExpenseMap = new HashMap<Category, CategoryExpense>();
-	  return categoryExpenseMap;
+    if (categoryExpenseMap == null)
+      categoryExpenseMap = new HashMap<Category, CategoryExpense>();
+    return categoryExpenseMap;
   }
 
   public void setCategoryExpenseMap(Map<Category, CategoryExpense> categoryExpenseMap) {
-	  this.categoryExpenseMap = categoryExpenseMap;
+    this.categoryExpenseMap = categoryExpenseMap;
   }
-  
+
   public Map<UserLimit, UserLimitExpense> getUserLimitExpenseMap() {
-	  if (userLimitExpenseMap == null)
-		  userLimitExpenseMap = new HashMap<UserLimit, UserLimitExpense>();
-	  return userLimitExpenseMap;
+    if (userLimitExpenseMap == null)
+      userLimitExpenseMap = new HashMap<UserLimit, UserLimitExpense>();
+    return userLimitExpenseMap;
   }
 
   public void setUserLimitExpenseMap(Map<UserLimit, UserLimitExpense> userLimitExpenseMap) {
-	  this.userLimitExpenseMap = userLimitExpenseMap;
+    this.userLimitExpenseMap = userLimitExpenseMap;
   }
-  
+
   public Filter getFilter() {
-	  return filter;
+    return filter;
   }
 
   public void setFilter(Filter filter) {
-	  this.filter = filter;
+    this.filter = filter;
   }
-  
+
   public Date getFirstDate() {
     return firstDate;
   }
-  
+
   public void setFirstDate(Date firstDate) {
     this.firstDate = firstDate;
   }
-  
+
   public Date getLastDate() {
     return lastDate;
   }
-  
+
   public void setLastDate(Date lastDate) {
     this.lastDate = lastDate;
   }
-  
-  @Override
-  public boolean equals(Object o) {
-    if(o instanceof ExpenseSheet)
-      return getId() == ((ExpenseSheet)o).getId();
-    else return this == o;
-  }
-  
+
 }

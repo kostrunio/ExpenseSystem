@@ -23,7 +23,7 @@ public class Category extends AbstractEntity {
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
   @Column(name = "c_id")
-  private int id;
+  private Long id;
   @Transient
   private String name;
   @Column(name = "c_name_byte")
@@ -51,11 +51,11 @@ public class Category extends AbstractEntity {
     this.order = order;
   }
 
-  public int getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Long id) {
     this.id = id;
   }
   
@@ -101,19 +101,6 @@ public class Category extends AbstractEntity {
   @Override
   public String toString() {
     return getName();
-  }
-
-  @Override
-  public int hashCode() {
-    return getId();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (o instanceof Category)
-      return getId() == ((Category) o).getId();
-    else
-      return this == o;
   }
 
 }

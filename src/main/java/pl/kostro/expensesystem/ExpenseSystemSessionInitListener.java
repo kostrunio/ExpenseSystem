@@ -35,9 +35,7 @@ public class ExpenseSystemSessionInitListener implements SessionInitListener {
                 String contextPath = response.getRequest().getContextPath();
                 head.appendElement("link")
                         .attr("rel", "apple-touch-icon")
-                        .attr("href",
-                                contextPath
-                                        + "/VAADIN/themes/dashboard/img/app-icon.png");
+                        .attr("href", contextPath + "/VAADIN/themes/expensesystem/favicon.ico");
 
             }
 

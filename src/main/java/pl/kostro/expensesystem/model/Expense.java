@@ -24,7 +24,7 @@ import pl.kostro.expensesystem.utils.Encryption;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="expenses")
+@Table(name = "expenses")
 @NamedQueries({
   @NamedQuery(
       name = "findExpensesToNotify",
@@ -34,37 +34,38 @@ public class Expense extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
-  @Column(name="e_id")
-  private int id;
-  @Column(name="e_date")
+  @Column(name = "e_id")
+  private Long id;
+  @Column(name = "e_date")
   private Date date;
   @Transient
   private String formula;
-  @Column(name="e_formula_byte")
+  @Column(name = "e_formula_byte")
   private byte[] formula_byte;
   @Transient
   private BigDecimal value;
   @OneToOne
-  @JoinColumn(name="e_c_id")
+  @JoinColumn(name = "e_c_id")
   private Category category;
   @OneToOne
-  @JoinColumn(name="e_u_id")
+  @JoinColumn(name = "e_u_id")
   private User user;
   @Transient
   private String comment;
-  @Column(name="e_comment_byte")
+  @Column(name = "e_comment_byte")
   private byte[] comment_byte;
-  @Column(name="e_notify")
+  @Column(name = "e_notify")
   private boolean notify;
   @ManyToOne
-  @JoinColumn(name="e_es_id")
+  @JoinColumn(name = "e_es_id")
   private ExpenseSheet expenseSheet;
 
   public Expense() {
     super();
   }
 
-  public Expense(Date date, String formula, Category category, User user, String comment, boolean notify, ExpenseSheet expenseSheet) {
+  public Expense(Date date, String formula, Category category, User user, String comment, boolean notify,
+      ExpenseSheet expenseSheet) {
     this.date = date;
     setFormula(formula);
     this.category = category;
@@ -73,11 +74,12 @@ public class Expense extends AbstractEntity {
     this.notify = notify;
     this.expenseSheet = expenseSheet;
   }
-  
-  public int getId() {
+
+  public Long getId() {
     return id;
   }
-  public void setId(int id) {
+
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -88,7 +90,7 @@ public class Expense extends AbstractEntity {
   public void setDate(Date date) {
     this.date = date;
   }
-  
+
   public String getFormula() {
     return getFormula(false);
   }
@@ -100,13 +102,14 @@ public class Expense extends AbstractEntity {
     }
     return formula;
   }
-  
+
   public void setFormula(String formula) {
     setFormula(formula, false);
   }
 
   public void setFormula(String formula, boolean encrypt) {
-    if (formula_byte != null && formula.equals(this.formula) && !encrypt) return;
+    if (formula_byte != null && formula.equals(this.formula) && !encrypt)
+      return;
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.formula_byte = enc.encryption(formula);
     this.formula = formula;
@@ -133,7 +136,7 @@ public class Expense extends AbstractEntity {
   public void setUser(User user) {
     this.user = user;
   }
-  
+
   public String getComment() {
     return getComment(false);
   }
@@ -145,18 +148,19 @@ public class Expense extends AbstractEntity {
     }
     return comment;
   }
-  
+
   public void setComment(String comment) {
     setComment(comment, false);
   }
 
   public void setComment(String comment, boolean encrypt) {
-    if (comment_byte != null && comment.equals(this.comment) && !encrypt) return;
+    if (comment_byte != null && comment.equals(this.comment) && !encrypt)
+      return;
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.comment_byte = enc.encryption(comment);
     this.comment = comment;
   }
-  
+
   public boolean isNotify() {
     return notify;
   }
@@ -164,7 +168,7 @@ public class Expense extends AbstractEntity {
   public void setNotify(boolean notify) {
     this.notify = notify;
   }
-  
+
   public ExpenseSheet getExpenseSheet() {
     return expenseSheet;
   }
@@ -172,17 +176,10 @@ public class Expense extends AbstractEntity {
   public void setExpenseSheet(ExpenseSheet expenseSheet) {
     this.expenseSheet = expenseSheet;
   }
-  
 
   @Override
   public String toString() {
     return "Expense: " + date + ";" + category + ";" + value;
   }
-  
-  @Override
-  public boolean equals(Object o) {
-    if(o instanceof Expense)
-      return getId() == ((Expense)o).getId();
-    else return this == o;
-  }
+
 }

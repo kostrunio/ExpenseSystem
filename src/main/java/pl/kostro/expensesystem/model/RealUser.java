@@ -34,13 +34,13 @@ import javax.persistence.Transient;
       )
 })
 public class RealUser extends User {
-  @Column(name="u_password")
+  @Column(name = "u_password")
   private String password;
-  @Column(name="u_password_byte")
+  @Column(name = "u_password_byte")
   private byte[] password_byte;
-  @Column(name="u_email")
+  @Column(name = "u_email")
   private String email;
-  @Column(name="u_log_date")
+  @Column(name = "u_log_date")
   private Date logDate;
   @ManyToMany
   @JoinTable(name="user_expense_sheet",
@@ -52,11 +52,11 @@ public class RealUser extends User {
   @OrderBy
   private List<ExpenseSheet> expenseSheetList;
   @OneToOne
-  @JoinColumn(name="u_default_es_id")
+  @JoinColumn(name = "u_default_es_id")
   private ExpenseSheet defaultExpenseSheet;
   @Transient
   String clearPassword;
-  
+
   public RealUser() {
     super();
   }
@@ -72,7 +72,7 @@ public class RealUser extends User {
   public void setPassword(String password) {
     this.password = password;
   }
-  
+
   public byte[] getPasswordByte() {
     return password_byte;
   }
@@ -106,15 +106,15 @@ public class RealUser extends User {
   public void setExpenseSheets(List<ExpenseSheet> expenseSheetList) {
     this.expenseSheetList = expenseSheetList;
   }
-  
+
   public ExpenseSheet getDefaultExpenseSheet() {
-	  return defaultExpenseSheet;
+    return defaultExpenseSheet;
   }
-  
+
   public void setDefaultExpenseSheet(ExpenseSheet defaultExpenseSheet) {
-	  this.defaultExpenseSheet = defaultExpenseSheet;
+    this.defaultExpenseSheet = defaultExpenseSheet;
   }
-  
+
   public String getClearPassword() {
     return clearPassword;
   }

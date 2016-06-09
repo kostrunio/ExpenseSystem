@@ -24,29 +24,29 @@ import com.vaadin.server.VaadinSession;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="users_limits")
+@Table(name = "users_limits")
 public class UserLimit extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
-  @Column(name="ul_id")
-  private int id;
+  @Column(name = "ul_id")
+  private Long id;
   @OneToOne
-  @JoinColumn(name="ul_u_id")
+  @JoinColumn(name = "ul_u_id")
   private User user;
   @Transient
   private BigDecimal limit;
-  @Column(name="ul_limit_byte")
+  @Column(name = "ul_limit_byte")
   private byte[] limit_byte;
-  @Column(name="ul_order")
+  @Column(name = "ul_order")
   private int order;
-  @OneToMany(cascade=CascadeType.REMOVE)
-  @JoinColumn(name="us_ul_id")
-  @OrderBy(value="date")
+  @OneToMany(cascade = CascadeType.REMOVE)
+  @JoinColumn(name = "us_ul_id")
+  @OrderBy(value = "date")
   private List<UserSummary> userSummaryList;
-  @Column(name="ul_cont_summary")
+  @Column(name = "ul_cont_summary")
   private boolean continuousSummary;
-  
+
   public UserLimit() {
     super();
   }
@@ -57,21 +57,22 @@ public class UserLimit extends AbstractEntity {
     this.order = order;
   }
 
-  public int getId() {
+  public Long getId() {
     return id;
   }
-  public void setId(int id) {
+
+  public void setId(Long id) {
     this.id = id;
   }
-  
+
   public User getUser() {
     return user;
   }
-  
+
   public void setUser(User user) {
     this.user = user;
   }
-  
+
   public BigDecimal getLimit() {
     return getLimit(false);
   }
@@ -83,26 +84,27 @@ public class UserLimit extends AbstractEntity {
     }
     return limit;
   }
-  
+
   public void setLimit(BigDecimal limit) {
     setLimit(limit, false);
   }
 
   public void setLimit(BigDecimal limit, boolean encrypt) {
-    if (limit_byte != null && limit.equals(this.limit) && !encrypt) return;
+    if (limit_byte != null && limit.equals(this.limit) && !encrypt)
+      return;
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.limit_byte = enc.encryption(limit.toString());
     this.limit = limit;
   }
-  
+
   public int getOrder() {
     return order;
   }
-  
+
   public void setOrder(int order) {
     this.order = order;
   }
-  
+
   public List<UserSummary> getUserSummaryList() {
     if (userSummaryList == null)
       userSummaryList = new ArrayList<UserSummary>();
@@ -112,33 +114,17 @@ public class UserLimit extends AbstractEntity {
   public void setUserSummaryList(List<UserSummary> userSummaryList) {
     this.userSummaryList = userSummaryList;
   }
-  
+
   public boolean isContinuousSummary() {
     return continuousSummary;
   }
-  
+
   public void setContinuousSummary(boolean continuousSummary) {
     this.continuousSummary = continuousSummary;
   }
 
   public String toString() {
     return user.getName();
-  }
-  
-  @Override
-  public boolean equals(Object o) {
-    if(o instanceof UserLimit)
-      return getId() == ((UserLimit)o).getId();
-    else return this == o;
-  }
-  
-  @Override
-  public int hashCode() {
-	  int hash = id;
-	  hash += user.hashCode();
-	  hash += getLimit().hashCode();
-	  hash += order;
-	  return hash;
   }
 
 }

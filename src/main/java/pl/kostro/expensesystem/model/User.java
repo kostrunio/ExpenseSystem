@@ -17,21 +17,21 @@ import org.hibernate.annotations.GenericGenerator;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name="users")
-@Inheritance(strategy=InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name="u_type", discriminatorType=DiscriminatorType.INTEGER)
-@DiscriminatorValue(value="1")
+@Table(name = "users")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "u_type", discriminatorType = DiscriminatorType.INTEGER)
+@DiscriminatorValue(value = "1")
 public class User extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
-  @Column(name="u_id")
-  private int id;
-  @Column(name="u_name")
+  @Column(name = "u_id")
+  private Long id;
+  @Column(name = "u_name")
   private String name;
-  @Column(name="u_creation_date")
+  @Column(name = "u_creation_date")
   private Date creationDate = new Date();
-  
+
   public User() {
     super();
   }
@@ -40,11 +40,11 @@ public class User extends AbstractEntity {
     setName(name);
   }
 
-  public int getId() {
+  public Long getId() {
     return id;
   }
 
-  public void setId(int id) {
+  public void setId(Long id) {
     this.id = id;
   }
 
@@ -55,7 +55,7 @@ public class User extends AbstractEntity {
   public void setName(String name) {
     this.name = name;
   }
-  
+
   public Date getCreationDate() {
     return creationDate;
   }
@@ -68,19 +68,5 @@ public class User extends AbstractEntity {
   public String toString() {
     return getName();
   }
-  
-  @Override
-  public boolean equals(Object o) {
-    if(o instanceof User)
-      return getId() == ((User)o).getId();
-    else return this == o;
-  }
-  
-  @Override
-  public int hashCode() {
-	  int hash = id;
-	  hash += name.hashCode();
-	  hash += creationDate.hashCode();
-	  return hash;
-  }
+
 }

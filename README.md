@@ -3,7 +3,7 @@ expensesystem
 
 production address
 ==================
-https://new-expensesystem.rhcloud.com/
+https://www.expensesystem.pl/
 
 requirements
 ============
