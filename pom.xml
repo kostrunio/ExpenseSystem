@@ -135,7 +135,7 @@
 	</dependencies>
 
 	<build>
-	  <finalName>expensesystem</finalName>
+		<finalName>expensesystem</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -232,6 +232,9 @@
 							<filesets>
 								<fileset>
 									<directory>src/main/webapp/VAADIN/gwt-unitCache</directory>
+									<includes>
+										<include>*</include>
+									</includes>
 								</fileset>
 								<fileset>
 									<directory>src/main/webapp/VAADIN/widgetsets</directory>
