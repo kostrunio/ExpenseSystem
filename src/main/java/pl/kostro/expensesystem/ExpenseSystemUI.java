@@ -1,10 +1,13 @@
 package pl.kostro.expensesystem;
 
+import java.io.IOException;
 import java.util.Locale;
 import java.util.TimeZone;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
@@ -23,6 +26,7 @@ import com.vaadin.ui.UI;
 import pl.kostro.expensesystem.event.ExpenseSystemEvent.BrowserResizeEvent;
 import pl.kostro.expensesystem.event.ExpenseSystemEventBus;
 import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.utils.SendEmail;
 import pl.kostro.expensesystem.view.LoginView;
 import pl.kostro.expensesystem.view.MainView;
 
@@ -88,6 +92,17 @@ public class ExpenseSystemUI extends UI {
     protected final void servletInitialized() throws ServletException {
       super.servletInitialized();
       getService().addSessionInitListener(new ExpenseSystemSessionInitListener());
+    }
+    
+    @Override
+    protected void service(HttpServletRequest request,
+        HttpServletResponse response) throws ServletException, IOException {
+      try {
+        super.service(request, response);
+      } catch (Exception e) {
+        SendEmail.exception(e.getMessage(), e.getStackTrace());
+        throw (e);
+      }
     }
   }
 }

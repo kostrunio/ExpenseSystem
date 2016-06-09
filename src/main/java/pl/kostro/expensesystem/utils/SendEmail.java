@@ -93,4 +93,27 @@ public class SendEmail {
     });
     return session;
   }
+
+  public static void exception(String exception, StackTraceElement[] stackTraceElements) {
+    try {
+      Message message = new MimeMessage(prepareSession());
+      message.setFrom(new InternetAddress("ExpenseSystem <expense_system@mailplus.pl>"));
+      message.setRecipients(Message.RecipientType.TO, InternetAddress.parse("Admin" + "<" + "michal.kostro@10g.pl" + ">"));
+      
+      message.setSubject(Msg.get("email.exception.subject"));
+      message.setContent(
+          MessageFormat.format(Msg.get("email.exception.text"),
+              new Object[] {exception, stackTraceElements.toString()}),
+          "text/html");
+
+      System.out.println("SendEmail: Sending");
+
+      Transport.send(message);
+
+      System.out.println("SendEmail: Done");
+
+    } catch (MessagingException e) {
+      throw new RuntimeException(e);
+    }
+  }
 }
