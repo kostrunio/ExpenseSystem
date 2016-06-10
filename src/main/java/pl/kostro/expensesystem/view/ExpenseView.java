@@ -35,15 +35,15 @@ public class ExpenseView extends ExpenseDesign implements View {
   private Button.ClickListener editClick = new ClickListener() {
     @Override
     public void buttonClick(final ClickEvent event) {
-      removeAllComponents();
-      addComponent(new SettingsView());
+      root.removeAllComponents();
+      root.addComponent(new SettingsView());
     }
   };
   private Button.ClickListener chartClick = new ClickListener() {
     @Override
     public void buttonClick(final ClickEvent event) {
-      removeAllComponents();
-      addComponent(new ChartView());
+      root.removeAllComponents();
+      root.addComponent(new ChartView());
     }
   };
   private Button.ClickListener filterClick = new Button.ClickListener() {
@@ -140,7 +140,7 @@ public class ExpenseView extends ExpenseDesign implements View {
   }
 
   private void prepareView() {
-    addComponent(buildHeader(expenseSheet.getName()));
+    root.addComponent(buildHeader(expenseSheet.getName()));
     editButton.addClickListener(editClick);
     chartButton.addClickListener(chartClick);
     Component content = buildContent();
@@ -152,8 +152,8 @@ public class ExpenseView extends ExpenseDesign implements View {
       if (!monthName.isEmpty())
         monthMenu.addItem(monthName, monthCommand).setCheckable(true);
     searchButton.addClickListener(searchClick);
-    addComponent(content);
-    setExpandRatio(content, 1);
+    root.addComponent(content);
+    root.setExpandRatio(content, 1);
 
     calendar.set(Calendar.DAY_OF_MONTH, 1);
     VaadinSession.getCurrent().setAttribute(Calendar.class, calendar);
@@ -189,7 +189,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     }
     if (!expenseSheet.getEncrypted())
       ess.encrypt(expenseSheet);
-    removeAllComponents();
+    root.removeAllComponents();
     if (mainView != null)
       mainView.removeAllComponents();
     prepareView();
