@@ -106,7 +106,9 @@ public class AccountView extends AccountDesign implements View {
     loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
     MainView menuView = ((ExpenseSystemUI) getUI()).getMainView();
     menuView.setActiveView("account");
+    usernameField.setReadOnly(false);
     usernameField.setValue(loggedUser.getName());
+    usernameField.setReadOnly(true);
     emailField.setValue(loggedUser.getEmail());
   }
 
