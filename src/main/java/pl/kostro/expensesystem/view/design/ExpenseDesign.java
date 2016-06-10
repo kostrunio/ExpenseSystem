@@ -43,7 +43,8 @@ public class ExpenseDesign extends VerticalLayout {
   protected VerticalLayout mainView;
 
   public ExpenseDesign() {
-    setSizeFull();
+    setWidth("100%");
+    setHeightUndefined();
     setMargin(true);
   }
 
