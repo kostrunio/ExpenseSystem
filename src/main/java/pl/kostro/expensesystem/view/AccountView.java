@@ -18,6 +18,7 @@ import pl.kostro.expensesystem.view.design.AccountDesign;
 @SuppressWarnings("serial")
 public class AccountView extends AccountDesign implements View {
 
+  private RealUserService rus  = new RealUserService();
   private RealUser loggedUser;
 
   private ValueChangeListener emailChange = new ValueChangeListener() {
@@ -37,7 +38,7 @@ public class AccountView extends AccountDesign implements View {
     public void buttonClick(ClickEvent event) {
       if (emailField.getValue().trim().equals(emailField2.getValue().trim())) {
         loggedUser.setEmail(emailField.getValue().trim());
-        RealUserService.save(loggedUser, false);
+        rus.save(loggedUser, false);
         ShowNotification.changeEmailOK();
         emailField2.setValue("");
         emailField2.setEnabled(false);
@@ -63,7 +64,7 @@ public class AccountView extends AccountDesign implements View {
     public void buttonClick(ClickEvent event) {
       if (newPasswordField.getValue().trim().equals(newPasswordField2.getValue().trim())) {
         loggedUser.setClearPassword(newPasswordField.getValue().trim());
-        RealUserService.save(loggedUser, true);
+        rus.save(loggedUser, true);
         ShowNotification.changePasswordOK();
         oldPasswordField.setValue("");
         oldPasswordField.setEnabled(false);

@@ -26,6 +26,8 @@ import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 public class CategoryGrid extends Grid implements SettingsChangeListener {
+  private CategoryService cs = new CategoryService();
+  private ExpenseSheetService ess = new ExpenseSheetService();
   private ExpenseSheet expenseSheet;
 
   private Button addCategoryButton;
@@ -52,7 +54,7 @@ public class CategoryGrid extends Grid implements SettingsChangeListener {
       @SuppressWarnings("unchecked")
       @Override
       public void postCommit(CommitEvent commitEvent) throws CommitException {
-        CategoryService.merge(((BeanItem<Category>) commitEvent.getFieldBinder().getItemDataSource()).getBean());
+        cs.merge(((BeanItem<Category>) commitEvent.getFieldBinder().getItemDataSource()).getBean());
       }
     });
 
@@ -82,7 +84,7 @@ public class CategoryGrid extends Grid implements SettingsChangeListener {
       @Override
       public void buttonClick(ClickEvent event) {
         Category category = getItem();
-        expenseSheet = ExpenseSheetService.moveCategoryUp(expenseSheet, category);
+        expenseSheet = ess.moveCategoryUp(expenseSheet, category);
         refreshValues();
       }
     });
@@ -94,7 +96,7 @@ public class CategoryGrid extends Grid implements SettingsChangeListener {
       @Override
       public void buttonClick(ClickEvent event) {
         Category category = getItem();
-        expenseSheet = ExpenseSheetService.moveCategoryDown(expenseSheet, category);
+        expenseSheet = ess.moveCategoryDown(expenseSheet, category);
         refreshValues();
       }
     });
@@ -112,7 +114,7 @@ public class CategoryGrid extends Grid implements SettingsChangeListener {
               @Override
               public void onClose(ConfirmDialog dialog) {
                 if (dialog.isConfirmed()) {
-                  expenseSheet = ExpenseSheetService.removeCategory(expenseSheet, getItem());
+                  expenseSheet = ess.removeCategory(expenseSheet, getItem());
                   refreshValues();
                 }
               }

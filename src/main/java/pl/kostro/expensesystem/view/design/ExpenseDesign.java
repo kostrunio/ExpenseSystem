@@ -16,9 +16,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.Msg;
 
 @SuppressWarnings("serial")
-public class ExpenseDesign extends Panel {
-  protected VerticalLayout root;
-  
+public class ExpenseDesign extends VerticalLayout {
   protected HorizontalLayout header;
   protected Label titleLabel;
   protected HorizontalLayout tools;
@@ -45,12 +43,8 @@ public class ExpenseDesign extends Panel {
   protected VerticalLayout mainView;
 
   public ExpenseDesign() {
-    addStyleName(ValoTheme.PANEL_BORDERLESS);
     setSizeFull();
-    root = new VerticalLayout();
-    root.setSizeUndefined();
-    root.setMargin(true);
-    setContent(root);
+    setMargin(true);
   }
 
   protected Component buildHeader(String name) {
@@ -61,6 +55,7 @@ public class ExpenseDesign extends Panel {
     titleLabel.setSizeUndefined();
     titleLabel.addStyleName(ValoTheme.LABEL_H1);
     titleLabel.addStyleName(ValoTheme.LABEL_NO_MARGIN);
+    titleLabel.addStyleName(ValoTheme.LABEL_COLORED);
     header.addComponent(titleLabel);
 
     tools = new HorizontalLayout(buildEditButton(), buildChartButton());

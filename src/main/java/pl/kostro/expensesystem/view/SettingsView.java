@@ -25,6 +25,8 @@ import com.vaadin.ui.Button.ClickListener;
 @SuppressWarnings("serial")
 public class SettingsView extends SettingsDesign implements ExpenseSheetEditListener, ExpenseSheetPasswordChangeListener {
 
+  private ExpenseSheetService ess = new ExpenseSheetService();
+  private RealUserService rus = new RealUserService();
   private ExpenseSheet expenseSheet;
   private Button.ClickListener editClick = new ClickListener() {
     @Override
@@ -50,11 +52,11 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
         @Override
         public void onClose(ConfirmDialog dialog) {
           if (dialog.isConfirmed()) {
-            ExpenseSheetService.removeExpenseSheet(expenseSheet);
+            ess.removeExpenseSheet(expenseSheet);
             RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
-            RealUserService.refresh(loggedUser);
+            rus.refresh(loggedUser);
             if (loggedUser.getDefaultExpenseSheet() == null && loggedUser.getExpenseSheetList().size() != 0)
-              RealUserService.setDefaultExpenseSheet(loggedUser, loggedUser.getExpenseSheetList().get(0));
+              rus.setDefaultExpenseSheet(loggedUser, loggedUser.getExpenseSheetList().get(0));
             VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, null);
             ((ExpenseSystemUI)getUI()).getMainView().refresh();
             UI.getCurrent().getNavigator().navigateTo("");
@@ -110,16 +112,16 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
   @Override
   public void expenseSheetNameEdited(TextField nameField) {
     expenseSheet.setName(nameField.getValue());
-    ExpenseSheetService.merge(expenseSheet);
+    ess.merge(expenseSheet);
     ((ExpenseSystemUI)getUI()).getMainView().refresh();
     titleLabel.setValue(nameField.getValue());
   }
 
   @Override
   public void expenseSheetPasswordChanged(String newPassword) {
-    ExpenseSheetService.decrypt(expenseSheet);
+    ess.decrypt(expenseSheet);
     expenseSheet.setKey(newPassword);
-    ExpenseSheetService.encrypt(expenseSheet);
+    ess.encrypt(expenseSheet);
   }
 
 }

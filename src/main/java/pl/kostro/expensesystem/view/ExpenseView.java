@@ -29,20 +29,21 @@ import com.vaadin.ui.MenuBar.MenuItem;
 
 @SuppressWarnings("serial")
 public class ExpenseView extends ExpenseDesign implements View {
+  private ExpenseSheetService ess = new ExpenseSheetService();
   private Calendar calendar = Calendar.getInstance();
   private ExpenseSheet expenseSheet;
   private Button.ClickListener editClick = new ClickListener() {
     @Override
     public void buttonClick(final ClickEvent event) {
-      root.removeAllComponents();
-      root.addComponent(new SettingsView());
+      removeAllComponents();
+      addComponent(new SettingsView());
     }
   };
   private Button.ClickListener chartClick = new ClickListener() {
     @Override
     public void buttonClick(final ClickEvent event) {
-      root.removeAllComponents();
-      root.addComponent(new ChartView());
+      removeAllComponents();
+      addComponent(new ChartView());
     }
   };
   private Button.ClickListener filterClick = new Button.ClickListener() {
@@ -139,7 +140,7 @@ public class ExpenseView extends ExpenseDesign implements View {
   }
 
   private void prepareView() {
-    root.addComponent(buildHeader(expenseSheet.getName()));
+    addComponent(buildHeader(expenseSheet.getName()));
     editButton.addClickListener(editClick);
     chartButton.addClickListener(chartClick);
     Component content = buildContent();
@@ -151,8 +152,8 @@ public class ExpenseView extends ExpenseDesign implements View {
       if (!monthName.isEmpty())
         monthMenu.addItem(monthName, monthCommand).setCheckable(true);
     searchButton.addClickListener(searchClick);
-    root.addComponent(content);
-    root.setExpandRatio(content, 1);
+    addComponent(content);
+    setExpandRatio(content, 1);
 
     calendar.set(Calendar.DAY_OF_MONTH, 1);
     VaadinSession.getCurrent().setAttribute(Calendar.class, calendar);
@@ -187,8 +188,8 @@ public class ExpenseView extends ExpenseDesign implements View {
       }
     }
     if (!expenseSheet.getEncrypted())
-      ExpenseSheetService.encrypt(expenseSheet);
-    root.removeAllComponents();
+      ess.encrypt(expenseSheet);
+    removeAllComponents();
     if (mainView != null)
       mainView.removeAllComponents();
     prepareView();

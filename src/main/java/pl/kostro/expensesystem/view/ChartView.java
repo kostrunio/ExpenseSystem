@@ -30,6 +30,7 @@ import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 public class ChartView extends ChartDesign {
+  private ExpenseSheetService ess = new ExpenseSheetService();
   private ExpenseSheet expenseSheet;
   private Button.ClickListener searchClick = new Button.ClickListener() {
     @Override
@@ -76,7 +77,7 @@ public class ChartView extends ChartDesign {
 
   private void showCharts() {
     chartLayout.removeAllComponents();
-    List<YearCategory> yearCategoryList = ExpenseSheetService.prepareYearCategoryList(expenseSheet);
+    List<YearCategory> yearCategoryList = ess.prepareYearCategoryList(expenseSheet);
 
     Chart lineChart = new Chart(ChartType.LINE);
     Configuration lineConfiguration = lineChart.getConfiguration();

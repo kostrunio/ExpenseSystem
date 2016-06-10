@@ -20,6 +20,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public class AddCategoryWindow extends Window {
+  private CategoryService cs = new CategoryService();
 
   private final TextField nameField = new TextField(Msg.get("newCategory.label"));
   private SettingsChangeListener listener;
@@ -73,7 +74,7 @@ public class AddCategoryWindow extends Window {
           return;
         }
         ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-        CategoryService.createCategory(expenseSheet, nameField.getValue());
+        cs.createCategory(expenseSheet, nameField.getValue());
         listener.refreshValues();
         close();
       }

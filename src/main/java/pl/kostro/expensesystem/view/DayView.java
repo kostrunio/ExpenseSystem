@@ -5,8 +5,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import org.vaadin.teemu.VaadinIcons;
-
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Category;
@@ -24,6 +22,7 @@ import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.ShortcutAction;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Alignment;
@@ -36,6 +35,8 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings("serial")
 public class DayView extends DayDesign {
 
+  private ExpenseService es = new ExpenseService();
+  private ExpenseSheetService ess = new ExpenseSheetService();
   private ExpenseSheet expenseSheet;
   private Calendar calendar;
   private Category category;
@@ -99,7 +100,7 @@ public class DayView extends DayDesign {
               @Override
               public void onClose(ConfirmDialog dialog) {
                 if (dialog.isConfirmed()) {
-                  ExpenseService.removeExpense(expenseSheet, expense);
+                  es.removeExpense(expenseSheet, expense);
                   prepareCategoryListLayout();
                   prepareExpenseListLayout();
                 }
@@ -118,7 +119,7 @@ public class DayView extends DayDesign {
     @Override
     public void buttonClick(ClickEvent event) {
       if (userBox.getValue() instanceof UserLimit) {
-        ExpenseService.saveExpense(expenseSheet, expense, (UserLimit) userBox.getValue(), formulaField.getValue(),
+        es.saveExpense(expenseSheet, expense, (UserLimit) userBox.getValue(), formulaField.getValue(),
             commentBox.getValue(), notifyBox.getValue(), modify);
         prepareCategoryListLayout();
         prepareExpenseListLayout();
@@ -183,7 +184,7 @@ public class DayView extends DayDesign {
       Button expButton = new Button();
       vertLay.addComponent(expButton);
       vertLay.setComponentAlignment(expButton, Alignment.TOP_CENTER);
-      DateExpense dateExpenseMap = ExpenseSheetService.getDateExpenseMap(expenseSheet, calendar.getTime());
+      DateExpense dateExpenseMap = ess.getDateExpenseMap(expenseSheet, calendar.getTime());
       if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
         expButton.setCaption("0");
       else {
@@ -199,7 +200,7 @@ public class DayView extends DayDesign {
     expenseGrid.removeAllComponents();
     categoryLabel.setValue(category.getName());
     List<Expense> expenseList;
-    DateExpense dateExpenseMap = ExpenseSheetService.getDateExpenseMap(expenseSheet, calendar.getTime());
+    DateExpense dateExpenseMap = ess.getDateExpenseMap(expenseSheet, calendar.getTime());
     if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
       expenseList = new ArrayList<Expense>();
     else {
@@ -230,7 +231,7 @@ public class DayView extends DayDesign {
       expenseGrid.addComponent(comment, 2, i);
 
       Button removeButton = new Button();
-      removeButton.setIcon(VaadinIcons.TRASH);
+      removeButton.setIcon(FontAwesome.TRASH);
       removeButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
       removeButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
       removeButton.setData(expense);
@@ -239,11 +240,11 @@ public class DayView extends DayDesign {
       
       if (expense.isNotify()) {
         Label notifyLabel = new Label();
-        notifyLabel.setIcon(VaadinIcons.ENVELOPE);
+        notifyLabel.setIcon(FontAwesome.ENVELOPE);
         expenseGrid.addComponent(notifyLabel, 4, i);
       }
     }
-    buildAddNewExpense(ExpenseService.prepareNewExpense(expenseSheet, calendar.getTime(), category,
+    buildAddNewExpense(es.prepareNewExpense(expenseSheet, calendar.getTime(), category,
         expenseSheet.getUserLimitList().get(0).getUser()), false);
   }
 

@@ -7,6 +7,8 @@ import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
+import javax.persistence.NoResultException;
+
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -22,6 +24,8 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public class AddRealUserWindow extends Window {
+  private RealUserService rus = new RealUserService();
+  private UserLimitService uls = new UserLimitService();
 
   private final TextField nameField = new TextField(Msg.get("newRealUser.label"));
   private SettingsChangeListener listener;
@@ -74,13 +78,13 @@ public class AddRealUserWindow extends Window {
           ShowNotification.fieldEmpty(nameField.getCaption());
           return;
         }
-        RealUser realUser = RealUserService.findRealUser(nameField.getValue());
+        RealUser realUser = rus.findRealUser(nameField.getValue());
         if (realUser == null) {
           ShowNotification.noSuchUser(nameField.getValue());
           return;
         }
         ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-        UserLimitService.createUserLimit(expenseSheet, realUser);
+        uls.createUserLimit(expenseSheet, realUser);
         listener.refreshValues();
         close();
       }

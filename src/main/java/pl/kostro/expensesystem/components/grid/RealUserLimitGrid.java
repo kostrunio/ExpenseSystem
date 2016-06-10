@@ -27,6 +27,7 @@ import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 public class RealUserLimitGrid extends Grid implements SettingsChangeListener {
+  private UserLimitService uls = new UserLimitService();
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
 
@@ -48,7 +49,7 @@ public class RealUserLimitGrid extends Grid implements SettingsChangeListener {
       @SuppressWarnings("unchecked")
       @Override
       public void postCommit(CommitEvent commitEvent) throws CommitException {
-        UserLimitService.merge(((BeanItem<UserLimit>) commitEvent.getFieldBinder().getItemDataSource()).getBean());
+        uls.merge(((BeanItem<UserLimit>) commitEvent.getFieldBinder().getItemDataSource()).getBean());
         refreshValues();
       }
     });
@@ -91,7 +92,7 @@ public class RealUserLimitGrid extends Grid implements SettingsChangeListener {
                     ShowNotification.removeOwnerProblem();
                     return;
                   }
-                  UserLimitService.removeUserLimit(expenseSheet, getItem());
+                  uls.removeUserLimit(expenseSheet, getItem());
                   refreshValues();
                 }
               }

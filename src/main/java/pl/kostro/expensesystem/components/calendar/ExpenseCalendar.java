@@ -25,13 +25,14 @@ import com.vaadin.ui.components.calendar.handler.BasicWeekClickHandler;
 
 @SuppressWarnings("serial")
 public class ExpenseCalendar extends com.vaadin.ui.Calendar {
+  private ExpenseSheetService ess = new ExpenseSheetService();
   private MonthView monthView;
   private ExpenseSheet expenseSheet;
   private Calendar calendar;
   private CalendarEventProvider eventProvider = new CalendarEventProvider() {
     @Override
     public List<CalendarEvent> getEvents(Date startDate, Date endDate) {
-      Map<Date, DateExpense> eventToShow = ExpenseSheetService.prepareExpenseMap(expenseSheet, startDate, endDate,
+      Map<Date, DateExpense> eventToShow = ess.prepareExpenseMap(expenseSheet, startDate, endDate,
           UserSummaryService.getFirstDay(calendar.getTime()), UserSummaryService.getLastDay(calendar.getTime()));
       monthView.fulfillTables();
       return Converter.transformExpensesToEvents(expenseSheet, eventToShow);

@@ -40,19 +40,13 @@
     margin-top: $v-layout-margin-top;
   }
 
-  .add-expense[width-range~="0-800px"] {
-    .add-expense-field {
-      display: block;
-    }
-  }
-
   .v-ui[width-range~="0-800px"] {
     .categorylist-panel {
-      width: 100%;
+      width: 90%;
       margin-bottom: $v-layout-margin-bottom;
     }
     .expenselist-panel {
-      width: 100%;
+      width: 90%;
       margin: 0;
       
       > .v-widget {
@@ -60,12 +54,13 @@
         }
       
       .add-expense {
+        display: block;
         .v-slot {
           display: block;
         }
         
         .v-widget {
-          width: 100%;
+          width: 90%;
         }
       }
     }
