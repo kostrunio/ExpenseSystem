@@ -1,0 +1,17 @@
+@mixin account {
+
+  .account-layout {
+    .username-field {
+      max-width: 300px;
+    }
+    
+    .email-panel {
+      max-width: 300px;
+      margin-right: $v-layout-margin-right;
+      margin-bottom: $v-layout-margin-bottom;
+    }
+    .password-panel {
+      max-width: 300px;
+    }
+  }
+}
