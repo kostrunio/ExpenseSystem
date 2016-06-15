@@ -78,13 +78,6 @@ public class AccountView extends AccountDesign implements View {
       }
     }
   };
-  private ClickListener nitifyClick = new ClickListener() {
-    
-    @Override
-    public void buttonClick(ClickEvent event) {
-      sn.process();
-    }
-  };
 
   public AccountView() {
     setCaption();
@@ -95,7 +88,6 @@ public class AccountView extends AccountDesign implements View {
     newPasswordField.addValueChangeListener(newPasswordChange);
     newPasswordField2.addValueChangeListener(newPasswordChange);
     savePasswordButton.addClickListener(savePasswordClick);
-    notifyButton.addClickListener(nitifyClick);
   }
 
   private void setCaption() {
