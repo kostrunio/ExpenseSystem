@@ -24,6 +24,7 @@ import com.vaadin.ui.declarative.Design;
 public class AccountDesign extends VerticalLayout {
   protected Label titleLabel;
   protected TextField usernameField;
+  protected Button notifyButton;
   protected Panel emailPanel;
   protected TextField emailField;
   protected TextField emailField2;

@@ -13,12 +13,14 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
+import pl.kostro.expensesystem.utils.SendNotification;
 import pl.kostro.expensesystem.view.design.AccountDesign;
 
 @SuppressWarnings("serial")
 public class AccountView extends AccountDesign implements View {
 
   private RealUserService rus  = new RealUserService();
+  private SendNotification sn = new SendNotification();
   private RealUser loggedUser;
 
   private ValueChangeListener emailChange = new ValueChangeListener() {
@@ -76,6 +78,13 @@ public class AccountView extends AccountDesign implements View {
       }
     }
   };
+  private ClickListener nitifyClick = new ClickListener() {
+    
+    @Override
+    public void buttonClick(ClickEvent event) {
+      sn.process();
+    }
+  };
 
   public AccountView() {
     setCaption();
@@ -86,6 +95,7 @@ public class AccountView extends AccountDesign implements View {
     newPasswordField.addValueChangeListener(newPasswordChange);
     newPasswordField2.addValueChangeListener(newPasswordChange);
     savePasswordButton.addClickListener(savePasswordClick);
+    notifyButton.addClickListener(nitifyClick);
   }
 
   private void setCaption() {

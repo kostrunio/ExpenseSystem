@@ -99,7 +99,7 @@ public class ExpenseSystemUI extends UI {
         HttpServletResponse response) throws ServletException, IOException {
       try {
         super.service(request, response);
-      } catch (Exception e) {
+      } catch (Exception | Error e) {
         SendEmail.exception(e.getMessage(), e.getStackTrace());
         throw (e);
       }

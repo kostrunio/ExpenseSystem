@@ -8,107 +8,104 @@ import java.util.List;
 import javax.script.ScriptException;
 
 public class Calculator {
-	
-	public static boolean verifyAllowed(String str) {
-		if (str.startsWith("="))
-			str = str.substring(1);
-		str = str.replaceAll(",", ".");
-		if (str.matches("[0-9\\+\\-\\*\\/\\(\\)\\.]*")) {
-			String[] open = str.split("\\(", -1);
-			String[] close = str.split("\\)", -1);
-			if (open.length == close.length)
-				return true;
-		}
-		return false;
-	}
 
-	public static BigDecimal getOperationResult(String str) {
-		if (str.startsWith("="))
-			str = str.substring(1);
-		if (str.equals(""))
-			return new BigDecimal(0);
-		str = str.replaceAll(",", ".");
-		if (str.indexOf("(") != -1) {
-			int a = str.lastIndexOf("(");
-			int b = str.indexOf(")", a);
-			BigDecimal middle = getOperationResult(str.substring(a + 1, b));
-			return getOperationResult(str.substring(0, a) + middle
-					+ str.substring(b + 1));
-		}
-		BigDecimal result = new BigDecimal(0);
-		String[] plus = str.split("\\+");
-		if (plus.length > 1) {
-			// there were some +
-			if (plus[0].length() > 0)
-				result = getOperationResult(plus[0]);
-			for (int i = 1; i < plus.length; i++) {
-				result = result.add(getOperationResult(plus[i]));
-			}
-			return result;
-		} else {
-			// no +
-			List<String> minusList = new ArrayList<String>();
-			char mem = ';';
-			int index = 0;
-			String ex = plus[0];
-			for (int i = 0; i < ex.length(); i++) {
-				char c = ex.charAt(i);
-				if (c == '-' && String.valueOf(mem).matches("[0-9]")) {
-					minusList.add(ex.substring(index, i));
-					index = i + 1;
-				}
-				mem = c;
-				if (i == ex.length() - 1) {
-					minusList.add(ex.substring(index));
-				}
-			}
-			if (minusList.size() > 1) {
-				// there were some -
-				result = getOperationResult((String) minusList.get(0));
-				for (int i = 1; i < minusList.size(); i++) {
-					result = result.subtract(getOperationResult((String) minusList.get(i)));
-				}
-				return result;
-			} else {
-				// no -
-				String[] mult = ((String) minusList.get(0)).split("\\*");
-				if (mult.length > 1) {
-					// there were some *
-					result = getOperationResult(mult[0]);
-					for (int i = 1; i < mult.length; i++) {
-						result = result.multiply(getOperationResult(mult[i]));
-					}
-					return result;
-				} else {
-					// no *
-					String[] div = mult[0].split("\\/");
-					if (div.length > 1) {
-						// there were some /
-						result = getOperationResult(div[0]);
-						for (int i = 1; i < div.length; i++) {
-							BigDecimal dv = getOperationResult(div[i]);
-							if (dv.equals(0))
-								throw new IllegalArgumentException(
-										"divide by ZERO not allowed");
-							result = result.divide(dv);
-						}
-						return result;
-					} else {
-						// no /
-						str = str.replaceAll("--", "");
-						return new BigDecimal(str);
-					}
-				}
-			}
-		}
-	}
-	
-	public static BigDecimal getResult(String str) {
-		return getOperationResult(str).setScale(2, RoundingMode.HALF_UP);
-	}
-		
-	
-	public static void main(String[] args) throws ScriptException {
-		System.out.println(getResult("64-21,131"));
-	}
+  public static boolean verifyAllowed(String str) {
+    if (str.startsWith("="))
+      str = str.substring(1);
+    str = str.replaceAll(",", ".");
+    if (str.matches("[0-9\\+\\-\\*\\/\\(\\)\\.]*")) {
+      String[] open = str.split("\\(", -1);
+      String[] close = str.split("\\)", -1);
+      if (open.length == close.length)
+        return true;
+    }
+    return false;
+  }
+
+  public static BigDecimal getOperationResult(String str) {
+    if (str.startsWith("="))
+      str = str.substring(1);
+    if (str.equals(""))
+      return new BigDecimal(0);
+    str = str.replaceAll(",", ".");
+    if (str.indexOf("(") != -1) {
+      int a = str.lastIndexOf("(");
+      int b = str.indexOf(")", a);
+      BigDecimal middle = getOperationResult(str.substring(a + 1, b));
+      return getOperationResult(str.substring(0, a) + middle + str.substring(b + 1));
+    }
+    BigDecimal result = new BigDecimal(0);
+    String[] plus = str.split("\\+");
+    if (plus.length > 1) {
+      // there were some +
+      if (plus[0].length() > 0)
+        result = getOperationResult(plus[0]);
+      for (int i = 1; i < plus.length; i++) {
+        result = result.add(getOperationResult(plus[i]));
+      }
+      return result;
+    } else {
+      // no +
+      List<String> minusList = new ArrayList<String>();
+      char mem = ';';
+      int index = 0;
+      String ex = plus[0];
+      for (int i = 0; i < ex.length(); i++) {
+        char c = ex.charAt(i);
+        if (c == '-' && String.valueOf(mem).matches("[0-9]")) {
+          minusList.add(ex.substring(index, i));
+          index = i + 1;
+        }
+        mem = c;
+        if (i == ex.length() - 1) {
+          minusList.add(ex.substring(index));
+        }
+      }
+      if (minusList.size() > 1) {
+        // there were some -
+        result = getOperationResult((String) minusList.get(0));
+        for (int i = 1; i < minusList.size(); i++) {
+          result = result.subtract(getOperationResult((String) minusList.get(i)));
+        }
+        return result;
+      } else {
+        // no -
+        String[] mult = ((String) minusList.get(0)).split("\\*");
+        if (mult.length > 1) {
+          // there were some *
+          result = getOperationResult(mult[0]);
+          for (int i = 1; i < mult.length; i++) {
+            result = result.multiply(getOperationResult(mult[i]));
+          }
+          return result;
+        } else {
+          // no *
+          String[] div = mult[0].split("\\/");
+          if (div.length > 1) {
+            // there were some /
+            result = getOperationResult(div[0]);
+            for (int i = 1; i < div.length; i++) {
+              BigDecimal dv = getOperationResult(div[i]);
+              if (dv.equals(0))
+                throw new IllegalArgumentException("divide by ZERO not allowed");
+              result = result.divide(dv, 2, RoundingMode.HALF_UP);
+            }
+            return result;
+          } else {
+            // no /
+            str = str.replaceAll("--", "");
+            return new BigDecimal(str);
+          }
+        }
+      }
+    }
+  }
+
+  public static BigDecimal getResult(String str) {
+    return getOperationResult(str).setScale(2, RoundingMode.HALF_UP);
+  }
+
+  public static void main(String[] args) throws ScriptException {
+    System.out.println(getResult("64-21,131"));
+  }
 }

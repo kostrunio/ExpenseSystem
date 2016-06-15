@@ -16,12 +16,17 @@ import pl.kostro.expensesystem.model.service.ExpenseService;
 public class SendNotification implements Job {
 
   private ExpenseService es = new ExpenseService();
+  private ExpenseSheetNotifyService esns = new ExpenseSheetNotifyService();
 
   @Override
   public void execute(final JobExecutionContext ctx) throws JobExecutionException {
+    process();
+  }
+
+  public void process() {
     System.out.println("SendNotification - started");
     List<Expense> expList = es.findExpensesToNotify();
-    Map<RealUser, Map<ExpenseSheet, List<Expense>>> notifyMap = ExpenseSheetNotifyService.prepareExpenseSheetNotify(expList);
+    Map<RealUser, Map<ExpenseSheet, List<Expense>>> notifyMap = esns.prepareExpenseSheetNotify(expList);
     for (RealUser realUser : notifyMap.keySet()) {
       Map<ExpenseSheet, List<Expense>> eSMap = notifyMap.get(realUser);
       for (ExpenseSheet eS : eSMap.keySet()) {
@@ -35,5 +40,4 @@ public class SendNotification implements Job {
     }
     System.out.println("SendNotification - finished");
   }
-
 }
