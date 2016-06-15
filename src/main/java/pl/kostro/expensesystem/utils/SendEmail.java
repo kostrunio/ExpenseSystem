@@ -65,7 +65,7 @@ public class SendEmail {
       message.setContent(
           MessageFormat.format(Msg.get("email.expenses.text"),
               new Object[] {expenseSheet.getId(), expenseSheet.getName(), expenses}),
-          "text/html");
+          "text/html; charset=UTF-8");
 
       System.out.println("SendEmail: Sending");
 
