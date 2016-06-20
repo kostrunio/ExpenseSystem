@@ -83,6 +83,12 @@ public class UserSummaryService {
     throw new IllegalArgumentException(monthName + "not known");
   }
 
+  public static String getMonthName(int month) {
+    if (month > monthsName.length)
+      throw new IllegalArgumentException(month + "not known");
+    return monthsName[month];
+  }
+
   public static BigDecimal calculateSum(UserLimit userLimit, Date date) {
     BigDecimal sum = new BigDecimal(0);
     for (UserSummary userSummary : userLimit.getUserSummaryList()) {

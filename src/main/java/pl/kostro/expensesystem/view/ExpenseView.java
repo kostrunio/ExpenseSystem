@@ -30,6 +30,7 @@ import com.vaadin.ui.MenuBar.MenuItem;
 @SuppressWarnings("serial")
 public class ExpenseView extends ExpenseDesign implements View {
   private ExpenseSheetService ess = new ExpenseSheetService();
+  private UserSummaryService uss = new UserSummaryService();
   private Calendar calendar = Calendar.getInstance();
   private ExpenseSheet expenseSheet;
   private Button.ClickListener editClick = new ClickListener() {
@@ -105,27 +106,37 @@ public class ExpenseView extends ExpenseDesign implements View {
   private MenuBar.Command yearCommand = new MenuBar.Command() {
     @Override
     public void menuSelected(MenuItem selectedItem) {
-      UserSummaryService.setFirstDay(calendar, selectedItem.getText());
+      uss.setFirstDay(calendar, selectedItem.getText());
       mainView.removeAllComponents();
       mainView.addComponent(new MonthView());
-      for (MenuItem item : yearMenu.getItems()) {
-        item.setChecked(false);
-      }
-      selectedItem.setChecked(true);
+      checkedYear(selectedItem.getText());
     }
   };
   private MenuBar.Command monthCommand = new MenuBar.Command() {
     @Override
     public void menuSelected(MenuItem selectedItem) {
       mainView.removeAllComponents();
-      UserSummaryService.setFirstDay(calendar, UserSummaryService.getMonthNumber(selectedItem.getText()));
+      uss.setFirstDay(calendar, uss.getMonthNumber(selectedItem.getText()));
       mainView.addComponent(new MonthView());
-      for (MenuItem item : monthMenu.getItems()) {
-        item.setChecked(false);
-      }
-      selectedItem.setChecked(true);
+      checkedMonth(selectedItem.getText());
     }
   };
+
+  public void checkedYear(String yearString) {
+    for (MenuItem item : yearMenu.getItems()) {
+      item.setChecked(false);
+      if (item.getText().equals(yearString))
+        item.setChecked(true);
+    }
+  }
+
+  public void checkedMonth(String monthString) {
+    for (MenuItem item : monthMenu.getItems()) {
+      item.setChecked(false);
+      if (item.getText().equals(monthString))
+        item.setChecked(true);
+    }
+  }
 
   private void prepareSearchLayout() {
     categoryCombo.removeAllItems();
@@ -148,7 +159,7 @@ public class ExpenseView extends ExpenseDesign implements View {
       yearMenu.addItem(year, yearCommand).setCheckable(true);
     filterButton.addClickListener(filterClick);
     tableButton.addClickListener(tableClick);
-    for (String monthName : UserSummaryService.getMonthsName())
+    for (String monthName : uss.getMonthsName())
       if (!monthName.isEmpty())
         monthMenu.addItem(monthName, monthCommand).setCheckable(true);
     searchButton.addClickListener(searchClick);

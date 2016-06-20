@@ -8,6 +8,9 @@ import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.view.design.MonthDesign;
 
 import com.google.common.eventbus.Subscribe;
+import com.google.gwt.core.server.ServerGwtBridge.Properties;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
@@ -17,6 +20,7 @@ import com.vaadin.ui.Button.ClickEvent;
 @SuppressWarnings("serial")
 public class MonthView extends MonthDesign {
 
+  private UserSummaryService uss = new UserSummaryService();
   private Calendar date;
   private Button.ClickListener prevClick = new Button.ClickListener() {
     @Override
@@ -32,17 +36,25 @@ public class MonthView extends MonthDesign {
       showCalendar();
     }
   };
+  private Property.ValueChangeListener thisMonthChange = new Property.ValueChangeListener() {
+    @Override
+    public void valueChange(ValueChangeEvent event) {
+      date.setTime(thisMonthField.getValue());
+      showCalendar();
+    }
+  };
 
   public MonthView() {
     ExpenseSystemEventBus.register(this);
     this.date = VaadinSession.getCurrent().getAttribute(Calendar.class);
-    UserSummaryService.setFirstDay(date);
+    uss.setFirstDay(date);
     previousMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_LEFT);
     previousMonthButton.addClickListener(prevClick);
     nextMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_RIGHT);
     nextMonthButton.addClickListener(nextClick);
     firstDateField.setDateFormat("yyyy-MM-dd");
     thisMonthField.setDateFormat("MMMM yyyy");
+    thisMonthField.addValueChangeListener(thisMonthChange);
     lastDateField.setDateFormat("yyyy-MM-dd");
 
     setCalendarSize();
@@ -50,11 +62,13 @@ public class MonthView extends MonthDesign {
   }
 
   public void showCalendar() {
-    thisMonthField.setReadOnly(false);
+    if (getParent() != null && getParent().getParent().getParent().getParent() instanceof ExpenseView) {
+      ((ExpenseView)getParent().getParent().getParent().getParent()).checkedYear(date.get(Calendar.YEAR)+"");
+      ((ExpenseView)getParent().getParent().getParent().getParent()).checkedMonth(uss.getMonthName(date.get(Calendar.MONTH)));
+    }
     thisMonthField.setValue(date.getTime());
-    thisMonthField.setReadOnly(true);
-    firstDateField.setValue(UserSummaryService.getFirstDay(date.getTime()));
-    lastDateField.setValue(UserSummaryService.getLastDay(date.getTime()));
+    firstDateField.setValue(uss.getFirstDay(date.getTime()));
+    lastDateField.setValue(uss.getLastDay(date.getTime()));
     monthCalendar.setMonthView(this);
     monthCalendar.setStartDate(firstDateField.getValue());
     monthCalendar.setEndDate(lastDateField.getValue());
