@@ -63,7 +63,8 @@ public class TableView extends TableDesign {
   private SelectionEvent.SelectionListener gridSelect = new SelectionListener() {
     @Override
     public void select(SelectionEvent event) {
-      expenseForm.edit((Expense)expenseGrid.getSelectedRow());
+      if (expenseGrid.getSelectedRow() != null)
+        expenseForm.edit((Expense)expenseGrid.getSelectedRow());
     }
   };
   
