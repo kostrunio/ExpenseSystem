@@ -116,9 +116,13 @@ public class Expense extends AbstractEntity {
   }
 
   public BigDecimal getValue() {
+    try {
     if (getFormula() != null && !formula.isEmpty())
       value = Calculator.getOperationResult(formula);
     return value;
+    } catch (NumberFormatException e) {
+      return new BigDecimal(-1);
+    }
   }
 
   public Category getCategory() {

@@ -93,7 +93,6 @@ public class Calculator {
             return result;
           } else {
             // no /
-            str = str.replaceAll("--", "");
             return new BigDecimal(str);
           }
         }
