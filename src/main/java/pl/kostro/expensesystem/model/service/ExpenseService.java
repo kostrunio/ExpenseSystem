@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
-import com.google.gwt.thirdparty.guava.common.collect.ImmutableMap;
+import com.google.common.collect.ImmutableMap;
 
 import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.Category;

@@ -1,10 +1,17 @@
 package pl.kostro.expensesystem.view;
 
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.LoginForm.LoginEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
+import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.service.RealUserService;
+import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.view.design.LoginDesign;
 
 @SuppressWarnings("serial")
@@ -26,6 +33,26 @@ public class LoginView extends LoginDesign {
       registerForm.setVisible(true);
     }
   };
+  private LoginForm.LoginListener loginEvent = new LoginForm.LoginListener() {
+    @Override
+    public void onLogin(LoginEvent event) {
+      RealUser loggedUser = null;
+      try {
+        loggedUser = RealUserService.getUserData(event.getLoginParameter("username"), event.getLoginParameter("password"));
+        if (loggedUser == null) {
+          ShowNotification.logonProblem();
+          loginForm.getLoginButton().setEnabled(true);
+        } else {
+          VaadinSession.getCurrent().setAttribute(RealUser.class, loggedUser);
+          ((ExpenseSystemUI) getUI()).updateContent();
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+        ShowNotification.dbProblem(e.getMessage());
+        loginForm.getLoginButton().setEnabled(true);
+      }
+    }
+  };
 
   public LoginView() {
     setCaption();
@@ -34,6 +61,8 @@ public class LoginView extends LoginDesign {
 
     signIn.addClickListener(signInClick);
     signUp.addClickListener(signUpClick);
+    
+    loginForm.addLoginListener(loginEvent);
   }
 
   private void setCaption() {

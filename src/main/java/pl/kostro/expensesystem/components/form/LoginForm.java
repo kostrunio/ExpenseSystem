@@ -1,13 +1,6 @@
 package pl.kostro.expensesystem.components.form;
 
-import pl.kostro.expensesystem.ExpenseSystemUI;
-import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.RealUser;
-import pl.kostro.expensesystem.model.service.RealUserService;
-import pl.kostro.expensesystem.notification.ShowNotification;
-
 import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.CssLayout;
@@ -16,20 +9,25 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.ValoTheme;
 
+import pl.kostro.expensesystem.Msg;
+
 @SuppressWarnings("serial")
-public class LoginForm extends com.ejt.vaadin.loginform.LoginForm {
+public class LoginForm extends com.vaadin.ui.LoginForm {
 
   private Button loginButton;
 
-  protected String getUserNameFieldCaption() {
+  @Override
+  public String getUsernameCaption() {
     return Msg.get("loginPage.userName");
   }
 
-  protected String getPasswordFieldCaption() {
+  @Override
+  public String getPasswordCaption() {
     return Msg.get("loginPage.password");
   }
 
-  protected String getLoginButtonCaption() {
+  @Override
+  public String getLoginButtonCaption() {
     return Msg.get("loginPage.signIn");
   }
 
@@ -56,23 +54,7 @@ public class LoginForm extends com.ejt.vaadin.loginform.LoginForm {
     return loginForm;
   }
 
-  @Override
-  protected void login(String userName, String password) {
-    RealUser loggedUser = null;
-    try {
-      loggedUser = RealUserService.getUserData(userName, password);
-      if (loggedUser == null) {
-        ShowNotification.logonProblem();
-        loginButton.setEnabled(true);
-      } else {
-        VaadinSession.getCurrent().setAttribute(RealUser.class, loggedUser);
-        ((ExpenseSystemUI) getUI()).updateContent();
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
-      ShowNotification.dbProblem(e.getMessage());
-      loginButton.setEnabled(true);
-    }
+  public Button getLoginButton() {
+    return loginButton;
   }
-
 }
