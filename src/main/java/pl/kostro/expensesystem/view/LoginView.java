@@ -1,5 +1,8 @@
 package pl.kostro.expensesystem.view;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.LoginForm;
@@ -16,6 +19,8 @@ import pl.kostro.expensesystem.view.design.LoginDesign;
 
 @SuppressWarnings("serial")
 public class LoginView extends LoginDesign {
+
+  private Logger logger = LogManager.getLogger();
 
   private Button.ClickListener signInClick = new Button.ClickListener() {
     @Override
@@ -55,6 +60,7 @@ public class LoginView extends LoginDesign {
   };
 
   public LoginView() {
+    logger.info("create");
     setCaption();
     signIn.setDisableOnClick(true);
     signUp.setDisableOnClick(true);

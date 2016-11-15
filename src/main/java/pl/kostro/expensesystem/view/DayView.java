@@ -5,6 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Category;
@@ -35,6 +38,7 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings("serial")
 public class DayView extends DayDesign {
 
+  private Logger logger = LogManager.getLogger();
   private ExpenseService es = new ExpenseService();
   private ExpenseSheetService ess = new ExpenseSheetService();
   private ExpenseSheet expenseSheet;
@@ -128,6 +132,7 @@ public class DayView extends DayDesign {
   };
 
   public DayView() {
+    logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.category = expenseSheet.getCategoryList().get(0);
     this.calendar = VaadinSession.getCurrent().getAttribute(Calendar.class);

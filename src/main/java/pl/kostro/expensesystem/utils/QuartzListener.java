@@ -36,8 +36,4 @@ public class QuartzListener extends QuartzInitializerListener {
     }
   }
 
-  public static void main(String... args) throws ParseException {
-    CronExpression cron = new CronExpression("0 0 0/2 * * ? *");
-    System.out.println(cron);
-  }
 }

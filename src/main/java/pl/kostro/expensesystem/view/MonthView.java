@@ -2,6 +2,9 @@ package pl.kostro.expensesystem.view;
 
 import java.util.Calendar;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import pl.kostro.expensesystem.event.ExpenseSystemEvent.BrowserResizeEvent;
 import pl.kostro.expensesystem.event.ExpenseSystemEventBus;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
@@ -20,6 +23,7 @@ import com.vaadin.ui.Button.ClickEvent;
 @SuppressWarnings("serial")
 public class MonthView extends MonthDesign {
 
+  private Logger logger = LogManager.getLogger();
   private UserSummaryService uss = new UserSummaryService();
   private Calendar date;
   private Button.ClickListener prevClick = new Button.ClickListener() {
@@ -45,6 +49,7 @@ public class MonthView extends MonthDesign {
   };
 
   public MonthView() {
+    logger.info("create");
     ExpenseSystemEventBus.register(this);
     this.date = VaadinSession.getCurrent().getAttribute(Calendar.class);
     uss.setFirstDay(date);

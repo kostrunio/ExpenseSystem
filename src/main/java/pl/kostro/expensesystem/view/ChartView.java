@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -30,6 +33,8 @@ import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 public class ChartView extends ChartDesign {
+
+  private Logger logger = LogManager.getLogger();
   private ExpenseSheetService ess = new ExpenseSheetService();
   private ExpenseSheet expenseSheet;
   private Button.ClickListener searchClick = new Button.ClickListener() {
@@ -40,6 +45,7 @@ public class ChartView extends ChartDesign {
   };
 
   public ChartView() {
+    logger.info("create");
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     expenseSheet.setFilter(new Filter(null, null, null, null));
     setCaption();

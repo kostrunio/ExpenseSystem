@@ -7,6 +7,9 @@ import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -23,6 +26,8 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public class AddSheetWindow extends Window {
+
+  private Logger logger = LogManager.getLogger();
   private ExpenseSheetService ess = new ExpenseSheetService();
 
   private final TextField nameField = new TextField(Msg.get("newSheet.label"));
@@ -30,6 +35,7 @@ public class AddSheetWindow extends Window {
   private final PasswordField rePasswordField = new PasswordField(Msg.get("newSheet.repassword"));
 
   public AddSheetWindow() {
+    logger.info("show");
     setModal(true);
     setClosable(false);
     setResizable(false);

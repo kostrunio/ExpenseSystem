@@ -7,6 +7,9 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.google.common.collect.ImmutableMap;
 
 import pl.kostro.expensesystem.dao.ExpenseEntityDao;
@@ -18,7 +21,9 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.utils.Filter;
 
 public class ExpenseService {
-  
+
+  private static Logger logger = LogManager.getLogger();
+
   public static List<Expense> findAllExpense(ExpenseSheet expenseSheet) {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     for(Expense expense : expenseSheet.getExpenseList())
@@ -132,7 +137,7 @@ public class ExpenseService {
     } finally {
       ExpenseEntityDao.close();
     }
-    System.out.println("Found " + expenseList.size() + " expenses to notify");
+    logger.info("Found {} expenses to notify", expenseList.size());
     return expenseList;
   }
 }

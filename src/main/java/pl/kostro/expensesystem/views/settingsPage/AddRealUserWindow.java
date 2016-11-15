@@ -9,6 +9,9 @@ import pl.kostro.expensesystem.notification.ShowNotification;
 
 import javax.persistence.NoResultException;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -24,6 +27,8 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public class AddRealUserWindow extends Window {
+
+  private Logger logger = LogManager.getLogger();
   private RealUserService rus = new RealUserService();
   private UserLimitService uls = new UserLimitService();
 
@@ -31,6 +36,7 @@ public class AddRealUserWindow extends Window {
   private SettingsChangeListener listener;
 
   public AddRealUserWindow(SettingsChangeListener listener) {
+    logger.info("show");
     this.listener = listener;
     setModal(true);
     setClosable(false);

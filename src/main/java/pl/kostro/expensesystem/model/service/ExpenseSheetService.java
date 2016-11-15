@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.vaadin.server.VaadinSession;
 
 import pl.kostro.expensesystem.dao.ExpenseEntityDao;
@@ -25,6 +28,8 @@ import pl.kostro.expensesystem.utils.UserLimitExpense;
 import pl.kostro.expensesystem.utils.YearCategory;
 
 public class ExpenseSheetService {
+
+  private static Logger logger = LogManager.getLogger();
 
   public static void removeExpenseSheet(ExpenseSheet expenseSheet) {
     ExpenseEntityDao.begin();
@@ -244,13 +249,13 @@ public class ExpenseSheetService {
   }
 
   public static void decrypt(ExpenseSheet expenseSheet) {
-    System.out.println("decrypt: category");
+    logger.info("decrypt: category");
     for (Category category : expenseSheet.getCategoryList())
       CategoryService.decrypt(category);
-    System.out.println("decrypt: expense");
+    logger.info("decrypt: expense");
     for (Expense expense : expenseSheet.getExpenseList())
       ExpenseService.decrypt(expense);
-    System.out.println("decrypt: userLimit");
+    logger.info("decrypt: userLimit");
     for (UserLimit userLimit : expenseSheet.getUserLimitList())
       UserLimitService.decrypt(userLimit);
   }
@@ -258,13 +263,13 @@ public class ExpenseSheetService {
   public static void encrypt(ExpenseSheet expenseSheet) {
     ExpenseEntityDao.begin();
     try {
-      System.out.println("encrypt: category");
+      logger.info("encrypt: category");
       for (Category category : expenseSheet.getCategoryList())
         CategoryService.encrypt(category);
-      System.out.println("encrypt: expense");
+      logger.info("encrypt: expense");
       for (Expense expense : expenseSheet.getExpenseList())
         ExpenseService.encrypt(expense);
-      System.out.println("encrypt: userLimit");
+      logger.info("encrypt: userLimit");
       for (UserLimit userLimit : expenseSheet.getUserLimitList())
         UserLimitService.encrypt(userLimit);
       ExpenseEntityDao.commit();

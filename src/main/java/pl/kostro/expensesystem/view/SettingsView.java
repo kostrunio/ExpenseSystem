@@ -2,6 +2,9 @@ package pl.kostro.expensesystem.view;
 
 import java.text.MessageFormat;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
@@ -25,6 +28,7 @@ import com.vaadin.ui.Button.ClickListener;
 @SuppressWarnings("serial")
 public class SettingsView extends SettingsDesign implements ExpenseSheetEditListener, ExpenseSheetPasswordChangeListener {
 
+  private Logger logger = LogManager.getLogger();
   private ExpenseSheetService ess = new ExpenseSheetService();
   private RealUserService rus = new RealUserService();
   private ExpenseSheet expenseSheet;
@@ -67,6 +71,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
   };
 
   public SettingsView() {
+    logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setCaption();
     editButton.addClickListener(editClick);

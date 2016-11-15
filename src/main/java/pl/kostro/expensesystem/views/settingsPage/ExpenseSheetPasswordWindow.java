@@ -2,6 +2,9 @@ package pl.kostro.expensesystem.views.settingsPage;
 
 import java.text.MessageFormat;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.notification.ShowNotification;
@@ -25,9 +28,11 @@ import com.vaadin.ui.themes.ValoTheme;
 @SuppressWarnings("serial")
 public class ExpenseSheetPasswordWindow extends Window {
 
+  private Logger logger = LogManager.getLogger();
   private final PasswordField nameField = new PasswordField();
 
   public ExpenseSheetPasswordWindow() {
+    logger.info("show");
     setModal(true);
     setClosable(false);
     setResizable(false);

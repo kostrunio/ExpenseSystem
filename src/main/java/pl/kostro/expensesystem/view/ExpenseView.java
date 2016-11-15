@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -29,6 +32,8 @@ import com.vaadin.ui.MenuBar.MenuItem;
 
 @SuppressWarnings("serial")
 public class ExpenseView extends ExpenseDesign implements View {
+
+  private Logger logger = LogManager.getLogger();
   private ExpenseSheetService ess = new ExpenseSheetService();
   private UserSummaryService uss = new UserSummaryService();
   private Calendar calendar = Calendar.getInstance();
@@ -173,6 +178,7 @@ public class ExpenseView extends ExpenseDesign implements View {
 
   @Override
   public void enter(ViewChangeEvent event) {
+    logger.info("Enter");
     RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
     if (event.getParameters().isEmpty()) {
       expenseSheet = loggedUser.getDefaultExpenseSheet();

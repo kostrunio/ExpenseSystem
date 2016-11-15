@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
@@ -31,6 +34,7 @@ import com.vaadin.ui.Grid;
 @SuppressWarnings("serial")
 public class TableView extends TableDesign {
 
+  private Logger logger = LogManager.getLogger();
   private Calendar calendar;
   private ExpenseSheet expenseSheet;
   private Button.ClickListener filterClick = new ClickListener() {
@@ -69,6 +73,7 @@ public class TableView extends TableDesign {
   };
   
   public TableView() {
+    logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.calendar = VaadinSession.getCurrent().getAttribute(Calendar.class);
     setCaption();

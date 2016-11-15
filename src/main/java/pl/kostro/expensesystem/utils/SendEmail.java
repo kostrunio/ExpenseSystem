@@ -17,11 +17,17 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 
 public class SendEmail {
+
+  private static Logger logger = LogManager.getLogger();
+
   public static void welcome(RealUser user) {
     if (user.getEmail().isEmpty()) return;
     try {
@@ -43,11 +49,9 @@ public class SendEmail {
       multipart.addBodyPart(messageBodyPart);
       message.setContent(multipart);
 
-      System.out.println("SendEmail: Sending");
-
+      logger.info("SendEmail: Sending");
       Transport.send(message);
-
-      System.out.println("SendEmail: Done");
+      logger.info("SendEmail: Done");
 
     } catch (MessagingException e) {
       throw new RuntimeException(e);
@@ -67,11 +71,9 @@ public class SendEmail {
               new Object[] {expenseSheet.getId(), expenseSheet.getName(), expenses}),
           "text/html; charset=UTF-8");
 
-      System.out.println("SendEmail: Sending");
-
+      logger.info("SendEmail: Sending");
       Transport.send(message);
-
-      System.out.println("SendEmail: Done");
+      logger.info("SendEmail: Done");
 
     } catch (MessagingException e) {
       throw new RuntimeException(e);
@@ -106,11 +108,9 @@ public class SendEmail {
               new Object[] {exception, stackTraceElements.toString()}),
           "text/html");
 
-      System.out.println("SendEmail: Sending");
-
+      logger.info("SendEmail: Sending");
       Transport.send(message);
-
-      System.out.println("SendEmail: Done");
+      logger.info("SendEmail: Done");
 
     } catch (MessagingException e) {
       throw new RuntimeException(e);

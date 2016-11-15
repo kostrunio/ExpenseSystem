@@ -9,6 +9,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -39,11 +42,13 @@ import pl.kostro.expensesystem.view.MainView;
 @Widgetset("pl.kostro.expensesystem.ExpenseSystemWidgetset")
 public class ExpenseSystemUI extends UI {
 
+  private Logger logger = LogManager.getLogger();
   private final ExpenseSystemEventBus expenseEventbus = new ExpenseSystemEventBus();
   private MainView mainView;
 
   @Override
   protected void init(VaadinRequest vaadinRequest) {
+    logger.info("New session start: {}", vaadinRequest.getLocale());
     Locale.setDefault(vaadinRequest.getLocale());
     TimeZone.setDefault(TimeZone.getTimeZone("Europe/Warsaw"));
     Responsive.makeResponsive(this);
@@ -52,8 +57,7 @@ public class ExpenseSystemUI extends UI {
     Page.getCurrent().addBrowserWindowResizeListener(
         new BrowserWindowResizeListener() {
             @Override
-            public void browserWindowResized(
-                    final BrowserWindowResizeEvent event) {
+            public void browserWindowResized(final BrowserWindowResizeEvent event) {
               ExpenseSystemEventBus.post(new BrowserResizeEvent());
             }
         });

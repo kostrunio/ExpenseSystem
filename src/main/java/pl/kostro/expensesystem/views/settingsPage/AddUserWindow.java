@@ -6,6 +6,9 @@ import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.model.service.UserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -21,6 +24,8 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public class AddUserWindow extends Window {
+
+  private Logger logger = LogManager.getLogger();
   private UserLimitService uls = new UserLimitService();
   private UserService us = new UserService();
 
@@ -28,6 +33,7 @@ public class AddUserWindow extends Window {
   private SettingsChangeListener listener;
 
   public AddUserWindow(SettingsChangeListener listener) {
+    logger.info("show");
     this.listener = listener;
     setModal(true);
     setClosable(false);

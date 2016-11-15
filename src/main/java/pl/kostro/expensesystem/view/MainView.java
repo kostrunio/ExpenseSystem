@@ -3,6 +3,9 @@ package pl.kostro.expensesystem.view;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
@@ -27,6 +30,7 @@ import pl.kostro.expensesystem.views.settingsPage.AddSheetWindow;
 @SuppressWarnings("serial")
 public class MainView extends MainDesign {
 
+  private Logger logger = LogManager.getLogger();
   private static final String VALO_MENU_SELECTED = "selected";
   private static final String VALO_MENU_VISIBLE = "valo-menu-visible";
 
@@ -77,6 +81,7 @@ public class MainView extends MainDesign {
 
 
   public MainView(UI ui) {
+    logger.info("create");
     setCaption();
     showMenuButton.addClickListener(showMenuClick);
     addSheetButton.addClickListener(addSheetClick);
@@ -106,6 +111,7 @@ public class MainView extends MainDesign {
   }
 
   public void refresh() {
+    logger.info("refresh");
     buildMenuItems();
   }
 

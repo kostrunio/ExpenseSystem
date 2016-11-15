@@ -104,7 +104,4 @@ public class Calculator {
     return getOperationResult(str).setScale(2, RoundingMode.HALF_UP);
   }
 
-  public static void main(String[] args) throws ScriptException {
-    System.out.println(getResult("64-21,131"));
-  }
 }

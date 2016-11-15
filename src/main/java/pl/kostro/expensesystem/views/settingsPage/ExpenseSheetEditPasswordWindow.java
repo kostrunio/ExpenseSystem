@@ -4,6 +4,9 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -23,12 +26,14 @@ import com.vaadin.ui.themes.ValoTheme;
 @SuppressWarnings("serial")
 public class ExpenseSheetEditPasswordWindow extends Window {
 
+  private Logger logger = LogManager.getLogger();
   private final PasswordField oldPasswordField = new PasswordField(Msg.get("expenseSheet.oldPassword"));
   private final PasswordField newPasswordField = new PasswordField(Msg.get("expenseSheet.newPassword"));
   private final PasswordField reNewPasswordField = new PasswordField(Msg.get("expenseSheet.reNewPassword"));
   private ExpenseSheetPasswordChangeListener listener;
 
   public ExpenseSheetEditPasswordWindow(ExpenseSheetPasswordChangeListener listener) {
+    logger.info("show");
     this.listener = listener;
     setCaption(Msg.get("expenseSheet.edit"));
     setModal(true);

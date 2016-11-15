@@ -5,6 +5,9 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.service.CategoryService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -20,12 +23,15 @@ import com.vaadin.ui.themes.ValoTheme;
 
 @SuppressWarnings("serial")
 public class AddCategoryWindow extends Window {
+
+  private Logger logger = LogManager.getLogger();
   private CategoryService cs = new CategoryService();
 
   private final TextField nameField = new TextField(Msg.get("newCategory.label"));
   private SettingsChangeListener listener;
 
   public AddCategoryWindow(SettingsChangeListener listener) {
+    logger.info("show");
     this.listener = listener;
     setModal(true);
     setClosable(false);

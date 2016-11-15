@@ -1,5 +1,8 @@
 package pl.kostro.expensesystem.view;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.navigator.View;
@@ -19,6 +22,7 @@ import pl.kostro.expensesystem.view.design.AccountDesign;
 @SuppressWarnings("serial")
 public class AccountView extends AccountDesign implements View {
 
+  private Logger logger = LogManager.getLogger();
   private RealUserService rus  = new RealUserService();
   private SendNotification sn = new SendNotification();
   private RealUser loggedUser;
@@ -105,6 +109,7 @@ public class AccountView extends AccountDesign implements View {
 
   @Override
   public void enter(ViewChangeEvent event) {
+    logger.info("Enter");
     loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
     MainView menuView = ((ExpenseSystemUI) getUI()).getMainView();
     menuView.setActiveView("account");

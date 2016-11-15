@@ -4,6 +4,9 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -22,10 +25,12 @@ import com.vaadin.ui.themes.ValoTheme;
 @SuppressWarnings("serial")
 public class ExpenseSheetEditWindow extends Window {
 
+  private Logger logger = LogManager.getLogger();
   private final TextField nameField = new TextField(Msg.get("expenseSheet.name"));
   private ExpenseSheetEditListener listener;
 
   public ExpenseSheetEditWindow(ExpenseSheetEditListener listener, ExpenseSheet expenseSheet) {
+    logger.info("show");
     this.listener = listener;
     setCaption(Msg.get("expenseSheet.edit"));
     setModal(true);
