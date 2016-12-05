@@ -7,7 +7,7 @@ import org.apache.logging.log4j.core.pattern.LogEventPatternConverter;
 
 import com.vaadin.server.VaadinSession;
 
-import pl.kostro.expensesystem.model.User;
+import pl.kostro.expensesystem.model.RealUser;
 
 @Plugin(name = "UserConverter", category = "Converter")
 @ConverterKeys({ "user" })
@@ -27,10 +27,14 @@ public class UserConverter extends LogEventPatternConverter {
   }
 
   protected String getUser() {
-    User user = VaadinSession.getCurrent().getAttribute(User.class);
-    if (user != null)
-      return user.getName();
-    else
-      return "anonymus";
+    if (VaadinSession.getCurrent() != null) {
+      RealUser user = VaadinSession.getCurrent().getAttribute(RealUser.class);
+      if (user != null)
+        return user.getName();
+      else
+        return "anonymus";
+    } else {
+      return "none";
+    }
   }
 }
