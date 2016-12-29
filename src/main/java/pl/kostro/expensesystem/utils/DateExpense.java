@@ -68,10 +68,11 @@ public class DateExpense {
 			getCategoryExpenseMap().put(expense.getCategory(), categoryExpense);
 		}
 		categoryExpense.addExpense(expense);
-		UserLimitExpense userLimitExpense = getUserLimitExpenseMap().get(ExpenseSheetService.getUserLimitForUser(expense.getExpenseSheet(), expense.getUser()));
+		UserLimit userLimit = ExpenseSheetService.getUserLimitForUser(expense.getExpenseSheet(), expense.getUser());
+		UserLimitExpense userLimitExpense = getUserLimitExpenseMap().get(userLimit);
 		if (userLimitExpense == null) {
-			userLimitExpense = new UserLimitExpense(ExpenseSheetService.getUserLimitForUser(expense.getExpenseSheet(), expense.getUser()));
-			getUserLimitExpenseMap().put(ExpenseSheetService.getUserLimitForUser(expense.getExpenseSheet(), expense.getUser()), userLimitExpense);
+			userLimitExpense = new UserLimitExpense(userLimit);
+			getUserLimitExpenseMap().put(userLimitExpense.getUserLimit(), userLimitExpense);
 		}
 		userLimitExpense.addExpense(expense);
 	}

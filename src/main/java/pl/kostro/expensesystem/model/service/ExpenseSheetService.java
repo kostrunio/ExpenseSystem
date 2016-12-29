@@ -115,10 +115,11 @@ public class ExpenseSheetService {
   }
 
   private static void addExpenseToUserLimitMap(ExpenseSheet expenseSheet, Expense expense) {
-    UserLimitExpense userLimitExpense = expenseSheet.getUserLimitExpenseMap().get(getUserLimitForUser(expenseSheet, expense.getUser()));
+    UserLimit userLimit = getUserLimitForUser(expenseSheet, expense.getUser());
+    UserLimitExpense userLimitExpense = expenseSheet.getUserLimitExpenseMap().get(userLimit);
     if (userLimitExpense == null) {
-      userLimitExpense = new UserLimitExpense(getUserLimitForUser(expenseSheet, expense.getUser()));
-      expenseSheet.getUserLimitExpenseMap().put(getUserLimitForUser(expenseSheet, expense.getUser()), userLimitExpense);
+      userLimitExpense = new UserLimitExpense(userLimit);
+      expenseSheet.getUserLimitExpenseMap().put(userLimitExpense.getUserLimit(), userLimitExpense);
     }
     userLimitExpense.addExpense(expense);
   }
