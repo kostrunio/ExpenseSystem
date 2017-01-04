@@ -158,7 +158,10 @@ public class ExpenseForm extends ExpenseFormDesign {
       } else
         duplicateButton.setEnabled(true);
     } else {
-      userBox.select(expenseSheet.getUserLimitList().get(0));
+      if (expense.getUser() != null)
+        userBox.setValue(ExpenseSheetService.getUserLimitForUser(expenseSheet, expense.getUser()));
+      else
+        userBox.setValue(expenseSheet.getUserLimitList().get(0));
       duplicateButton.setEnabled(false);
     }
     setVisible(expense != null);
