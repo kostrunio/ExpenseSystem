@@ -19,7 +19,8 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Filter;
-import pl.kostro.expensesystem.utils.YearCategory;
+import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
+import pl.kostro.expensesystem.utils.expense.YearCategory;
 import pl.kostro.expensesystem.view.design.ChartDesign;
 
 import com.vaadin.addon.charts.Chart;
@@ -94,7 +95,7 @@ public class ChartView extends ChartDesign {
     
     lineConfiguration.setTitle(Msg.get("chart.tytle1"));
     Axis xAxis1 = lineConfiguration.getxAxis();
-    xAxis1.setCategories(UserSummaryService.getMonthsName());
+    xAxis1.setCategories(CalendarUtils.getMonthsName());
     Tooltip tooltip = lineConfiguration.getTooltip();
     tooltip.setValueSuffix(Msg.get("chart.suffix"));
     tooltip.setShared(true);
@@ -103,7 +104,7 @@ public class ChartView extends ChartDesign {
     Configuration columnConfiguration = columnChart.getConfiguration();
     columnConfiguration.setTitle(Msg.get("chart.tytle2"));
     Axis xAxis2 = columnConfiguration.getxAxis();
-    xAxis2.setCategories(UserSummaryService.getMonthsName());
+    xAxis2.setCategories(CalendarUtils.getMonthsName());
 
     for (YearCategory yearCategory : yearCategoryList) {
       BigDecimal sum = new BigDecimal(0);

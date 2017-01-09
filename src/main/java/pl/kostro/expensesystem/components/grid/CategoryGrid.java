@@ -114,7 +114,7 @@ public class CategoryGrid extends Grid implements SettingsChangeListener {
               @Override
               public void onClose(ConfirmDialog dialog) {
                 if (dialog.isConfirmed()) {
-                  expenseSheet = ess.removeCategory(expenseSheet, getItem());
+                  expenseSheet = cs.removeCategory(expenseSheet, getItem());
                   refreshValues();
                 }
               }

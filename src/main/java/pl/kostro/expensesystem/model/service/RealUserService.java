@@ -24,22 +24,6 @@ public class RealUserService {
     }
   }
 
-  public static void refresh(RealUser realUser) {
-    ExpenseEntityDao.getEntityManager().refresh(realUser);
-  }
-
-  public static void save(RealUser realUser, boolean passwordChange) {
-    ExpenseEntityDao.begin();
-    try {
-      if (passwordChange) {
-        messageDigest.update(realUser.getClearPassword().getBytes());
-        realUser.setPassword(new String(messageDigest.digest()));
-      }
-      ExpenseEntityDao.getEntityManager().merge(realUser);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
-  }
   public static RealUser createRealUser(String name, String password, String email) {
     ExpenseEntityDao.begin();
     RealUser realUser = new RealUser();
@@ -53,6 +37,23 @@ public class RealUserService {
     } finally {
     }
     return realUser;
+  }
+
+  public static void merge(RealUser realUser, boolean passwordChange) {
+    ExpenseEntityDao.begin();
+    try {
+      if (passwordChange) {
+        messageDigest.update(realUser.getClearPassword().getBytes());
+        realUser.setPassword(new String(messageDigest.digest()));
+      }
+      ExpenseEntityDao.getEntityManager().merge(realUser);
+      ExpenseEntityDao.commit();
+    } finally {
+    }
+  }
+
+  public static void refresh(RealUser realUser) {
+    ExpenseEntityDao.getEntityManager().refresh(realUser);
   }
 
   public static void setDefaultExpenseSheet(RealUser realUser, ExpenseSheet expenseSheet) {
@@ -70,7 +71,8 @@ public class RealUserService {
     RealUser loggedUser = null;
     try {
       messageDigest.update(password.getBytes());
-      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser", ImmutableMap.of("name", userName, "password", new String(messageDigest.digest())), RealUser.class);
+      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser",
+          ImmutableMap.of("name", userName, "password", new String(messageDigest.digest())), RealUser.class);
       loggedUser.setClearPassword(password);
       loggedUser.setLogDate(new Date());
       if (loggedUser.getPasswordByte() == null)
@@ -89,24 +91,14 @@ public class RealUserService {
     ExpenseEntityDao.begin();
     RealUser loggedUser = null;
     try {
-      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findUser", ImmutableMap.of("name", userName), RealUser.class);
+      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findUser", ImmutableMap.of("name", userName),
+          RealUser.class);
       ExpenseEntityDao.commit();
     } catch (NoResultException e) {
 
     } finally {
     }
     return loggedUser;
-  }
-
-  public static void removeExpenseSheet(ExpenseSheet expenseSheet) {
-    List<RealUser> realUsers = null;
-    realUsers = ExpenseEntityDao.findByNamedQueryWithParameters("findUsersWithExpenseSheet", ImmutableMap.of("expenseSheet", expenseSheet), RealUser.class);
-    if (realUsers != null)
-      for (RealUser realUser : realUsers) {
-        if (realUser.getDefaultExpenseSheet() != null && realUser.getDefaultExpenseSheet().equals(expenseSheet))
-          realUser.setDefaultExpenseSheet(null);
-        realUser.getExpenseSheetList().remove(expenseSheet);
-      }
   }
 
 }

@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.event.ExpenseSystemEvent.BrowserResizeEvent;
 import pl.kostro.expensesystem.event.ExpenseSystemEventBus;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
+import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.MonthDesign;
 
 import com.google.common.eventbus.Subscribe;
@@ -52,7 +53,7 @@ public class MonthView extends MonthDesign {
     logger.info("create");
     ExpenseSystemEventBus.register(this);
     this.date = VaadinSession.getCurrent().getAttribute(Calendar.class);
-    uss.setFirstDay(date);
+    CalendarUtils.setFirstDay(date);
     previousMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_LEFT);
     previousMonthButton.addClickListener(prevClick);
     nextMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_RIGHT);
@@ -69,11 +70,11 @@ public class MonthView extends MonthDesign {
   public void showCalendar() {
     if (getParent() != null && getParent().getParent().getParent().getParent() instanceof ExpenseView) {
       ((ExpenseView)getParent().getParent().getParent().getParent()).checkedYear(date.get(Calendar.YEAR)+"");
-      ((ExpenseView)getParent().getParent().getParent().getParent()).checkedMonth(uss.getMonthName(date.get(Calendar.MONTH)));
+      ((ExpenseView)getParent().getParent().getParent().getParent()).checkedMonth(CalendarUtils.getMonthName(date.get(Calendar.MONTH)));
     }
     thisMonthField.setValue(date.getTime());
-    firstDateField.setValue(uss.getFirstDay(date.getTime()));
-    lastDateField.setValue(uss.getLastDay(date.getTime()));
+    firstDateField.setValue(CalendarUtils.getFirstDay(date.getTime()));
+    lastDateField.setValue(CalendarUtils.getLastDay(date.getTime()));
     monthCalendar.setMonthView(this);
     monthCalendar.setStartDate(firstDateField.getValue());
     monthCalendar.setEndDate(lastDateField.getValue());

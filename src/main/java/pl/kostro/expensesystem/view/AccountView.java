@@ -44,7 +44,7 @@ public class AccountView extends AccountDesign implements View {
     public void buttonClick(ClickEvent event) {
       if (emailField.getValue().trim().equals(emailField2.getValue().trim())) {
         loggedUser.setEmail(emailField.getValue().trim());
-        rus.save(loggedUser, false);
+        rus.merge(loggedUser, false);
         ShowNotification.changeEmailOK();
         emailField2.setValue("");
         emailField2.setEnabled(false);
@@ -70,7 +70,7 @@ public class AccountView extends AccountDesign implements View {
     public void buttonClick(ClickEvent event) {
       if (newPasswordField.getValue().trim().equals(newPasswordField2.getValue().trim())) {
         loggedUser.setClearPassword(newPasswordField.getValue().trim());
-        rus.save(loggedUser, true);
+        rus.merge(loggedUser, true);
         ShowNotification.changePasswordOK();
         oldPasswordField.setValue("");
         oldPasswordField.setEnabled(false);

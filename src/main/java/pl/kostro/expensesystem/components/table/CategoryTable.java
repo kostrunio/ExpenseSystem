@@ -6,7 +6,7 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.utils.CategoryExpense;
+import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 
 import com.vaadin.data.Item;
 import com.vaadin.server.VaadinSession;

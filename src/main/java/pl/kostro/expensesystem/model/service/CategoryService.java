@@ -5,7 +5,7 @@ import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 
 public class CategoryService {
-  
+
   public static void createCategory(ExpenseSheet expenseSheet, String name) {
     ExpenseEntityDao.begin();
     try {
@@ -26,7 +26,23 @@ public class CategoryService {
     } finally {
     }
   }
-  
+
+  public static ExpenseSheet removeCategory(ExpenseSheet expenseSheet, Category category) {
+    expenseSheet.getCategoryList().remove(category);
+    int i = 0;
+    for (Category cat : expenseSheet.getCategoryList())
+      cat.setOrder(i++);
+    ExpenseEntityDao.begin();
+    try {
+      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
+      ExpenseEntityDao.getEntityManager()
+          .remove(ExpenseEntityDao.getEntityManager().find(Category.class, category.getId()));
+      ExpenseEntityDao.commit();
+    } finally {
+    }
+    return expenseSheet;
+  }
+
   public static void decrypt(Category category) {
     category.getName();
   }
@@ -35,6 +51,5 @@ public class CategoryService {
     category.setName(category.getName(true), true);
     ExpenseEntityDao.getEntityManager().merge(category);
   }
-
 
 }

@@ -7,6 +7,7 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.views.settingsPage.AddRealUserWindow;
@@ -102,7 +103,7 @@ public class RealUserLimitGrid extends Grid implements SettingsChangeListener {
   }
 
   public void refreshValues() {
-    List<UserLimit> userLimitList = expenseSheet.getUserLimitListRealUser();
+    List<UserLimit> userLimitList = ExpenseSheetService.getUserLimitListRealUser(expenseSheet);
     getContainerDataSource().removeAllItems();
     BeanItemContainer<UserLimit> container = new BeanItemContainer<UserLimit>(UserLimit.class, userLimitList);
     container.addNestedContainerBean("user");

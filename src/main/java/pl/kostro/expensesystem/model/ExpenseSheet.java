@@ -1,7 +1,6 @@
 package pl.kostro.expensesystem.model;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,10 +20,10 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import pl.kostro.expensesystem.utils.CategoryExpense;
-import pl.kostro.expensesystem.utils.DateExpense;
 import pl.kostro.expensesystem.utils.Filter;
-import pl.kostro.expensesystem.utils.UserLimitExpense;
+import pl.kostro.expensesystem.utils.expense.CategoryExpense;
+import pl.kostro.expensesystem.utils.expense.DateExpense;
+import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
 
 @SuppressWarnings("serial")
 @Entity
@@ -107,28 +106,6 @@ public class ExpenseSheet extends AbstractEntity {
   public List<UserLimit> getUserLimitList() {
     if (userLimitList == null)
       userLimitList = new ArrayList<UserLimit>();
-    return userLimitList;
-  }
-
-  public List<UserLimit> getUserLimitListDesc() {
-    List<UserLimit> returnList = new ArrayList<UserLimit>(getUserLimitList());
-    Collections.reverse(returnList);
-    return returnList;
-  }
-
-  public List<UserLimit> getUserLimitListRealUser() {
-    List<UserLimit> userLimitList = new ArrayList<UserLimit>();
-    for (UserLimit userLimit : getUserLimitList())
-      if (userLimit.getUser() instanceof RealUser)
-        userLimitList.add(userLimit);
-    return userLimitList;
-  }
-
-  public List<UserLimit> getUserLimitListNotRealUser() {
-    List<UserLimit> userLimitList = new ArrayList<UserLimit>();
-    for (UserLimit userLimit : getUserLimitList())
-      if (!(userLimit.getUser() instanceof RealUser))
-        userLimitList.add(userLimit);
     return userLimitList;
   }
 

@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.utils;
+package pl.kostro.expensesystem.utils.log;
 
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.config.plugins.Plugin;

@@ -18,6 +18,7 @@ import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.DateConverter;
 import pl.kostro.expensesystem.utils.Filter;
+import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.TableDesign;
 
 import com.vaadin.data.util.BeanItemContainer;
@@ -85,8 +86,8 @@ public class TableView extends TableDesign {
 
     expenseForm.prepare(expenseSheet, this);
     
-    fromDateField.setValue(UserSummaryService.getFirstDay(calendar.getTime()));
-    toDateField.setValue(UserSummaryService.getLastDay(calendar.getTime()));
+    fromDateField.setValue(CalendarUtils.getFirstDay(calendar.getTime()));
+    toDateField.setValue(CalendarUtils.getLastDay(calendar.getTime()));
     categoryBox.addItems(expenseSheet.getCategoryList());
     userBox.addItems(expenseSheet.getUserLimitList());
     commentBox.setNewItemsAllowed(true);

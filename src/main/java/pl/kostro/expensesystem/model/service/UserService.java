@@ -4,7 +4,7 @@ import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.User;
 
 public class UserService {
-  
+
   public static User createUser(String name) {
     ExpenseEntityDao.begin();
     try {

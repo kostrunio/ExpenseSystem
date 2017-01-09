@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.model.service;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.TreeSet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.google.common.collect.ImmutableMap;
 import com.vaadin.server.VaadinSession;
 
 import pl.kostro.expensesystem.dao.ExpenseEntityDao;
@@ -21,32 +23,16 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
-import pl.kostro.expensesystem.utils.CategoryExpense;
-import pl.kostro.expensesystem.utils.DateExpense;
 import pl.kostro.expensesystem.utils.Filter;
-import pl.kostro.expensesystem.utils.UserLimitExpense;
-import pl.kostro.expensesystem.utils.YearCategory;
+import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
+import pl.kostro.expensesystem.utils.expense.CategoryExpense;
+import pl.kostro.expensesystem.utils.expense.DateExpense;
+import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
+import pl.kostro.expensesystem.utils.expense.YearCategory;
 
 public class ExpenseSheetService {
 
   private static Logger logger = LogManager.getLogger();
-
-  public static void removeExpenseSheet(ExpenseSheet expenseSheet) {
-    ExpenseEntityDao.begin();
-    try {
-      RealUserService.removeExpenseSheet(expenseSheet);
-      ExpenseEntityDao.getEntityManager().remove(expenseSheet);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
-  }
-
-  public static ExpenseSheet findExpenseSheet(RealUser realUser, int id) {
-    for (ExpenseSheet expenseSheet : realUser.getExpenseSheetList())
-      if (expenseSheet.getId() == id)
-        return expenseSheet;
-    return realUser.getDefaultExpenseSheet();
-  }
 
   public static ExpenseSheet createExpenseSheet(RealUser owner, String name, String key) {
     ExpenseEntityDao.begin();
@@ -71,6 +57,71 @@ public class ExpenseSheetService {
     return expenseSheet;
   }
 
+  public static void merge(ExpenseSheet expenseSheet) {
+    ExpenseEntityDao.begin();
+    try {
+      ExpenseEntityDao.getEntityManager().merge(expenseSheet);
+      ExpenseEntityDao.commit();
+    } finally {
+    }
+  }
+
+  public static void removeExpenseSheet(ExpenseSheet expenseSheet) {
+    ExpenseEntityDao.begin();
+    try {
+      List<RealUser> realUsers = null;
+      realUsers = ExpenseEntityDao.findByNamedQueryWithParameters("findUsersWithExpenseSheet",
+          ImmutableMap.of("expenseSheet", expenseSheet), RealUser.class);
+      if (realUsers != null)
+        for (RealUser realUser : realUsers) {
+          if (realUser.getDefaultExpenseSheet() != null && realUser.getDefaultExpenseSheet().equals(expenseSheet))
+            realUser.setDefaultExpenseSheet(null);
+          realUser.getExpenseSheetList().remove(expenseSheet);
+        }
+      ExpenseEntityDao.getEntityManager().remove(expenseSheet);
+      ExpenseEntityDao.commit();
+    } finally {
+    }
+  }
+
+  public static void decrypt(ExpenseSheet expenseSheet) {
+    logger.info("decrypt: category");
+    for (Category category : expenseSheet.getCategoryList())
+      CategoryService.decrypt(category);
+    logger.info("decrypt: expense");
+    for (Expense expense : expenseSheet.getExpenseList())
+      ExpenseService.decrypt(expense);
+    logger.info("decrypt: userLimit");
+    for (UserLimit userLimit : expenseSheet.getUserLimitList())
+      UserLimitService.decrypt(userLimit);
+  }
+
+  public static void encrypt(ExpenseSheet expenseSheet) {
+    ExpenseEntityDao.begin();
+    try {
+      logger.info("encrypt: category");
+      for (Category category : expenseSheet.getCategoryList())
+        CategoryService.encrypt(category);
+      logger.info("encrypt: expense");
+      for (Expense expense : expenseSheet.getExpenseList())
+        ExpenseService.encrypt(expense);
+      logger.info("encrypt: userLimit");
+      for (UserLimit userLimit : expenseSheet.getUserLimitList())
+        UserLimitService.encrypt(userLimit);
+      ExpenseEntityDao.commit();
+    } catch (Exception e) {
+      e.printStackTrace();
+      ExpenseEntityDao.rollback();
+    }
+  }
+
+  public static ExpenseSheet findExpenseSheet(RealUser realUser, int id) {
+    for (ExpenseSheet expenseSheet : realUser.getExpenseSheetList())
+      if (expenseSheet.getId() == id)
+        return expenseSheet;
+    return realUser.getDefaultExpenseSheet();
+  }
+
   private static List<Expense> getExpenseList(ExpenseSheet expenseSheet) {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     for (Expense expense : ExpenseService.findExpenseForDates(expenseSheet))
@@ -79,7 +130,8 @@ public class ExpenseSheetService {
     return expenseListToReturn;
   }
 
-  public static Map<Date, DateExpense> prepareExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate, Date firstDay, Date lastDay) {
+  public static Map<Date, DateExpense> prepareExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate,
+      Date firstDay, Date lastDay) {
     expenseSheet.getDateExpenseMap().clear();
     expenseSheet.getCategoryExpenseMap().clear();
     expenseSheet.getUserLimitExpenseMap().clear();
@@ -87,7 +139,8 @@ public class ExpenseSheetService {
     expenseSheet.setLastDate(endDate);
     for (Expense expense : getExpenseList(expenseSheet)) {
       addExpenseToDateMap(expenseSheet, expense);
-      if (firstDay != null && lastDay != null && !expense.getDate().before(firstDay) && !expense.getDate().after(lastDay)) {
+      if (firstDay != null && lastDay != null && !expense.getDate().before(firstDay)
+          && !expense.getDate().after(lastDay)) {
         addExpenseToCategoryMap(expenseSheet, expense);
         addExpenseToUserLimitMap(expenseSheet, expense);
       }
@@ -129,12 +182,7 @@ public class ExpenseSheetService {
     addExpenseToDateMap(expenseSheet, expense);
   }
 
-  public static void removeExpense(ExpenseSheet expenseSheet, Expense expense) {
-    expenseSheet.getExpenseList().remove(expense);
-    removeExpenseFromMap(expenseSheet, expense);
-  }
-
-  private static void removeExpenseFromMap(ExpenseSheet expenseSheet, Expense expense) {
+  public static void removeExpenseFromMap(ExpenseSheet expenseSheet, Expense expense) {
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
     dateExpense.removeExpense(expense);
   }
@@ -178,7 +226,8 @@ public class ExpenseSheetService {
 
   public static DateExpense getDateExpenseMap(ExpenseSheet expenseSheet, Date date) {
     if (date.before(expenseSheet.getFirstDate()) || date.after(expenseSheet.getLastDate())) {
-      prepareExpenseMap(expenseSheet, UserSummaryService.getFirstDay(date), UserSummaryService.getLastDay(date), null, null);
+      prepareExpenseMap(expenseSheet, CalendarUtils.getFirstDay(date), CalendarUtils.getLastDay(date), null,
+          null);
     }
     return expenseSheet.getDateExpenseMap().get(date);
   }
@@ -234,74 +283,17 @@ public class ExpenseSheetService {
     return expenseSheet;
   }
 
-  public static ExpenseSheet removeCategory(ExpenseSheet expenseSheet, Category category) {
-    expenseSheet.getCategoryList().remove(category);
-    int i = 0;
-    for (Category cat : expenseSheet.getCategoryList())
-      cat.setOrder(i++);
-    ExpenseEntityDao.begin();
-    try {
-      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
-      ExpenseEntityDao.getEntityManager().remove(ExpenseEntityDao.getEntityManager().find(Category.class, category.getId()));
-      ExpenseEntityDao.commit();
-    } finally {
-    }
-    return expenseSheet;
-  }
-
-  public static void decrypt(ExpenseSheet expenseSheet) {
-    logger.info("decrypt: category");
-    for (Category category : expenseSheet.getCategoryList())
-      CategoryService.decrypt(category);
-    logger.info("decrypt: expense");
-    for (Expense expense : expenseSheet.getExpenseList())
-      ExpenseService.decrypt(expense);
-    logger.info("decrypt: userLimit");
-    for (UserLimit userLimit : expenseSheet.getUserLimitList())
-      UserLimitService.decrypt(userLimit);
-  }
-
-  public static void encrypt(ExpenseSheet expenseSheet) {
-    ExpenseEntityDao.begin();
-    try {
-      logger.info("encrypt: category");
-      for (Category category : expenseSheet.getCategoryList())
-        CategoryService.encrypt(category);
-      logger.info("encrypt: expense");
-      for (Expense expense : expenseSheet.getExpenseList())
-        ExpenseService.encrypt(expense);
-      logger.info("encrypt: userLimit");
-      for (UserLimit userLimit : expenseSheet.getUserLimitList())
-        UserLimitService.encrypt(userLimit);
-      ExpenseEntityDao.commit();
-    } catch (Exception e) {
-      e.printStackTrace();
-      ExpenseEntityDao.rollback();
-    }
-  }
-
-  public static void merge(ExpenseSheet expenseSheet) {
-    ExpenseEntityDao.begin();
-    try {
-      ExpenseEntityDao.getEntityManager().merge(expenseSheet);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
-  }
-
   public static List<YearCategory> prepareYearCategoryList(ExpenseSheet expenseSheet) {
     List<YearCategory> yearCategoryList = new ArrayList<YearCategory>();
     Calendar firstDay = Calendar.getInstance();
     for (String year : ExpenseSheetService.getYearList(expenseSheet)) {
       YearCategory yearCategory = new YearCategory(Integer.parseInt(year), expenseSheet.getCategoryList());
-      UserSummaryService.setFirstDay(firstDay, year);
-      for (int m=0; m<=11; m++) {
+      CalendarUtils.setFirstDay(firstDay, year);
+      for (int m = 0; m <= 11; m++) {
         firstDay.set(Calendar.MONTH, m);
-        ExpenseSheetService.prepareExpenseMap(expenseSheet,
-            firstDay.getTime(),
-            UserSummaryService.getLastDay(firstDay.getTime()),
-            firstDay.getTime(),
-            UserSummaryService.getLastDay(firstDay.getTime()));
+        ExpenseSheetService.prepareExpenseMap(expenseSheet, firstDay.getTime(),
+            CalendarUtils.getLastDay(firstDay.getTime()), firstDay.getTime(),
+            CalendarUtils.getLastDay(firstDay.getTime()));
         for (Category category : expenseSheet.getCategoryList()) {
           CategoryExpense categoryExpense = ExpenseSheetService.getCategoryExpenseMap(expenseSheet, category);
           if (categoryExpense != null)
@@ -313,4 +305,26 @@ public class ExpenseSheetService {
     return yearCategoryList;
   }
 
+
+  public static List<UserLimit> getUserLimitListDesc(ExpenseSheet expenseSheet) {
+    List<UserLimit> returnList = new ArrayList<UserLimit>(expenseSheet.getUserLimitList());
+    Collections.reverse(returnList);
+    return returnList;
+  }
+
+  public static List<UserLimit> getUserLimitListRealUser(ExpenseSheet expenseSheet) {
+    List<UserLimit> userLimitList = new ArrayList<UserLimit>();
+    for (UserLimit userLimit : expenseSheet.getUserLimitList())
+      if (userLimit.getUser() instanceof RealUser)
+        userLimitList.add(userLimit);
+    return userLimitList;
+  }
+
+  public static List<UserLimit> getUserLimitListNotRealUser(ExpenseSheet expenseSheet) {
+    List<UserLimit> userLimitList = new ArrayList<UserLimit>();
+    for (UserLimit userLimit : expenseSheet.getUserLimitList())
+      if (!(userLimit.getUser() instanceof RealUser))
+        userLimitList.add(userLimit);
+    return userLimitList;
+  }
 }

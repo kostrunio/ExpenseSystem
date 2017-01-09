@@ -17,8 +17,8 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Calculator;
-import pl.kostro.expensesystem.utils.CategoryExpense;
-import pl.kostro.expensesystem.utils.DateExpense;
+import pl.kostro.expensesystem.utils.expense.CategoryExpense;
+import pl.kostro.expensesystem.utils.expense.DateExpense;
 import pl.kostro.expensesystem.view.design.DayDesign;
 
 import com.vaadin.data.Property;

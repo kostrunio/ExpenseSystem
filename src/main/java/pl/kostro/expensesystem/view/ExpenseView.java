@@ -16,6 +16,7 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Filter;
+import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.ExpenseDesign;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetPasswordWindow;
 
@@ -111,7 +112,7 @@ public class ExpenseView extends ExpenseDesign implements View {
   private MenuBar.Command yearCommand = new MenuBar.Command() {
     @Override
     public void menuSelected(MenuItem selectedItem) {
-      uss.setFirstDay(calendar, selectedItem.getText());
+      CalendarUtils.setFirstDay(calendar, selectedItem.getText());
       mainView.removeAllComponents();
       mainView.addComponent(new MonthView());
       checkedYear(selectedItem.getText());
@@ -121,7 +122,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     @Override
     public void menuSelected(MenuItem selectedItem) {
       mainView.removeAllComponents();
-      uss.setFirstDay(calendar, uss.getMonthNumber(selectedItem.getText()));
+      CalendarUtils.setFirstDay(calendar, CalendarUtils.getMonthNumber(selectedItem.getText()));
       mainView.addComponent(new MonthView());
       checkedMonth(selectedItem.getText());
     }
@@ -164,7 +165,7 @@ public class ExpenseView extends ExpenseDesign implements View {
       yearMenu.addItem(year, yearCommand).setCheckable(true);
     filterButton.addClickListener(filterClick);
     tableButton.addClickListener(tableClick);
-    for (String monthName : uss.getMonthsName())
+    for (String monthName : CalendarUtils.getMonthsName())
       if (!monthName.isEmpty())
         monthMenu.addItem(monthName, monthCommand).setCheckable(true);
     searchButton.addClickListener(searchClick);
