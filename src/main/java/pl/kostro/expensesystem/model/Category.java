@@ -43,13 +43,6 @@ public class Category extends AbstractEntity {
     this.multiplier = new BigDecimal(1);
     this.order = order;
   }
-  
-  public Category(String name, BigDecimal multiplier, int order) {
-    super();
-    setName(name);
-    this.multiplier = multiplier;
-    this.order = order;
-  }
 
   public Long getId() {
     return id;
