@@ -21,7 +21,6 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.view.design.MainDesign;
@@ -61,7 +60,6 @@ public class MainView extends MainDesign {
   private ClickListener logoutClick = new ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
-      ExpenseEntityDao.close();
       VaadinSession.getCurrent().getSession().invalidate();
       Page.getCurrent().reload();
     }

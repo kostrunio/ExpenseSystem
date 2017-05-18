@@ -14,6 +14,8 @@ import com.vaadin.ui.Table;
 
 @SuppressWarnings("serial")
 public class UserLimitTable extends Table {
+  
+  private UserSummaryService uss;
   private ExpenseSheet expenseSheet;
 
   public UserLimitTable() {
@@ -47,7 +49,7 @@ public class UserLimitTable extends Table {
       row.getItemProperty(Msg.get("userLimitTable.user")).setValue(userLimit.getUser().getName());
       row.getItemProperty(Msg.get("userLimitTable.sum")).setValue(actSum);
       if (userLimit.isContinuousSummary()) {
-        row.getItemProperty(Msg.get("userLimitTable.left")).setValue(UserSummaryService.calculateSum(userLimit, calendar.getTime()));
+        row.getItemProperty(Msg.get("userLimitTable.left")).setValue(uss.calculateSum(userLimit, calendar.getTime()));
       } else {
         row.getItemProperty(Msg.get("userLimitTable.left")).setValue(userLimit.getLimit().subtract(actSum));
       }

@@ -19,6 +19,8 @@ import pl.kostro.expensesystem.view.design.LoginDesign;
 
 @SuppressWarnings("serial")
 public class LoginView extends LoginDesign {
+  
+  private RealUserService rus;
 
   private Logger logger = LogManager.getLogger();
 
@@ -43,7 +45,7 @@ public class LoginView extends LoginDesign {
     public void onLogin(LoginEvent event) {
       RealUser loggedUser = null;
       try {
-        loggedUser = RealUserService.getUserData(event.getLoginParameter("username"), event.getLoginParameter("password"));
+        loggedUser = rus.getUserData(event.getLoginParameter("username"), event.getLoginParameter("password"));
         if (loggedUser == null) {
           ShowNotification.logonProblem();
           loginForm.getLoginButton().setEnabled(true);

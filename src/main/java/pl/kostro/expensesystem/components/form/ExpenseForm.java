@@ -23,6 +23,10 @@ import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 public class ExpenseForm extends ExpenseFormDesign {
+  
+  private ExpenseService es;
+  private ExpenseSheetService eshs;
+  
   private ExpenseSheet expenseSheet;
   private Expense expense;
   private TableView view;
@@ -43,7 +47,7 @@ public class ExpenseForm extends ExpenseFormDesign {
         expense.setComment(commentBox.getValue().toString());
       expense.setNotify(notifyBox.getValue());
       expense.setExpenseSheet(expenseSheet);
-      expense = ExpenseService.merge(expense);
+      expense = es.merge(expense);
       if (!expenseSheet.getExpenseList().contains(expense))
         expenseSheet.getExpenseList().add(expense);
       view.refreshExpenses();
@@ -66,7 +70,7 @@ public class ExpenseForm extends ExpenseFormDesign {
             @Override
             public void onClose(ConfirmDialog dialog) {
               if (dialog.isConfirmed()) {
-                ExpenseService.removeExpense(expenseSheet, expense);
+                es.removeExpense(expenseSheet, expense);
                 view.refreshExpenses();
               }
             }
@@ -129,7 +133,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     userBox.removeAllItems();
     userBox.addItems(expenseSheet.getUserLimitList());
     commentBox.removeAllItems();
-    commentBox.addItems(ExpenseSheetService.getAllComments(expenseSheet));
+    commentBox.addItems(eshs.getAllComments(expenseSheet));
   }
 
   private void verifyFormula(Object formula) {
@@ -144,7 +148,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     if (expense.getId() != null) {
       dateField.setValue(expense.getDate());
       categoryBox.setValue(expense.getCategory());
-      userBox.setValue(ExpenseSheetService.getUserLimitForUser(expenseSheet, expense.getUser()));
+      userBox.setValue(eshs.getUserLimitForUser(expenseSheet, expense.getUser()));
       formulaField.focus();
       formulaField.setValue(expense.getFormula());
       commentBox.setValue(expense.getComment());
@@ -159,7 +163,7 @@ public class ExpenseForm extends ExpenseFormDesign {
         duplicateButton.setEnabled(true);
     } else {
       if (expense.getUser() != null)
-        userBox.setValue(ExpenseSheetService.getUserLimitForUser(expenseSheet, expense.getUser()));
+        userBox.setValue(eshs.getUserLimitForUser(expenseSheet, expense.getUser()));
       else
         userBox.setValue(expenseSheet.getUserLimitList().get(0));
       duplicateButton.setEnabled(false);

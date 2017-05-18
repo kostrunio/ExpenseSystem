@@ -14,17 +14,19 @@ import pl.kostro.expensesystem.view.design.RegisterFormDesign;
 @SuppressWarnings("serial")
 public class RegisterForm extends RegisterFormDesign {
   
+  private RealUserService rus;
+  
   private ClickListener saveListener = new ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
       if (!nameField.getValue().isEmpty())
-        if (RealUserService.findRealUser(nameField.getValue()) != null) {
+        if (rus.findRealUser(nameField.getValue()) != null) {
           ShowNotification.registerProblem(nameField.getValue());
           return;
         }
       if (!nameField.getValue().isEmpty() && !passwordField.getValue().isEmpty()
           && passwordField.getValue().equals(rePasswordField.getValue())) {
-        RealUser realUser = RealUserService.createRealUser(nameField.getValue(), passwordField.getValue(), emailField.getValue());
+        RealUser realUser = rus.createRealUser(nameField.getValue(), passwordField.getValue(), emailField.getValue());
         SendEmail.welcome(realUser);
         ShowNotification.registerOK();
         ((ExpenseSystemUI) getUI()).updateContent();

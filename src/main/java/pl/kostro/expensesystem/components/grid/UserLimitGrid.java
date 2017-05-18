@@ -27,6 +27,8 @@ import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 public class UserLimitGrid extends Grid implements SettingsChangeListener {
+  
+  private ExpenseSheetService eshs;
   private UserLimitService uls = new UserLimitService();
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
@@ -99,7 +101,7 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
   }
 
   public void refreshValues() {
-    List<UserLimit> userLimitList = ExpenseSheetService.getUserLimitListNotRealUser(expenseSheet);
+    List<UserLimit> userLimitList = eshs.getUserLimitListNotRealUser(expenseSheet);
     getContainerDataSource().removeAllItems();
     BeanItemContainer<UserLimit> container = new BeanItemContainer<UserLimit>(UserLimit.class, userLimitList);
     container.addNestedContainerBean("user");

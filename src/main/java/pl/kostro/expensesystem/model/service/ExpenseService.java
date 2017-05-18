@@ -10,51 +10,40 @@ import javax.persistence.NoResultException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.google.common.collect.ImmutableMap;
-
-import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.repository.ExpenseRepository;
+import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
 import pl.kostro.expensesystem.utils.Filter;
 
 public class ExpenseService {
+  
+  private ExpenseRepository er;
+  private ExpenseSheetRepository eshr;
+  
+  private ExpenseSheetService eshs;
 
   private static Logger logger = LogManager.getLogger();
 
-  public static void creteExpense(ExpenseSheet expenseSheet, Expense expense) {
-    ExpenseEntityDao.begin();
-    try {
-      expense = ExpenseEntityDao.getEntityManager().merge(expense);
-      ExpenseSheetService.addExpense(expenseSheet, expense);
-      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
+  public void creteExpense(ExpenseSheet expenseSheet, Expense expense) {
+    expense = er.save(expense);
+    eshs.addExpense(expenseSheet, expense);
+    expenseSheet = eshr.save(expenseSheet);
   }
 
-  public static Expense merge(Expense expense) {
-    ExpenseEntityDao.begin();
-    try {
-      expense = ExpenseEntityDao.getEntityManager().merge(expense);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
+  public Expense merge(Expense expense) {
+    expense = er.save(expense);
     return expense;
   }
 
-  public static void removeExpense(ExpenseSheet expenseSheet, Expense expense) {
-    ExpenseEntityDao.begin();
-    try {
-      expenseSheet.getExpenseList().remove(expense);
-      ExpenseSheetService.removeExpenseFromMap(expenseSheet, expense);
-      ExpenseEntityDao.getEntityManager().remove(expense);
-      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
+  public void removeExpense(ExpenseSheet expenseSheet, Expense expense) {
+    expenseSheet.getExpenseList().remove(expense);
+    eshs.removeExpenseFromMap(expenseSheet, expense);
+    er.delete(expense);
+    expenseSheet = eshr.save(expenseSheet);
   }
 
 
@@ -63,13 +52,13 @@ public class ExpenseService {
     expense.getComment();
   }
 
-  public static void encrypt(Expense expense) {
+  public void encrypt(Expense expense) {
     expense.setFormula(expense.getFormula(true), true);
     expense.setComment(expense.getComment(true), true);
-    expense = ExpenseEntityDao.getEntityManager().merge(expense);
+    expense = er.save(expense);
   }
 
-  public static List<Expense> findAllExpense(ExpenseSheet expenseSheet) {
+  public List<Expense> findAllExpense(ExpenseSheet expenseSheet) {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     for (Expense expense : expenseSheet.getExpenseList())
       if (Filter.matchFilter(expense, expenseSheet.getFilter()))
@@ -77,7 +66,7 @@ public class ExpenseService {
     return expenseListToReturn;
   }
 
-  public static Expense findFirstExpense(ExpenseSheet expenseSheet) {
+  public Expense findFirstExpense(ExpenseSheet expenseSheet) {
     Expense firstExpense = new Expense();
     firstExpense.setDate(new Date());
     for (Expense expense : expenseSheet.getExpenseList())
@@ -86,7 +75,7 @@ public class ExpenseService {
     return firstExpense;
   }
 
-  public static List<Expense> findExpenseForDates(ExpenseSheet expenseSheet) {
+  public List<Expense> findExpenseForDates(ExpenseSheet expenseSheet) {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     for (Expense expense : expenseSheet.getExpenseList())
       if (!expense.getDate().before(expenseSheet.getFirstDate())
@@ -95,7 +84,7 @@ public class ExpenseService {
     return expenseListToReturn;
   }
 
-  public static List<Expense> findExpenseByCategory(ExpenseSheet expenseSheet, Category category) {
+  public List<Expense> findExpenseByCategory(ExpenseSheet expenseSheet, Category category) {
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     for (Expense expense : expenseSheet.getExpenseList())
       if (expense.getCategory().equals(category))
@@ -103,28 +92,27 @@ public class ExpenseService {
     return expenseListToReturn;
   }
 
-  public static String getValueString(Expense expense) {
+  public String getValueString(Expense expense) {
     return expense.getValue().toString();
   }
 
-  public static Expense prepareNewExpense(ExpenseSheet expenseSheet, Date date, Category category, User user) {
+  public Expense prepareNewExpense(ExpenseSheet expenseSheet, Date date, Category category, User user) {
     return new Expense(date, "", category, user, "", date.after(new Date()) ? true : false, expenseSheet);
   }
 
-  public static void saveExpense(ExpenseSheet expenseSheet, Expense expense, UserLimit userLimit, String formula,
+  public void saveExpense(ExpenseSheet expenseSheet, Expense expense, UserLimit userLimit, String formula,
       Object comment, Boolean notify, Boolean modify) {
     if (modify)
-      ExpenseService.removeExpense(expenseSheet, expense);
+      removeExpense(expenseSheet, expense);
     expense.setUser(userLimit.getUser());
     expense.setFormula(formula.startsWith("=") ? formula.substring(1) : formula);
     if (comment != null)
       expense.setComment(comment.toString());
     expense.setNotify(notify);
-    ExpenseService.creteExpense(expenseSheet, expense);
+    creteExpense(expenseSheet, expense);
   }
 
-  public static List<Expense> findExpensesToNotify() {
-    ExpenseEntityDao.begin();
+  public List<Expense> findExpensesToNotify() {
     List<Expense> expenseList = null;
     Calendar date = Calendar.getInstance();
     date.set(Calendar.HOUR_OF_DAY, 0);
@@ -132,13 +120,8 @@ public class ExpenseService {
     date.set(Calendar.SECOND, 0);
     date.set(Calendar.MILLISECOND, 0);
     try {
-      expenseList = ExpenseEntityDao.findByNamedQueryWithParameters("findExpensesToNotify",
-          ImmutableMap.of("date", date.getTime()), Expense.class);
-      ExpenseEntityDao.commit();
+      expenseList = er.findExpensesToNotify(date.getTime());
     } catch (NoResultException e) {
-
-    } finally {
-      ExpenseEntityDao.close();
     }
     logger.info("Found {} expenses to notify", expenseList.size());
     return expenseList;

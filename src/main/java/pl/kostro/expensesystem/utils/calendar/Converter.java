@@ -16,8 +16,10 @@ import com.vaadin.ui.components.calendar.event.BasicEvent;
 import com.vaadin.ui.components.calendar.event.CalendarEvent;
 
 public class Converter {
+  
+  private ExpenseSheetService eshs;
 	
-	public static List<CalendarEvent> transformExpensesToEvents(ExpenseSheet expenseSheet, Map<Date, DateExpense> dateExpenseMap) {
+	public List<CalendarEvent> transformExpensesToEvents(ExpenseSheet expenseSheet, Map<Date, DateExpense> dateExpenseMap) {
 		Set<Date> dateSet = dateExpenseMap.keySet();
 		List<CalendarEvent> calendarEvents = new ArrayList<CalendarEvent>();
 		BasicEvent event;
@@ -25,7 +27,7 @@ public class Converter {
 			DateExpense dateExpense = dateExpenseMap.get(date);
 			
 			//userLimit events
-			for (UserLimit userLimit : ExpenseSheetService.getUserLimitListDesc(expenseSheet)) {
+			for (UserLimit userLimit : eshs.getUserLimitListDesc(expenseSheet)) {
 				UserLimitExpense userLimitExpenseMap = dateExpense.getUserLimitExpenseMap().get(userLimit);
 				if (userLimitExpenseMap == null)
 					continue;

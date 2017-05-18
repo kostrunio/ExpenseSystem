@@ -26,6 +26,9 @@ import com.vaadin.ui.components.calendar.handler.BasicWeekClickHandler;
 
 @SuppressWarnings("serial")
 public class ExpenseCalendar extends com.vaadin.ui.Calendar {
+  
+  private Converter converter;
+  
   private ExpenseSheetService ess = new ExpenseSheetService();
   private MonthView monthView;
   private ExpenseSheet expenseSheet;
@@ -36,7 +39,7 @@ public class ExpenseCalendar extends com.vaadin.ui.Calendar {
       Map<Date, DateExpense> eventToShow = ess.prepareExpenseMap(expenseSheet, startDate, endDate,
           CalendarUtils.getFirstDay(calendar.getTime()), CalendarUtils.getLastDay(calendar.getTime()));
       monthView.fulfillTables();
-      return Converter.transformExpensesToEvents(expenseSheet, eventToShow);
+      return converter.transformExpensesToEvents(expenseSheet, eventToShow);
     }
   };
   private BasicDateClickHandler dateClick = new BasicDateClickHandler() {

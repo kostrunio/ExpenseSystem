@@ -3,49 +3,43 @@ package pl.kostro.expensesystem.model.service;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.UserSummary;
+import pl.kostro.expensesystem.model.repository.UserLimitRepository;
+import pl.kostro.expensesystem.model.repository.UserSummaryRepository;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
 public class UserSummaryService {
+  
+  private UserLimitRepository ulr;
+  private UserSummaryRepository usr;
 
-  public static UserSummary createUserSummary(UserLimit userLimit, Date date) {
-    ExpenseEntityDao.begin();
-    try {
-      UserSummary userSummary = new UserSummary(date, userLimit.getLimit());
-      ExpenseEntityDao.getEntityManager().persist(userSummary);
-      userLimit.getUserSummaryList().add(userSummary);
-      ExpenseEntityDao.getEntityManager().merge(userLimit);
-      ExpenseEntityDao.commit();
-      return userSummary;
-    } finally {
-    }
+  public UserSummary createUserSummary(UserLimit userLimit, Date date) {
+    UserSummary userSummary = new UserSummary(date, userLimit.getLimit());
+    usr.save(userSummary);
+    userLimit.getUserSummaryList().add(userSummary);
+    ulr.save(userLimit);
+    return userSummary;
   }
 
-  public static UserSummary merge(UserSummary userSummary) {
-    ExpenseEntityDao.begin();
-    try {
-      ExpenseEntityDao.getEntityManager().merge(userSummary);
-      ExpenseEntityDao.commit();
-      return userSummary;
-    } finally {
-    }
+  public UserSummary merge(UserSummary userSummary) {
+    usr.save(userSummary);
+    return userSummary;
   }
 
-  public static void decrypt(UserSummary userSummary) {
+  public void decrypt(UserSummary userSummary) {
     userSummary.getLimit();
     userSummary.getSum();
   }
 
-  public static void encrypt(UserSummary userSummary) {
+  public void encrypt(UserSummary userSummary) {
     userSummary.setLimit(userSummary.getLimit(true), true);
     userSummary.setSum(userSummary.getSum(true), true);
-    ExpenseEntityDao.getEntityManager().merge(userSummary);
+    usr.save(userSummary);
   }
 
-  public static BigDecimal calculateSum(UserLimit userLimit, Date date) {
+  public BigDecimal calculateSum(UserLimit userLimit, Date date) {
     BigDecimal sum = new BigDecimal(0);
     for (UserSummary userSummary : userLimit.getUserSummaryList()) {
       if (!userSummary.getDate().after(date)) {
@@ -56,14 +50,14 @@ public class UserSummaryService {
     return sum;
   }
 
-  public static UserSummary findUserSummary(UserLimit userLimit, Date date) {
+  public UserSummary findUserSummary(UserLimit userLimit, Date date) {
     for (UserSummary userSummary : userLimit.getUserSummaryList())
       if (userSummary.getDate().getTime() == date.getTime())
         return userSummary;
     return createUserSummary(userLimit, date);
   }
 
-  public static void checkSummary(ExpenseSheet expenseSheet, Date date) {
+  public void checkSummary(ExpenseSheet expenseSheet, Date date) {
     if (expenseSheet.getFilter() != null)
       return;
     for (UserLimit userLimit : expenseSheet.getUserLimitList()) {

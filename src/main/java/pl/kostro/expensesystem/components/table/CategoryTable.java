@@ -14,6 +14,9 @@ import com.vaadin.ui.Table;
 
 @SuppressWarnings("serial")
 public class CategoryTable extends Table {
+  
+  private ExpenseSheetService eshs;
+  
   private ExpenseSheet expenseSheet;
 
   public CategoryTable() {
@@ -28,7 +31,7 @@ public class CategoryTable extends Table {
   public void fulfill() {
     removeAllItems();
     for (Category category : expenseSheet.getCategoryList()) {
-      CategoryExpense categoryExpense = ExpenseSheetService.getCategoryExpenseMap(expenseSheet, category);
+      CategoryExpense categoryExpense = eshs.getCategoryExpenseMap(expenseSheet, category);
       Object newItemId = addItem();
       Item row = getItem(newItemId);
       row.getItemProperty(Msg.get("categoryTable.category")).setValue(category.getName());

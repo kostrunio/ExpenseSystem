@@ -1,20 +1,17 @@
 package pl.kostro.expensesystem.model.service;
 
-import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.User;
+import pl.kostro.expensesystem.model.repository.UserRepository;
 
 public class UserService {
+  
+  private UserRepository ur;
 
-  public static User createUser(String name) {
-    ExpenseEntityDao.begin();
-    try {
-      User user = new User();
-      user.setName(name);
-      ExpenseEntityDao.getEntityManager().persist(user);
-      ExpenseEntityDao.commit();
-      return user;
-    } finally {
-    }
+  public User createUser(String name) {
+    User user = new User();
+    user.setName(name);
+    ur.save(user);
+    return user;
   }
 
 }

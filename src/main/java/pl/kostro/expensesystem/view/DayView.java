@@ -37,10 +37,11 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class DayView extends DayDesign {
+  
+  private ExpenseService es;
+  private ExpenseSheetService eshs;
 
   private Logger logger = LogManager.getLogger();
-  private ExpenseService es = new ExpenseService();
-  private ExpenseSheetService ess = new ExpenseSheetService();
   private ExpenseSheet expenseSheet;
   private Calendar calendar;
   private Category category;
@@ -189,7 +190,7 @@ public class DayView extends DayDesign {
       Button expButton = new Button();
       vertLay.addComponent(expButton);
       vertLay.setComponentAlignment(expButton, Alignment.TOP_CENTER);
-      DateExpense dateExpenseMap = ess.getDateExpenseMap(expenseSheet, calendar.getTime());
+      DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, calendar.getTime());
       if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
         expButton.setCaption("0");
       else {
@@ -205,7 +206,7 @@ public class DayView extends DayDesign {
     expenseGrid.removeAllComponents();
     categoryLabel.setValue(category.getName());
     List<Expense> expenseList;
-    DateExpense dateExpenseMap = ess.getDateExpenseMap(expenseSheet, calendar.getTime());
+    DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, calendar.getTime());
     if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
       expenseList = new ArrayList<Expense>();
     else {
@@ -222,7 +223,7 @@ public class DayView extends DayDesign {
       expenseGrid.addComponent(user, 0, i);
 
       Button valueButton = new Button();
-      valueButton.setCaption(ExpenseService.getValueString(expense));
+      valueButton.setCaption(es.getValueString(expense));
       valueButton.setImmediate(true);
       valueButton.setData(expense);
       expenseGrid.addComponent(valueButton, 1, i);
@@ -265,7 +266,7 @@ public class DayView extends DayDesign {
     this.modify = modify;
     
     if (expense.getUser() != null)
-      userBox.select(ExpenseSheetService.getUserLimitForUser(expenseSheet, expense.getUser()));
+      userBox.select(eshs.getUserLimitForUser(expenseSheet, expense.getUser()));
     else
       userBox.select(expenseSheet.getUserLimitList().get(0));
 
@@ -273,7 +274,7 @@ public class DayView extends DayDesign {
     formulaField.setValue(expense.getFormula());
 
     commentBox.removeAllItems();
-    commentBox.addItems(ExpenseSheetService.getCommentForCategory(expenseSheet, expense.getCategory()));
+    commentBox.addItems(eshs.getCommentForCategory(expenseSheet, expense.getCategory()));
     commentBox.select(expense.getComment());
     
     if (expense.isNotify() || expense.getDate().after(new Date())) {

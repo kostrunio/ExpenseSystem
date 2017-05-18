@@ -33,9 +33,10 @@ import com.vaadin.ui.MenuBar.MenuItem;
 
 @SuppressWarnings("serial")
 public class ExpenseView extends ExpenseDesign implements View {
+  
+  private ExpenseSheetService eshs;
 
   private Logger logger = LogManager.getLogger();
-  private ExpenseSheetService ess = new ExpenseSheetService();
   private UserSummaryService uss = new UserSummaryService();
   private Calendar calendar = Calendar.getInstance();
   private ExpenseSheet expenseSheet;
@@ -153,7 +154,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     commentCombo.setNewItemsAllowed(true);
     commentCombo.setNullSelectionAllowed(true);
     commentCombo.removeAllItems();
-    commentCombo.addItems(ExpenseSheetService.getCommentsList(expenseSheet));
+    commentCombo.addItems(eshs.getCommentsList(expenseSheet));
   }
 
   private void prepareView() {
@@ -161,7 +162,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     editButton.addClickListener(editClick);
     chartButton.addClickListener(chartClick);
     Component content = buildContent();
-    for (String year : ExpenseSheetService.getYearList(expenseSheet))
+    for (String year : eshs.getYearList(expenseSheet))
       yearMenu.addItem(year, yearCommand).setCheckable(true);
     filterButton.addClickListener(filterClick);
     tableButton.addClickListener(tableClick);
@@ -184,7 +185,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     if (event.getParameters().isEmpty()) {
       expenseSheet = loggedUser.getDefaultExpenseSheet();
     } else {
-      expenseSheet = ExpenseSheetService.findExpenseSheet(loggedUser, Integer.parseInt(event.getParameters()));
+      expenseSheet = eshs.findExpenseSheet(loggedUser, Integer.parseInt(event.getParameters()));
     }
     if (expenseSheet == null) {
       return;
@@ -206,7 +207,7 @@ public class ExpenseView extends ExpenseDesign implements View {
       }
     }
     if (!expenseSheet.getEncrypted())
-      ess.encrypt(expenseSheet);
+      eshs.encrypt(expenseSheet);
     root.removeAllComponents();
     if (mainView != null)
       mainView.removeAllComponents();

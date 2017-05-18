@@ -3,17 +3,16 @@ package pl.kostro.expensesystem.model.service;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.NoResultException;
 
-import com.google.common.collect.ImmutableMap;
-
-import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.repository.RealUserRepository;
 
 public class RealUserService {
+  
+  private RealUserRepository rur;
 
   static MessageDigest messageDigest;
 
@@ -24,79 +23,51 @@ public class RealUserService {
     }
   }
 
-  public static RealUser createRealUser(String name, String password, String email) {
-    ExpenseEntityDao.begin();
+  public RealUser createRealUser(String name, String password, String email) {
     RealUser realUser = new RealUser();
-    try {
-      realUser.setName(name);
-      messageDigest.update(password.getBytes());
-      realUser.setPassword(new String(messageDigest.digest()));
-      realUser.setEmail(email);
-      ExpenseEntityDao.getEntityManager().persist(realUser);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
+    realUser.setName(name);
+    messageDigest.update(password.getBytes());
+    realUser.setPassword(new String(messageDigest.digest()));
+    realUser.setEmail(email);
+    rur.save(realUser);
     return realUser;
   }
 
-  public static void merge(RealUser realUser, boolean passwordChange) {
-    ExpenseEntityDao.begin();
-    try {
-      if (passwordChange) {
-        messageDigest.update(realUser.getClearPassword().getBytes());
-        realUser.setPassword(new String(messageDigest.digest()));
-      }
-      ExpenseEntityDao.getEntityManager().merge(realUser);
-      ExpenseEntityDao.commit();
-    } finally {
+  public void merge(RealUser realUser, boolean passwordChange) {
+    if (passwordChange) {
+      messageDigest.update(realUser.getClearPassword().getBytes());
+      realUser.setPassword(new String(messageDigest.digest()));
     }
+    rur.save(realUser);
   }
 
-  public static void refresh(RealUser realUser) {
-    ExpenseEntityDao.getEntityManager().refresh(realUser);
+  public RealUser refresh(RealUser realUser) {
+    return rur.findOne(realUser.getId());
   }
 
-  public static void setDefaultExpenseSheet(RealUser realUser, ExpenseSheet expenseSheet) {
-    ExpenseEntityDao.begin();
-    try {
-      realUser.setDefaultExpenseSheet(expenseSheet);
-      ExpenseEntityDao.getEntityManager().merge(realUser);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
+  public void setDefaultExpenseSheet(RealUser realUser, ExpenseSheet expenseSheet) {
+    realUser.setDefaultExpenseSheet(expenseSheet);
+    rur.save(realUser);
   }
 
-  public static RealUser getUserData(String userName, String password) {
-    ExpenseEntityDao.begin();
+  public RealUser getUserData(String userName, String password) {
     RealUser loggedUser = null;
-    try {
-      messageDigest.update(password.getBytes());
-      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findLoggedUser",
-          ImmutableMap.of("name", userName, "password", new String(messageDigest.digest())), RealUser.class);
-      loggedUser.setClearPassword(password);
-      loggedUser.setLogDate(new Date());
-      if (loggedUser.getPasswordByte() == null)
-        loggedUser.setPasswordByte(messageDigest.digest());
-      ExpenseEntityDao.getEntityManager().merge(loggedUser);
-      ExpenseEntityDao.commit();
-    } catch (Exception e) {
-      ExpenseEntityDao.close();
-      ExpenseEntityDao.begin();
-    } finally {
-    }
+    messageDigest.update(password.getBytes());
+    loggedUser = rur.findByNameAndPassword(userName, new String(messageDigest.digest()));
+    loggedUser.setClearPassword(password);
+    loggedUser.setLogDate(new Date());
+    if (loggedUser.getPasswordByte() == null)
+      loggedUser.setPasswordByte(messageDigest.digest());
+    rur.save(loggedUser);
     return loggedUser;
   }
 
-  public static RealUser findRealUser(String userName) {
-    ExpenseEntityDao.begin();
+  public RealUser findRealUser(String userName) {
     RealUser loggedUser = null;
     try {
-      loggedUser = ExpenseEntityDao.findSingleByNamedQueryWithParameters("findUser", ImmutableMap.of("name", userName),
-          RealUser.class);
-      ExpenseEntityDao.commit();
+      loggedUser = rur.findByName(userName);
     } catch (NoResultException e) {
 
-    } finally {
     }
     return loggedUser;
   }

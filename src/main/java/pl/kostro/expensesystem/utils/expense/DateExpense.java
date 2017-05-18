@@ -12,6 +12,9 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 
 public class DateExpense {
+  
+  private ExpenseSheetService eshs;
+  
 	private Date date;
 	private Map<Category, CategoryExpense> categoryExpenseMap;
 	private Map<UserLimit, UserLimitExpense> userLimitExpenseMap;
@@ -68,7 +71,7 @@ public class DateExpense {
 			getCategoryExpenseMap().put(expense.getCategory(), categoryExpense);
 		}
 		categoryExpense.addExpense(expense);
-		UserLimit userLimit = ExpenseSheetService.getUserLimitForUser(expense.getExpenseSheet(), expense.getUser());
+		UserLimit userLimit = eshs.getUserLimitForUser(expense.getExpenseSheet(), expense.getUser());
 		UserLimitExpense userLimitExpense = getUserLimitExpenseMap().get(userLimit);
 		if (userLimitExpense == null) {
 			userLimitExpense = new UserLimitExpense(userLimit);

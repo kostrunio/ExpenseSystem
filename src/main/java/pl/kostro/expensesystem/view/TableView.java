@@ -34,6 +34,9 @@ import com.vaadin.ui.Grid;
 
 @SuppressWarnings("serial")
 public class TableView extends TableDesign {
+  
+  private ExpenseSheetService eshs;
+  private ExpenseService es;
 
   private Logger logger = LogManager.getLogger();
   private Calendar calendar;
@@ -92,7 +95,7 @@ public class TableView extends TableDesign {
     userBox.addItems(expenseSheet.getUserLimitList());
     commentBox.setNewItemsAllowed(true);
     commentBox.setFilteringMode(FilteringMode.CONTAINS);
-    commentBox.addItems(ExpenseSheetService.getAllComments(expenseSheet));
+    commentBox.addItems(eshs.getAllComments(expenseSheet));
     filterButton.addClickListener(filterClick);
     newExpenseButton.addClickListener(newClick);
     expenseGrid.addSelectionListener(gridSelect);
@@ -143,7 +146,7 @@ public class TableView extends TableDesign {
   
   public void refreshExpenses() {
     expenseGrid.setContainerDataSource(new BeanItemContainer<Expense>(
-            Expense.class, ExpenseService.findAllExpense(expenseSheet)));
+            Expense.class, es.findAllExpense(expenseSheet)));
     expenseGrid.recalculateColumnWidths();
     expenseGrid.sort("date", SortDirection.DESCENDING);
     expenseForm.setVisible(false);

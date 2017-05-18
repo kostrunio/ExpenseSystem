@@ -1,63 +1,56 @@
 package pl.kostro.expensesystem.model.service;
 
-import pl.kostro.expensesystem.dao.ExpenseEntityDao;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.UserSummary;
+import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
+import pl.kostro.expensesystem.model.repository.RealUserRepository;
+import pl.kostro.expensesystem.model.repository.UserLimitRepository;
 
 public class UserLimitService {
+  
+  private RealUserRepository rur;
+  private UserLimitRepository ulr;
+  private ExpenseSheetRepository eshr;
+  
+  private UserSummaryService uss;
 
-  public static void createUserLimit(ExpenseSheet expenseSheet, User user) {
-    ExpenseEntityDao.begin();
-    try {
-      UserLimit userLimit = ExpenseEntityDao.getEntityManager()
-          .merge(new UserLimit(user, expenseSheet.getUserLimitList().size()));
-      expenseSheet.getUserLimitList().add(userLimit);
-      expenseSheet = ExpenseEntityDao.getEntityManager().merge(expenseSheet);
+  public void createUserLimit(ExpenseSheet expenseSheet, User user) {
+    UserLimit userLimit = ulr.save(new UserLimit(user, expenseSheet.getUserLimitList().size()));
+    expenseSheet.getUserLimitList().add(userLimit);
+    expenseSheet = eshr.save(expenseSheet);
 
-      if (user instanceof RealUser) {
-        ((RealUser) user).getExpenseSheetList().add(expenseSheet);
-        ExpenseEntityDao.getEntityManager().merge(user);
-      }
-      ExpenseEntityDao.commit();
-    } finally {
+    if (user instanceof RealUser) {
+      RealUser realUser = (RealUser) user;
+      realUser.getExpenseSheetList().add(expenseSheet);
+      rur.save(realUser);
     }
   }
 
-  public static void merge(UserLimit userLimit) {
-    ExpenseEntityDao.begin();
-    try {
-      ExpenseEntityDao.getEntityManager().merge(userLimit);
-      ExpenseEntityDao.commit();
-    } finally {
-    }
+  public void merge(UserLimit userLimit) {
+    ulr.save(userLimit);
   }
 
-  public static void removeUserLimit(ExpenseSheet expenseSheet, UserLimit userLimit) {
-    ExpenseEntityDao.begin();
-    try {
-      expenseSheet.getUserLimitList().remove(userLimit);
-      ExpenseEntityDao.getEntityManager().remove(userLimit);
-      if (!(userLimit.getUser() instanceof RealUser))
-        ExpenseEntityDao.getEntityManager().remove(userLimit.getUser());
-      ExpenseEntityDao.commit();
-    } finally {
-    }
+  public void removeUserLimit(ExpenseSheet expenseSheet, UserLimit userLimit) {
+    expenseSheet.getUserLimitList().remove(userLimit);
+    ulr.delete(userLimit);
+    if (!(userLimit.getUser() instanceof RealUser))
+      rur.delete(userLimit.getUser().getId());
   }
 
-  public static void decrypt(UserLimit userLimit) {
+  public void decrypt(UserLimit userLimit) {
     userLimit.getLimit();
     for (UserSummary userSummary : userLimit.getUserSummaryList())
-      UserSummaryService.decrypt(userSummary);
+      uss.decrypt(userSummary);
   }
 
-  public static void encrypt(UserLimit userLimit) {
+  public void encrypt(UserLimit userLimit) {
     userLimit.setLimit(userLimit.getLimit(true), true);
     for (UserSummary userSummary : userLimit.getUserSummaryList())
-      UserSummaryService.encrypt(userSummary);
-    ExpenseEntityDao.getEntityManager().merge(userLimit);
+      uss.encrypt(userSummary);
+    ulr.save(userLimit);
   }
 
 }
