@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -20,8 +18,8 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.UI;
 
+import pl.kostro.expensesystem.ApplicationContextProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
-import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
@@ -131,8 +129,7 @@ public class ExpenseView extends ExpenseDesign implements View {
   };
   
   public ExpenseView() {
-    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
-    eshs = context.getBean(ExpenseSheetService.class);
+    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
   }
 
   public void checkedYear(String yearString) {

@@ -5,18 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import pl.kostro.expensesystem.SpringMain;
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
-import pl.kostro.expensesystem.utils.calendar.Converter;
-import pl.kostro.expensesystem.utils.expense.DateExpense;
-import pl.kostro.expensesystem.view.DayView;
-import pl.kostro.expensesystem.view.MonthView;
-
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.DateClickEvent;
 import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventClick;
@@ -26,6 +14,15 @@ import com.vaadin.ui.components.calendar.event.CalendarEvent;
 import com.vaadin.ui.components.calendar.event.CalendarEventProvider;
 import com.vaadin.ui.components.calendar.handler.BasicDateClickHandler;
 import com.vaadin.ui.components.calendar.handler.BasicWeekClickHandler;
+
+import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
+import pl.kostro.expensesystem.utils.calendar.Converter;
+import pl.kostro.expensesystem.utils.expense.DateExpense;
+import pl.kostro.expensesystem.view.DayView;
+import pl.kostro.expensesystem.view.MonthView;
 
 @SuppressWarnings("serial")
 public class ExpenseCalendar extends com.vaadin.ui.Calendar {
@@ -69,8 +66,7 @@ public class ExpenseCalendar extends com.vaadin.ui.Calendar {
   };
 
   public ExpenseCalendar() {
-    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
-    eshs = context.getBean(ExpenseSheetService.class);
+    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.calendar = VaadinSession.getCurrent().getAttribute(Calendar.class);
     

@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.vaadin.data.util.BeanItemContainer;
 import com.vaadin.event.SelectionEvent;
@@ -20,8 +18,8 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Grid;
 
+import pl.kostro.expensesystem.ApplicationContextProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -79,9 +77,8 @@ public class TableView extends TableDesign {
   };
   
   public TableView() {
-    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
-    eshs = context.getBean(ExpenseSheetService.class);
-    es = context.getBean(ExpenseService.class);
+    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
+    es = ApplicationContextProvider.getBean(ExpenseService.class);
     logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.calendar = VaadinSession.getCurrent().getAttribute(Calendar.class);

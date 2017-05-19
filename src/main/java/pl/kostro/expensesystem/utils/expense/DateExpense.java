@@ -6,10 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import pl.kostro.expensesystem.SpringMain;
+import pl.kostro.expensesystem.ApplicationContextProvider;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.UserLimit;
@@ -25,8 +22,7 @@ public class DateExpense {
 	private BigDecimal sum = new BigDecimal(0);
 	
 	public DateExpense(Date date) {
-	  ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
-    eshs = context.getBean(ExpenseSheetService.class);
+    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
 		this.date = date;
 	}
 	public Date getDate() {

@@ -2,19 +2,6 @@ package pl.kostro.expensesystem.components.grid;
 
 import java.text.MessageFormat;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.SpringMain;
-import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.Category;
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.service.CategoryService;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.views.settingsPage.AddCategoryWindow;
-import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
-
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitHandler;
@@ -24,9 +11,19 @@ import com.vaadin.event.SelectionEvent;
 import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.Button.ClickEvent;
+
+import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
+import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.service.CategoryService;
+import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.views.settingsPage.AddCategoryWindow;
+import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 
 @SuppressWarnings("serial")
 public class CategoryGrid extends Grid implements SettingsChangeListener {
@@ -40,9 +37,8 @@ public class CategoryGrid extends Grid implements SettingsChangeListener {
   private Button deleteCategoryButton;
 
   public CategoryGrid() {
-    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
-    cs = context.getBean(CategoryService.class);
-    eshs = context.getBean(ExpenseSheetService.class);
+    cs = ApplicationContextProvider.getBean(CategoryService.class);
+    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setImmediate(true);
     setColumns("name", "multiplier");

@@ -4,8 +4,6 @@ import java.text.MessageFormat;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
@@ -14,9 +12,9 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
+import pl.kostro.expensesystem.ApplicationContextProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
@@ -74,9 +72,8 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
   };
 
   public SettingsView() {
-    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
-    eshs = context.getBean(ExpenseSheetService.class);
-    rus = context.getBean(RealUserService.class);
+    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
+    rus = ApplicationContextProvider.getBean(RealUserService.class);
     logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setCaption();

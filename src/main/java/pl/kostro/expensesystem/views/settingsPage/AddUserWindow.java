@@ -2,8 +2,6 @@ package pl.kostro.expensesystem.views.settingsPage;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
@@ -18,8 +16,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
+import pl.kostro.expensesystem.ApplicationContextProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.model.service.UserService;
@@ -36,9 +34,8 @@ public class AddUserWindow extends Window {
   private SettingsChangeListener listener;
 
   public AddUserWindow(SettingsChangeListener listener) {
-    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
-    uls = context.getBean(UserLimitService.class);
-    us = context.getBean(UserService.class);
+    uls = ApplicationContextProvider.getBean(UserLimitService.class);
+    us = ApplicationContextProvider.getBean(UserService.class);
     logger.info("show");
     this.listener = listener;
     setModal(true);

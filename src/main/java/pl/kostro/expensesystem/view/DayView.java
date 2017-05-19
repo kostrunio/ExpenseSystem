@@ -7,8 +7,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -24,8 +22,8 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
+import pl.kostro.expensesystem.ApplicationContextProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
@@ -136,9 +134,8 @@ public class DayView extends DayDesign {
   };
 
   public DayView() {
-    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
-    es = context.getBean(ExpenseService.class);
-    eshs = context.getBean(ExpenseSheetService.class);
+    es = ApplicationContextProvider.getBean(ExpenseService.class);
+    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
     logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.category = expenseSheet.getCategoryList().get(0);

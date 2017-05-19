@@ -6,13 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 import com.vaadin.ui.components.calendar.event.BasicEvent;
 import com.vaadin.ui.components.calendar.event.CalendarEvent;
 
-import pl.kostro.expensesystem.SpringMain;
+import pl.kostro.expensesystem.ApplicationContextProvider;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
@@ -24,8 +21,7 @@ public class Converter {
   private ExpenseSheetService eshs;
   
   public Converter() {
-    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
-    eshs = context.getBean(ExpenseSheetService.class);
+    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
   }
 	
 	public List<CalendarEvent> transformExpensesToEvents(ExpenseSheet expenseSheet, Map<Date, DateExpense> dateExpenseMap) {

@@ -3,9 +3,6 @@ package pl.kostro.expensesystem.components.grid;
 import java.text.MessageFormat;
 import java.util.List;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitHandler;
@@ -19,8 +16,8 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
 
+import pl.kostro.expensesystem.ApplicationContextProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
@@ -41,9 +38,8 @@ public class RealUserLimitGrid extends Grid implements SettingsChangeListener {
   private ExpenseSheet expenseSheet;
 
   public RealUserLimitGrid() {
-    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
-    eshs = context.getBean(ExpenseSheetService.class);
-    uls = context.getBean(UserLimitService.class);
+    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
+    uls = ApplicationContextProvider.getBean(UserLimitService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setImmediate(true);
 

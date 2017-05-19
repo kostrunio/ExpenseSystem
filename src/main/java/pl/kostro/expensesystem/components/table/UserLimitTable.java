@@ -3,15 +3,12 @@ package pl.kostro.expensesystem.components.table;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 import com.vaadin.data.Item;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Table;
 
+import pl.kostro.expensesystem.ApplicationContextProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
@@ -23,8 +20,7 @@ public class UserLimitTable extends Table {
   private ExpenseSheet expenseSheet;
 
   public UserLimitTable() {
-    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
-    uss = context.getBean(UserSummaryService.class);
+    uss = ApplicationContextProvider.getBean(UserSummaryService.class);
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
     setPageLength(expenseSheet.getUserLimitList().size());
     addContainerProperty(Msg.get("userLimitTable.user"), String.class, null);

@@ -1,14 +1,11 @@
 package pl.kostro.expensesystem.components.form;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
+import pl.kostro.expensesystem.ApplicationContextProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
@@ -42,8 +39,7 @@ public class RegisterForm extends RegisterFormDesign {
   };
 
   public RegisterForm() {
-    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
-    rus = context.getBean(RealUserService.class);
+    rus = ApplicationContextProvider.getBean(RealUserService.class);
     nameField.setCaption(Msg.get("registerPage.user"));
     nameField.focus();
     passwordField.setCaption(Msg.get("registerPage.password"));
