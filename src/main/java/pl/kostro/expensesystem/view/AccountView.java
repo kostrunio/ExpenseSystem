@@ -2,6 +2,8 @@ package pl.kostro.expensesystem.view;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
@@ -13,6 +15,7 @@ import com.vaadin.ui.Button.ClickListener;
 
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
@@ -82,6 +85,8 @@ public class AccountView extends AccountDesign implements View {
   };
 
   public AccountView() {
+    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
+    rus = context.getBean(RealUserService.class);
     setCaption();
     emailField.addValueChangeListener(emailChange);
     emailField2.addValueChangeListener(emailChange2);

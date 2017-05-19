@@ -29,6 +29,7 @@ public class ExpenseService {
   @Autowired
   private ExpenseSheetRepository eshr;
   
+  @Autowired
   private ExpenseSheetService eshs;
 
   private static Logger logger = LogManager.getLogger();

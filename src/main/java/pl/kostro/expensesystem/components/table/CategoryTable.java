@@ -2,15 +2,19 @@ package pl.kostro.expensesystem.components.table;
 
 import java.math.BigDecimal;
 
-import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.Category;
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.utils.expense.CategoryExpense;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.vaadin.data.Item;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Table;
+
+import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.SpringMain;
+import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 
 @SuppressWarnings("serial")
 public class CategoryTable extends Table {
@@ -20,6 +24,8 @@ public class CategoryTable extends Table {
   private ExpenseSheet expenseSheet;
 
   public CategoryTable() {
+    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
+    eshs = context.getBean(ExpenseSheetService.class);
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
     setPageLength(expenseSheet.getCategoryList().size());
     addContainerProperty(Msg.get("categoryTable.category"), String.class, null);

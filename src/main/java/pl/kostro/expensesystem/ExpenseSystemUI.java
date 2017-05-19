@@ -17,12 +17,13 @@ import com.vaadin.annotations.Title;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.Page;
+import com.vaadin.server.Page.BrowserWindowResizeEvent;
+import com.vaadin.server.Page.BrowserWindowResizeListener;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.server.Page.BrowserWindowResizeEvent;
-import com.vaadin.server.Page.BrowserWindowResizeListener;
+import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
@@ -36,6 +37,7 @@ import pl.kostro.expensesystem.view.MainView;
 /**
  *
  */
+@SpringUI
 @SuppressWarnings("serial")
 @Title("Expense System Application")
 @Theme("expensesystem")

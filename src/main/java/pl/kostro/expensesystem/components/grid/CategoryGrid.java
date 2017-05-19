@@ -2,7 +2,11 @@ package pl.kostro.expensesystem.components.grid;
 
 import java.text.MessageFormat;
 
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
 import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -36,6 +40,9 @@ public class CategoryGrid extends Grid implements SettingsChangeListener {
   private Button deleteCategoryButton;
 
   public CategoryGrid() {
+    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
+    cs = context.getBean(CategoryService.class);
+    eshs = context.getBean(ExpenseSheetService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setImmediate(true);
     setColumns("name", "multiplier");

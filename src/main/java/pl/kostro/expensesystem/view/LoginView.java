@@ -2,16 +2,19 @@ package pl.kostro.expensesystem.view;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.LoginForm.LoginEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
@@ -62,6 +65,8 @@ public class LoginView extends LoginDesign {
   };
 
   public LoginView() {
+    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
+    rus = context.getBean(RealUserService.class);
     logger.info("create");
     setCaption();
     signIn.setDisableOnClick(true);

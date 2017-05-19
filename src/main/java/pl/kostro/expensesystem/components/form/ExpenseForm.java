@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.components.form;
 
 import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
@@ -13,6 +14,9 @@ import pl.kostro.expensesystem.view.TableView;
 import pl.kostro.expensesystem.view.design.ExpenseFormDesign;
 
 import java.util.Date;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.vaadin.data.Property;
 import com.vaadin.event.ShortcutAction;
@@ -79,6 +83,9 @@ public class ExpenseForm extends ExpenseFormDesign {
   };
 
   public ExpenseForm() {
+    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
+    es = context.getBean(ExpenseService.class);
+    eshs = context.getBean(ExpenseSheetService.class);
     setCaption();
     configureComponents();
   }

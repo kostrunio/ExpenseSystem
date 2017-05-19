@@ -8,7 +8,10 @@ import org.apache.logging.log4j.Logger;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.dto.service.ExpenseSheetNotifyService;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -20,6 +23,11 @@ public class SendNotification implements Job {
   private static Logger logger = LogManager.getLogger();
   private ExpenseService es;
   private ExpenseSheetNotifyService esns = new ExpenseSheetNotifyService();
+  
+  public SendNotification() {
+    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
+    es = context.getBean(ExpenseService.class);
+  }
 
   @Override
   public void execute(final JobExecutionContext ctx) throws JobExecutionException {

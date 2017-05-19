@@ -3,14 +3,8 @@ package pl.kostro.expensesystem.components.grid;
 import java.text.MessageFormat;
 import java.util.List;
 
-import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.UserLimit;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.model.service.UserLimitService;
-import pl.kostro.expensesystem.views.settingsPage.AddUserWindow;
-import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
 import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
@@ -21,9 +15,19 @@ import com.vaadin.event.SelectionEvent;
 import com.vaadin.event.SelectionEvent.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
-import com.vaadin.ui.Button.ClickEvent;
+
+import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.SpringMain;
+import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
+import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.model.service.UserLimitService;
+import pl.kostro.expensesystem.views.settingsPage.AddUserWindow;
+import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 
 @SuppressWarnings("serial")
 public class UserLimitGrid extends Grid implements SettingsChangeListener {
@@ -36,6 +40,9 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
   private ExpenseSheet expenseSheet;
 
   public UserLimitGrid() {
+    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
+    eshs = context.getBean(ExpenseSheetService.class);
+    uls = context.getBean(UserLimitService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setImmediate(true);
 

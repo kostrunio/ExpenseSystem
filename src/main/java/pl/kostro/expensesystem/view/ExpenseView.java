@@ -6,8 +6,22 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+import com.vaadin.navigator.View;
+import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.Component;
+import com.vaadin.ui.MenuBar;
+import com.vaadin.ui.MenuBar.MenuItem;
+import com.vaadin.ui.UI;
 
 import pl.kostro.expensesystem.ExpenseSystemUI;
+import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
@@ -18,17 +32,6 @@ import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.ExpenseDesign;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetPasswordWindow;
-
-import com.vaadin.navigator.View;
-import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.MenuBar;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.MenuBar.MenuItem;
 
 @SuppressWarnings("serial")
 public class ExpenseView extends ExpenseDesign implements View {
@@ -126,6 +129,11 @@ public class ExpenseView extends ExpenseDesign implements View {
       checkedMonth(selectedItem.getText());
     }
   };
+  
+  public ExpenseView() {
+    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
+    eshs = context.getBean(ExpenseSheetService.class);
+  }
 
   public void checkedYear(String yearString) {
     for (MenuItem item : yearMenu.getItems()) {

@@ -7,19 +7,8 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.Category;
-import pl.kostro.expensesystem.model.Expense;
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.UserLimit;
-import pl.kostro.expensesystem.model.service.ExpenseService;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.utils.Calculator;
-import pl.kostro.expensesystem.utils.expense.CategoryExpense;
-import pl.kostro.expensesystem.utils.expense.DateExpense;
-import pl.kostro.expensesystem.view.design.DayDesign;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -31,9 +20,23 @@ import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.themes.ValoTheme;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.ValoTheme;
+
+import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.SpringMain;
+import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
+import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.Expense;
+import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.service.ExpenseService;
+import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.utils.Calculator;
+import pl.kostro.expensesystem.utils.expense.CategoryExpense;
+import pl.kostro.expensesystem.utils.expense.DateExpense;
+import pl.kostro.expensesystem.view.design.DayDesign;
 
 @SuppressWarnings("serial")
 public class DayView extends DayDesign {
@@ -133,6 +136,9 @@ public class DayView extends DayDesign {
   };
 
   public DayView() {
+    ApplicationContext context = new AnnotationConfigApplicationContext(SpringMain.class);
+    es = context.getBean(ExpenseService.class);
+    eshs = context.getBean(ExpenseSheetService.class);
     logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.category = expenseSheet.getCategoryList().get(0);
