@@ -24,5 +24,5 @@ public interface ExpenseSheetRepository extends JpaRepository<ExpenseSheet, Long
 	  List<Expense> findExpenseList(@Param("expenseSheet") ExpenseSheet expenseSheet);
 
 	  @Query("select ul from ExpenseSheet esh join esh.userLimitList ul where esh = :expenseSheet")
-    List<UserLimit> findUserLimitList(ExpenseSheet expenseSheet);
+    List<UserLimit> findUserLimitList(@Param("expenseSheet") ExpenseSheet expenseSheet);
 }

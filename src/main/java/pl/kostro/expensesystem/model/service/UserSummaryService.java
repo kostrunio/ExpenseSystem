@@ -20,6 +20,9 @@ public class UserSummaryService {
   private UserLimitRepository ulr;
   @Autowired
   private UserSummaryRepository usr;
+  
+  @Autowired
+  private UserLimitService uls;
 
   public UserSummary createUserSummary(UserLimit userLimit, Date date) {
     UserSummary userSummary = new UserSummary(date, userLimit.getLimit());
@@ -67,6 +70,7 @@ public class UserSummaryService {
     if (expenseSheet.getFilter() != null)
       return;
     for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
+      uls.fetchUserSummaryList(userLimit);
       UserSummary userSummary = findUserSummary(userLimit, date);
       BigDecimal exSummary = new BigDecimal(0);
       if (expenseSheet.getUserLimitExpenseMap().get(userLimit) != null)

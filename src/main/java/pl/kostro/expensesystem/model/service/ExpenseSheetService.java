@@ -154,7 +154,7 @@ public class ExpenseSheetService {
       dateExpense = new DateExpense(expense.getDate());
       expenseSheet.getDateExpenseMap().put(expense.getDate(), dateExpense);
     }
-    dateExpense.addExpense(expense);
+    dateExpense.addExpense(expenseSheet, expense);
   }
 
   private void addExpenseToCategoryMap(ExpenseSheet expenseSheet, Expense expense) {
@@ -325,5 +325,17 @@ public class ExpenseSheetService {
       if (!(userLimit.getUser() instanceof RealUser))
         userLimitList.add(userLimit);
     return userLimitList;
+  }
+  
+  public void fetchCategoryList(ExpenseSheet expenseSheet) {
+    expenseSheet.setCategoryList(eshr.findCategoryList(expenseSheet));
+  }
+  
+  public void fetchExpenseList(ExpenseSheet expenseSheet) {
+    expenseSheet.setExpenseList(eshr.findExpenseList(expenseSheet));
+  }
+  
+  public void fetchUserLimitList(ExpenseSheet expenseSheet) {
+    expenseSheet.setUserLimitList(eshr.findUserLimitList(expenseSheet));
   }
 }

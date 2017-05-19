@@ -77,4 +77,7 @@ public class RealUserService {
     return loggedUser;
   }
 
+  public void fetchExpenseSheetList(RealUser realUser) {
+    realUser.setExpenseSheetList(rur.fetchExpenseSheetList(realUser));
+  }
 }

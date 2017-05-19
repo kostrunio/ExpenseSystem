@@ -27,7 +27,7 @@ import pl.kostro.expensesystem.view.MonthView;
 @SuppressWarnings("serial")
 public class ExpenseCalendar extends com.vaadin.ui.Calendar {
   
-  private Converter converter;
+  private Converter converter = new Converter();
   
   private ExpenseSheetService eshs;
   private MonthView monthView;

@@ -103,7 +103,7 @@ public class RealUser extends User {
     return expenseSheetList;
   }
 
-  public void setExpenseSheets(List<ExpenseSheet> expenseSheetList) {
+  public void setExpenseSheetList(List<ExpenseSheet> expenseSheetList) {
     this.expenseSheetList = expenseSheetList;
   }
 

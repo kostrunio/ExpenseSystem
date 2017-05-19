@@ -194,6 +194,9 @@ public class ExpenseView extends ExpenseDesign implements View {
       return;
     }
     expenseSheet.setFilter(null);
+    eshs.fetchCategoryList(expenseSheet);
+    eshs.fetchExpenseList(expenseSheet);
+    eshs.fetchUserLimitList(expenseSheet);
     VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
     MainView menuView = ((ExpenseSystemUI) getUI()).getMainView();
     menuView.setActiveView("expenseSheet/" + expenseSheet.getId());

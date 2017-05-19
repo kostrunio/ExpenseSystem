@@ -61,4 +61,8 @@ public class UserLimitService {
     ulr.save(userLimit);
   }
 
+  public void fetchUserSummaryList(UserLimit userLimit) {
+    userLimit.setUserSummaryList(ulr.findUserSummaryList(userLimit));
+  }
+
 }

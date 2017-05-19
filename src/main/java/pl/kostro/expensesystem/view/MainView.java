@@ -19,16 +19,20 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
 
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.view.design.MainDesign;
 import pl.kostro.expensesystem.views.settingsPage.AddSheetWindow;
 
 @SuppressWarnings("serial")
 public class MainView extends MainDesign {
 
+  private RealUserService rus;
+  
   private Logger logger = LogManager.getLogger();
   private static final String VALO_MENU_SELECTED = "selected";
   private static final String VALO_MENU_VISIBLE = "valo-menu-visible";
@@ -79,6 +83,7 @@ public class MainView extends MainDesign {
 
 
   public MainView(UI ui) {
+    rus = AppCtxProvider.getBean(RealUserService.class);
     logger.info("create");
     setCaption();
     showMenuButton.addClickListener(showMenuClick);
@@ -117,6 +122,7 @@ public class MainView extends MainDesign {
     sheetLayout.removeAllComponents();
     viewButtons.clear();
     RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
+    rus.fetchExpenseSheetList(loggedUser);
     for (final ExpenseSheet esh : loggedUser.getExpenseSheetList())
       createButton("expenseSheet/" + esh.getId(), esh.getName(), esh.equals(loggedUser.getDefaultExpenseSheet()));
   }
