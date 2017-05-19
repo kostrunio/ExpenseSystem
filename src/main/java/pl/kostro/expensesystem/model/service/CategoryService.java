@@ -1,13 +1,19 @@
 package pl.kostro.expensesystem.model.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.repository.CategoryRepository;
 import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
 
+@Service
 public class CategoryService {
   
+  @Autowired
   private CategoryRepository cr;
+  @Autowired
   private ExpenseSheetRepository eshr;
 
   public void createCategory(ExpenseSheet expenseSheet, String name) {

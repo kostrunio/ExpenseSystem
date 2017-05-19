@@ -1,12 +1,9 @@
 package pl.kostro.expensesystem.utils;
 
-import java.text.ParseException;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.annotation.WebListener;
 
-import org.quartz.CronExpression;
 import org.quartz.CronScheduleBuilder;
 import org.quartz.JobBuilder;
 import org.quartz.JobDetail;

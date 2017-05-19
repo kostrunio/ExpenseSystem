@@ -26,8 +26,8 @@ import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 public class CategoryGrid extends Grid implements SettingsChangeListener {
-  private CategoryService cs = new CategoryService();
-  private ExpenseSheetService ess = new ExpenseSheetService();
+  private CategoryService cs;
+  private ExpenseSheetService eshs;
   private ExpenseSheet expenseSheet;
 
   private Button addCategoryButton;
@@ -84,7 +84,7 @@ public class CategoryGrid extends Grid implements SettingsChangeListener {
       @Override
       public void buttonClick(ClickEvent event) {
         Category category = getItem();
-        expenseSheet = ess.moveCategoryUp(expenseSheet, category);
+        expenseSheet = eshs.moveCategoryUp(expenseSheet, category);
         refreshValues();
       }
     });
@@ -96,7 +96,7 @@ public class CategoryGrid extends Grid implements SettingsChangeListener {
       @Override
       public void buttonClick(ClickEvent event) {
         Category category = getItem();
-        expenseSheet = ess.moveCategoryDown(expenseSheet, category);
+        expenseSheet = eshs.moveCategoryDown(expenseSheet, category);
         refreshValues();
       }
     });

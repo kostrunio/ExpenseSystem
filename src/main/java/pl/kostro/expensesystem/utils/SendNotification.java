@@ -18,7 +18,7 @@ import pl.kostro.expensesystem.model.service.ExpenseService;
 public class SendNotification implements Job {
 
   private static Logger logger = LogManager.getLogger();
-  private ExpenseService es = new ExpenseService();
+  private ExpenseService es;
   private ExpenseSheetNotifyService esns = new ExpenseSheetNotifyService();
 
   @Override

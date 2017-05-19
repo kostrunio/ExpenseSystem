@@ -5,8 +5,6 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.script.ScriptException;
-
 public class Calculator {
 
   public static boolean verifyAllowed(String str) {

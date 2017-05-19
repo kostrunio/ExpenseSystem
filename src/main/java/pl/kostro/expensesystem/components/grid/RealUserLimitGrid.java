@@ -30,7 +30,7 @@ import com.vaadin.ui.Button.ClickEvent;
 public class RealUserLimitGrid extends Grid implements SettingsChangeListener {
   
   private ExpenseSheetService eshs;
-  private UserLimitService uls = new UserLimitService();
+  private UserLimitService uls;
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
 

@@ -25,7 +25,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class AddCategoryWindow extends Window {
 
   private Logger logger = LogManager.getLogger();
-  private CategoryService cs = new CategoryService();
+  private CategoryService cs;
 
   private final TextField nameField = new TextField(Msg.get("newCategory.label"));
   private SettingsChangeListener listener;

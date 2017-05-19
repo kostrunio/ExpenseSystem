@@ -12,6 +12,8 @@ import java.util.TreeSet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.vaadin.server.VaadinSession;
 
@@ -31,16 +33,25 @@ import pl.kostro.expensesystem.utils.expense.DateExpense;
 import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
 import pl.kostro.expensesystem.utils.expense.YearCategory;
 
+@Service
 public class ExpenseSheetService {
   
+  @Autowired
   private ExpenseSheetRepository eshr;
+  @Autowired
   private UserLimitRepository ulr;
+  @Autowired
   private RealUserRepository rur;
   
+  @Autowired
   private CategoryService cs;
+  @Autowired
   private ExpenseService es;
+  @Autowired
   private RealUserService rus;
+  @Autowired
   private UserLimitService uls;
+  @Autowired
   private UserSummaryService uss;
 
   private static Logger logger = LogManager.getLogger();

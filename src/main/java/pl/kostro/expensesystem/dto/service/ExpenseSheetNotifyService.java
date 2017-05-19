@@ -11,7 +11,7 @@ import pl.kostro.expensesystem.model.RealUser;
 
 public class ExpenseSheetNotifyService {
 
-  public static Map<RealUser, Map<ExpenseSheet, List<Expense>>> prepareExpenseSheetNotify(List<Expense> expenseList) {
+  public Map<RealUser, Map<ExpenseSheet, List<Expense>>> prepareExpenseSheetNotify(List<Expense> expenseList) {
     Map<RealUser, Map<ExpenseSheet, List<Expense>>> rUMap = new HashMap<RealUser, Map<ExpenseSheet, List<Expense>>>();
     Map<ExpenseSheet, List<Expense>> eSMap;
     List<Expense> eList;

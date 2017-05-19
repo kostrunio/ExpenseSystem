@@ -7,7 +7,6 @@ import java.util.Map;
 
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.utils.calendar.Converter;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
@@ -29,14 +28,14 @@ public class ExpenseCalendar extends com.vaadin.ui.Calendar {
   
   private Converter converter;
   
-  private ExpenseSheetService ess = new ExpenseSheetService();
+  private ExpenseSheetService eshs;
   private MonthView monthView;
   private ExpenseSheet expenseSheet;
   private Calendar calendar;
   private CalendarEventProvider eventProvider = new CalendarEventProvider() {
     @Override
     public List<CalendarEvent> getEvents(Date startDate, Date endDate) {
-      Map<Date, DateExpense> eventToShow = ess.prepareExpenseMap(expenseSheet, startDate, endDate,
+      Map<Date, DateExpense> eventToShow = eshs.prepareExpenseMap(expenseSheet, startDate, endDate,
           CalendarUtils.getFirstDay(calendar.getTime()), CalendarUtils.getLastDay(calendar.getTime()));
       monthView.fulfillTables();
       return converter.transformExpensesToEvents(expenseSheet, eventToShow);

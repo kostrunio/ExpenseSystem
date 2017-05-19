@@ -17,7 +17,6 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.utils.expense.YearCategory;
@@ -38,7 +37,7 @@ import com.vaadin.ui.Button.ClickEvent;
 public class ChartView extends ChartDesign {
 
   private Logger logger = LogManager.getLogger();
-  private ExpenseSheetService ess = new ExpenseSheetService();
+  private ExpenseSheetService eshs;
   private ExpenseSheet expenseSheet;
   private Button.ClickListener searchClick = new Button.ClickListener() {
     @Override
@@ -86,7 +85,7 @@ public class ChartView extends ChartDesign {
 
   private void showCharts() {
     chartLayout.removeAllComponents();
-    List<YearCategory> yearCategoryList = ess.prepareYearCategoryList(expenseSheet);
+    List<YearCategory> yearCategoryList = eshs.prepareYearCategoryList(expenseSheet);
     LineChartGrid lineGrid = new LineChartGrid(yearCategoryList);
     ColumnChartGrid columnGrid = new ColumnChartGrid(yearCategoryList);
 

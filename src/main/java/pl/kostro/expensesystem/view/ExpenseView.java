@@ -14,7 +14,6 @@ import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.ExpenseDesign;
@@ -37,7 +36,6 @@ public class ExpenseView extends ExpenseDesign implements View {
   private ExpenseSheetService eshs;
 
   private Logger logger = LogManager.getLogger();
-  private UserSummaryService uss = new UserSummaryService();
   private Calendar calendar = Calendar.getInstance();
   private ExpenseSheet expenseSheet;
   private Button.ClickListener editClick = new ClickListener() {

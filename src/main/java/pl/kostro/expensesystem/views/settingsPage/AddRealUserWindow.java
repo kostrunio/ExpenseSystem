@@ -7,8 +7,6 @@ import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
-import javax.persistence.NoResultException;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -29,8 +27,8 @@ import com.vaadin.ui.themes.ValoTheme;
 public class AddRealUserWindow extends Window {
 
   private Logger logger = LogManager.getLogger();
-  private RealUserService rus = new RealUserService();
-  private UserLimitService uls = new UserLimitService();
+  private RealUserService rus;
+  private UserLimitService uls;
 
   private final TextField nameField = new TextField(Msg.get("newRealUser.label"));
   private SettingsChangeListener listener;

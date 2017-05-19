@@ -9,6 +9,8 @@ import javax.persistence.NoResultException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
@@ -19,9 +21,12 @@ import pl.kostro.expensesystem.model.repository.ExpenseRepository;
 import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
 import pl.kostro.expensesystem.utils.Filter;
 
+@Service
 public class ExpenseService {
   
+  @Autowired
   private ExpenseRepository er;
+  @Autowired
   private ExpenseSheetRepository eshr;
   
   private ExpenseSheetService eshs;

@@ -7,12 +7,10 @@ import org.apache.logging.log4j.Logger;
 
 import pl.kostro.expensesystem.event.ExpenseSystemEvent.BrowserResizeEvent;
 import pl.kostro.expensesystem.event.ExpenseSystemEventBus;
-import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.MonthDesign;
 
 import com.google.common.eventbus.Subscribe;
-import com.google.gwt.core.server.ServerGwtBridge.Properties;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.ShortcutAction;
@@ -25,7 +23,6 @@ import com.vaadin.ui.Button.ClickEvent;
 public class MonthView extends MonthDesign {
 
   private Logger logger = LogManager.getLogger();
-  private UserSummaryService uss = new UserSummaryService();
   private Calendar date;
   private Button.ClickListener prevClick = new Button.ClickListener() {
     @Override

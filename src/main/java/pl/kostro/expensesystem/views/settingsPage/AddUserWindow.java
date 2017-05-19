@@ -26,8 +26,8 @@ import com.vaadin.ui.themes.ValoTheme;
 public class AddUserWindow extends Window {
 
   private Logger logger = LogManager.getLogger();
-  private UserLimitService uls = new UserLimitService();
-  private UserService us = new UserService();
+  private UserLimitService uls;
+  private UserService us;
 
   private final TextField nameField = new TextField(Msg.get("newUser.label"));
   private SettingsChangeListener listener;

@@ -29,8 +29,8 @@ import com.vaadin.ui.Button.ClickListener;
 public class SettingsView extends SettingsDesign implements ExpenseSheetEditListener, ExpenseSheetPasswordChangeListener {
 
   private Logger logger = LogManager.getLogger();
-  private ExpenseSheetService ess = new ExpenseSheetService();
-  private RealUserService rus = new RealUserService();
+  private ExpenseSheetService eshs;
+  private RealUserService rus;
   private ExpenseSheet expenseSheet;
   private Button.ClickListener editClick = new ClickListener() {
     @Override
@@ -56,7 +56,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
         @Override
         public void onClose(ConfirmDialog dialog) {
           if (dialog.isConfirmed()) {
-            ess.removeExpenseSheet(expenseSheet);
+            eshs.removeExpenseSheet(expenseSheet);
             RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
             loggedUser = rus.refresh(loggedUser);
             if (loggedUser.getDefaultExpenseSheet() == null && loggedUser.getExpenseSheetList().size() != 0)
@@ -117,16 +117,16 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
   @Override
   public void expenseSheetNameEdited(TextField nameField) {
     expenseSheet.setName(nameField.getValue());
-    ess.merge(expenseSheet);
+    eshs.merge(expenseSheet);
     ((ExpenseSystemUI)getUI()).getMainView().refresh();
     titleLabel.setValue(nameField.getValue());
   }
 
   @Override
   public void expenseSheetPasswordChanged(String newPassword) {
-    ess.decrypt(expenseSheet);
+    eshs.decrypt(expenseSheet);
     expenseSheet.setKey(newPassword);
-    ess.encrypt(expenseSheet);
+    eshs.encrypt(expenseSheet);
   }
 
 }

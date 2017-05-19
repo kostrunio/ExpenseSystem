@@ -3,6 +3,9 @@ package pl.kostro.expensesystem.model.service;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.UserSummary;
@@ -10,9 +13,12 @@ import pl.kostro.expensesystem.model.repository.UserLimitRepository;
 import pl.kostro.expensesystem.model.repository.UserSummaryRepository;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
+@Service
 public class UserSummaryService {
   
+  @Autowired
   private UserLimitRepository ulr;
+  @Autowired
   private UserSummaryRepository usr;
 
   public UserSummary createUserSummary(UserLimit userLimit, Date date) {

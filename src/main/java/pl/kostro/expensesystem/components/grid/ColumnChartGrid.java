@@ -1,31 +1,30 @@
 package pl.kostro.expensesystem.components.grid;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 import com.vaadin.ui.Grid;
 
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.service.UserSummaryService;
-import pl.kostro.expensesystem.utils.YearCategory;
+import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
+import pl.kostro.expensesystem.utils.expense.YearCategory;
 
 public class ColumnChartGrid extends Grid {
 
   public ColumnChartGrid(List<YearCategory> yearCategoryList) {
     setColumns(Msg.get("grid.year"),
-        UserSummaryService.getMonthsName()[0],
-        UserSummaryService.getMonthsName()[1],
-        UserSummaryService.getMonthsName()[2],
-        UserSummaryService.getMonthsName()[3],
-        UserSummaryService.getMonthsName()[4],
-        UserSummaryService.getMonthsName()[5],
-        UserSummaryService.getMonthsName()[6],
-        UserSummaryService.getMonthsName()[7],
-        UserSummaryService.getMonthsName()[8],
-        UserSummaryService.getMonthsName()[9],
-        UserSummaryService.getMonthsName()[10],
-        UserSummaryService.getMonthsName()[11]);
+        CalendarUtils.getMonthsName()[0],
+        CalendarUtils.getMonthsName()[1],
+        CalendarUtils.getMonthsName()[2],
+        CalendarUtils.getMonthsName()[3],
+        CalendarUtils.getMonthsName()[4],
+        CalendarUtils.getMonthsName()[5],
+        CalendarUtils.getMonthsName()[6],
+        CalendarUtils.getMonthsName()[7],
+        CalendarUtils.getMonthsName()[8],
+        CalendarUtils.getMonthsName()[9],
+        CalendarUtils.getMonthsName()[10],
+        CalendarUtils.getMonthsName()[11]);
   }
 
   public void addValues(int year, List<BigDecimal> monthValues1) {

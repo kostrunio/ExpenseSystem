@@ -6,12 +6,17 @@ import java.util.Date;
 
 import javax.persistence.NoResultException;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.repository.RealUserRepository;
 
+@Service
 public class RealUserService {
   
+  @Autowired
   private RealUserRepository rur;
 
   static MessageDigest messageDigest;

@@ -28,7 +28,7 @@ import com.vaadin.ui.themes.ValoTheme;
 public class AddSheetWindow extends Window {
 
   private Logger logger = LogManager.getLogger();
-  private ExpenseSheetService ess = new ExpenseSheetService();
+  private ExpenseSheetService eshs;
 
   private final TextField nameField = new TextField(Msg.get("newSheet.label"));
   private final PasswordField passwordField = new PasswordField(Msg.get("newSheet.password"));
@@ -89,7 +89,7 @@ public class AddSheetWindow extends Window {
           return;
         }
         RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
-        ExpenseSheet expenseSheet = ess.createExpenseSheet(loggedUser, nameField.getValue(), passwordField.getValue());
+        ExpenseSheet expenseSheet = eshs.createExpenseSheet(loggedUser, nameField.getValue(), passwordField.getValue());
         VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
         ((ExpenseSystemUI)getUI()).getMainView().refresh();
         close();

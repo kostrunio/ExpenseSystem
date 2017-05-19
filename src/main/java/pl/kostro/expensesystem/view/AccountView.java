@@ -16,15 +16,13 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
-import pl.kostro.expensesystem.utils.SendNotification;
 import pl.kostro.expensesystem.view.design.AccountDesign;
 
 @SuppressWarnings("serial")
 public class AccountView extends AccountDesign implements View {
 
   private Logger logger = LogManager.getLogger();
-  private RealUserService rus  = new RealUserService();
-  private SendNotification sn = new SendNotification();
+  private RealUserService rus;
   private RealUser loggedUser;
 
   private ValueChangeListener emailChange = new ValueChangeListener() {
