@@ -11,7 +11,7 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.RealUser;
@@ -83,7 +83,7 @@ public class AccountView extends AccountDesign implements View {
   };
 
   public AccountView() {
-    rus = ApplicationContextProvider.getBean(RealUserService.class);
+    rus = AppCtxProvider.getBean(RealUserService.class);
     setCaption();
     emailField.addValueChangeListener(emailChange);
     emailField2.addValueChangeListener(emailChange2);

@@ -18,7 +18,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Grid;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
@@ -77,8 +77,8 @@ public class TableView extends TableDesign {
   };
   
   public TableView() {
-    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
-    es = ApplicationContextProvider.getBean(ExpenseService.class);
+    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
+    es = AppCtxProvider.getBean(ExpenseService.class);
     logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.calendar = VaadinSession.getCurrent().getAttribute(Calendar.class);

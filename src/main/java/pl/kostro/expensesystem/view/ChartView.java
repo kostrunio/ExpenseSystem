@@ -20,7 +20,7 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.grid.ColumnChartGrid;
 import pl.kostro.expensesystem.components.grid.LineChartGrid;
@@ -48,7 +48,7 @@ public class ChartView extends ChartDesign {
   };
 
   public ChartView() {
-    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
+    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("create");
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     expenseSheet.setFilter(new Filter(null, null, null, null));

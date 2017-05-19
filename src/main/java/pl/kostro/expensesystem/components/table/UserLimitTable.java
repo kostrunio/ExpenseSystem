@@ -7,7 +7,7 @@ import com.vaadin.data.Item;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Table;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
@@ -20,7 +20,7 @@ public class UserLimitTable extends Table {
   private ExpenseSheet expenseSheet;
 
   public UserLimitTable() {
-    uss = ApplicationContextProvider.getBean(UserSummaryService.class);
+    uss = AppCtxProvider.getBean(UserSummaryService.class);
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
     setPageLength(expenseSheet.getUserLimitList().size());
     addContainerProperty(Msg.get("userLimitTable.user"), String.class, null);

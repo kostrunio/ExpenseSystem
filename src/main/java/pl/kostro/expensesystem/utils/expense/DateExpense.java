@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.UserLimit;
@@ -22,7 +22,7 @@ public class DateExpense {
 	private BigDecimal sum = new BigDecimal(0);
 	
 	public DateExpense(Date date) {
-    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
+    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
 		this.date = date;
 	}
 	public Date getDate() {

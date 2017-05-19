@@ -3,7 +3,7 @@ package pl.kostro.expensesystem.components.form;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.RealUser;
@@ -39,7 +39,7 @@ public class RegisterForm extends RegisterFormDesign {
   };
 
   public RegisterForm() {
-    rus = ApplicationContextProvider.getBean(RealUserService.class);
+    rus = AppCtxProvider.getBean(RealUserService.class);
     nameField.setCaption(Msg.get("registerPage.user"));
     nameField.focus();
     passwordField.setCaption(Msg.get("registerPage.password"));

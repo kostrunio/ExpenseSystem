@@ -15,7 +15,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Category;
@@ -37,8 +37,8 @@ public class CategoryGrid extends Grid implements SettingsChangeListener {
   private Button deleteCategoryButton;
 
   public CategoryGrid() {
-    cs = ApplicationContextProvider.getBean(CategoryService.class);
-    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
+    cs = AppCtxProvider.getBean(CategoryService.class);
+    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setImmediate(true);
     setColumns("name", "multiplier");

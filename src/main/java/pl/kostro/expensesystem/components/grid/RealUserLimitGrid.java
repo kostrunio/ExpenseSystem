@@ -16,7 +16,7 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -38,8 +38,8 @@ public class RealUserLimitGrid extends Grid implements SettingsChangeListener {
   private ExpenseSheet expenseSheet;
 
   public RealUserLimitGrid() {
-    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
-    uls = ApplicationContextProvider.getBean(UserLimitService.class);
+    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
+    uls = AppCtxProvider.getBean(UserLimitService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setImmediate(true);
 

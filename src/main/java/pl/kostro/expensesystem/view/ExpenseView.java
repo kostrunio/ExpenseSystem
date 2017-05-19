@@ -18,7 +18,7 @@ import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.UI;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -129,7 +129,7 @@ public class ExpenseView extends ExpenseDesign implements View {
   };
   
   public ExpenseView() {
-    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
+    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
   }
 
   public void checkedYear(String yearString) {

@@ -6,11 +6,11 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ApplicationContextProvider implements ApplicationContextAware {
+public class AppCtxProvider implements ApplicationContextAware {
 
     private static ApplicationContext context;
 
-    private ApplicationContextProvider(){}
+    private AppCtxProvider(){}
 
     public static ApplicationContext getApplicationContext() {
         return context;

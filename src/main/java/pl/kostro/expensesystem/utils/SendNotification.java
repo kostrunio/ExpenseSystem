@@ -9,7 +9,7 @@ import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.dto.service.ExpenseSheetNotifyService;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -23,7 +23,7 @@ public class SendNotification implements Job {
   private ExpenseSheetNotifyService esns = new ExpenseSheetNotifyService();
   
   public SendNotification() {
-    es = ApplicationContextProvider.getBean(ExpenseService.class);
+    es = AppCtxProvider.getBean(ExpenseService.class);
   }
 
   @Override

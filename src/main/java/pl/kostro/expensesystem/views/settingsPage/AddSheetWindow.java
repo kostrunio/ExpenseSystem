@@ -17,7 +17,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -36,7 +36,7 @@ public class AddSheetWindow extends Window {
   private final PasswordField rePasswordField = new PasswordField(Msg.get("newSheet.repassword"));
 
   public AddSheetWindow() {
-    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
+    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("show");
     setModal(true);
     setClosable(false);

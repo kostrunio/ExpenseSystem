@@ -22,7 +22,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Category;
@@ -134,8 +134,8 @@ public class DayView extends DayDesign {
   };
 
   public DayView() {
-    es = ApplicationContextProvider.getBean(ExpenseService.class);
-    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
+    es = AppCtxProvider.getBean(ExpenseService.class);
+    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.category = expenseSheet.getCategoryList().get(0);

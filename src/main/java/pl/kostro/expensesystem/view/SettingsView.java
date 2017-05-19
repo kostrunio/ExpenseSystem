@@ -12,7 +12,7 @@ import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
@@ -72,8 +72,8 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
   };
 
   public SettingsView() {
-    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
-    rus = ApplicationContextProvider.getBean(RealUserService.class);
+    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
+    rus = AppCtxProvider.getBean(RealUserService.class);
     logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setCaption();

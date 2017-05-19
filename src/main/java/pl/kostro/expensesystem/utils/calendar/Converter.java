@@ -9,7 +9,7 @@ import java.util.Set;
 import com.vaadin.ui.components.calendar.event.BasicEvent;
 import com.vaadin.ui.components.calendar.event.CalendarEvent;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
@@ -21,7 +21,7 @@ public class Converter {
   private ExpenseSheetService eshs;
   
   public Converter() {
-    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
+    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
   }
 	
 	public List<CalendarEvent> transformExpensesToEvents(ExpenseSheet expenseSheet, Map<Date, DateExpense> dateExpenseMap) {

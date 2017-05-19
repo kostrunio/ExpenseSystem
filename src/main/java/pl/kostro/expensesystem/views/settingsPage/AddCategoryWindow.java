@@ -16,7 +16,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.service.CategoryService;
@@ -32,7 +32,7 @@ public class AddCategoryWindow extends Window {
   private SettingsChangeListener listener;
 
   public AddCategoryWindow(SettingsChangeListener listener) {
-    cs = ApplicationContextProvider.getBean(CategoryService.class);
+    cs = AppCtxProvider.getBean(CategoryService.class);
     logger.info("show");
     this.listener = listener;
     setModal(true);

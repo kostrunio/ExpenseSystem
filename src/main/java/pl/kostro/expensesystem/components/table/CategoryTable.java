@@ -6,7 +6,7 @@ import com.vaadin.data.Item;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Table;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -21,7 +21,7 @@ public class CategoryTable extends Table {
   private ExpenseSheet expenseSheet;
 
   public CategoryTable() {
-    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
+    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
     setPageLength(expenseSheet.getCategoryList().size());
     addContainerProperty(Msg.get("categoryTable.category"), String.class, null);

@@ -16,7 +16,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.service.UserLimitService;
@@ -34,8 +34,8 @@ public class AddUserWindow extends Window {
   private SettingsChangeListener listener;
 
   public AddUserWindow(SettingsChangeListener listener) {
-    uls = ApplicationContextProvider.getBean(UserLimitService.class);
-    us = ApplicationContextProvider.getBean(UserService.class);
+    uls = AppCtxProvider.getBean(UserLimitService.class);
+    us = AppCtxProvider.getBean(UserService.class);
     logger.info("show");
     this.listener = listener;
     setModal(true);

@@ -16,7 +16,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
@@ -35,8 +35,8 @@ public class AddRealUserWindow extends Window {
   private SettingsChangeListener listener;
 
   public AddRealUserWindow(SettingsChangeListener listener) {
-    rus = ApplicationContextProvider.getBean(RealUserService.class);
-    uls = ApplicationContextProvider.getBean(UserLimitService.class);
+    rus = AppCtxProvider.getBean(RealUserService.class);
+    uls = AppCtxProvider.getBean(UserLimitService.class);
     logger.info("show");
     this.listener = listener;
     setModal(true);

@@ -9,7 +9,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.Category;
@@ -80,8 +80,8 @@ public class ExpenseForm extends ExpenseFormDesign {
   };
 
   public ExpenseForm() {
-    es = ApplicationContextProvider.getBean(ExpenseService.class);
-    eshs = ApplicationContextProvider.getBean(ExpenseSheetService.class);
+    es = AppCtxProvider.getBean(ExpenseService.class);
+    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     setCaption();
     configureComponents();
   }

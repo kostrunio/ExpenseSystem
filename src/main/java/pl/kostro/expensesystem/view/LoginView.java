@@ -10,7 +10,7 @@ import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.LoginForm.LoginEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
-import pl.kostro.expensesystem.ApplicationContextProvider;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.RealUser;
@@ -63,7 +63,7 @@ public class LoginView extends LoginDesign {
   };
 
   public LoginView() {
-    rus = ApplicationContextProvider.getBean(RealUserService.class);
+    rus = AppCtxProvider.getBean(RealUserService.class);
     logger.info("create");
     setCaption();
     signIn.setDisableOnClick(true);
