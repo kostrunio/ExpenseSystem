@@ -9,8 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -25,11 +23,6 @@ import pl.kostro.expensesystem.utils.Encryption;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "expenses")
-@NamedQueries({
-  @NamedQuery(
-      name = "findExpensesToNotify",
-      query = "select e from Expense e where e.notify = true and e.date = :date")
-})
 public class Expense extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")

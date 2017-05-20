@@ -18,6 +18,6 @@ public interface RealUserRepository extends JpaRepository<RealUser, Long> {
 	@Query("select sh from RealUser ru join ru.expenseSheetList sh where ru = :realUser")
 	List<ExpenseSheet> fetchExpenseSheetList(@Param("realUser") RealUser realUser);
 	
-	@Query("select u from RealUser u join u.expenseSheetList es where es = :expenseSheet")
+	@Query("select u from RealUser u join u.expenseSheetList es where es = :expenseSheet order by es.id")
 	List<RealUser> findUsersWithExpenseSheet(@Param("expenseSheet") ExpenseSheet expenseSheet);
 }

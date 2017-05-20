@@ -10,8 +10,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
@@ -19,20 +17,6 @@ import javax.persistence.Transient;
 @SuppressWarnings("serial")
 @Entity
 @DiscriminatorValue(value="2")
-@NamedQueries({
-  @NamedQuery(
-      name = "findUser",
-      query = "select u from RealUser u where u.name = :name"
-      ),
-  @NamedQuery(
-      name = "findLoggedUser",
-      query = "select u from RealUser u where u.name = :name and u.password = :password"
-      ),
-  @NamedQuery(
-      name = "findUsersWithExpenseSheet",
-      query = "select u from RealUser u join u.expenseSheetList es where es = :expenseSheet "
-      )
-})
 public class RealUser extends User {
   @Column(name = "u_password")
   private String password;
