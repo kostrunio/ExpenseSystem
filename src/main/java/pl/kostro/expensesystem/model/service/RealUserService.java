@@ -56,9 +56,9 @@ public class RealUserService {
   }
 
   public RealUser getUserData(String userName, String password) {
-    RealUser loggedUser = null;
     messageDigest.update(password.getBytes());
-    loggedUser = rur.findByNameAndPassword(userName, new String(messageDigest.digest()));
+    RealUser loggedUser = rur.findByNameAndPassword(userName, new String(messageDigest.digest()));
+    if (loggedUser == null) return null; 
     loggedUser.setClearPassword(password);
     loggedUser.setLogDate(new Date());
     if (loggedUser.getPasswordByte() == null)
