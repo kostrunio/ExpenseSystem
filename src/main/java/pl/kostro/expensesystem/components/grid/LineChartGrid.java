@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.components.grid;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.vaadin.ui.Grid;
@@ -12,7 +13,11 @@ public class LineChartGrid extends Grid {
 
   public LineChartGrid(List<YearCategory> yearCategoryList) {
     setColumns(Msg.get("grid.year"), UserSummaryService.getMonthsName());
-    for (YearCategory yearCategory : yearCategoryList)
-      addRow(yearCategory.getYear()+"", yearCategory.getMonthsSum());
+    List<String> rowList = new ArrayList<>();
+    for (YearCategory yearCategory : yearCategoryList) {
+      rowList.add(yearCategory.getYear()+"");
+      rowList.addAll(yearCategory.getMonthsSum());
+      addRow(rowList);
+    }
   }
 }
