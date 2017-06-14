@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.components.grid;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,19 +26,21 @@ public class ColumnChartGrid extends Grid {
         UserSummaryService.getMonthsName()[9],
         UserSummaryService.getMonthsName()[10],
         UserSummaryService.getMonthsName()[11]);
-    for (YearCategory yearCategory : yearCategoryList)
-      addRow(yearCategory.getYear()+"",
-          yearCategory.getMonthValue(0).toString(),
-          yearCategory.getMonthValue(1).toString(),
-          yearCategory.getMonthValue(2).toString(),
-          yearCategory.getMonthValue(3).toString(),
-          yearCategory.getMonthValue(4).toString(),
-          yearCategory.getMonthValue(5).toString(),
-          yearCategory.getMonthValue(6).toString(),
-          yearCategory.getMonthValue(7).toString(),
-          yearCategory.getMonthValue(8).toString(),
-          yearCategory.getMonthValue(9).toString(),
-          yearCategory.getMonthValue(10).toString(),
-          yearCategory.getMonthValue(11).toString());
+  }
+
+  public void addValues(int year, List<BigDecimal> monthValues1) {
+    addRow(year+"",
+        monthValues1.get(0),
+        monthValues1.get(1),
+        monthValues1.get(2),
+        monthValues1.get(3),
+        monthValues1.get(4),
+        monthValues1.get(5),
+        monthValues1.get(6),
+        monthValues1.get(7),
+        monthValues1.get(8),
+        monthValues1.get(9),
+        monthValues1.get(10),
+        monthValues1.get(11));
   }
 }

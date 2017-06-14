@@ -121,9 +121,9 @@ public class ChartView extends ChartDesign {
       Series yearLine1 = new ListSeries(yearCategory.getYear() + "", monthValues1.toArray(new BigDecimal[0]));
       Series yearLine2 = new ListSeries(yearCategory.getYear() + "", monthValues2.toArray(new BigDecimal[0]));
       lineConfiguration.addSeries(yearLine1);
-      lineGrid.addRow(monthValues1);
+      lineGrid.addValues(yearCategory.getYear(), monthValues1);
       columnConfiguration.addSeries(yearLine2);
-      columnGrid.addRow(monthValues2);
+      columnGrid.addValues(yearCategory.getYear(), monthValues1);
     }
 
     chartLayout.addComponent(lineChart);
