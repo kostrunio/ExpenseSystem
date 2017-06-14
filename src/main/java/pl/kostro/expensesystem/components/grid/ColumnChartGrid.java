@@ -12,25 +12,32 @@ import pl.kostro.expensesystem.utils.YearCategory;
 public class ColumnChartGrid extends Grid {
 
   public ColumnChartGrid(List<YearCategory> yearCategoryList) {
-    List<String> columnList = new ArrayList<>();
-    columnList.add(Msg.get("grid.year"));
-    for (String monthName : UserSummaryService.getMonthsName())
-      columnList.add(monthName);
-    setColumns(columnList);
-    List<String> rowList = new ArrayList<>();
+    setColumns(Msg.get("grid.year"),
+        UserSummaryService.getMonthsName()[0],
+        UserSummaryService.getMonthsName()[1],
+        UserSummaryService.getMonthsName()[2],
+        UserSummaryService.getMonthsName()[3],
+        UserSummaryService.getMonthsName()[4],
+        UserSummaryService.getMonthsName()[5],
+        UserSummaryService.getMonthsName()[6],
+        UserSummaryService.getMonthsName()[7],
+        UserSummaryService.getMonthsName()[8],
+        UserSummaryService.getMonthsName()[9],
+        UserSummaryService.getMonthsName()[10],
+        UserSummaryService.getMonthsName()[11]);
     for (YearCategory yearCategory : yearCategoryList)
       addRow(yearCategory.getYear()+"",
-          yearCategory.getMonthValue(0),
-          yearCategory.getMonthValue(1),
-          yearCategory.getMonthValue(2),
-          yearCategory.getMonthValue(3),
-          yearCategory.getMonthValue(4),
-          yearCategory.getMonthValue(5),
-          yearCategory.getMonthValue(6),
-          yearCategory.getMonthValue(7),
-          yearCategory.getMonthValue(8),
-          yearCategory.getMonthValue(9),
-          yearCategory.getMonthValue(10),
-          yearCategory.getMonthValue(11));
+          yearCategory.getMonthValue(0).toString(),
+          yearCategory.getMonthValue(1).toString(),
+          yearCategory.getMonthValue(2).toString(),
+          yearCategory.getMonthValue(3).toString(),
+          yearCategory.getMonthValue(4).toString(),
+          yearCategory.getMonthValue(5).toString(),
+          yearCategory.getMonthValue(6).toString(),
+          yearCategory.getMonthValue(7).toString(),
+          yearCategory.getMonthValue(8).toString(),
+          yearCategory.getMonthValue(9).toString(),
+          yearCategory.getMonthValue(10).toString(),
+          yearCategory.getMonthValue(11).toString());
   }
 }
