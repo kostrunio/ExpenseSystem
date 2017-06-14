@@ -50,4 +50,26 @@ public class YearCategory {
       sum = sum.add(categoryEx.getSum());
     return sum;
   }
+
+  public List<BigDecimal> getMonthsSum() {
+    List<BigDecimal> sumList = new ArrayList<>();
+    BigDecimal sum = new BigDecimal(0);
+    for (int m = 0; m <= 11; m++) {
+      BigDecimal value = getMonthValue(m);
+      if (value != null)
+        sum.add(value);
+      sumList.add(sum);
+    }
+    return sumList;
+  }
+
+  public List<BigDecimal> getMonths() {
+    List<BigDecimal> sumList = new ArrayList<>();
+    for (int m = 0; m <= 11; m++) {
+      BigDecimal value = getMonthValue(m);
+      if (value != null)
+        sumList.add(value);
+    }
+    return sumList;
+  }
 }

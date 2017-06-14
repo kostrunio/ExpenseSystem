@@ -10,6 +10,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.components.grid.ColumnChartGrid;
+import pl.kostro.expensesystem.components.grid.LineChartGrid;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.User;
@@ -30,6 +32,7 @@ import com.vaadin.addon.charts.model.Tooltip;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Grid;
 
 @SuppressWarnings("serial")
 public class ChartView extends ChartDesign {
@@ -84,6 +87,8 @@ public class ChartView extends ChartDesign {
   private void showCharts() {
     chartLayout.removeAllComponents();
     List<YearCategory> yearCategoryList = ess.prepareYearCategoryList(expenseSheet);
+    LineChartGrid lineGrid = new LineChartGrid(yearCategoryList);
+    ColumnChartGrid columnGrid = new ColumnChartGrid(yearCategoryList);
 
     Chart lineChart = new Chart(ChartType.LINE);
     Configuration lineConfiguration = lineChart.getConfiguration();
@@ -95,7 +100,6 @@ public class ChartView extends ChartDesign {
     tooltip.setValueSuffix(Msg.get("chart.suffix"));
     tooltip.setShared(true);
 
-
     Chart columnChart = new Chart(ChartType.COLUMN);
     Configuration columnConfiguration = columnChart.getConfiguration();
     columnConfiguration.setTitle(Msg.get("chart.tytle2"));
@@ -104,24 +108,27 @@ public class ChartView extends ChartDesign {
 
     for (YearCategory yearCategory : yearCategoryList) {
       BigDecimal sum = new BigDecimal(0);
-      List<Double> monthValues1 = new ArrayList<Double>();
-      List<Double> monthValues2 = new ArrayList<Double>();
+      List<BigDecimal> monthValues1 = new ArrayList<BigDecimal>();
+      List<BigDecimal> monthValues2 = new ArrayList<BigDecimal>();
       for (int m = 0; m <= 11; m++) {
         BigDecimal value = yearCategory.getMonthValue(m);
         if (value != null) {
           sum = sum.add(value);
-          monthValues1.add(sum.doubleValue());
-          monthValues2.add(value.doubleValue());
+          monthValues1.add(sum);
+          monthValues2.add(value);
         }
       }
-      Series yearLine1 = new ListSeries(yearCategory.getYear() + "", monthValues1.toArray(new Double[0]));
-      Series yearLine2 = new ListSeries(yearCategory.getYear() + "", monthValues2.toArray(new Double[0]));
+      Series yearLine1 = new ListSeries(yearCategory.getYear() + "", monthValues1.toArray(new BigDecimal[0]));
+      Series yearLine2 = new ListSeries(yearCategory.getYear() + "", monthValues2.toArray(new BigDecimal[0]));
       lineConfiguration.addSeries(yearLine1);
+      lineGrid.addRow(monthValues1);
       columnConfiguration.addSeries(yearLine2);
+      columnGrid.addRow(monthValues2);
     }
 
-
     chartLayout.addComponent(lineChart);
+    chartLayout.addComponent(lineGrid);
     chartLayout.addComponent(columnChart);
+    chartLayout.addComponent(columnGrid);
   }
 }
