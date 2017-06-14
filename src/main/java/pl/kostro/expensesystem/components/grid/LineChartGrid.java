@@ -13,6 +13,6 @@ public class LineChartGrid extends Grid {
   public LineChartGrid(List<YearCategory> yearCategoryList) {
     setColumns(Msg.get("grid.year"), UserSummaryService.getMonthsName());
     for (YearCategory yearCategory : yearCategoryList)
-      addRow(yearCategory.getYear(), yearCategory.getMonthsSum());
+      addRow(yearCategory.getYear()+"", yearCategory.getMonthsSum());
   }
 }

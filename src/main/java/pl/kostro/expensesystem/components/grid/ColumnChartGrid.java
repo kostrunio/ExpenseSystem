@@ -13,6 +13,6 @@ public class ColumnChartGrid extends Grid {
   public ColumnChartGrid(List<YearCategory> yearCategoryList) {
     setColumns(Msg.get("grid.year"), UserSummaryService.getMonthsName());
     for (YearCategory yearCategory : yearCategoryList)
-      addRow(yearCategory.getYear(), yearCategory.getMonths());
+      addRow(yearCategory.getYear()+"", yearCategory.getMonths());
   }
 }
