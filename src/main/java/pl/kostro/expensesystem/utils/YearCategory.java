@@ -51,7 +51,7 @@ public class YearCategory {
     return sum;
   }
 
-  public List<BigDecimal> getMonthsSum() {
+  public List<String> getMonthsSum() {
     List<BigDecimal> sumList = new ArrayList<>();
     BigDecimal sum = new BigDecimal(0);
     for (int m = 0; m <= 11; m++) {
@@ -60,16 +60,22 @@ public class YearCategory {
         sum.add(value);
       sumList.add(sum);
     }
-    return sumList;
+    List<String> resultList = new ArrayList<>();
+    for (BigDecimal value : sumList)
+      resultList.add(value.toString());
+    return resultList;
   }
 
-  public List<BigDecimal> getMonths() {
+  public List<String> getMonths() {
     List<BigDecimal> sumList = new ArrayList<>();
     for (int m = 0; m <= 11; m++) {
       BigDecimal value = getMonthValue(m);
       if (value != null)
         sumList.add(value);
     }
-    return sumList;
+    List<String> resultList = new ArrayList<>();
+    for (BigDecimal value : sumList)
+      resultList.add(value.toString());
+    return resultList;
   }
 }
