@@ -131,7 +131,7 @@ public class ChartView extends ChartDesign {
     chartLayout.addComponent(columnChart);
     chartLayout.addComponent(columnGrid);
     
-    lineGrid.setHeightByRows(lineGrid.getContainerDataSource().getItemIds().size());
-    columnGrid.setHeightByRows(columnGrid.getContainerDataSource().getItemIds().size());
+    lineGrid.setHeightByRows(yearCategoryList.size());
+    columnGrid.setHeightByRows(yearCategoryList.size());
   }
 }
