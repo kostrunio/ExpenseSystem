@@ -30,17 +30,17 @@ public class ColumnChartGrid extends Grid {
 
   public void addValues(int year, List<BigDecimal> monthValues1) {
     addRow(year+"",
-        monthValues1.get(0),
-        monthValues1.get(1),
-        monthValues1.get(2),
-        monthValues1.get(3),
-        monthValues1.get(4),
-        monthValues1.get(5),
-        monthValues1.get(6),
-        monthValues1.get(7),
-        monthValues1.get(8),
-        monthValues1.get(9),
-        monthValues1.get(10),
-        monthValues1.get(11));
+        monthValues1.get(0).toString(),
+        monthValues1.get(1).toString(),
+        monthValues1.get(2).toString(),
+        monthValues1.get(3).toString(),
+        monthValues1.get(4).toString(),
+        monthValues1.get(5).toString(),
+        monthValues1.get(6).toString(),
+        monthValues1.get(7).toString(),
+        monthValues1.get(8).toString(),
+        monthValues1.get(9).toString(),
+        monthValues1.get(10).toString(),
+        monthValues1.get(11).toString());
   }
 }
