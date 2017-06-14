@@ -12,7 +12,11 @@ import pl.kostro.expensesystem.utils.YearCategory;
 public class ColumnChartGrid extends Grid {
 
   public ColumnChartGrid(List<YearCategory> yearCategoryList) {
-    setColumns(Msg.get("grid.year"), UserSummaryService.getMonthsName());
+    List<String> columnList = new ArrayList<>();
+    columnList.add(Msg.get("grid.year"));
+    for (String monthName : UserSummaryService.getMonthsName())
+      columnList.add(monthName);
+    setColumns(columnList);
     List<String> rowList = new ArrayList<>();
     for (YearCategory yearCategory : yearCategoryList) {
       rowList.add(yearCategory.getYear()+"");
