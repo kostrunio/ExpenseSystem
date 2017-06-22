@@ -32,7 +32,6 @@ import com.vaadin.addon.charts.model.Tooltip;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Grid;
 
 @SuppressWarnings("serial")
 public class ChartView extends ChartDesign {
@@ -123,7 +122,7 @@ public class ChartView extends ChartDesign {
       lineConfiguration.addSeries(yearLine1);
       lineGrid.addValues(yearCategory.getYear(), monthValues1);
       columnConfiguration.addSeries(yearLine2);
-      columnGrid.addValues(yearCategory.getYear(), monthValues1);
+      columnGrid.addValues(yearCategory.getYear(), monthValues2);
     }
 
     chartLayout.addComponent(lineChart);
