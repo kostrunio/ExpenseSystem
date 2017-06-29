@@ -5,9 +5,8 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.dto.service.ExpenseSheetNotifyService;
@@ -16,7 +15,8 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 
-public class SendNotification implements Job {
+@Component
+public class SendNotification {
 
   private static Logger logger = LogManager.getLogger();
   private ExpenseService es;
@@ -26,11 +26,7 @@ public class SendNotification implements Job {
     es = AppCtxProvider.getBean(ExpenseService.class);
   }
 
-  @Override
-  public void execute(final JobExecutionContext ctx) throws JobExecutionException {
-    process();
-  }
-
+  @Scheduled(cron = "0 0 0/2 * * ? *")
   public void process() {
     logger.info("SendNotification - started");
     List<Expense> expList = es.findExpensesToNotify();
