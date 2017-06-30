@@ -3,14 +3,14 @@ package pl.kostro.expensesystem.view.design;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
+import com.vaadin.v7.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
+import com.vaadin.v7.ui.HorizontalLayout;
+import com.vaadin.v7.ui.Label;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.Panel;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.v7.ui.TextField;
+import com.vaadin.v7.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.Msg;
@@ -109,7 +109,6 @@ public class ExpenseDesign extends Panel {
   
   private Component buildYearMenu() {
     menuLayout = new HorizontalLayout();
-    menuLayout.setImmediate(false);
     menuLayout.setSpacing(true);
 
     // yearMenu
@@ -122,7 +121,6 @@ public class ExpenseDesign extends Panel {
     filterButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     filterButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
     filterButton.setCaption(Msg.get("expense.filter"));
-    filterButton.setImmediate(true);
 
     menuLayout.addComponent(filterButton);
     menuLayout.setComponentAlignment(filterButton, Alignment.MIDDLE_RIGHT);
@@ -133,7 +131,6 @@ public class ExpenseDesign extends Panel {
     tableButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
     tableButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
     tableButton.setCaption(Msg.get("expense.find"));
-    tableButton.setImmediate(true);
 
     menuLayout.addComponent(tableButton);
     menuLayout.setComponentAlignment(tableButton, Alignment.MIDDLE_RIGHT);

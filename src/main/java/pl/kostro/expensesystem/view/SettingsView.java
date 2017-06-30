@@ -9,7 +9,7 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.TextField;
+import com.vaadin.v7.ui.TextField;
 import com.vaadin.ui.UI;
 
 import pl.kostro.expensesystem.AppCtxProvider;

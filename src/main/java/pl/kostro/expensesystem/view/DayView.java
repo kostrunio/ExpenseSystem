@@ -8,18 +8,18 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.vaadin.data.Property;
-import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.v7.data.Property;
+import com.vaadin.v7.data.Property.ValueChangeEvent;
+import com.vaadin.v7.data.Property.ValueChangeListener;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.shared.ui.combobox.FilteringMode;
+import com.vaadin.v7.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.v7.ui.Label;
+import com.vaadin.v7.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -227,7 +227,6 @@ public class DayView extends DayDesign {
 
       Button valueButton = new Button();
       valueButton.setCaption(es.getValueString(expense));
-      valueButton.setImmediate(true);
       valueButton.setData(expense);
       expenseGrid.addComponent(valueButton, 1, i);
 

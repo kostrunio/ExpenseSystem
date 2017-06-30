@@ -3,7 +3,7 @@ package pl.kostro.expensesystem.components.grid;
 import java.math.BigDecimal;
 import java.util.List;
 
-import com.vaadin.ui.Grid;
+import com.vaadin.v7.ui.Grid;
 
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;

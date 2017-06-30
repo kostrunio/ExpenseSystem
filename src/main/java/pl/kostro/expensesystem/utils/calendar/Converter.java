@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.vaadin.ui.components.calendar.event.BasicEvent;
-import com.vaadin.ui.components.calendar.event.CalendarEvent;
+import com.vaadin.v7.ui.components.calendar.event.BasicEvent;
+import com.vaadin.v7.ui.components.calendar.event.CalendarEvent;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.ExpenseSheet;

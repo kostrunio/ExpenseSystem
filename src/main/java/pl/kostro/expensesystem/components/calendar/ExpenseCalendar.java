@@ -6,14 +6,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.components.calendar.CalendarComponentEvents.DateClickEvent;
-import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventClick;
-import com.vaadin.ui.components.calendar.CalendarComponentEvents.EventClickHandler;
-import com.vaadin.ui.components.calendar.CalendarComponentEvents.WeekClick;
-import com.vaadin.ui.components.calendar.event.CalendarEvent;
-import com.vaadin.ui.components.calendar.event.CalendarEventProvider;
-import com.vaadin.ui.components.calendar.handler.BasicDateClickHandler;
-import com.vaadin.ui.components.calendar.handler.BasicWeekClickHandler;
+import com.vaadin.v7.ui.components.calendar.CalendarComponentEvents.DateClickEvent;
+import com.vaadin.v7.ui.components.calendar.CalendarComponentEvents.EventClick;
+import com.vaadin.v7.ui.components.calendar.CalendarComponentEvents.EventClickHandler;
+import com.vaadin.v7.ui.components.calendar.CalendarComponentEvents.WeekClick;
+import com.vaadin.v7.ui.components.calendar.event.CalendarEvent;
+import com.vaadin.v7.ui.components.calendar.event.CalendarEventProvider;
+import com.vaadin.v7.ui.components.calendar.handler.BasicDateClickHandler;
+import com.vaadin.v7.ui.components.calendar.handler.BasicWeekClickHandler;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -25,7 +25,7 @@ import pl.kostro.expensesystem.view.DayView;
 import pl.kostro.expensesystem.view.MonthView;
 
 @SuppressWarnings("serial")
-public class ExpenseCalendar extends com.vaadin.ui.Calendar {
+public class ExpenseCalendar extends com.vaadin.v7.ui.Calendar {
   
   private Converter converter = new Converter();
   

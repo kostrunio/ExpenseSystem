@@ -3,17 +3,17 @@ package pl.kostro.expensesystem.components.grid;
 import java.text.MessageFormat;
 import java.util.List;
 
-import com.vaadin.data.fieldgroup.FieldGroup.CommitEvent;
-import com.vaadin.data.fieldgroup.FieldGroup.CommitException;
-import com.vaadin.data.fieldgroup.FieldGroup.CommitHandler;
-import com.vaadin.data.util.BeanItem;
-import com.vaadin.data.util.BeanItemContainer;
-import com.vaadin.event.SelectionEvent;
-import com.vaadin.event.SelectionEvent.SelectionListener;
+import com.vaadin.v7.data.fieldgroup.FieldGroup.CommitEvent;
+import com.vaadin.v7.data.fieldgroup.FieldGroup.CommitException;
+import com.vaadin.v7.data.fieldgroup.FieldGroup.CommitHandler;
+import com.vaadin.v7.data.util.BeanItem;
+import com.vaadin.v7.data.util.BeanItemContainer;
+import com.vaadin.v7.event.SelectionEvent;
+import com.vaadin.v7.event.SelectionEvent.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Grid;
+import com.vaadin.v7.ui.Grid;
 import com.vaadin.ui.UI;
 
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -41,7 +41,6 @@ public class RealUserLimitGrid extends Grid implements SettingsChangeListener {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     uls = AppCtxProvider.getBean(UserLimitService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    setImmediate(true);
 
     setColumns("user.name", "limit", "order");
     getColumn("user.name").setHeaderCaption(Msg.get("settingsPage.realUserName")).setEditable(false);

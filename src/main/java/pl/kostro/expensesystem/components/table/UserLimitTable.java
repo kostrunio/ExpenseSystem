@@ -3,9 +3,9 @@ package pl.kostro.expensesystem.components.table;
 import java.math.BigDecimal;
 import java.util.Calendar;
 
-import com.vaadin.data.Item;
+import com.vaadin.v7.data.Item;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Table;
+import com.vaadin.v7.ui.Table;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
