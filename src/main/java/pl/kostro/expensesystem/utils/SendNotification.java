@@ -26,7 +26,7 @@ public class SendNotification {
     es = AppCtxProvider.getBean(ExpenseService.class);
   }
 
-  @Scheduled(cron = "0 0 0/2 * * ? *")
+  @Scheduled(cron = "0 0 0/2 * * *")
   public void process() {
     logger.info("SendNotification - started");
     List<Expense> expList = es.findExpensesToNotify();
