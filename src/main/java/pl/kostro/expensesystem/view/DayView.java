@@ -18,7 +18,7 @@ import com.vaadin.v7.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.v7.ui.Label;
+import com.vaadin.ui.Label;
 import com.vaadin.v7.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 

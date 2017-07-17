@@ -9,7 +9,7 @@ import com.vaadin.ui.CssLayout;
 import com.vaadin.v7.ui.DateField;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.v7.ui.HorizontalLayout;
-import com.vaadin.v7.ui.Label;
+import com.vaadin.ui.Label;
 import com.vaadin.v7.ui.TextField;
 import com.vaadin.v7.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;

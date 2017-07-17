@@ -10,7 +10,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.v7.ui.HorizontalLayout;
-import com.vaadin.v7.ui.Label;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.UI;
 import com.vaadin.v7.ui.VerticalLayout;
@@ -86,7 +86,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         c.setExpandRatio(panel, 1f);
 
         // Always HTML, but escape
-        Label text = new Label("", com.vaadin.v7.shared.ui.label.ContentMode.HTML);
+        Label text = new Label("", com.vaadin.shared.ui.ContentMode.HTML);
         text.setId(ConfirmDialog.MESSAGE_ID);
         scrollContent.addComponent(text);
         confirm.setMessageLabel(text);

@@ -5,7 +5,7 @@ import com.vaadin.annotations.DesignRoot;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.v7.ui.HorizontalLayout;
-import com.vaadin.v7.ui.Label;
+import com.vaadin.ui.Label;
 import com.vaadin.v7.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
 
