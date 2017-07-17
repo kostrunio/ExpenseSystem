@@ -10,7 +10,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
-import com.vaadin.v7.ui.HorizontalLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.v7.ui.PasswordField;
 import com.vaadin.v7.ui.TextField;
 import com.vaadin.v7.ui.VerticalLayout;

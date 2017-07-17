@@ -7,7 +7,7 @@ import com.vaadin.v7.ui.CheckBox;
 import com.vaadin.v7.ui.ComboBox;
 import com.vaadin.v7.ui.DateField;
 import com.vaadin.ui.FormLayout;
-import com.vaadin.v7.ui.HorizontalLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.v7.ui.TextField;
 import com.vaadin.ui.declarative.Design;
 

@@ -8,7 +8,7 @@ import com.vaadin.v7.ui.ComboBox;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.v7.ui.DateField;
 import com.vaadin.ui.GridLayout;
-import com.vaadin.v7.ui.HorizontalLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.v7.ui.TextField;
 import com.vaadin.v7.ui.VerticalLayout;
