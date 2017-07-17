@@ -7,7 +7,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.v7.ui.PasswordField;
 import com.vaadin.v7.ui.TextField;
-import com.vaadin.v7.ui.VerticalLayout;
+import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
 
 /** 
