@@ -4,10 +4,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import com.vaadin.v7.data.util.converter.StringToDateConverter;
+import com.vaadin.data.converter.StringToDateConverter;
 
 @SuppressWarnings("serial")
-public class DateConverter extends StringToDateConverter{
+public class DateConverter extends StringToDateConverter {
 
   @Override
   public DateFormat getFormat(Locale locale) {
