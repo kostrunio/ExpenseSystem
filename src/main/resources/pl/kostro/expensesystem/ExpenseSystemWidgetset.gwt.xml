@@ -7,4 +7,6 @@
     
 
     <inherits name="com.vaadin.addon.charts.Widgetset" />
+
+    <inherits name="com.vaadin.v7.Vaadin7WidgetSet" />
 </module>
