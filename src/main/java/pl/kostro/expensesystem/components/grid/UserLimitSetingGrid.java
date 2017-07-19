@@ -1,19 +1,11 @@
 package pl.kostro.expensesystem.components.grid;
 
 import java.text.MessageFormat;
-import java.util.List;
 
-import com.vaadin.v7.data.fieldgroup.FieldGroup.CommitEvent;
-import com.vaadin.v7.data.fieldgroup.FieldGroup.CommitException;
-import com.vaadin.v7.data.fieldgroup.FieldGroup.CommitHandler;
-import com.vaadin.v7.data.util.BeanItem;
-import com.vaadin.v7.data.util.BeanItemContainer;
-import com.vaadin.v7.event.SelectionEvent;
-import com.vaadin.v7.event.SelectionEvent.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.v7.ui.Grid;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
 
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -27,7 +19,7 @@ import pl.kostro.expensesystem.views.settingsPage.AddUserWindow;
 import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 
 @SuppressWarnings("serial")
-public class UserLimitGrid extends Grid implements SettingsChangeListener {
+public class UserLimitSetingGrid extends Grid<UserLimit> implements SettingsChangeListener {
   
   private ExpenseSheetService eshs;
   private UserLimitService uls;
@@ -36,38 +28,24 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
 
   private ExpenseSheet expenseSheet;
 
-  public UserLimitGrid() {
+  public UserLimitSetingGrid() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     uls = AppCtxProvider.getBean(UserLimitService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
 
-    setColumns("user.name", "limit", "order");
-    getColumn("user.name").setHeaderCaption(Msg.get("settingsPage.userName"));
-    getColumn("limit").setHeaderCaption(Msg.get("settingsPage.userLimit"));
-    getColumn("order").setHeaderCaption(Msg.get("settingsPage.userOrder"));
-    getEditorFieldGroup().addCommitHandler(new CommitHandler() {
-      @Override
-      public void preCommit(CommitEvent commitEvent) throws CommitException {
-      }
+    addColumn(item -> item.getUser().getName()).setCaption(Msg.get("settingsPage.userName"));
+    addColumn(UserLimit::getLimit).setCaption(Msg.get("settingsPage.userLimit"));
+    addColumn(UserLimit::getOrder).setCaption(Msg.get("settingsPage.userOrder"));
 
-      @SuppressWarnings("unchecked")
-      @Override
-      public void postCommit(CommitEvent commitEvent) throws CommitException {
-        uls.merge(((BeanItem<UserLimit>) commitEvent.getFieldBinder().getItemDataSource()).getBean());
-        refreshValues();
-      }
+    addSelectionListener(event -> deleteUserLimitButton.setEnabled(event.getAllSelectedItems().size() != 0));
+
+    getEditor().setEnabled(true);
+    getEditor().setSaveCaption(Msg.get("settingsPage.userSave"));
+    getEditor().setCancelCaption(Msg.get("settingsPage.userCancel"));
+    getEditor().addSaveListener(event -> {
+      uls.merge(event.getBean());
+      refreshValues();
     });
-
-    addSelectionListener(new SelectionListener() {
-      @Override
-      public void select(SelectionEvent event) {
-        deleteUserLimitButton.setEnabled(getSelectedRow() != null);
-      }
-    });
-
-    setEditorEnabled(true);
-    setEditorSaveCaption(Msg.get("settingsPage.userSave"));
-    setEditorCancelCaption(Msg.get("settingsPage.userCancel"));
   }
 
   public void setAddUserLimitButton(Button button) {
@@ -75,7 +53,7 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
     addUserLimitButton.addClickListener(new Button.ClickListener() {
       @Override
       public void buttonClick(ClickEvent event) {
-        UI.getCurrent().addWindow(new AddUserWindow(UserLimitGrid.this));
+        UI.getCurrent().addWindow(new AddUserWindow(UserLimitSetingGrid.this));
       }
     });
   }
@@ -103,16 +81,10 @@ public class UserLimitGrid extends Grid implements SettingsChangeListener {
   }
 
   public void refreshValues() {
-    List<UserLimit> userLimitList = eshs.getUserLimitListNotRealUser(expenseSheet);
-    getContainerDataSource().removeAllItems();
-    BeanItemContainer<UserLimit> container = new BeanItemContainer<UserLimit>(UserLimit.class, userLimitList);
-    container.addNestedContainerBean("user");
-    setContainerDataSource(container);
-    recalculateColumnWidths();
+	  setItems(eshs.getUserLimitListNotRealUser(expenseSheet));
   }
 
-  @SuppressWarnings("unchecked")
   private UserLimit getItem() {
-    return ((BeanItem<UserLimit>) getContainerDataSource().getItem(getSelectedRow())).getBean();
+	  return getSelectedItems().iterator().next();
   }
 }

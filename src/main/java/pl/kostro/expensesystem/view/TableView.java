@@ -16,7 +16,8 @@ import com.vaadin.v7.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.v7.ui.Grid;
+import com.vaadin.ui.Grid;
+import com.vaadin.ui.renderers.DateRenderer;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
@@ -27,7 +28,6 @@ import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.utils.DateConverter;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.TableDesign;
@@ -68,13 +68,6 @@ public class TableView extends TableDesign {
       expenseForm.edit(new Expense());
     }
   };
-  private SelectionEvent.SelectionListener gridSelect = new SelectionListener() {
-    @Override
-    public void select(SelectionEvent event) {
-      if (expenseGrid.getSelectedRow() != null)
-        expenseForm.edit((Expense)expenseGrid.getSelectedRow());
-    }
-  };
   
   public TableView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
@@ -85,9 +78,7 @@ public class TableView extends TableDesign {
     setCaption();
     fromDateField.setDateFormat("yyyy-MM-dd");
     toDateField.setDateFormat("yyyy-MM-dd");
-    expenseGrid.setContainerDataSource(new BeanItemContainer<Expense>(Expense.class));
     expenseGrid.setSelectionMode(Grid.SelectionMode.SINGLE);
-    expenseGrid.getColumn("date").setConverter(new DateConverter());
 
     expenseForm.prepare(expenseSheet, this);
     
@@ -100,7 +91,10 @@ public class TableView extends TableDesign {
     commentBox.addItems(eshs.getAllComments(expenseSheet));
     filterButton.addClickListener(filterClick);
     newExpenseButton.addClickListener(newClick);
-    expenseGrid.addSelectionListener(gridSelect);
+    expenseGrid.addSelectionListener(event -> {
+      if (expenseGrid.getSelectedItems().size() != 0)
+        expenseForm.edit(expenseGrid.getSelectedItems().iterator().next());
+    });
     
     if (expenseSheet.getFilter() != null) {
       if (expenseSheet.getFilter().getCategories() != null
@@ -137,19 +131,16 @@ public class TableView extends TableDesign {
     formulaField.setCaption(Msg.get("findPage.formula"));
     commentBox.setCaption(Msg.get("findPage.comment"));
     newExpenseButton.setCaption(Msg.get("findPage.add"));
-    expenseGrid.setColumns("date", "category", "user", "formula", "value", "comment");
-    expenseGrid.getColumn("date").setHeaderCaption(Msg.get("findPage.date"));
-    expenseGrid.getColumn("category").setHeaderCaption(Msg.get("findPage.category"));
-    expenseGrid.getColumn("user").setHeaderCaption(Msg.get("findPage.user"));
-    expenseGrid.getColumn("formula").setHeaderCaption(Msg.get("findPage.formula"));
-    expenseGrid.getColumn("value").setHeaderCaption(Msg.get("findPage.value"));
-    expenseGrid.getColumn("comment").setHeaderCaption(Msg.get("findPage.comment"));
+    expenseGrid.addColumn(Expense::getDate, new DateRenderer("yyyy-MM-dd")).setCaption(Msg.get("findPage.date"));
+    expenseGrid.addColumn(Expense::getCategory).setCaption(Msg.get("findPage.category"));
+    expenseGrid.addColumn(Expense::getUser).setCaption(Msg.get("findPage.user"));
+    expenseGrid.addColumn(Expense::getFormula).setCaption(Msg.get("findPage.formula"));
+    expenseGrid.addColumn(Expense::getValue).setCaption(Msg.get("findPage.value"));
+    expenseGrid.addColumn(Expense::getComment).setCaption(Msg.get("findPage.comment"));
   }
   
   public void refreshExpenses() {
-    expenseGrid.setContainerDataSource(new BeanItemContainer<Expense>(
-            Expense.class, es.findAllExpense(expenseSheet)));
-    expenseGrid.recalculateColumnWidths();
+    expenseGrid.setItems(es.findAllExpense(expenseSheet));
     expenseGrid.sort("date", SortDirection.DESCENDING);
     expenseForm.setVisible(false);
   }

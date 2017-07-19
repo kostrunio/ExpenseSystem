@@ -1,43 +1,41 @@
-package pl.kostro.expensesystem.components.table;
+package pl.kostro.expensesystem.components.grid;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
-import com.vaadin.v7.data.Item;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.v7.ui.Table;
+import com.vaadin.ui.Grid;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.utils.CategorySum;
 import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 
 @SuppressWarnings("serial")
-public class CategoryTable extends Table {
+public class CategorySumGrid extends Grid<CategorySum> {
   
   private ExpenseSheetService eshs;
   
   private ExpenseSheet expenseSheet;
 
-  public CategoryTable() {
+  public CategorySumGrid() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
-    setPageLength(expenseSheet.getCategoryList().size());
-    addContainerProperty(Msg.get("categoryTable.category"), String.class, null);
-    addContainerProperty(Msg.get("categoryTable.sum"), BigDecimal.class, null);
-    alwaysRecalculateColumnWidths = true;
+//    setPageLength(expenseSheet.getCategoryList().size());
+    addColumn(CategorySum::getCategory).setCaption(Msg.get("categoryTable.category"));
+    addColumn(CategorySum::getSum).setCaption(Msg.get("categoryTable.sum"));
   }
   
-  @SuppressWarnings("unchecked")
   public void fulfill() {
-    removeAllItems();
+    List<CategorySum> values = new ArrayList<>();
     for (Category category : expenseSheet.getCategoryList()) {
       CategoryExpense categoryExpense = eshs.getCategoryExpenseMap(expenseSheet, category);
-      Object newItemId = addItem();
-      Item row = getItem(newItemId);
-      row.getItemProperty(Msg.get("categoryTable.category")).setValue(category.getName());
-      row.getItemProperty(Msg.get("categoryTable.sum")).setValue(categoryExpense != null ? categoryExpense.getSum() : new BigDecimal(0));
+      values.add(new CategorySum(category, categoryExpense != null ? categoryExpense.getSum() : new BigDecimal(0)));
     }
+    setItems(values);
   }
 }

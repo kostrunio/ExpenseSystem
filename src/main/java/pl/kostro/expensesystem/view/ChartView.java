@@ -22,14 +22,14 @@ import com.vaadin.ui.Button.ClickEvent;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.components.grid.ColumnChartGrid;
-import pl.kostro.expensesystem.components.grid.LineChartGrid;
+import pl.kostro.expensesystem.components.grid.ChartGrid;
 import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Filter;
+import pl.kostro.expensesystem.utils.YearValue;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.utils.expense.YearCategory;
 import pl.kostro.expensesystem.view.design.ChartDesign;
@@ -86,8 +86,8 @@ public class ChartView extends ChartDesign {
   private void showCharts() {
     chartLayout.removeAllComponents();
     List<YearCategory> yearCategoryList = eshs.prepareYearCategoryList(expenseSheet);
-    LineChartGrid lineGrid = new LineChartGrid(yearCategoryList);
-    ColumnChartGrid columnGrid = new ColumnChartGrid(yearCategoryList);
+    ChartGrid lineGrid = new ChartGrid(yearCategoryList);
+    ChartGrid columnGrid = new ChartGrid(yearCategoryList);
 
     Chart lineChart = new Chart(ChartType.LINE);
     Configuration lineConfiguration = lineChart.getConfiguration();
@@ -120,9 +120,9 @@ public class ChartView extends ChartDesign {
       Series yearLine1 = new ListSeries(yearCategory.getYear() + "", monthValues1.toArray(new BigDecimal[0]));
       Series yearLine2 = new ListSeries(yearCategory.getYear() + "", monthValues2.toArray(new BigDecimal[0]));
       lineConfiguration.addSeries(yearLine1);
-      lineGrid.addValues(yearCategory.getYear(), monthValues1);
+      lineGrid.setItems(new YearValue(yearCategory.getYear(), monthValues1));
       columnConfiguration.addSeries(yearLine2);
-      columnGrid.addValues(yearCategory.getYear(), monthValues2);
+      columnGrid.setItems(new YearValue(yearCategory.getYear(), monthValues2));
     }
 
     chartLayout.addComponent(lineChart);

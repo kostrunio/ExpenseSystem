@@ -2,17 +2,10 @@ package pl.kostro.expensesystem.components.grid;
 
 import java.text.MessageFormat;
 
-import com.vaadin.v7.data.fieldgroup.FieldGroup.CommitEvent;
-import com.vaadin.v7.data.fieldgroup.FieldGroup.CommitException;
-import com.vaadin.v7.data.fieldgroup.FieldGroup.CommitHandler;
-import com.vaadin.v7.data.util.BeanItem;
-import com.vaadin.v7.data.util.BeanItemContainer;
-import com.vaadin.v7.event.SelectionEvent;
-import com.vaadin.v7.event.SelectionEvent.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.v7.ui.Grid;
+import com.vaadin.ui.Grid;
 import com.vaadin.ui.UI;
 
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -26,7 +19,7 @@ import pl.kostro.expensesystem.views.settingsPage.AddCategoryWindow;
 import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 
 @SuppressWarnings("serial")
-public class CategoryGrid extends Grid implements SettingsChangeListener {
+public class CategorySettingGrid extends Grid<Category> implements SettingsChangeListener {
   private CategoryService cs;
   private ExpenseSheetService eshs;
   private ExpenseSheet expenseSheet;
@@ -36,38 +29,23 @@ public class CategoryGrid extends Grid implements SettingsChangeListener {
   private Button moveDownCategoryButton;
   private Button deleteCategoryButton;
 
-  public CategoryGrid() {
+  public CategorySettingGrid() {
     cs = AppCtxProvider.getBean(CategoryService.class);
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    setColumns("name", "multiplier");
-    getColumn("name").setHeaderCaption(Msg.get("settingsPage.categoryName"));
-    getColumn("multiplier").setHeaderCaption(Msg.get("settingsPage.categoryMultiplier"));
+    addColumn(Category::getName).setCaption(Msg.get("settingsPage.categoryName"));
+    addColumn(Category::getMultiplier).setCaption(Msg.get("settingsPage.categoryMultiplier"));
 
-    setEditorEnabled(true);
-    setEditorSaveCaption(Msg.get("settingsPage.categorySave"));
-    setEditorCancelCaption(Msg.get("settingsPage.categoryCancel"));
-
-    getEditorFieldGroup().addCommitHandler(new CommitHandler() {
-      @Override
-      public void preCommit(CommitEvent commitEvent) throws CommitException {
-      }
-
-      @SuppressWarnings("unchecked")
-      @Override
-      public void postCommit(CommitEvent commitEvent) throws CommitException {
-        cs.merge(((BeanItem<Category>) commitEvent.getFieldBinder().getItemDataSource()).getBean());
-      }
+    addSelectionListener(event -> {
+      moveUpCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
+      moveDownCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
+      deleteCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
     });
-
-    addSelectionListener(new SelectionListener() {
-      @Override
-      public void select(SelectionEvent event) {
-        moveUpCategoryButton.setEnabled(getSelectedRow() != null);
-        moveDownCategoryButton.setEnabled(getSelectedRow() != null);
-        deleteCategoryButton.setEnabled(getSelectedRow() != null);
-      }
-    });
+    
+    getEditor().setEnabled(true);
+    getEditor().setSaveCaption(Msg.get("settingsPage.categorySave"));
+    getEditor().setCancelCaption(Msg.get("settingsPage.categoryCancel"));
+    getEditor().addSaveListener(event -> cs.merge(event.getBean()));
   }
 
   public void setAddCategoryButton(Button button) {
@@ -75,7 +53,7 @@ public class CategoryGrid extends Grid implements SettingsChangeListener {
     addCategoryButton.addClickListener(new Button.ClickListener() {
       @Override
       public void buttonClick(ClickEvent event) {
-        UI.getCurrent().addWindow(new AddCategoryWindow(CategoryGrid.this));
+        UI.getCurrent().addWindow(new AddCategoryWindow(CategorySettingGrid.this));
       }
     });
   }
@@ -126,14 +104,10 @@ public class CategoryGrid extends Grid implements SettingsChangeListener {
   }
 
   public void refreshValues() {
-    getContainerDataSource().removeAllItems();
-    BeanItemContainer<Category> container = new BeanItemContainer<Category>(Category.class,
-        expenseSheet.getCategoryList());
-    setContainerDataSource(container);
+	  setItems(expenseSheet.getCategoryList());
   }
 
-  @SuppressWarnings("unchecked")
   private Category getItem() {
-    return ((BeanItem<Category>) getContainerDataSource().getItem(getSelectedRow())).getBean();
+    return getSelectedItems().iterator().next();
   }
 }
