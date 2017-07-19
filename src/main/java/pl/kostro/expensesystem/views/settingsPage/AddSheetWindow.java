@@ -48,8 +48,6 @@ public class AddSheetWindow extends Window {
 
   private Component buildContent() {
     VerticalLayout result = new VerticalLayout();
-    result.setMargin(true);
-    result.setSpacing(true);
 
     nameField.focus();
     
@@ -61,7 +59,7 @@ public class AddSheetWindow extends Window {
 
   private Component buildFooter() {
     HorizontalLayout footer = new HorizontalLayout();
-    footer.setSpacing(true);
+    footer.setMargin(false);
     footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
     footer.setWidth(100.0f, Unit.PERCENTAGE);
 

@@ -43,8 +43,6 @@ public class ExpenseSheetEditWindow extends Window {
 
   private Component buildContent(final String currentName) {
     VerticalLayout result = new VerticalLayout();
-    result.setMargin(true);
-    result.setSpacing(true);
 
     nameField.setValue(currentName);
     nameField.focus();
@@ -57,7 +55,7 @@ public class ExpenseSheetEditWindow extends Window {
 
   private Component buildFooter() {
     HorizontalLayout footer = new HorizontalLayout();
-    footer.setSpacing(true);
+    footer.setMargin(false);
     footer.addStyleName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
     footer.setWidth(100.0f, Unit.PERCENTAGE);
 

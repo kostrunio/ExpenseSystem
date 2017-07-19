@@ -49,13 +49,13 @@ public class ExpenseDesign extends Panel {
     setSizeFull();
     root = new VerticalLayout();
     root.setSizeUndefined();
-    root.setMargin(true);
+    root.setSpacing(false);
     setContent(root);
   }
 
   protected Component buildHeader(String name) {
     header = new HorizontalLayout();
-    header.setSpacing(true);
+    header.setMargin(false);
 
     titleLabel = new Label(name);
     titleLabel.setSizeUndefined();
@@ -64,7 +64,7 @@ public class ExpenseDesign extends Panel {
     header.addComponent(titleLabel);
 
     tools = new HorizontalLayout(buildEditButton(), buildChartButton());
-    tools.setSpacing(true);
+    tools.setMargin(false);
     header.addComponent(tools);
 
     return header;
@@ -88,7 +88,7 @@ public class ExpenseDesign extends Panel {
   
   protected Component buildContent() {
     expenseLayout = new VerticalLayout();
-    expenseLayout.setSpacing(true);
+    expenseLayout.setMargin(false);
     expenseLayout.addComponent(buildMenus());
 
     mainView = new VerticalLayout();
@@ -100,7 +100,7 @@ public class ExpenseDesign extends Panel {
   private Component buildMenus() {
     menusLayout = new VerticalLayout();
     menusLayout.addStyleName("menus-layout");
-    menusLayout.setSpacing(true);
+    menusLayout.setMargin(false);
     menusLayout.addComponent(buildYearMenu());
     menusLayout.addComponent(buildMonthMenu());
     menusLayout.addComponent(buildSearchLayout());
@@ -109,7 +109,7 @@ public class ExpenseDesign extends Panel {
   
   private Component buildYearMenu() {
     menuLayout = new HorizontalLayout();
-    menuLayout.setSpacing(true);
+    menuLayout.setMargin(false);
 
     // yearMenu
     yearMenu = new MenuBar();
@@ -148,8 +148,6 @@ public class ExpenseDesign extends Panel {
     searchPanel.setVisible(false);
     searchLayout = new HorizontalLayout();
     searchLayout.setWidthUndefined();
-    searchLayout.setMargin(true);
-    searchLayout.setSpacing(true);
     searchPanel.setContent(searchLayout);
 
     // categoryCombo

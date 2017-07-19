@@ -72,8 +72,6 @@ public class DefaultConfirmDialogFactory implements Factory {
         VerticalLayout c = new VerticalLayout();
         confirm.setContent(c);
         c.setSizeFull();
-        c.setSpacing(true);
-        c.setMargin(true);
 
         // Panel for scrolling lengthy messages.
         VerticalLayout scrollContent = new VerticalLayout();
@@ -95,7 +93,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         HorizontalLayout buttons = new HorizontalLayout();
         c.addComponent(buttons);
         c.setComponentAlignment(buttons, Alignment.TOP_RIGHT);
-        buttons.setSpacing(true);
+        buttons.setMargin(false);
 
         final Button ok = new Button(okCaption != null ? okCaption
                 : DEFAULT_OK_CAPTION);
