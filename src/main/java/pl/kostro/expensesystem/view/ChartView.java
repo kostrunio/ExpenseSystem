@@ -53,10 +53,9 @@ public class ChartView extends ChartDesign {
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     expenseSheet.setFilter(new Filter(null, null, null, null));
     setCaption();
-    categoryCombo.addItems(expenseSheet.getCategoryList());
-    categoryCombo.setMultiSelect(true);
-    userCombo.addItems(expenseSheet.getUserLimitList());
-    userCombo.setMultiSelect(true);
+    categoryCombo.setItems(expenseSheet.getCategoryList());
+    userCombo.setItems(expenseSheet.getUserLimitList());
+    userCombo.setItemCaptionGenerator(item -> item.getUser().getName());
     searchButton.addClickListener(searchClick);
     refreshFilter();
   }
@@ -67,7 +66,6 @@ public class ChartView extends ChartDesign {
     searchButton.setCaption(Msg.get("expense.search"));
   }
 
-  @SuppressWarnings("unchecked")
   private void refreshFilter() {
     String filterFormula = null;
     String filterComment = null;
