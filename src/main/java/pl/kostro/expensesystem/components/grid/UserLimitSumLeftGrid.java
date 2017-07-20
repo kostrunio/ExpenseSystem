@@ -1,9 +1,8 @@
 package pl.kostro.expensesystem.components.grid;
 
 import java.math.BigDecimal;
-import java.time.ZoneId;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import com.vaadin.server.VaadinSession;
@@ -39,7 +38,7 @@ public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
     });*/
   }
   
-  public void fulfill(Calendar calendar) {
+  public void fulfill(LocalDate calendar) {
     List<UserLimitSumLeft> values = new ArrayList<>();
     for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
       BigDecimal actSum;
@@ -47,7 +46,7 @@ public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
         actSum = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
       else
         actSum = new BigDecimal(0);
-      values.add(new UserLimitSumLeft(userLimit, actSum, userLimit.isContinuousSummary() ? uss.calculateSum(userLimit, calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) : userLimit.getLimit().subtract(actSum)));
+      values.add(new UserLimitSumLeft(userLimit, actSum, userLimit.isContinuousSummary() ? uss.calculateSum(userLimit, calendar) : userLimit.getLimit().subtract(actSum)));
     }
     setItems(values);
   }

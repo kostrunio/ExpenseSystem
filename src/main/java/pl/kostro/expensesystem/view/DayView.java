@@ -1,10 +1,7 @@
 package pl.kostro.expensesystem.view;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -42,7 +39,7 @@ public class DayView extends DayDesign {
 
   private Logger logger = LogManager.getLogger();
   private ExpenseSheet expenseSheet;
-  private Calendar calendar;
+  private LocalDate calendar;
   private Category category;
   private Expense expense;
   private boolean modify;
@@ -50,7 +47,7 @@ public class DayView extends DayDesign {
   private Button.ClickListener prevClick = new Button.ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
-      calendar.add(java.util.Calendar.DAY_OF_MONTH, -1);
+      calendar = calendar.minusDays(1);
       removeAllComponents();
       addComponent(new DayView());
     }
@@ -58,7 +55,7 @@ public class DayView extends DayDesign {
   private Button.ClickListener nextClick = new Button.ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
-      calendar.add(java.util.Calendar.DAY_OF_MONTH, 1);
+      calendar = calendar.plusDays(1);
       removeAllComponents();
       addComponent(new DayView());
     }
@@ -125,14 +122,14 @@ public class DayView extends DayDesign {
     logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.category = expenseSheet.getCategoryList().get(0);
-    this.calendar = VaadinSession.getCurrent().getAttribute(Calendar.class);
+    this.calendar = VaadinSession.getCurrent().getAttribute(LocalDate.class);
 
     setCaption();
     thisDateField.setDateFormat("yyyy-MM-dd");
-    thisDateField.setValue(calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    thisDateField.setValue(calendar);
     previousDayButton.addClickListener(prevClick);
     thisDateField.addValueChangeListener(event -> {
-      calendar.setTime(Date.from(thisDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      calendar = event.getValue();
       removeAllComponents();
       addComponent(new DayView());
     });
@@ -181,7 +178,7 @@ public class DayView extends DayDesign {
       Button expButton = new Button();
       vertLay.addComponent(expButton);
       vertLay.setComponentAlignment(expButton, Alignment.TOP_CENTER);
-      DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+      DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, calendar);
       if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
         expButton.setCaption("0");
       else {
@@ -197,7 +194,7 @@ public class DayView extends DayDesign {
     expenseGrid.removeAllComponents();
     categoryLabel.setValue(category.getName());
     List<Expense> expenseList;
-    DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, calendar);
     if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
       expenseList = new ArrayList<Expense>();
     else {
@@ -240,7 +237,7 @@ public class DayView extends DayDesign {
         expenseGrid.addComponent(notifyLabel, 4, i);
       }
     }
-    buildAddNewExpense(es.prepareNewExpense(expenseSheet, calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), category,
+    buildAddNewExpense(es.prepareNewExpense(expenseSheet, calendar, category,
         expenseSheet.getUserLimitList().get(0).getUser()), false);
   }
 

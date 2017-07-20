@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.view;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -37,7 +37,7 @@ public class ExpenseView extends ExpenseDesign implements View {
   private ExpenseSheetService eshs;
 
   private Logger logger = LogManager.getLogger();
-  private Calendar calendar = Calendar.getInstance();
+  private LocalDate calendar = LocalDate.now();
   private ExpenseSheet expenseSheet;
   private Button.ClickListener editClick = new ClickListener() {
     @Override
@@ -112,7 +112,7 @@ public class ExpenseView extends ExpenseDesign implements View {
   private MenuBar.Command yearCommand = new MenuBar.Command() {
     @Override
     public void menuSelected(MenuItem selectedItem) {
-      CalendarUtils.setFirstDay(calendar, selectedItem.getText());
+      calendar = CalendarUtils.setFirstDay(calendar, selectedItem.getText());
       mainView.removeAllComponents();
       mainView.addComponent(new MonthView());
       checkedYear(selectedItem.getText());
@@ -173,8 +173,8 @@ public class ExpenseView extends ExpenseDesign implements View {
     root.addComponent(content);
     root.setExpandRatio(content, 1);
 
-    calendar.set(Calendar.DAY_OF_MONTH, 1);
-    VaadinSession.getCurrent().setAttribute(Calendar.class, calendar);
+    calendar = calendar.withDayOfMonth(1);
+    VaadinSession.getCurrent().setAttribute(LocalDate.class, calendar);
     mainView.addComponent(new MonthView());
   }
 

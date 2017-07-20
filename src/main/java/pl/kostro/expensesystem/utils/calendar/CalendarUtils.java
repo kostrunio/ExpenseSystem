@@ -2,7 +2,6 @@ package pl.kostro.expensesystem.utils.calendar;
 
 import java.text.DateFormatSymbols;
 import java.time.LocalDate;
-import java.util.Calendar;
 
 public class CalendarUtils {
 
@@ -20,22 +19,16 @@ public class CalendarUtils {
     return date.plusMonths(1).minusDays(1);
   }
 
-  public static void setFirstDay(Calendar calendar, int monthNumber) {
-    calendar.set(Calendar.MONTH, monthNumber);
-    setFirstDay(calendar);
+  public static LocalDate setFirstDay(LocalDate calendar, int monthNumber) {
+    return setFirstDay(calendar.withMonth(monthNumber));
   }
 
-  public static void setFirstDay(Calendar calendar, String year) {
-    calendar.set(Calendar.YEAR, Integer.parseInt(year));
-    setFirstDay(calendar);
+  public static LocalDate setFirstDay(LocalDate calendar, String year) {
+    return setFirstDay(calendar.withYear(Integer.parseInt(year)));
   }
 
-  public static void setFirstDay(Calendar calendar) {
-    calendar.set(Calendar.DAY_OF_MONTH, 1);
-    calendar.set(Calendar.HOUR_OF_DAY, 0);
-    calendar.set(Calendar.MINUTE, 0);
-    calendar.set(Calendar.SECOND, 0);
-    calendar.set(Calendar.MILLISECOND, 0);
+  public static LocalDate setFirstDay(LocalDate calendar) {
+    return calendar.withDayOfMonth(1);
   }
 
   public static int getMonthNumber(String monthName) {

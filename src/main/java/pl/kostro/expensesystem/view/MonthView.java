@@ -1,8 +1,8 @@
 package pl.kostro.expensesystem.view;
 
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Calendar;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,18 +23,18 @@ import com.vaadin.ui.Button.ClickEvent;
 public class MonthView extends MonthDesign {
 
   private Logger logger = LogManager.getLogger();
-  private Calendar date;
+  private LocalDate date;
   private Button.ClickListener prevClick = new Button.ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
-      date.add(java.util.Calendar.MONTH, -1);
+      date = date.minusMonths(1);
       showCalendar();
     }
   };
   private Button.ClickListener nextClick = new Button.ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
-      date.add(java.util.Calendar.MONTH, 1);
+      date = date.plusMonths(1);
       showCalendar();
     }
   };
@@ -42,8 +42,8 @@ public class MonthView extends MonthDesign {
   public MonthView() {
     logger.info("create");
     ExpenseSystemEventBus.register(this);
-    this.date = VaadinSession.getCurrent().getAttribute(Calendar.class);
-    CalendarUtils.setFirstDay(date);
+    this.date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
+    date = CalendarUtils.setFirstDay(date);
     previousMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_LEFT);
     previousMonthButton.addClickListener(prevClick);
     nextMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_RIGHT);
@@ -51,7 +51,7 @@ public class MonthView extends MonthDesign {
     firstDateField.setDateFormat("yyyy-MM-dd");
     thisMonthField.setDateFormat("MMMM yyyy");
     thisMonthField.addValueChangeListener(event -> {
-      date.setTime(Date.from(thisMonthField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      date = event.getValue();
       showCalendar();
     });
     lastDateField.setDateFormat("yyyy-MM-dd");
@@ -62,12 +62,12 @@ public class MonthView extends MonthDesign {
 
   public void showCalendar() {
     if (getParent() != null && getParent().getParent().getParent().getParent() instanceof ExpenseView) {
-      ((ExpenseView)getParent().getParent().getParent().getParent()).checkedYear(date.get(Calendar.YEAR)+"");
-      ((ExpenseView)getParent().getParent().getParent().getParent()).checkedMonth(CalendarUtils.getMonthName(date.get(Calendar.MONTH)));
+      ((ExpenseView)getParent().getParent().getParent().getParent()).checkedYear(date.getYear()+"");
+      ((ExpenseView)getParent().getParent().getParent().getParent()).checkedMonth(CalendarUtils.getMonthName(date.getMonthValue()));
     }
-    thisMonthField.setValue(date.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-    firstDateField.setValue(CalendarUtils.getFirstDay(date.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
-    lastDateField.setValue(CalendarUtils.getLastDay(date.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
+    thisMonthField.setValue(date);
+    firstDateField.setValue(CalendarUtils.getFirstDay(date));
+    lastDateField.setValue(CalendarUtils.getLastDay(date));
     monthCalendar.setMonthView(this);
     monthCalendar.setStartDate(Date.from(firstDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
     monthCalendar.setEndDate(Date.from(lastDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));

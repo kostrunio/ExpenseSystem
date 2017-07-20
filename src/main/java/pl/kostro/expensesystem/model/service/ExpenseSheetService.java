@@ -2,12 +2,10 @@ package pl.kostro.expensesystem.model.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
@@ -234,9 +232,9 @@ public class ExpenseSheetService {
     List<String> yearList = new ArrayList<String>();
     int thisYear = new GregorianCalendar().get(Calendar.YEAR);
     int firstYear = thisYear;
-    Calendar date = new GregorianCalendar();
-    date.setTime(Date.from(es.findFirstExpense(expenseSheet).getDate().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-    int year = date.get(Calendar.YEAR);
+    LocalDate date = LocalDate.now();
+    date = es.findFirstExpense(expenseSheet).getDate();
+    int year = date.getYear();
     if (year < firstYear)
       firstYear = year;
     for (int i = firstYear; i <= thisYear; i++)
@@ -315,15 +313,15 @@ public class ExpenseSheetService {
   public List<YearCategory> prepareYearCategoryList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
     List<YearCategory> yearCategoryList = new ArrayList<YearCategory>();
-    Calendar firstDay = Calendar.getInstance();
+    LocalDate firstDay = LocalDate.now();
     for (String year : getYearList(expenseSheet)) {
       YearCategory yearCategory = new YearCategory(Integer.parseInt(year), expenseSheet.getCategoryList());
-      CalendarUtils.setFirstDay(firstDay, year);
-      for (int m = 0; m <= 11; m++) {
-        firstDay.set(Calendar.MONTH, m);
-        prepareExpenseMap(expenseSheet, firstDay.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-            CalendarUtils.getLastDay(firstDay.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()), firstDay.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-            CalendarUtils.getLastDay(firstDay.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
+      firstDay = CalendarUtils.setFirstDay(firstDay, year);
+      for (int m = 1; m <= 12; m++) {
+        firstDay = firstDay.withMonth(m);
+        prepareExpenseMap(expenseSheet, firstDay,
+            CalendarUtils.getLastDay(firstDay), firstDay,
+            CalendarUtils.getLastDay(firstDay));
         for (Category category : expenseSheet.getCategoryList()) {
           CategoryExpense categoryExpense = getCategoryExpenseMap(expenseSheet, category);
           if (categoryExpense != null)

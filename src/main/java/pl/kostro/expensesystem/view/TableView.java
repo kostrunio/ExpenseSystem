@@ -1,8 +1,7 @@
 package pl.kostro.expensesystem.view;
 
-import java.time.ZoneId;
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -35,7 +34,7 @@ public class TableView extends TableDesign {
   private ExpenseService es;
 
   private Logger logger = LogManager.getLogger();
-  private Calendar calendar;
+  private LocalDate calendar;
   private ExpenseSheet expenseSheet;
   private Button.ClickListener filterClick = new ClickListener() {
     @Override
@@ -70,7 +69,7 @@ public class TableView extends TableDesign {
     es = AppCtxProvider.getBean(ExpenseService.class);
     logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    this.calendar = VaadinSession.getCurrent().getAttribute(Calendar.class);
+    this.calendar = VaadinSession.getCurrent().getAttribute(LocalDate.class);
     setCaption();
     fromDateField.setDateFormat("yyyy-MM-dd");
     toDateField.setDateFormat("yyyy-MM-dd");
@@ -78,8 +77,8 @@ public class TableView extends TableDesign {
 
     expenseForm.prepare(expenseSheet, this);
     
-    fromDateField.setValue(CalendarUtils.getFirstDay(calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
-    toDateField.setValue(CalendarUtils.getLastDay(calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
+    fromDateField.setValue(CalendarUtils.getFirstDay(calendar));
+    toDateField.setValue(CalendarUtils.getLastDay(calendar));
     categoryBox.setItems(expenseSheet.getCategoryList());
     userBox.setItems(expenseSheet.getUserLimitList());
     commentBox.setNewItemHandler(event -> {});

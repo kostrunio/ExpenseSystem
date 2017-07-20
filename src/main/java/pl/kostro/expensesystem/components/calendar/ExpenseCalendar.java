@@ -2,12 +2,12 @@ package pl.kostro.expensesystem.components.calendar;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
 import com.vaadin.server.VaadinSession;
+import com.vaadin.v7.ui.Calendar;
 import com.vaadin.v7.ui.components.calendar.CalendarComponentEvents.DateClickEvent;
 import com.vaadin.v7.ui.components.calendar.CalendarComponentEvents.EventClick;
 import com.vaadin.v7.ui.components.calendar.CalendarComponentEvents.EventClickHandler;
@@ -27,19 +27,19 @@ import pl.kostro.expensesystem.view.DayView;
 import pl.kostro.expensesystem.view.MonthView;
 
 @SuppressWarnings("serial")
-public class ExpenseCalendar extends com.vaadin.v7.ui.Calendar {
+public class ExpenseCalendar extends Calendar {
   
   private Converter converter = new Converter();
   
   private ExpenseSheetService eshs;
   private MonthView monthView;
   private ExpenseSheet expenseSheet;
-  private Calendar calendar;
+  private LocalDate calendar;
   private CalendarEventProvider eventProvider = new CalendarEventProvider() {
     @Override
     public List<CalendarEvent> getEvents(Date startDate, Date endDate) {
       Map<LocalDate, DateExpense> eventToShow = eshs.prepareExpenseMap(expenseSheet, startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-          CalendarUtils.getFirstDay(calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()), CalendarUtils.getLastDay(calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
+          CalendarUtils.getFirstDay(calendar), CalendarUtils.getLastDay(calendar));
       monthView.fulfillTables();
       return converter.transformExpensesToEvents(expenseSheet, eventToShow);
     }
@@ -47,7 +47,7 @@ public class ExpenseCalendar extends com.vaadin.v7.ui.Calendar {
   private BasicDateClickHandler dateClick = new BasicDateClickHandler() {
     @Override
     public void dateClick(DateClickEvent event) {
-      calendar.setTime(event.getDate());
+      calendar = event.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
       monthView.removeAllComponents();
       monthView.addComponent(new DayView());
     }
@@ -61,7 +61,7 @@ public class ExpenseCalendar extends com.vaadin.v7.ui.Calendar {
   private EventClickHandler eventClick = new EventClickHandler() {
     @Override
     public void eventClick(EventClick event) {
-      calendar.setTime(event.getCalendarEvent().getStart());
+      calendar = event.getCalendarEvent().getStart().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
       monthView.removeAllComponents();
       monthView.addComponent(new DayView());
     }
@@ -70,7 +70,7 @@ public class ExpenseCalendar extends com.vaadin.v7.ui.Calendar {
   public ExpenseCalendar() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    this.calendar = VaadinSession.getCurrent().getAttribute(Calendar.class);
+    this.calendar = VaadinSession.getCurrent().getAttribute(LocalDate.class);
     
     setEventProvider(eventProvider);
     
