@@ -12,7 +12,7 @@ import com.vaadin.v7.data.Property;
 import com.vaadin.v7.data.Property.ValueChangeEvent;
 import com.vaadin.v7.data.Property.ValueChangeListener;
 import com.vaadin.event.ShortcutAction;
-import com.vaadin.server.FontAwesome;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.v7.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Alignment;
@@ -239,7 +239,7 @@ public class DayView extends DayDesign {
       expenseGrid.addComponent(comment, 2, i);
 
       Button removeButton = new Button();
-      removeButton.setIcon(FontAwesome.TRASH);
+      removeButton.setIcon(VaadinIcons.TRASH);
       removeButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
       removeButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
       removeButton.setData(expense);
@@ -248,7 +248,7 @@ public class DayView extends DayDesign {
       
       if (expense.isNotify()) {
         Label notifyLabel = new Label();
-        notifyLabel.setIcon(FontAwesome.ENVELOPE);
+        notifyLabel.setIcon(VaadinIcons.ENVELOPE);
         expenseGrid.addComponent(notifyLabel, 4, i);
       }
     }

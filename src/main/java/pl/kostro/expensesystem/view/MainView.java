@@ -6,10 +6,10 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewProvider;
-import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.ContentMode;
@@ -136,9 +136,9 @@ public class MainView extends MainDesign {
     });
     button.setPrimaryStyleName(ValoTheme.MENU_ITEM);
     if (defaultExpense)
-      button.setIcon(FontAwesome.HOME);
+      button.setIcon(VaadinIcons.HOME);
     else
-      button.setIcon(FontAwesome.FILE_O);
+      button.setIcon(VaadinIcons.FILE_O);
     sheetLayout.addComponent(button);
     viewButtons.put(name, button);
   }
