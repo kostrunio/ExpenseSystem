@@ -84,7 +84,7 @@ public class Calculator {
             result = getOperationResult(div[0]);
             for (int i = 1; i < div.length; i++) {
               BigDecimal dv = getOperationResult(div[i]);
-              if (dv.equals(0))
+              if (dv.equals(new BigDecimal(0)))
                 throw new IllegalArgumentException("divide by ZERO not allowed");
               result = result.divide(dv, 2, RoundingMode.HALF_UP);
             }
