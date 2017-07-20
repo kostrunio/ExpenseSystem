@@ -166,7 +166,7 @@ public class ExpenseSheetService {
   private void addExpenseToDateMap(ExpenseSheet expenseSheet, Expense expense) {
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
     if (dateExpense == null) {
-      dateExpense = new DateExpense(Date.from(expense.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      dateExpense = new DateExpense(expense.getDate());
       expenseSheet.getDateExpenseMap().put(Date.from(expense.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant()), dateExpense);
     }
     dateExpense.addExpense(expenseSheet, expense);

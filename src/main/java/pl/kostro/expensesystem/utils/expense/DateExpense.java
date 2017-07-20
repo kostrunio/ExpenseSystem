@@ -2,7 +2,7 @@ package pl.kostro.expensesystem.utils.expense;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,19 +17,19 @@ public class DateExpense {
   
   private ExpenseSheetService eshs;
   
-	private Date date;
+	private LocalDate date;
 	private Map<Category, CategoryExpense> categoryExpenseMap;
 	private Map<UserLimit, UserLimitExpense> userLimitExpenseMap;
 	private BigDecimal sum = new BigDecimal(0);
 	
-	public DateExpense(Date date) {
+	public DateExpense(LocalDate date) {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
 		this.date = date;
 	}
-	public Date getDate() {
+	public LocalDate getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
+	public void setDate(LocalDate date) {
 		this.date = date;
 	}
 	
