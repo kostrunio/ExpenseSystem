@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.model;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +57,7 @@ public class ExpenseSheet extends AbstractEntity {
   @Transient
   private String key;
   @Transient
-  private Map<Date, DateExpense> dateExpenseMap;
+  private Map<LocalDate, DateExpense> dateExpenseMap;
   @Transient
   private Map<Category, CategoryExpense> categoryExpenseMap;
   @Transient
@@ -65,9 +65,9 @@ public class ExpenseSheet extends AbstractEntity {
   @Transient
   private Filter filter;
   @Transient
-  private Date firstDate;
+  private LocalDate firstDate;
   @Transient
-  private Date lastDate;
+  private LocalDate lastDate;
 
   public Long getId() {
     return id;
@@ -147,13 +147,13 @@ public class ExpenseSheet extends AbstractEntity {
     this.key = key;
   }
 
-  public Map<Date, DateExpense> getDateExpenseMap() {
+  public Map<LocalDate, DateExpense> getDateExpenseMap() {
     if (dateExpenseMap == null)
-      dateExpenseMap = new HashMap<Date, DateExpense>();
+      dateExpenseMap = new HashMap<LocalDate, DateExpense>();
     return dateExpenseMap;
   }
 
-  public void setDateExpenseMap(Map<Date, DateExpense> dateExpenseMap) {
+  public void setDateExpenseMap(Map<LocalDate, DateExpense> dateExpenseMap) {
     this.dateExpenseMap = dateExpenseMap;
   }
 
@@ -185,19 +185,19 @@ public class ExpenseSheet extends AbstractEntity {
     this.filter = filter;
   }
 
-  public Date getFirstDate() {
+  public LocalDate getFirstDate() {
     return firstDate;
   }
 
-  public void setFirstDate(Date firstDate) {
+  public void setFirstDate(LocalDate firstDate) {
     this.firstDate = firstDate;
   }
 
-  public Date getLastDate() {
+  public LocalDate getLastDate() {
     return lastDate;
   }
 
-  public void setLastDate(Date lastDate) {
+  public void setLastDate(LocalDate lastDate) {
     this.lastDate = lastDate;
   }
 

@@ -2,7 +2,6 @@ package pl.kostro.expensesystem.model.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,8 +98,8 @@ public class ExpenseService {
     LocalDateTime stopper = LocalDateTime.now();
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     for (Expense expense : expenseSheet.getExpenseList())
-      if (!expense.getDate().isBefore(expenseSheet.getFirstDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
-          && !expense.getDate().isAfter(expenseSheet.getLastDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()))
+      if (!expense.getDate().isBefore(expenseSheet.getFirstDate())
+          && !expense.getDate().isAfter(expenseSheet.getLastDate()))
         expenseListToReturn.add(expense);
     logger.info("findExpenseForDates finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseListToReturn;

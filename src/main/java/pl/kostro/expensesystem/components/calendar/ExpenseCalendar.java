@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.components.calendar;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +37,7 @@ public class ExpenseCalendar extends com.vaadin.v7.ui.Calendar {
   private CalendarEventProvider eventProvider = new CalendarEventProvider() {
     @Override
     public List<CalendarEvent> getEvents(Date startDate, Date endDate) {
-      Map<Date, DateExpense> eventToShow = eshs.prepareExpenseMap(expenseSheet, startDate, endDate,
+      Map<LocalDate, DateExpense> eventToShow = eshs.prepareExpenseMap(expenseSheet, startDate, endDate,
           CalendarUtils.getFirstDay(calendar.getTime()), CalendarUtils.getLastDay(calendar.getTime()));
       monthView.fulfillTables();
       return converter.transformExpensesToEvents(expenseSheet, eventToShow);

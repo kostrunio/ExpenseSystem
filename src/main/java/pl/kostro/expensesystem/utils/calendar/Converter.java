@@ -1,5 +1,7 @@
 package pl.kostro.expensesystem.utils.calendar;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -24,11 +26,11 @@ public class Converter {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
   }
 	
-	public List<CalendarEvent> transformExpensesToEvents(ExpenseSheet expenseSheet, Map<Date, DateExpense> dateExpenseMap) {
-		Set<Date> dateSet = dateExpenseMap.keySet();
+	public List<CalendarEvent> transformExpensesToEvents(ExpenseSheet expenseSheet, Map<LocalDate, DateExpense> dateExpenseMap) {
+		Set<LocalDate> dateSet = dateExpenseMap.keySet();
 		List<CalendarEvent> calendarEvents = new ArrayList<CalendarEvent>();
 		BasicEvent event;
-		for (Date date : dateSet) {
+		for (LocalDate date : dateSet) {
 			DateExpense dateExpense = dateExpenseMap.get(date);
 			
 			//userLimit events
@@ -36,7 +38,7 @@ public class Converter {
 				UserLimitExpense userLimitExpenseMap = dateExpense.getUserLimitExpenseMap().get(userLimit);
 				if (userLimitExpenseMap == null)
 					continue;
-				event = new BasicEvent(userLimitExpenseMap.getSumString(), null, date);
+				event = new BasicEvent(userLimitExpenseMap.getSumString(), null, Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant()));
 				event.setAllDay(true);
 				event.setStyleName(""+userLimitExpenseMap.getUserLimit().getOrder());
 				calendarEvents.add(event);

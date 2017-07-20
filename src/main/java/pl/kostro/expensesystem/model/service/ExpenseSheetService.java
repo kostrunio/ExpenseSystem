@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.model.service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
@@ -142,14 +143,14 @@ public class ExpenseSheetService {
     return expenseListToReturn;
   }
 
-  public Map<Date, DateExpense> prepareExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate,
+  public Map<LocalDate, DateExpense> prepareExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate,
       Date firstDay, Date lastDay) {
     LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.getDateExpenseMap().clear();
     expenseSheet.getCategoryExpenseMap().clear();
     expenseSheet.getUserLimitExpenseMap().clear();
-    expenseSheet.setFirstDate(startDate);
-    expenseSheet.setLastDate(endDate);
+    expenseSheet.setFirstDate(startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    expenseSheet.setLastDate(endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     for (Expense expense : getExpenseList(expenseSheet)) {
       addExpenseToDateMap(expenseSheet, expense);
       if (firstDay != null && lastDay != null && !expense.getDate().isBefore(firstDay.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
@@ -167,7 +168,7 @@ public class ExpenseSheetService {
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
     if (dateExpense == null) {
       dateExpense = new DateExpense(expense.getDate());
-      expenseSheet.getDateExpenseMap().put(Date.from(expense.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant()), dateExpense);
+      expenseSheet.getDateExpenseMap().put(expense.getDate(), dateExpense);
     }
     dateExpense.addExpense(expenseSheet, expense);
   }
@@ -245,7 +246,7 @@ public class ExpenseSheetService {
   }
 
   public DateExpense getDateExpenseMap(ExpenseSheet expenseSheet, Date date) {
-    if (date.before(expenseSheet.getFirstDate()) || date.after(expenseSheet.getLastDate())) {
+    if (date.before(Date.from(expenseSheet.getFirstDate().atStartOfDay(ZoneId.systemDefault()).toInstant())) || date.after(Date.from(expenseSheet.getLastDate().atStartOfDay(ZoneId.systemDefault()).toInstant()))) {
       prepareExpenseMap(expenseSheet, CalendarUtils.getFirstDay(date), CalendarUtils.getLastDay(date), null,
           null);
     }
