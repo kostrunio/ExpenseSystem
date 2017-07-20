@@ -78,8 +78,8 @@ public class TableView extends TableDesign {
 
     expenseForm.prepare(expenseSheet, this);
     
-    fromDateField.setValue(CalendarUtils.getFirstDay(calendar.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-    toDateField.setValue(CalendarUtils.getLastDay(calendar.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    fromDateField.setValue(CalendarUtils.getFirstDay(calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
+    toDateField.setValue(CalendarUtils.getLastDay(calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
     categoryBox.setItems(expenseSheet.getCategoryList());
     userBox.setItems(expenseSheet.getUserLimitList());
     commentBox.setNewItemHandler(event -> {});

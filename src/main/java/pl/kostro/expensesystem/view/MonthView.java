@@ -66,8 +66,8 @@ public class MonthView extends MonthDesign {
       ((ExpenseView)getParent().getParent().getParent().getParent()).checkedMonth(CalendarUtils.getMonthName(date.get(Calendar.MONTH)));
     }
     thisMonthField.setValue(date.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-    firstDateField.setValue(CalendarUtils.getFirstDay(date.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-    lastDateField.setValue(CalendarUtils.getLastDay(date.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    firstDateField.setValue(CalendarUtils.getFirstDay(date.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
+    lastDateField.setValue(CalendarUtils.getLastDay(date.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()));
     monthCalendar.setMonthView(this);
     monthCalendar.setStartDate(Date.from(firstDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
     monthCalendar.setEndDate(Date.from(lastDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));

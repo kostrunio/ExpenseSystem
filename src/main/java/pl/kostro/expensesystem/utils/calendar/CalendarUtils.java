@@ -1,9 +1,8 @@
 package pl.kostro.expensesystem.utils.calendar;
 
 import java.text.DateFormatSymbols;
+import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class CalendarUtils {
 
@@ -13,20 +12,12 @@ public class CalendarUtils {
     return monthsName;
   }
 
-  public static Date getFirstDay(Date date) {
-    Calendar calendar = GregorianCalendar.getInstance();
-    calendar.setTime(date);
-    calendar.set(java.util.Calendar.DAY_OF_MONTH, 1);
-    return calendar.getTime();
+  public static LocalDate getFirstDay(LocalDate date) {
+    return date.withDayOfMonth(1);
   }
 
-  public static Date getLastDay(Date date) {
-    Calendar calendar = GregorianCalendar.getInstance();
-    calendar.setTime(date);
-    calendar.set(java.util.Calendar.DAY_OF_MONTH, 1);
-    calendar.add(java.util.Calendar.MONTH, 1);
-    calendar.add(java.util.Calendar.DAY_OF_MONTH, -1);
-    return calendar.getTime();
+  public static LocalDate getLastDay(LocalDate date) {
+    return date.plusMonths(1).minusDays(1);
   }
 
   public static void setFirstDay(Calendar calendar, int monthNumber) {
