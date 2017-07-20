@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -26,7 +26,7 @@ public class UserSummary extends AbstractEntity {
   @Column(name = "us_id")
   private Long id;
   @Column(name = "us_date")
-  private Date date;
+  private LocalDate date;
   @Transient
   private BigDecimal limit;
   @Column(name = "us_limit_byte")
@@ -40,7 +40,7 @@ public class UserSummary extends AbstractEntity {
     super();
   }
 
-  public UserSummary(Date date, BigDecimal limit) {
+  public UserSummary(LocalDate date, BigDecimal limit) {
     this.date = date;
     setLimit(limit);
     setSum(new BigDecimal(0));
@@ -54,11 +54,11 @@ public class UserSummary extends AbstractEntity {
     this.id = id;
   }
 
-  public Date getDate() {
+  public LocalDate getDate() {
     return date;
   }
 
-  public void setDate(Date date) {
+  public void setDate(LocalDate date) {
     this.date = date;
   }
 

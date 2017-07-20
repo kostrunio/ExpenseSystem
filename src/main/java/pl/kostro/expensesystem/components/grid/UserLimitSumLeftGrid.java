@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.components.grid;
 
 import java.math.BigDecimal;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -46,7 +47,7 @@ public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
         actSum = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
       else
         actSum = new BigDecimal(0);
-      values.add(new UserLimitSumLeft(userLimit, actSum, userLimit.isContinuousSummary() ? uss.calculateSum(userLimit, calendar.getTime()) : userLimit.getLimit().subtract(actSum)));
+      values.add(new UserLimitSumLeft(userLimit, actSum, userLimit.isContinuousSummary() ? uss.calculateSum(userLimit, calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()) : userLimit.getLimit().subtract(actSum)));
     }
     setItems(values);
   }

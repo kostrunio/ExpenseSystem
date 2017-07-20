@@ -156,7 +156,7 @@ public class ExpenseSheetService {
         addExpenseToUserLimitMap(expenseSheet, expense);
       }
     }
-    uss.checkSummary(expenseSheet, firstDay);
+    uss.checkSummary(expenseSheet, firstDay.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     logger.info("prepareExpenseMap finish: {} ms", new Date().getTime() - stopper.getTime());
     return expenseSheet.getDateExpenseMap();
   }

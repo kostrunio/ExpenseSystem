@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.model.service;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Date;
 
 import org.apache.logging.log4j.LogManager;
@@ -28,7 +29,7 @@ public class UserSummaryService {
 
   private static Logger logger = LogManager.getLogger();
   
-  public UserSummary createUserSummary(UserLimit userLimit, Date date) {
+  public UserSummary createUserSummary(UserLimit userLimit, LocalDate date) {
     Date stopper = new Date();
     UserSummary userSummary = new UserSummary(date, userLimit.getLimit());
     usr.save(userSummary);
@@ -58,10 +59,10 @@ public class UserSummaryService {
     logger.info("encrypt finish: {} ms", new Date().getTime() - stopper.getTime());
   }
 
-  public BigDecimal calculateSum(UserLimit userLimit, Date date) {
+  public BigDecimal calculateSum(UserLimit userLimit, LocalDate date) {
     BigDecimal sum = new BigDecimal(0);
     for (UserSummary userSummary : userLimit.getUserSummaryList()) {
-      if (!userSummary.getDate().after(date)) {
+      if (!userSummary.getDate().isAfter(date)) {
         sum = sum.add(userSummary.getLimit());
         sum = sum.subtract(userSummary.getSum());
       }
@@ -69,14 +70,14 @@ public class UserSummaryService {
     return sum;
   }
 
-  public UserSummary findUserSummary(UserLimit userLimit, Date date) {
+  public UserSummary findUserSummary(UserLimit userLimit, LocalDate date) {
     for (UserSummary userSummary : userLimit.getUserSummaryList())
-      if (userSummary.getDate().getTime() == date.getTime())
+      if (userSummary.getDate() == date)
         return userSummary;
     return createUserSummary(userLimit, date);
   }
 
-  public void checkSummary(ExpenseSheet expenseSheet, Date date) {
+  public void checkSummary(ExpenseSheet expenseSheet, LocalDate date) {
     Date stopper = new Date();
     if (expenseSheet.getFilter() != null)
       return;
