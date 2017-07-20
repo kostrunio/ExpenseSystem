@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.model.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.NoResultException;
@@ -71,7 +72,7 @@ public class RealUserService {
     RealUser loggedUser = rur.findByNameAndPassword(userName, new String(messageDigest.digest()));
     if (loggedUser == null) return null; 
     loggedUser.setClearPassword(password);
-    loggedUser.setLogDate(new Date());
+    loggedUser.setLogDate(LocalDateTime.now());
     if (loggedUser.getPasswordByte() == null)
       loggedUser.setPasswordByte(messageDigest.digest());
     rur.save(loggedUser);

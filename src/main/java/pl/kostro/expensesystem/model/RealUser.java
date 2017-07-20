@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -25,7 +25,7 @@ public class RealUser extends User {
   @Column(name = "u_email")
   private String email;
   @Column(name = "u_log_date")
-  private Date logDate;
+  private LocalDateTime logDate;
   @ManyToMany
   @JoinTable(name="user_expense_sheet",
   joinColumns=
@@ -73,11 +73,11 @@ public class RealUser extends User {
     this.email = email;
   }
 
-  public Date getLogDate() {
+  public LocalDateTime getLogDate() {
     return logDate;
   }
 
-  public void setLogDate(Date logDate) {
+  public void setLogDate(LocalDateTime logDate) {
     this.logDate = logDate;
   }
 

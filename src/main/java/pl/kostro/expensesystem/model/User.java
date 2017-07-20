@@ -1,6 +1,6 @@
 package pl.kostro.expensesystem.model;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
@@ -30,7 +30,7 @@ public class User extends AbstractEntity {
   @Column(name = "u_name")
   private String name;
   @Column(name = "u_creation_date")
-  private Date creationDate = new Date();
+  private LocalDateTime creationDate = LocalDateTime.now();
 
   public User() {
     super();
@@ -56,11 +56,11 @@ public class User extends AbstractEntity {
     this.name = name;
   }
 
-  public Date getCreationDate() {
+  public LocalDateTime getCreationDate() {
     return creationDate;
   }
 
-  public void setCreationDate(Date creationDate) {
+  public void setCreationDate(LocalDateTime creationDate) {
     this.creationDate = creationDate;
   }
 
