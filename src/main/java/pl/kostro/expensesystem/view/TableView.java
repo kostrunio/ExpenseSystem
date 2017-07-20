@@ -7,12 +7,8 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.vaadin.v7.data.util.BeanItemContainer;
-import com.vaadin.v7.event.SelectionEvent;
-import com.vaadin.v7.event.SelectionEvent.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.data.sort.SortDirection;
-import com.vaadin.v7.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
@@ -84,11 +80,10 @@ public class TableView extends TableDesign {
     
     fromDateField.setValue(CalendarUtils.getFirstDay(calendar.getTime()));
     toDateField.setValue(CalendarUtils.getLastDay(calendar.getTime()));
-    categoryBox.addItems(expenseSheet.getCategoryList());
-    userBox.addItems(expenseSheet.getUserLimitList());
-    commentBox.setNewItemsAllowed(true);
-    commentBox.setFilteringMode(FilteringMode.CONTAINS);
-    commentBox.addItems(eshs.getAllComments(expenseSheet));
+    categoryBox.setItems(expenseSheet.getCategoryList());
+    userBox.setItems(expenseSheet.getUserLimitList());
+    commentBox.setNewItemHandler(event -> {});
+    commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshs.getAllComments(expenseSheet));
     filterButton.addClickListener(filterClick);
     newExpenseButton.addClickListener(newClick);
     expenseGrid.addSelectionListener(event -> {
@@ -99,16 +94,16 @@ public class TableView extends TableDesign {
     if (expenseSheet.getFilter() != null) {
       if (expenseSheet.getFilter().getCategories() != null
           && expenseSheet.getFilter().getCategories().size() > 0)
-        categoryBox.select(expenseSheet.getFilter().getCategories().get(0));
+        categoryBox.setSelectedItem(expenseSheet.getFilter().getCategories().get(0));
       if (expenseSheet.getFilter().getUsers() != null
           && expenseSheet.getFilter().getUsers().size() > 0)
-        userBox.select(expenseSheet.getFilter().getUsers().get(0));
+        userBox.setSelectedItem(eshs.getUserLimitForUser(expenseSheet, expenseSheet.getFilter().getUsers().get(0)));
       if (expenseSheet.getFilter().getFormula() != null
           && !expenseSheet.getFilter().getFormula().isEmpty())
         formulaField.setValue(expenseSheet.getFilter().getFormula());
       if (expenseSheet.getFilter().getComment() != null
           && !expenseSheet.getFilter().getComment().isEmpty())
-        commentBox.select(expenseSheet.getFilter().getComment());
+        commentBox.setSelectedItem(expenseSheet.getFilter().getComment());
       expenseSheet.getFilter().setDateFrom(fromDateField.getValue());
       expenseSheet.getFilter().setDateTo(toDateField.getValue());
     } else

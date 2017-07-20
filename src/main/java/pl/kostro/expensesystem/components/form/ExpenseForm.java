@@ -101,20 +101,18 @@ public class ExpenseForm extends ExpenseFormDesign {
     dateField.setDateFormat("yyyy-MM-dd");
     dateField.addValueChangeListener(valueChange);
 
-    categoryBox.setNewItemsAllowed(false);
-    categoryBox.setNullSelectionAllowed(false);
-    categoryBox.addValueChangeListener(valueChange);
+    categoryBox.setEmptySelectionAllowed(false);
+    categoryBox.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
 
-    userBox.setNewItemsAllowed(false);
-    userBox.setNullSelectionAllowed(false);
-    userBox.addValueChangeListener(valueChange);
+    userBox.setEmptySelectionAllowed(false);
+    userBox.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
 
     formulaField.focus();
     formulaField.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
 
-    commentBox.setNewItemsAllowed(true);
-    commentBox.setNullSelectionAllowed(true);
-    commentBox.addValueChangeListener(valueChange);
+    commentBox.setNewItemHandler(inputString -> {});
+    commentBox.setEmptySelectionAllowed(true);
+    commentBox.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
 
     notifyBox.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
 
@@ -131,12 +129,9 @@ public class ExpenseForm extends ExpenseFormDesign {
   public void prepare(ExpenseSheet expenseSheet, TableView view) {
     this.expenseSheet = expenseSheet;
     this.view = view;
-    categoryBox.removeAllItems();
-    categoryBox.addItems(expenseSheet.getCategoryList());
-    userBox.removeAllItems();
-    userBox.addItems(expenseSheet.getUserLimitList());
-    commentBox.removeAllItems();
-    commentBox.addItems(eshs.getAllComments(expenseSheet));
+    categoryBox.setItems(expenseSheet.getCategoryList());
+    userBox.setItems(expenseSheet.getUserLimitList());
+    commentBox.setItems(eshs.getAllComments(expenseSheet));
   }
 
   private void verifyFormula(Object formula) {

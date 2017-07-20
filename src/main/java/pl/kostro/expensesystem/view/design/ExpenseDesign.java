@@ -3,7 +3,7 @@ package pl.kostro.expensesystem.view.design;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.v7.ui.ComboBox;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -14,6 +14,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.UserLimit;
 
 @SuppressWarnings("serial")
 public class ExpenseDesign extends Panel {
@@ -36,10 +38,10 @@ public class ExpenseDesign extends Panel {
 
   protected Panel searchPanel;
   protected HorizontalLayout searchLayout;
-  protected ComboBox categoryCombo;
-  protected ComboBox userCombo;
+  protected ComboBox<Category> categoryCombo;
+  protected ComboBox<UserLimit> userCombo;
   protected TextField formulaField;
-  protected ComboBox commentCombo;
+  protected ComboBox<String> commentCombo;
   protected Button searchButton;
 
   protected VerticalLayout mainView;
@@ -151,12 +153,12 @@ public class ExpenseDesign extends Panel {
     searchPanel.setContent(searchLayout);
 
     // categoryCombo
-    categoryCombo = new ComboBox();
+    categoryCombo = new ComboBox<>();
     categoryCombo.setCaption(Msg.get("expense.category"));
     searchLayout.addComponent(categoryCombo);
 
     // userCombo
-    userCombo = new ComboBox();
+    userCombo = new ComboBox<>();
     userCombo.setCaption(Msg.get("expense.user"));
     searchLayout.addComponent(userCombo);
 
@@ -166,7 +168,7 @@ public class ExpenseDesign extends Panel {
     searchLayout.addComponent(formulaField);
 
     // commentCombo
-    commentCombo = new ComboBox();
+    commentCombo = new ComboBox<>();
     commentCombo.setCaption(Msg.get("expense.comment"));
     searchLayout.addComponent(commentCombo);
 

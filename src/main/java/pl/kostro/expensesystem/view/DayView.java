@@ -8,13 +8,11 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.vaadin.v7.data.Property;
 import com.vaadin.v7.data.Property.ValueChangeEvent;
 import com.vaadin.v7.data.Property.ValueChangeListener;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.v7.shared.ui.combobox.FilteringMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -115,12 +113,7 @@ public class DayView extends DayDesign {
       }
     }
   };
-  private Property.ValueChangeListener valueChange = new Property.ValueChangeListener() {
-    @Override
-    public void valueChange(ValueChangeEvent event) {
-      verifyFormula(formulaField.getValue());
-    }
-  };
+
   private Button.ClickListener saveClick = new Button.ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
@@ -151,15 +144,13 @@ public class DayView extends DayDesign {
     prepareCategoryListLayout();
     backButton.addClickListener(backClick);
 
-    userBox.setNewItemsAllowed(false);
-    userBox.setNullSelectionAllowed(false);
-    userBox.addItems(expenseSheet.getUserLimitList());
-    userBox.addValueChangeListener(valueChange);
+    userBox.setEmptySelectionAllowed(false);
+    userBox.setItems(expenseSheet.getUserLimitList());
+    userBox.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
     formulaField.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
-    commentBox.setNewItemsAllowed(true);
-    commentBox.setNullSelectionAllowed(true);
-    commentBox.setFilteringMode(FilteringMode.CONTAINS);
-    commentBox.addValueChangeListener(valueChange);
+    commentBox.setNewItemHandler(event -> {});
+    commentBox.setEmptySelectionAllowed(true);
+    commentBox.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
     saveButton.addClickListener(saveClick);
     prepareExpenseListLayout();
@@ -268,16 +259,15 @@ public class DayView extends DayDesign {
     this.modify = modify;
     
     if (expense.getUser() != null)
-      userBox.select(eshs.getUserLimitForUser(expenseSheet, expense.getUser()));
+      userBox.setSelectedItem(eshs.getUserLimitForUser(expenseSheet, expense.getUser()));
     else
-      userBox.select(expenseSheet.getUserLimitList().get(0));
+      userBox.setSelectedItem(expenseSheet.getUserLimitList().get(0));
 
     formulaField.focus();
     formulaField.setValue(expense.getFormula());
 
-    commentBox.removeAllItems();
-    commentBox.addItems(eshs.getCommentForCategory(expenseSheet, expense.getCategory()));
-    commentBox.select(expense.getComment());
+    commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshs.getCommentForCategory(expenseSheet, expense.getCategory()));
+    commentBox.setSelectedItem(expense.getComment());
     
     if (expense.isNotify() || expense.getDate().after(new Date())) {
       notifyBox.setValue(expense.isNotify());
