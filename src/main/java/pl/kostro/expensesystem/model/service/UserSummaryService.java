@@ -2,7 +2,8 @@ package pl.kostro.expensesystem.model.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,19 +31,19 @@ public class UserSummaryService {
   private static Logger logger = LogManager.getLogger();
   
   public UserSummary createUserSummary(UserLimit userLimit, LocalDate date) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     UserSummary userSummary = new UserSummary(date, userLimit.getLimit());
     usr.save(userSummary);
     userLimit.getUserSummaryList().add(userSummary);
     ulr.save(userLimit);
-    logger.info("createUserSummary finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("createUserSummary finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return userSummary;
   }
 
   public UserSummary merge(UserSummary userSummary) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     usr.save(userSummary);
-    logger.info("merge finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("merge finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return userSummary;
   }
 
@@ -52,11 +53,11 @@ public class UserSummaryService {
   }
 
   public void encrypt(UserSummary userSummary) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     userSummary.setLimit(userSummary.getLimit(true), true);
     userSummary.setSum(userSummary.getSum(true), true);
     usr.save(userSummary);
-    logger.info("encrypt finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("encrypt finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public BigDecimal calculateSum(UserLimit userLimit, LocalDate date) {
@@ -78,7 +79,7 @@ public class UserSummaryService {
   }
 
   public void checkSummary(ExpenseSheet expenseSheet, LocalDate date) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     if (expenseSheet.getFilter() != null)
       return;
     for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
@@ -93,7 +94,7 @@ public class UserSummaryService {
         merge(userSummary);
       }
     }
-    logger.info("checkSummary finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("checkSummary finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
 }

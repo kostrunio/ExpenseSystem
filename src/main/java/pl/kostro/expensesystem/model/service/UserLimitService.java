@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.model.service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -32,7 +33,7 @@ public class UserLimitService {
   private static Logger logger = LogManager.getLogger();
   
   public void createUserLimit(ExpenseSheet expenseSheet, User user) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     UserLimit userLimit = ulr.save(new UserLimit(user, expenseSheet.getUserLimitList().size()));
     expenseSheet.getUserLimitList().add(userLimit);
     expenseSheet = eshr.save(expenseSheet);
@@ -41,23 +42,23 @@ public class UserLimitService {
       RealUser realUser = (RealUser) user;
       realUser.getExpenseSheetList().add(expenseSheet);
       rur.save(realUser);
-      logger.info("createUserLimit finish: {} ms", new Date().getTime() - stopper.getTime());
+      logger.info("createUserLimit finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
   }
 
   public void merge(UserLimit userLimit) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     ulr.save(userLimit);
-    logger.info("merge finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("merge finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void removeUserLimit(ExpenseSheet expenseSheet, UserLimit userLimit) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.getUserLimitList().remove(userLimit);
     ulr.delete(userLimit);
     if (!(userLimit.getUser() instanceof RealUser))
       rur.delete(userLimit.getUser().getId());
-    logger.info("removeUserLimit finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("removeUserLimit finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void decrypt(UserLimit userLimit) {
@@ -66,18 +67,18 @@ public class UserLimitService {
   }
 
   public void encrypt(UserLimit userLimit) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     userLimit.setLimit(userLimit.getLimit(true), true);
     for (UserSummary userSummary : userLimit.getUserSummaryList())
       uss.encrypt(userSummary);
     ulr.save(userLimit);
-    logger.info("encrypt finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("encrypt finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void fetchUserSummaryList(UserLimit userLimit) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     userLimit.setUserSummaryList(ulr.findUserSummaryList(userLimit));
-    logger.info("fetchUserSummaryList finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("fetchUserSummaryList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
 }

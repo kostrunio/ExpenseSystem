@@ -1,6 +1,8 @@
 package pl.kostro.expensesystem.model.service;
 
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -58,7 +60,7 @@ public class ExpenseSheetService {
   private static Logger logger = LogManager.getLogger();
 
   public ExpenseSheet createExpenseSheet(RealUser owner, String name, String key) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     ExpenseSheet expenseSheet = new ExpenseSheet();
     expenseSheet.setEncrypted(true);
     expenseSheet.setKey(key);
@@ -73,18 +75,18 @@ public class ExpenseSheetService {
     rur.save(owner);
     if (owner.getDefaultExpenseSheet() == null)
       rus.setDefaultExpenseSheet(owner, expenseSheet);
-    logger.info("createExpenseSheet finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("createExpenseSheet finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseSheet;
   }
 
   public void merge(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     eshr.save(expenseSheet);
-    logger.info("merge finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("merge finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void removeExpenseSheet(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     List<RealUser> realUsers = null;
     realUsers = rur.findUsersWithExpenseSheet(expenseSheet);
     if (realUsers != null)
@@ -94,7 +96,7 @@ public class ExpenseSheetService {
         realUser.getExpenseSheetList().remove(expenseSheet);
       }
     eshr.delete(expenseSheet);
-    logger.info("removeExpenseSheet finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("removeExpenseSheet finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void decrypt(ExpenseSheet expenseSheet) {
@@ -110,7 +112,7 @@ public class ExpenseSheetService {
   }
 
   public void encrypt(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     logger.info("encrypt: category");
     for (Category category : expenseSheet.getCategoryList())
       cs.encrypt(category);
@@ -120,7 +122,7 @@ public class ExpenseSheetService {
     logger.info("encrypt: userLimit");
     for (UserLimit userLimit : expenseSheet.getUserLimitList())
       uls.encrypt(userLimit);
-    logger.info("encrypt finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("encrypt finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public ExpenseSheet findExpenseSheet(RealUser realUser, int id) {
@@ -131,18 +133,18 @@ public class ExpenseSheetService {
   }
 
   private List<Expense> getExpenseList(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     for (Expense expense : es.findExpenseForDates(expenseSheet))
       if (Filter.matchFilter(expense, expenseSheet.getFilter()))
         expenseListToReturn.add(expense);
-    logger.info("getExpenseList finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("getExpenseList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseListToReturn;
   }
 
   public Map<Date, DateExpense> prepareExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate,
       Date firstDay, Date lastDay) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.getDateExpenseMap().clear();
     expenseSheet.getCategoryExpenseMap().clear();
     expenseSheet.getUserLimitExpenseMap().clear();
@@ -157,7 +159,7 @@ public class ExpenseSheetService {
       }
     }
     uss.checkSummary(expenseSheet, firstDay.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-    logger.info("prepareExpenseMap finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("prepareExpenseMap finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseSheet.getDateExpenseMap();
   }
 
@@ -207,27 +209,27 @@ public class ExpenseSheetService {
   }
 
   public Set<String> getAllComments(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     Set<String> commentList = new TreeSet<String>();
     for (Expense expense : expenseSheet.getExpenseList())
       if (expense.getComment() != null && !expense.getComment().equals(""))
         commentList.add(expense.getComment());
-    logger.info("getAllComments finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("getAllComments finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return commentList;
   }
 
   public Set<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     Set<String> commentList = new TreeSet<String>();
     for (Expense expense : es.findExpenseByCategory(expenseSheet, category))
       if (expense.getComment() != null && !expense.getComment().equals(""))
         commentList.add(expense.getComment());
-    logger.info("getCommentForCategory finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("getCommentForCategory finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return commentList;
   }
 
   public List<String> getYearList(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     List<String> yearList = new ArrayList<String>();
     int thisYear = new GregorianCalendar().get(Calendar.YEAR);
     int firstYear = thisYear;
@@ -238,7 +240,7 @@ public class ExpenseSheetService {
       firstYear = year;
     for (int i = firstYear; i <= thisYear; i++)
       yearList.add(Integer.toString(i));
-    logger.info("getYearList finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("getYearList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return yearList;
   }
 
@@ -259,18 +261,18 @@ public class ExpenseSheetService {
   }
 
   public Set<String> getCommentsList(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     Set<String> commentsList = new TreeSet<String>();
     for (Expense expense : expenseSheet.getExpenseList()) {
       if (expense.getComment() != null && !expense.getComment().equals(""))
         commentsList.add(expense.getComment());
     }
-    logger.info("getCommentsList finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("getCommentsList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return commentsList;
   }
 
   public ExpenseSheet moveCategoryUp(ExpenseSheet expenseSheet, Category category) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     if (category.getOrder() == 0)
       return expenseSheet;
     category.setOrder(category.getOrder() - 1);
@@ -284,12 +286,12 @@ public class ExpenseSheetService {
     expenseSheet.getCategoryList().set(category.getOrder(), category);
 
     merge(expenseSheet);
-    logger.info("moveCategoryUp finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("moveCategoryUp finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseSheet;
   }
 
   public ExpenseSheet moveCategoryDown(ExpenseSheet expenseSheet, Category category) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     if (category.getOrder() == expenseSheet.getCategoryList().size())
       return expenseSheet;
     category.setOrder(category.getOrder() + 1);
@@ -303,12 +305,12 @@ public class ExpenseSheetService {
     expenseSheet.getCategoryList().set(category.getOrder(), category);
 
     merge(expenseSheet);
-    logger.info("moveCategoryDown finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("moveCategoryDown finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseSheet;
   }
 
   public List<YearCategory> prepareYearCategoryList(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     List<YearCategory> yearCategoryList = new ArrayList<YearCategory>();
     Calendar firstDay = Calendar.getInstance();
     for (String year : getYearList(expenseSheet)) {
@@ -327,7 +329,7 @@ public class ExpenseSheetService {
       }
       yearCategoryList.add(yearCategory);
     }
-    logger.info("prepareYearCategoryList finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("prepareYearCategoryList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return yearCategoryList;
   }
 
@@ -355,20 +357,20 @@ public class ExpenseSheetService {
   }
   
   public void fetchCategoryList(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.setCategoryList(eshr.findCategoryList(expenseSheet));
-    logger.info("fetchCategoryList finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("fetchCategoryList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
   
   public void fetchExpenseList(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.setExpenseList(eshr.findExpenseList(expenseSheet));
-    logger.info("fetchExpenseList finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("fetchExpenseList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
   
   public void fetchUserLimitList(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.setUserLimitList(eshr.findUserLimitList(expenseSheet));
-    logger.info("fetchUserLimitList finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("fetchUserLimitList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }

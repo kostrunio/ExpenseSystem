@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.model.service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,11 +20,11 @@ public class UserService {
   private static Logger logger = LogManager.getLogger();
 
   public User createUser(String name) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     User user = new User();
     user.setName(name);
     ur.save(user);
-    logger.info("createUser finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("createUser finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return user;
   }
 

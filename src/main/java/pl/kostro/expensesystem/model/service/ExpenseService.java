@@ -1,10 +1,11 @@
 package pl.kostro.expensesystem.model.service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -37,27 +38,27 @@ public class ExpenseService {
   private static Logger logger = LogManager.getLogger();
 
   public void creteExpense(ExpenseSheet expenseSheet, Expense expense) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     expense = er.save(expense);
     eshs.addExpense(expenseSheet, expense);
     expenseSheet = eshr.save(expenseSheet);
-    logger.info("creteExpense finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("creteExpense finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public Expense merge(Expense expense) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     expense = er.save(expense);
-    logger.info("merge finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("merge finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expense;
   }
 
   public void removeExpense(ExpenseSheet expenseSheet, Expense expense) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.getExpenseList().remove(expense);
     eshs.removeExpenseFromMap(expenseSheet, expense);
     er.delete(expense);
     expenseSheet = eshr.save(expenseSheet);
-    logger.info("removeExpense finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("removeExpense finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
 
@@ -67,52 +68,52 @@ public class ExpenseService {
   }
 
   public void encrypt(Expense expense) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     expense.setFormula(expense.getFormula(true), true);
     expense.setComment(expense.getComment(true), true);
     expense = er.save(expense);
-    logger.info("encrypt finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("encrypt finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public List<Expense> findAllExpense(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     for (Expense expense : expenseSheet.getExpenseList())
       if (Filter.matchFilter(expense, expenseSheet.getFilter()))
         expenseListToReturn.add(expense);
-    logger.info("findAllExpense finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("findAllExpense finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseListToReturn;
   }
 
   public Expense findFirstExpense(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     Expense firstExpense = new Expense();
     firstExpense.setDate(LocalDate.now());
     for (Expense expense : expenseSheet.getExpenseList())
       if (expense.getDate().isBefore(firstExpense.getDate()))
         firstExpense = expense;
-    logger.info("findFirstExpense finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("findFirstExpense finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return firstExpense;
   }
 
   public List<Expense> findExpenseForDates(ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     for (Expense expense : expenseSheet.getExpenseList())
       if (!expense.getDate().isBefore(expenseSheet.getFirstDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
           && !expense.getDate().isAfter(expenseSheet.getLastDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()))
         expenseListToReturn.add(expense);
-    logger.info("findExpenseForDates finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("findExpenseForDates finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseListToReturn;
   }
 
   public List<Expense> findExpenseByCategory(ExpenseSheet expenseSheet, Category category) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     for (Expense expense : expenseSheet.getExpenseList())
       if (expense.getCategory().equals(category))
         expenseListToReturn.add(expense);
-    logger.info("findExpenseByCategory finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("findExpenseByCategory finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseListToReturn;
   }
 
@@ -126,7 +127,7 @@ public class ExpenseService {
 
   public void saveExpense(ExpenseSheet expenseSheet, Expense expense, UserLimit userLimit, String formula,
       Object comment, Boolean notify, Boolean modify) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     if (modify)
       removeExpense(expenseSheet, expense);
     expense.setUser(userLimit.getUser());
@@ -135,11 +136,11 @@ public class ExpenseService {
       expense.setComment(comment.toString());
     expense.setNotify(notify);
     creteExpense(expenseSheet, expense);
-    logger.info("saveExpense finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("saveExpense finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public List<Expense> findExpensesToNotify() {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     List<Expense> expenseList = null;
     Calendar date = Calendar.getInstance();
     date.set(Calendar.HOUR_OF_DAY, 0);
@@ -151,7 +152,7 @@ public class ExpenseService {
     } catch (NoResultException e) {
     }
     logger.info("Found {} expenses to notify", expenseList.size());
-    logger.info("findExpensesToNotify finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("findExpensesToNotify finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseList;
   }
 }

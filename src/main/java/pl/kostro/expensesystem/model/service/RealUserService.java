@@ -3,7 +3,7 @@ package pl.kostro.expensesystem.model.service;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.time.temporal.ChronoUnit;
 
 import javax.persistence.NoResultException;
 
@@ -34,25 +34,25 @@ public class RealUserService {
   }
 
   public RealUser createRealUser(String name, String password, String email) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     RealUser realUser = new RealUser();
     realUser.setName(name);
     messageDigest.update(password.getBytes());
     realUser.setPassword(new String(messageDigest.digest()));
     realUser.setEmail(email);
     rur.save(realUser);
-    logger.info("createRealUser finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("createRealUser finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return realUser;
   }
 
   public void merge(RealUser realUser, boolean passwordChange) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     if (passwordChange) {
       messageDigest.update(realUser.getClearPassword().getBytes());
       realUser.setPassword(new String(messageDigest.digest()));
     }
     rur.save(realUser);
-    logger.info("merge finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("merge finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public RealUser refresh(RealUser realUser) {
@@ -60,14 +60,14 @@ public class RealUserService {
   }
 
   public void setDefaultExpenseSheet(RealUser realUser, ExpenseSheet expenseSheet) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     realUser.setDefaultExpenseSheet(expenseSheet);
     rur.save(realUser);
-    logger.info("setDefaultExpenseSheet finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("setDefaultExpenseSheet finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public RealUser getUserData(String userName, String password) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     messageDigest.update(password.getBytes());
     RealUser loggedUser = rur.findByNameAndPassword(userName, new String(messageDigest.digest()));
     if (loggedUser == null) return null; 
@@ -76,25 +76,25 @@ public class RealUserService {
     if (loggedUser.getPasswordByte() == null)
       loggedUser.setPasswordByte(messageDigest.digest());
     rur.save(loggedUser);
-    logger.info("getUserData finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("getUserData finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return loggedUser;
   }
 
   public RealUser findRealUser(String userName) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     RealUser loggedUser = null;
     try {
       loggedUser = rur.findByName(userName);
     } catch (NoResultException e) {
 
     }
-    logger.info("findRealUser finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("findRealUser finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return loggedUser;
   }
 
   public void fetchExpenseSheetList(RealUser realUser) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     realUser.setExpenseSheetList(rur.fetchExpenseSheetList(realUser));
-    logger.info("fetchExpenseSheetList finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("fetchExpenseSheetList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }

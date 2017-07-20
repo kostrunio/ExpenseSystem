@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.model.service;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,29 +24,29 @@ public class CategoryService {
   private static Logger logger = LogManager.getLogger();
   
   public void createCategory(ExpenseSheet expenseSheet, String name) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     Category category = new Category(name, expenseSheet.getCategoryList().size());
     cr.save(category);
     expenseSheet.getCategoryList().add(category);
     expenseSheet = eshr.save(expenseSheet);
-    logger.info("createCategory finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("createCategory finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void merge(Category category) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     cr.save(category);
-    logger.info("merge finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("merge finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public ExpenseSheet removeCategory(ExpenseSheet expenseSheet, Category category) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.getCategoryList().remove(category);
     int i = 0;
     for (Category cat : expenseSheet.getCategoryList())
       cat.setOrder(i++);
     expenseSheet = eshr.save(expenseSheet);
     cr.delete(category);
-    logger.info("removeCategory finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("removeCategory finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseSheet;
   }
 
@@ -54,10 +55,10 @@ public class CategoryService {
   }
 
   public void encrypt(Category category) {
-    Date stopper = new Date();
+    LocalDateTime stopper = LocalDateTime.now();
     category.setName(category.getName(true), true);
     cr.save(category);
-    logger.info("encrypt finish: {} ms", new Date().getTime() - stopper.getTime());
+    logger.info("encrypt finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
 }
