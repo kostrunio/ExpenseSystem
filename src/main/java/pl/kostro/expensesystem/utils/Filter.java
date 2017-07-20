@@ -1,8 +1,7 @@
 package pl.kostro.expensesystem.utils;
 
 import java.math.BigDecimal;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 import pl.kostro.expensesystem.model.Category;
@@ -10,8 +9,8 @@ import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.User;
 
 public class Filter {
-  private Date dateFrom;
-  private Date dateTo;
+  private LocalDate dateFrom;
+  private LocalDate dateTo;
 	private List<Category> categories;
 	private List<User> users;
 	private String formula;
@@ -25,7 +24,7 @@ public class Filter {
 		this.comment = comment;
 	}
 	
-	public Filter(Date dateFrom, Date dateTo, List<Category> categories, List<User> users, String formula, String comment) {
+	public Filter(LocalDate dateFrom, LocalDate dateTo, List<Category> categories, List<User> users, String formula, String comment) {
     super();
     this.dateFrom = dateFrom;
     this.dateTo = dateTo;
@@ -35,19 +34,19 @@ public class Filter {
     this.comment = comment;
   }
 
-	public Date getDateFrom() {
+	public LocalDate getDateFrom() {
     return dateFrom;
   }
 
-  public void setDateFrom(Date dateFrom) {
+  public void setDateFrom(LocalDate dateFrom) {
     this.dateFrom = dateFrom;
   }
 
-  public Date getDateTo() {
+  public LocalDate getDateTo() {
     return dateTo;
   }
 
-  public void setDateTo(Date dateTo) {
+  public void setDateTo(LocalDate dateTo) {
     this.dateTo = dateTo;
   }
 
@@ -84,10 +83,10 @@ public class Filter {
       return true;
     else {
       if (filter.getDateFrom() != null
-          && expense.getDate().isBefore(filter.getDateFrom().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()))
+          && expense.getDate().isBefore(filter.getDateFrom()))
         return false;
       if (filter.getDateTo() != null
-          && expense.getDate().isAfter(filter.getDateTo().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()))
+          && expense.getDate().isAfter(filter.getDateTo()))
         return false;
       if (filter.getCategories() != null
           && !matchCategory(expense, filter.getCategories()))

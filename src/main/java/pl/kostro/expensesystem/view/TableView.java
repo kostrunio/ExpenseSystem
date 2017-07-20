@@ -3,7 +3,6 @@ package pl.kostro.expensesystem.view;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -50,8 +49,8 @@ public class TableView extends TableDesign {
       List<User> users = new ArrayList<User>();
       users.add((User) filterUser);
       expenseSheet.setFilter(new Filter(
-          Date.from(fromDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
-          Date.from(toDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
+          fromDateField.getValue(),
+          toDateField.getValue(),
           categories,
           users,
           formulaField.getValue(),
@@ -105,12 +104,12 @@ public class TableView extends TableDesign {
       if (expenseSheet.getFilter().getComment() != null
           && !expenseSheet.getFilter().getComment().isEmpty())
         commentBox.setSelectedItem(expenseSheet.getFilter().getComment());
-      expenseSheet.getFilter().setDateFrom(Date.from(fromDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-      expenseSheet.getFilter().setDateTo(Date.from(toDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      expenseSheet.getFilter().setDateFrom(fromDateField.getValue());
+      expenseSheet.getFilter().setDateTo(toDateField.getValue());
     } else
       expenseSheet.setFilter(new Filter(
-        Date.from(fromDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
-        Date.from(toDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
+        fromDateField.getValue(),
+        toDateField.getValue(),
         null,
         null,
         null,
