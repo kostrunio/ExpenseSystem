@@ -16,7 +16,6 @@ import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.Window.CloseEvent;
-import com.vaadin.v7.ui.themes.Reindeer;
 import com.vaadin.ui.themes.ValoTheme;
 
 /**
@@ -79,7 +78,6 @@ public class DefaultConfirmDialogFactory implements Factory {
         c.addComponent(panel);
         panel.setWidth("100%");
         panel.setHeight("100%");
-        panel.setStyleName(Reindeer.PANEL_LIGHT);
         panel.addStyleName(ValoTheme.PANEL_BORDERLESS); // valo compatibility
         c.setExpandRatio(panel, 1f);
 
