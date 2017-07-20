@@ -1,7 +1,6 @@
 package pl.kostro.expensesystem.components.form;
 
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.LocalDate;
 
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Button;
@@ -34,7 +33,7 @@ public class ExpenseForm extends ExpenseFormDesign {
   private Button.ClickListener saveClick = new ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
-      expense.setDate(Date.from(dateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      expense.setDate(dateField.getValue());
       expense.setCategory((Category) categoryBox.getValue());
       expense.setUser(((UserLimit) userBox.getValue()).getUser());
       expense.setFormula(formulaField.getValue());
@@ -138,13 +137,13 @@ public class ExpenseForm extends ExpenseFormDesign {
   public void edit(Expense expense) {
     this.expense = expense;
     if (expense.getId() != null) {
-      dateField.setValue(expense.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+      dateField.setValue(expense.getDate());
       categoryBox.setValue(expense.getCategory());
       userBox.setValue(eshs.getUserLimitForUser(expenseSheet, expense.getUser()));
       formulaField.focus();
       formulaField.setValue(expense.getFormula());
       commentBox.setValue(expense.getComment());
-      if (expense.isNotify() || expense.getDate().after(new Date())) {
+      if (expense.isNotify() || expense.getDate().isAfter(LocalDate.now())) {
         notifyBox.setValue(expense.isNotify());
         notifyBox.setVisible(true);
       }

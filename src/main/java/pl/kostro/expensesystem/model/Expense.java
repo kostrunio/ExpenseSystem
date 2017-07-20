@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.model;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,7 +30,7 @@ public class Expense extends AbstractEntity {
   @Column(name = "e_id")
   private Long id;
   @Column(name = "e_date")
-  private Date date;
+  private LocalDate date;
   @Transient
   private String formula;
   @Column(name = "e_formula_byte")
@@ -57,7 +57,7 @@ public class Expense extends AbstractEntity {
     super();
   }
 
-  public Expense(Date date, String formula, Category category, User user, String comment, boolean notify,
+  public Expense(LocalDate date, String formula, Category category, User user, String comment, boolean notify,
       ExpenseSheet expenseSheet) {
     this.date = date;
     setFormula(formula);
@@ -76,11 +76,11 @@ public class Expense extends AbstractEntity {
     this.id = id;
   }
 
-  public Date getDate() {
+  public LocalDate getDate() {
     return date;
   }
 
-  public void setDate(Date date) {
+  public void setDate(LocalDate date) {
     this.date = date;
   }
 

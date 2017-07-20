@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.model.service;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -149,8 +150,8 @@ public class ExpenseSheetService {
     expenseSheet.setLastDate(endDate);
     for (Expense expense : getExpenseList(expenseSheet)) {
       addExpenseToDateMap(expenseSheet, expense);
-      if (firstDay != null && lastDay != null && !expense.getDate().before(firstDay)
-          && !expense.getDate().after(lastDay)) {
+      if (firstDay != null && lastDay != null && !expense.getDate().isBefore(firstDay.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+          && !expense.getDate().isAfter(lastDay.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) {
         addExpenseToCategoryMap(expenseSheet, expense);
         addExpenseToUserLimitMap(expenseSheet, expense);
       }
@@ -163,8 +164,8 @@ public class ExpenseSheetService {
   private void addExpenseToDateMap(ExpenseSheet expenseSheet, Expense expense) {
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
     if (dateExpense == null) {
-      dateExpense = new DateExpense(expense.getDate());
-      expenseSheet.getDateExpenseMap().put(expense.getDate(), dateExpense);
+      dateExpense = new DateExpense(Date.from(expense.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      expenseSheet.getDateExpenseMap().put(Date.from(expense.getDate().atStartOfDay(ZoneId.systemDefault()).toInstant()), dateExpense);
     }
     dateExpense.addExpense(expenseSheet, expense);
   }
@@ -231,7 +232,7 @@ public class ExpenseSheetService {
     int thisYear = new GregorianCalendar().get(Calendar.YEAR);
     int firstYear = thisYear;
     Calendar date = new GregorianCalendar();
-    date.setTime(es.findFirstExpense(expenseSheet).getDate());
+    date.setTime(Date.from(es.findFirstExpense(expenseSheet).getDate().atStartOfDay(ZoneId.systemDefault()).toInstant()));
     int year = date.get(Calendar.YEAR);
     if (year < firstYear)
       firstYear = year;

@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.view;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -239,7 +240,7 @@ public class DayView extends DayDesign {
         expenseGrid.addComponent(notifyLabel, 4, i);
       }
     }
-    buildAddNewExpense(es.prepareNewExpense(expenseSheet, calendar.getTime(), category,
+    buildAddNewExpense(es.prepareNewExpense(expenseSheet, calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), category,
         expenseSheet.getUserLimitList().get(0).getUser()), false);
   }
 
@@ -265,7 +266,7 @@ public class DayView extends DayDesign {
     commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshs.getCommentForCategory(expenseSheet, expense.getCategory()));
     commentBox.setSelectedItem(expense.getComment());
     
-    if (expense.isNotify() || expense.getDate().after(new Date())) {
+    if (expense.isNotify() || expense.getDate().isAfter(LocalDate.now())) {
       notifyBox.setValue(expense.isNotify());
       notifyBox.setVisible(true);
     }

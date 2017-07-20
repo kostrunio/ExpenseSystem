@@ -1,5 +1,7 @@
 package pl.kostro.expensesystem.model.service;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -85,9 +87,9 @@ public class ExpenseService {
   public Expense findFirstExpense(ExpenseSheet expenseSheet) {
     Date stopper = new Date();
     Expense firstExpense = new Expense();
-    firstExpense.setDate(new Date());
+    firstExpense.setDate(LocalDate.now());
     for (Expense expense : expenseSheet.getExpenseList())
-      if (expense.getDate().before(firstExpense.getDate()))
+      if (expense.getDate().isBefore(firstExpense.getDate()))
         firstExpense = expense;
     logger.info("findFirstExpense finish: {} ms", new Date().getTime() - stopper.getTime());
     return firstExpense;
@@ -97,8 +99,8 @@ public class ExpenseService {
     Date stopper = new Date();
     List<Expense> expenseListToReturn = new ArrayList<Expense>();
     for (Expense expense : expenseSheet.getExpenseList())
-      if (!expense.getDate().before(expenseSheet.getFirstDate())
-          && !expense.getDate().after(expenseSheet.getLastDate()))
+      if (!expense.getDate().isBefore(expenseSheet.getFirstDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
+          && !expense.getDate().isAfter(expenseSheet.getLastDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()))
         expenseListToReturn.add(expense);
     logger.info("findExpenseForDates finish: {} ms", new Date().getTime() - stopper.getTime());
     return expenseListToReturn;
@@ -118,8 +120,8 @@ public class ExpenseService {
     return expense.getValue().toString();
   }
 
-  public Expense prepareNewExpense(ExpenseSheet expenseSheet, Date date, Category category, User user) {
-    return new Expense(date, "", category, user, "", date.after(new Date()) ? true : false, expenseSheet);
+  public Expense prepareNewExpense(ExpenseSheet expenseSheet, LocalDate date, Category category, User user) {
+    return new Expense(date, "", category, user, "", date.isAfter(LocalDate.now()) ? true : false, expenseSheet);
   }
 
   public void saveExpense(ExpenseSheet expenseSheet, Expense expense, UserLimit userLimit, String formula,

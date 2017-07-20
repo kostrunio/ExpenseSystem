@@ -15,7 +15,6 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Grid;
-import com.vaadin.ui.renderers.DateRenderer;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
@@ -128,7 +127,7 @@ public class TableView extends TableDesign {
     formulaField.setCaption(Msg.get("findPage.formula"));
     commentBox.setCaption(Msg.get("findPage.comment"));
     newExpenseButton.setCaption(Msg.get("findPage.add"));
-    expenseGrid.addColumn(Expense::getDate, new DateRenderer("yyyy-MM-dd")).setCaption(Msg.get("findPage.date"));
+    expenseGrid.addColumn(Expense::getDate).setCaption(Msg.get("findPage.date"));
     expenseGrid.addColumn(Expense::getCategory).setCaption(Msg.get("findPage.category"));
     expenseGrid.addColumn(Expense::getUser).setCaption(Msg.get("findPage.user"));
     expenseGrid.addColumn(Expense::getFormula).setCaption(Msg.get("findPage.formula"));

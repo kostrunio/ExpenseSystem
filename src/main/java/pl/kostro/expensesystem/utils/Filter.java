@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.utils;
 
 import java.math.BigDecimal;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 
@@ -83,10 +84,10 @@ public class Filter {
       return true;
     else {
       if (filter.getDateFrom() != null
-          && expense.getDate().before(filter.getDateFrom()))
+          && expense.getDate().isBefore(filter.getDateFrom().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()))
         return false;
       if (filter.getDateTo() != null
-          && expense.getDate().after(filter.getDateTo()))
+          && expense.getDate().isAfter(filter.getDateTo().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()))
         return false;
       if (filter.getCategories() != null
           && !matchCategory(expense, filter.getCategories()))
