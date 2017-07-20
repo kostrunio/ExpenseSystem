@@ -143,23 +143,23 @@ public class ExpenseSheetService {
     return expenseListToReturn;
   }
 
-  public Map<LocalDate, DateExpense> prepareExpenseMap(ExpenseSheet expenseSheet, Date startDate, Date endDate,
-      Date firstDay, Date lastDay) {
+  public Map<LocalDate, DateExpense> prepareExpenseMap(ExpenseSheet expenseSheet, LocalDate startDate, LocalDate endDate,
+      LocalDate firstDay, LocalDate lastDay) {
     LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.getDateExpenseMap().clear();
     expenseSheet.getCategoryExpenseMap().clear();
     expenseSheet.getUserLimitExpenseMap().clear();
-    expenseSheet.setFirstDate(startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-    expenseSheet.setLastDate(endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    expenseSheet.setFirstDate(startDate);
+    expenseSheet.setLastDate(endDate);
     for (Expense expense : getExpenseList(expenseSheet)) {
       addExpenseToDateMap(expenseSheet, expense);
-      if (firstDay != null && lastDay != null && !expense.getDate().isBefore(firstDay.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())
-          && !expense.getDate().isAfter(lastDay.toInstant().atZone(ZoneId.systemDefault()).toLocalDate())) {
+      if (firstDay != null && lastDay != null && !expense.getDate().isBefore(firstDay)
+          && !expense.getDate().isAfter(lastDay)) {
         addExpenseToCategoryMap(expenseSheet, expense);
         addExpenseToUserLimitMap(expenseSheet, expense);
       }
     }
-    uss.checkSummary(expenseSheet, firstDay.toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    uss.checkSummary(expenseSheet, firstDay);
     logger.info("prepareExpenseMap finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseSheet.getDateExpenseMap();
   }
@@ -245,9 +245,11 @@ public class ExpenseSheetService {
     return yearList;
   }
 
-  public DateExpense getDateExpenseMap(ExpenseSheet expenseSheet, Date date) {
-    if (date.before(Date.from(expenseSheet.getFirstDate().atStartOfDay(ZoneId.systemDefault()).toInstant())) || date.after(Date.from(expenseSheet.getLastDate().atStartOfDay(ZoneId.systemDefault()).toInstant()))) {
-      prepareExpenseMap(expenseSheet, CalendarUtils.getFirstDay(date), CalendarUtils.getLastDay(date), null,
+  public DateExpense getDateExpenseMap(ExpenseSheet expenseSheet, LocalDate date) {
+    if (date.isBefore(expenseSheet.getFirstDate()) || date.isAfter(expenseSheet.getLastDate())) {
+      prepareExpenseMap(expenseSheet,
+          CalendarUtils.getFirstDay(Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant())).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+          CalendarUtils.getLastDay(Date.from(date.atStartOfDay(ZoneId.systemDefault()).toInstant())).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), null,
           null);
     }
     return expenseSheet.getDateExpenseMap().get(date);
@@ -319,9 +321,9 @@ public class ExpenseSheetService {
       CalendarUtils.setFirstDay(firstDay, year);
       for (int m = 0; m <= 11; m++) {
         firstDay.set(Calendar.MONTH, m);
-        prepareExpenseMap(expenseSheet, firstDay.getTime(),
-            CalendarUtils.getLastDay(firstDay.getTime()), firstDay.getTime(),
-            CalendarUtils.getLastDay(firstDay.getTime()));
+        prepareExpenseMap(expenseSheet, firstDay.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+            CalendarUtils.getLastDay(firstDay.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), firstDay.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+            CalendarUtils.getLastDay(firstDay.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
         for (Category category : expenseSheet.getCategoryList()) {
           CategoryExpense categoryExpense = getCategoryExpenseMap(expenseSheet, category);
           if (categoryExpense != null)

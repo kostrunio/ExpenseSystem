@@ -181,7 +181,7 @@ public class DayView extends DayDesign {
       Button expButton = new Button();
       vertLay.addComponent(expButton);
       vertLay.setComponentAlignment(expButton, Alignment.TOP_CENTER);
-      DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, calendar.getTime());
+      DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
       if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
         expButton.setCaption("0");
       else {
@@ -197,7 +197,7 @@ public class DayView extends DayDesign {
     expenseGrid.removeAllComponents();
     categoryLabel.setValue(category.getName());
     List<Expense> expenseList;
-    DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, calendar.getTime());
+    DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
       expenseList = new ArrayList<Expense>();
     else {
