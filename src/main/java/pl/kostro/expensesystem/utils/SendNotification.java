@@ -5,10 +5,10 @@ import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.dto.service.ExpenseSheetNotifyService;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
@@ -19,12 +19,9 @@ import pl.kostro.expensesystem.model.service.ExpenseService;
 public class SendNotification {
 
   private static Logger logger = LogManager.getLogger();
+  @Autowired
   private ExpenseService es;
   private ExpenseSheetNotifyService esns = new ExpenseSheetNotifyService();
-  
-  public SendNotification() {
-    es = AppCtxProvider.getBean(ExpenseService.class);
-  }
 
   @Scheduled(cron = "0 0 0/2 * * *")
   public void process() {
