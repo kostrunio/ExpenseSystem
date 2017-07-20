@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.view;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -8,8 +9,6 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.vaadin.v7.data.Property.ValueChangeEvent;
-import com.vaadin.v7.data.Property.ValueChangeListener;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinSession;
@@ -46,14 +45,7 @@ public class DayView extends DayDesign {
   private Category category;
   private Expense expense;
   private boolean modify;
-  private ValueChangeListener dateChange = new ValueChangeListener() {
-    @Override
-    public void valueChange(ValueChangeEvent event) {
-      calendar.setTime(thisDateField.getValue());
-      removeAllComponents();
-      addComponent(new DayView());
-    }
-  };
+
   private Button.ClickListener prevClick = new Button.ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
@@ -136,9 +128,13 @@ public class DayView extends DayDesign {
 
     setCaption();
     thisDateField.setDateFormat("yyyy-MM-dd");
-    thisDateField.setValue(calendar.getTime());
+    thisDateField.setValue(calendar.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     previousDayButton.addClickListener(prevClick);
-    thisDateField.addValueChangeListener(dateChange);
+    thisDateField.addValueChangeListener(event -> {
+      calendar.setTime(Date.from(thisDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      removeAllComponents();
+      addComponent(new DayView());
+    });
     nextDayButton.addClickListener(nextClick);
 
     prepareCategoryListLayout();

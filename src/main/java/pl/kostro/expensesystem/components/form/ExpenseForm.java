@@ -1,9 +1,8 @@
 package pl.kostro.expensesystem.components.form;
 
+import java.time.ZoneId;
 import java.util.Date;
 
-import com.vaadin.v7.data.Property;
-import com.vaadin.v7.data.Property.ValueChangeEvent;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
@@ -31,16 +30,11 @@ public class ExpenseForm extends ExpenseFormDesign {
   private ExpenseSheet expenseSheet;
   private Expense expense;
   private TableView view;
-  private Property.ValueChangeListener valueChange = new Property.ValueChangeListener() {
-    @Override
-    public void valueChange(ValueChangeEvent event) {
-      verifyFormula(formulaField.getValue());
-    }
-  };
+
   private Button.ClickListener saveClick = new ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
-      expense.setDate(dateField.getValue());
+      expense.setDate(Date.from(dateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
       expense.setCategory((Category) categoryBox.getValue());
       expense.setUser(((UserLimit) userBox.getValue()).getUser());
       expense.setFormula(formulaField.getValue());
@@ -99,7 +93,7 @@ public class ExpenseForm extends ExpenseFormDesign {
 
   private void configureComponents() {
     dateField.setDateFormat("yyyy-MM-dd");
-    dateField.addValueChangeListener(valueChange);
+    dateField.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
 
     categoryBox.setEmptySelectionAllowed(false);
     categoryBox.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
@@ -144,7 +138,7 @@ public class ExpenseForm extends ExpenseFormDesign {
   public void edit(Expense expense) {
     this.expense = expense;
     if (expense.getId() != null) {
-      dateField.setValue(expense.getDate());
+      dateField.setValue(expense.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
       categoryBox.setValue(expense.getCategory());
       userBox.setValue(eshs.getUserLimitForUser(expenseSheet, expense.getUser()));
       formulaField.focus();

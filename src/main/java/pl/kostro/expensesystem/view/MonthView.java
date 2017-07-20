@@ -1,5 +1,7 @@
 package pl.kostro.expensesystem.view;
 
+import java.sql.Date;
+import java.time.ZoneId;
 import java.util.Calendar;
 
 import org.apache.logging.log4j.LogManager;
@@ -11,8 +13,6 @@ import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.MonthDesign;
 
 import com.google.common.eventbus.Subscribe;
-import com.vaadin.v7.data.Property;
-import com.vaadin.v7.data.Property.ValueChangeEvent;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
@@ -38,13 +38,6 @@ public class MonthView extends MonthDesign {
       showCalendar();
     }
   };
-  private Property.ValueChangeListener thisMonthChange = new Property.ValueChangeListener() {
-    @Override
-    public void valueChange(ValueChangeEvent event) {
-      date.setTime(thisMonthField.getValue());
-      showCalendar();
-    }
-  };
 
   public MonthView() {
     logger.info("create");
@@ -57,7 +50,10 @@ public class MonthView extends MonthDesign {
     nextMonthButton.addClickListener(nextClick);
     firstDateField.setDateFormat("yyyy-MM-dd");
     thisMonthField.setDateFormat("MMMM yyyy");
-    thisMonthField.addValueChangeListener(thisMonthChange);
+    thisMonthField.addValueChangeListener(event -> {
+      date.setTime(Date.from(thisMonthField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      showCalendar();
+    });
     lastDateField.setDateFormat("yyyy-MM-dd");
 
     setCalendarSize();
@@ -69,12 +65,12 @@ public class MonthView extends MonthDesign {
       ((ExpenseView)getParent().getParent().getParent().getParent()).checkedYear(date.get(Calendar.YEAR)+"");
       ((ExpenseView)getParent().getParent().getParent().getParent()).checkedMonth(CalendarUtils.getMonthName(date.get(Calendar.MONTH)));
     }
-    thisMonthField.setValue(date.getTime());
-    firstDateField.setValue(CalendarUtils.getFirstDay(date.getTime()));
-    lastDateField.setValue(CalendarUtils.getLastDay(date.getTime()));
+    thisMonthField.setValue(date.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    firstDateField.setValue(CalendarUtils.getFirstDay(date.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    lastDateField.setValue(CalendarUtils.getLastDay(date.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     monthCalendar.setMonthView(this);
-    monthCalendar.setStartDate(firstDateField.getValue());
-    monthCalendar.setEndDate(lastDateField.getValue());
+    monthCalendar.setStartDate(Date.from(firstDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+    monthCalendar.setEndDate(Date.from(lastDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
   }
 
   public void fulfillTables() {

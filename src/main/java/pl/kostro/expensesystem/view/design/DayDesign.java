@@ -6,7 +6,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CssLayout;
-import com.vaadin.v7.ui.DateField;
+import com.vaadin.ui.DateField;
 
 import pl.kostro.expensesystem.model.UserLimit;
 

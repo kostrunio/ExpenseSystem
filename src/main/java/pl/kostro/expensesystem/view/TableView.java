@@ -1,7 +1,9 @@
 package pl.kostro.expensesystem.view;
 
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -49,8 +51,8 @@ public class TableView extends TableDesign {
       List<User> users = new ArrayList<User>();
       users.add((User) filterUser);
       expenseSheet.setFilter(new Filter(
-          fromDateField.getValue(),
-          toDateField.getValue(),
+          Date.from(fromDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
+          Date.from(toDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
           categories,
           users,
           formulaField.getValue(),
@@ -78,8 +80,8 @@ public class TableView extends TableDesign {
 
     expenseForm.prepare(expenseSheet, this);
     
-    fromDateField.setValue(CalendarUtils.getFirstDay(calendar.getTime()));
-    toDateField.setValue(CalendarUtils.getLastDay(calendar.getTime()));
+    fromDateField.setValue(CalendarUtils.getFirstDay(calendar.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    toDateField.setValue(CalendarUtils.getLastDay(calendar.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
     categoryBox.setItems(expenseSheet.getCategoryList());
     userBox.setItems(expenseSheet.getUserLimitList());
     commentBox.setNewItemHandler(event -> {});
@@ -104,12 +106,12 @@ public class TableView extends TableDesign {
       if (expenseSheet.getFilter().getComment() != null
           && !expenseSheet.getFilter().getComment().isEmpty())
         commentBox.setSelectedItem(expenseSheet.getFilter().getComment());
-      expenseSheet.getFilter().setDateFrom(fromDateField.getValue());
-      expenseSheet.getFilter().setDateTo(toDateField.getValue());
+      expenseSheet.getFilter().setDateFrom(Date.from(fromDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+      expenseSheet.getFilter().setDateTo(Date.from(toDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
     } else
       expenseSheet.setFilter(new Filter(
-        fromDateField.getValue(),
-        toDateField.getValue(),
+        Date.from(fromDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
+        Date.from(toDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()),
         null,
         null,
         null,

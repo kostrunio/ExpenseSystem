@@ -3,8 +3,6 @@ package pl.kostro.expensesystem.view;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.vaadin.v7.data.Property.ValueChangeEvent;
-import com.vaadin.v7.data.Property.ValueChangeListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinSession;
@@ -26,18 +24,6 @@ public class AccountView extends AccountDesign implements View {
   private RealUserService rus;
   private RealUser loggedUser;
 
-  private ValueChangeListener emailChange = new ValueChangeListener() {
-    @Override
-    public void valueChange(ValueChangeEvent event) {
-      emailField2.setEnabled(true);
-    }
-  };
-  private ValueChangeListener emailChange2 = new ValueChangeListener() {
-    @Override
-    public void valueChange(ValueChangeEvent event) {
-      saveEmailButton.setEnabled(emailField.getValue().trim().equals(emailField2.getValue().trim()));
-    }
-  };
   private ClickListener saveEmailClick = new ClickListener() {
     @Override
     public void buttonClick(ClickEvent event) {
@@ -49,19 +35,6 @@ public class AccountView extends AccountDesign implements View {
         emailField2.setEnabled(false);
         saveEmailButton.setEnabled(false);
       }
-    }
-  };
-  private ValueChangeListener oldPasswordChange = new ValueChangeListener() {
-    @Override
-    public void valueChange(ValueChangeEvent event) {
-      newPasswordField.setEnabled(oldPasswordField.getValue().trim().equals(loggedUser.getClearPassword()));
-      newPasswordField2.setEnabled(oldPasswordField.getValue().trim().equals(loggedUser.getClearPassword()));
-    }
-  };
-  private ValueChangeListener newPasswordChange = new ValueChangeListener() {
-    @Override
-    public void valueChange(ValueChangeEvent event) {
-      savePasswordButton.setEnabled(newPasswordField.getValue().trim().equals(newPasswordField2.getValue().trim()));
     }
   };
   private ClickListener savePasswordClick = new ClickListener() {
