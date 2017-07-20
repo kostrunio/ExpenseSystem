@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.NoResultException;
@@ -142,13 +141,9 @@ public class ExpenseService {
   public List<Expense> findExpensesToNotify() {
     LocalDateTime stopper = LocalDateTime.now();
     List<Expense> expenseList = null;
-    Calendar date = Calendar.getInstance();
-    date.set(Calendar.HOUR_OF_DAY, 0);
-    date.set(Calendar.MINUTE, 0);
-    date.set(Calendar.SECOND, 0);
-    date.set(Calendar.MILLISECOND, 0);
+    LocalDate date = LocalDate.now();
     try {
-      expenseList = er.findExpensesToNotify(date.getTime());
+      expenseList = er.findExpensesToNotify(date);
     } catch (NoResultException e) {
     }
     logger.info("Found {} expenses to notify", expenseList.size());
