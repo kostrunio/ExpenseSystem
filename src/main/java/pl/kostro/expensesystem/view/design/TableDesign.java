@@ -8,7 +8,7 @@ import com.vaadin.v7.ui.DateField;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
-import com.vaadin.v7.ui.TextField;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.declarative.Design;
 import pl.kostro.expensesystem.components.form.ExpenseForm;

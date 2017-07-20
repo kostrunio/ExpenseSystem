@@ -155,7 +155,7 @@ public class DayView extends DayDesign {
     userBox.setNullSelectionAllowed(false);
     userBox.addItems(expenseSheet.getUserLimitList());
     userBox.addValueChangeListener(valueChange);
-    formulaField.addValueChangeListener(valueChange);
+    formulaField.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
     commentBox.setNewItemsAllowed(true);
     commentBox.setNullSelectionAllowed(true);
     commentBox.setFilteringMode(FilteringMode.CONTAINS);

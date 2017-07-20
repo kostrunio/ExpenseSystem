@@ -110,7 +110,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     userBox.addValueChangeListener(valueChange);
 
     formulaField.focus();
-    formulaField.addValueChangeListener(valueChange);
+    formulaField.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
 
     commentBox.setNewItemsAllowed(true);
     commentBox.setNullSelectionAllowed(true);

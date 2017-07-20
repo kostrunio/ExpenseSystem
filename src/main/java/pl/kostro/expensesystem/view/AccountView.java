@@ -85,12 +85,15 @@ public class AccountView extends AccountDesign implements View {
   public AccountView() {
     rus = AppCtxProvider.getBean(RealUserService.class);
     setCaption();
-    emailField.addValueChangeListener(emailChange);
-    emailField2.addValueChangeListener(emailChange2);
+    emailField.addValueChangeListener(event -> emailField2.setEnabled(true));
+    emailField2.addValueChangeListener(event -> saveEmailButton.setEnabled(emailField.getValue().trim().equals(emailField2.getValue().trim())));
     saveEmailButton.addClickListener(saveEmailClick);
-    oldPasswordField.addValueChangeListener(oldPasswordChange);
-    newPasswordField.addValueChangeListener(newPasswordChange);
-    newPasswordField2.addValueChangeListener(newPasswordChange);
+    oldPasswordField.addValueChangeListener(event -> {
+      newPasswordField.setEnabled(oldPasswordField.getValue().trim().equals(loggedUser.getClearPassword()));
+      newPasswordField2.setEnabled(oldPasswordField.getValue().trim().equals(loggedUser.getClearPassword()));
+    });
+    newPasswordField.addValueChangeListener(event -> savePasswordButton.setEnabled(newPasswordField.getValue().trim().equals(newPasswordField2.getValue().trim())));
+    newPasswordField2.addValueChangeListener(event -> savePasswordButton.setEnabled(newPasswordField.getValue().trim().equals(newPasswordField2.getValue().trim())));
     savePasswordButton.addClickListener(savePasswordClick);
   }
 
