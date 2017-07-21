@@ -3,6 +3,7 @@ package pl.kostro.expensesystem.model;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.DiscriminatorType;
 import javax.persistence.DiscriminatorValue;
@@ -14,6 +15,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
+
+import pl.kostro.expensesystem.utils.LocalDateTimePersistenceConverter;
 
 @SuppressWarnings("serial")
 @Entity
@@ -30,6 +33,7 @@ public class User extends AbstractEntity {
   @Column(name = "u_name")
   private String name;
   @Column(name = "u_creation_date")
+  @Convert(converter = LocalDateTimePersistenceConverter.class)
   private LocalDateTime creationDate = LocalDateTime.now();
 
   public User() {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -13,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Transient;
+
+import pl.kostro.expensesystem.utils.LocalDateTimePersistenceConverter;
 
 @SuppressWarnings("serial")
 @Entity
@@ -25,6 +28,7 @@ public class RealUser extends User {
   @Column(name = "u_email")
   private String email;
   @Column(name = "u_log_date")
+  @Convert(converter = LocalDateTimePersistenceConverter.class)
   private LocalDateTime logDate;
   @ManyToMany
   @JoinTable(name="user_expense_sheet",

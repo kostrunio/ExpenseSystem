@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -13,6 +14,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.GenericGenerator;
 
 import pl.kostro.expensesystem.utils.Encryption;
+import pl.kostro.expensesystem.utils.LocalDatePersistenceConverter;
 
 import com.vaadin.server.VaadinSession;
 
@@ -26,6 +28,7 @@ public class UserSummary extends AbstractEntity {
   @Column(name = "us_id")
   private Long id;
   @Column(name = "us_date")
+  @Convert(converter = LocalDatePersistenceConverter.class)
   private LocalDate date;
   @Transient
   private BigDecimal limit;

@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -19,6 +20,7 @@ import com.vaadin.server.VaadinSession;
 
 import pl.kostro.expensesystem.utils.Calculator;
 import pl.kostro.expensesystem.utils.Encryption;
+import pl.kostro.expensesystem.utils.LocalDatePersistenceConverter;
 
 @SuppressWarnings("serial")
 @Entity
@@ -30,6 +32,7 @@ public class Expense extends AbstractEntity {
   @Column(name = "e_id")
   private Long id;
   @Column(name = "e_date")
+  @Convert(converter = LocalDatePersistenceConverter.class)
   private LocalDate date;
   @Transient
   private String formula;
