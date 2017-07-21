@@ -1,35 +1,37 @@
 <!doctype html>
 <html>
  <head>
-  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;expensesystem&quot;}">
- </head> 
- <body> 
-  <vaadin7-vertical-layout spacing style-name="account-layout" id="accountLayout" size-full margin> 
-   <vaadin7-label style-name="h1 no-margin colored" plain-text _id="titleLabel">
+  <meta charset="UTF-8">
+  <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;GENERATE_GETTERS&quot;:false,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;expensesystem&quot;}">
+  <meta name="vaadin-version" content="8.0.5">
+ </head>
+ <body>
+  <vaadin-vertical-layout style-name="account-layout" id="accountLayout" size-full>
+   <vaadin-label style-name="h1 no-margin colored" plain-text _id="titleLabel">
      Ustawienia konta 
-   </vaadin7-label> 
-   <vaadin7-text-field enabled="false" style-name="username-field" caption="Nazwa u¿ytkownika" width-full readonly _id="usernameField"></vaadin7-text-field> 
-   <vaadin-css-layout width-full :expand> 
-    <vaadin-panel style-name="email-panel" caption="Adres e-mail" _id="emailPanel"> 
-     <vaadin7-vertical-layout spacing margin> 
-      <vaadin7-text-field caption="e-mail" width-full _id="emailField"></vaadin7-text-field> 
-      <vaadin7-text-field enabled="false" description="W celu zmiany adresu, wpisz nowy powy¿ej i tutaj." input-prompt="W celu zmiany adresu, wpisz nowy powy¿ej i tutaj." caption="Potwierdz e-mail" width-full _id="emailField2"></vaadin7-text-field> 
+   </vaadin-label>
+   <vaadin-text-field caption="Nazwa uÅ¼ytkownika" enabled="false" style-name="username-field" width-full readonly _id="usernameField"></vaadin-text-field>
+   <vaadin-css-layout width-full :expand>
+    <vaadin-panel caption="Adres e-mail" style-name="email-panel" _id="emailPanel">
+     <vaadin-vertical-layout spacing margin>
+      <vaadin-text-field caption="e-mail" width-full _id="emailField"></vaadin-text-field>
+      <vaadin-text-field description="W celu zmiany adresu, wpisz nowy powyÅ¼ej i tutaj." caption="Potwierdz e-mail" enabled="false" input-prompt="W celu zmiany adresu, wpisz nowy powyÅ¼ej i tutaj." width-full _id="emailField2"></vaadin-text-field>
       <vaadin-button enabled="false" style-name="friendly" width-full plain-text _id="saveEmailButton" :bottom>
         Zapisz 
-      </vaadin-button> 
-     </vaadin7-vertical-layout> 
-    </vaadin-panel> 
-    <vaadin-panel style-name="password-panel" caption="Zmiana has³a" _id="passwordPanel"> 
-     <vaadin7-vertical-layout spacing margin> 
-      <vaadin7-password-field caption="Stare has³o:" width-full _id="oldPasswordField"></vaadin7-password-field> 
-      <vaadin7-password-field enabled="false" caption="Nowe has³o:" width-full _id="newPasswordField"></vaadin7-password-field> 
-      <vaadin7-password-field enabled="false" caption="Potwierdz nowe has³o:" width-full _id="newPasswordField2"></vaadin7-password-field> 
+      </vaadin-button>
+     </vaadin-vertical-layout>
+    </vaadin-panel>
+    <vaadin-panel caption="Zmiana hasÅ‚a" style-name="password-panel" _id="passwordPanel">
+     <vaadin-vertical-layout spacing margin>
+      <vaadin-password-field caption="Stare hasÅ‚o:" width-full _id="oldPasswordField"></vaadin-password-field>
+      <vaadin-password-field caption="Nowe hasÅ‚o:" enabled="false" width-full _id="newPasswordField"></vaadin-password-field>
+      <vaadin-password-field caption="Potwierdz nowe hasÅ‚o:" enabled="false" width-full _id="newPasswordField2"></vaadin-password-field>
       <vaadin-button enabled="false" style-name="friendly" width-full plain-text _id="savePasswordButton" :bottom>
         Zapisz 
-      </vaadin-button> 
-     </vaadin7-vertical-layout> 
-    </vaadin-panel> 
-   </vaadin-css-layout> 
-  </vaadin7-vertical-layout>  
+      </vaadin-button>
+     </vaadin-vertical-layout>
+    </vaadin-panel>
+   </vaadin-css-layout>
+  </vaadin-vertical-layout>
  </body>
 </html>

@@ -1,47 +1,43 @@
 <!doctype html>
 <html>
  <head>
-  <style>
-// Workaround for a https://dev.vaadin.com/ticket/19170 to get hidden icons in some environments to show
-#responsive-application-template.valo-menu-responsive .valo-menu-part .valo-menu-item span.v-icon {
-	opacity: 1.0;
-}
- </style> 
-  <meta charset="UTF-8" name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;expensesystem&quot;}">
- </head> 
- <body> 
-  <vaadin7-horizontal-layout style-name="valo-menu-responsive" responsive id="responsive-application-template" size-full> 
-   <vaadin-css-layout style-name="valo-menu"> 
-    <vaadin-css-layout style-name="valo-menu-part" _id="menuPart"> 
-     <vaadin7-horizontal-layout style-name="valo-menu-title" width-full _id="menuTitle"> 
-      <vaadin7-label size-auto _id="title" :middle :expand> 
+  <meta charset="UTF-8">
+  <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;GENERATE_GETTERS&quot;:false,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;expensesystem&quot;}">
+  <meta name="vaadin-version" content="8.0.5">
+ </head>
+ <body>
+  <vaadin-horizontal-layout style-name="valo-menu-responsive" responsive id="responsive-application-template" size-full>
+   <vaadin-css-layout style-name="valo-menu">
+    <vaadin-css-layout style-name="valo-menu-part" _id="menuPart">
+     <vaadin-horizontal-layout style-name="valo-menu-title" width-full _id="menuTitle">
+      <vaadin-label _id="title" :middle :expand>
        <strong>Expense</strong> Application 
-      </vaadin7-label> 
-     </vaadin7-horizontal-layout> 
-     <vaadin-button icon="fonticon://FontAwesome/f03a" style-name="primary small valo-menu-toggle" plain-text _id="showMenuButton">
+      </vaadin-label>
+     </vaadin-horizontal-layout>
+     <vaadin-button icon="fonticon://Vaadin-Icons/e7b3" style-name="primary small valo-menu-toggle" plain-text _id="showMenuButton">
        Menu 
-     </vaadin-button> 
-     <vaadin-css-layout style-name="valo-menuitems" _id="menuItems"> 
-      <vaadin7-label style-name="valo-menu-subtitle" size-auto plain-text _id="sheetLabel">
+     </vaadin-button>
+     <vaadin-css-layout style-name="valo-menuitems" _id="menuItems">
+      <vaadin-label style-name="valo-menu-subtitle" plain-text _id="sheetLabel">
         Your sheets 
-      </vaadin7-label> 
-      <vaadin7-vertical-layout _id="sheetLayout"></vaadin7-vertical-layout> 
-      <vaadin7-label style-name="valo-menu-subtitle" size-auto plain-text _id="settingsLabel">
+      </vaadin-label>
+      <vaadin-vertical-layout _id="sheetLayout"></vaadin-vertical-layout>
+      <vaadin-label style-name="valo-menu-subtitle" plain-text _id="settingsLabel">
         Configuration 
-      </vaadin7-label> 
-      <vaadin-button primary-style-name="valo-menu-item" icon="fonticon://FontAwesome/f0fe" plain-text _id="addSheetButton">
+      </vaadin-label>
+      <vaadin-button icon="fonticon://Vaadin-Icons/e929" primary-style-name="valo-menu-item" plain-text _id="addSheetButton">
         Add new sheet 
-      </vaadin-button> 
-      <vaadin-button primary-style-name="valo-menu-item" icon="fonticon://FontAwesome/f007" width-full plain-text _id="accountButton">
+      </vaadin-button>
+      <vaadin-button icon="fonticon://Vaadin-Icons/e687" primary-style-name="valo-menu-item" width-full plain-text _id="accountButton">
         Account 
-      </vaadin-button> 
-      <vaadin-button primary-style-name="valo-menu-item" icon="fonticon://FontAwesome/f08b" plain-text _id="logoutButton">
+      </vaadin-button>
+      <vaadin-button icon="fonticon://Vaadin-Icons/e798" primary-style-name="valo-menu-item" plain-text _id="logoutButton">
         Logout 
-      </vaadin-button> 
-     </vaadin-css-layout> 
-    </vaadin-css-layout> 
-   </vaadin-css-layout> 
-   <vaadin7-vertical-layout size-full _id="content" :expand></vaadin7-vertical-layout> 
-  </vaadin7-horizontal-layout>  
+      </vaadin-button>
+     </vaadin-css-layout>
+    </vaadin-css-layout>
+   </vaadin-css-layout>
+   <vaadin-vertical-layout size-full _id="content" :expand></vaadin-vertical-layout>
+  </vaadin-horizontal-layout>
  </body>
 </html>

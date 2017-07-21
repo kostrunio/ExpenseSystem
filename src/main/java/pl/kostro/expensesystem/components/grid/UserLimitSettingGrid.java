@@ -19,7 +19,7 @@ import pl.kostro.expensesystem.views.settingsPage.AddUserWindow;
 import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 
 @SuppressWarnings("serial")
-public class UserLimitSetingGrid extends Grid<UserLimit> implements SettingsChangeListener {
+public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsChangeListener {
   
   private ExpenseSheetService eshs;
   private UserLimitService uls;
@@ -28,7 +28,7 @@ public class UserLimitSetingGrid extends Grid<UserLimit> implements SettingsChan
 
   private ExpenseSheet expenseSheet;
 
-  public UserLimitSetingGrid() {
+  public UserLimitSettingGrid() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     uls = AppCtxProvider.getBean(UserLimitService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
@@ -53,7 +53,7 @@ public class UserLimitSetingGrid extends Grid<UserLimit> implements SettingsChan
     addUserLimitButton.addClickListener(new Button.ClickListener() {
       @Override
       public void buttonClick(ClickEvent event) {
-        UI.getCurrent().addWindow(new AddUserWindow(UserLimitSetingGrid.this));
+        UI.getCurrent().addWindow(new AddUserWindow(UserLimitSettingGrid.this));
       }
     });
   }

@@ -7,9 +7,6 @@ import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.CssLayout;
 import com.vaadin.ui.DateField;
-
-import pl.kostro.expensesystem.model.UserLimit;
-
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -42,9 +39,9 @@ public class DayDesign extends VerticalLayout {
   protected Label categoryLabel;
   protected GridLayout expenseGrid;
   protected HorizontalLayout addExpense;
-  protected ComboBox<UserLimit> userBox;
+  protected ComboBox<pl.kostro.expensesystem.model.UserLimit> userBox;
   protected TextField formulaField;
-  protected ComboBox<String> commentBox;
+  protected ComboBox<java.lang.String> commentBox;
   protected CheckBox notifyBox;
   protected Button saveButton;
 
