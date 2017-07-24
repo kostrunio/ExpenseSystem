@@ -94,6 +94,8 @@ public class ExpenseDesign extends Panel {
     expenseLayout.addComponent(buildMenus());
 
     mainView = new VerticalLayout();
+    mainView.setMargin(false);
+    mainView.setSpacing(false);
     expenseLayout.addComponent(mainView);
 
     return expenseLayout;
@@ -149,6 +151,7 @@ public class ExpenseDesign extends Panel {
     searchPanel = new Panel();
     searchPanel.setVisible(false);
     searchLayout = new HorizontalLayout();
+    searchLayout.setMargin(true);
     searchLayout.setWidthUndefined();
     searchPanel.setContent(searchLayout);
 

@@ -6,7 +6,7 @@
   <meta name="vaadin-version" content="8.0.5">
  </head>
  <body>
-  <vaadin-horizontal-layout style-name="valo-menu-responsive" responsive id="responsive-application-template" size-full>
+  <vaadin-horizontal-layout style-name="valo-menu-responsive" spacing="false" responsive id="responsive-application-template" size-full>
    <vaadin-css-layout style-name="valo-menu">
     <vaadin-css-layout style-name="valo-menu-part" _id="menuPart">
      <vaadin-horizontal-layout style-name="valo-menu-title" width-full _id="menuTitle">
@@ -21,7 +21,7 @@
       <vaadin-label style-name="valo-menu-subtitle" plain-text _id="sheetLabel">
         Your sheets 
       </vaadin-label>
-      <vaadin-vertical-layout _id="sheetLayout"></vaadin-vertical-layout>
+      <vaadin-vertical-layout spacing="false" margin="false" _id="sheetLayout"></vaadin-vertical-layout>
       <vaadin-label style-name="valo-menu-subtitle" plain-text _id="settingsLabel">
         Configuration 
       </vaadin-label>
@@ -37,7 +37,7 @@
      </vaadin-css-layout>
     </vaadin-css-layout>
    </vaadin-css-layout>
-   <vaadin-vertical-layout size-full _id="content" :expand></vaadin-vertical-layout>
+   <vaadin-vertical-layout spacing="false" size-full margin="false" _id="content" :expand></vaadin-vertical-layout>
   </vaadin-horizontal-layout>
  </body>
 </html>
