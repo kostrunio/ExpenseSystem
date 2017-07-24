@@ -7,6 +7,7 @@ import java.util.List;
 
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.StyleGenerator;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
@@ -24,18 +25,19 @@ public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
   public UserLimitSumLeftGrid() {
     uss = AppCtxProvider.getBean(UserSummaryService.class);
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
-//    setPageLength(expenseSheet.getUserLimitList().size());
+    setHeightByRows(expenseSheet.getUserLimitList().size());
+    setSizeUndefined();
     addColumn(UserLimitSumLeft::getUserLimit).setCaption(Msg.get("userLimitTable.user"));
     addColumn(UserLimitSumLeft::getSum).setCaption(Msg.get("userLimitTable.sum"));
     addColumn(UserLimitSumLeft::getLeft).setCaption(Msg.get("userLimitTable.left"));
-/*    setCellStyleGenerator(new Table.CellStyleGenerator() {
+    setStyleGenerator(new StyleGenerator<UserLimitSumLeft>() {
       @Override
-      public String getStyle(Table source, Object itemId, Object propertyId) {
-        int rows = source.getVisibleItemIds().size();
-        int row = ((Integer) itemId).intValue();
+      public String apply(UserLimitSumLeft item) {
+        double rows = getHeightByRows();
+        int row = item.getUserLimit().getOrder();
         return "" + row % rows;
       }
-    });*/
+    });
   }
   
   public void fulfill(LocalDate calendar) {
