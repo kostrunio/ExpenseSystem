@@ -8,9 +8,9 @@
  </head>
  <body>
   <vaadin-css-layout style-name="login-screen" responsive width-full>
-   <vaadin-vertical-layout primary-style-name="centering-layout" size-auto _id="centeringLayout">
-    <vaadin-vertical-layout style-name="login-panel" size-auto _id="loginPanel" :middle :center>
-     <vaadin-horizontal-layout width-full _id="buttons" :center>
+   <vaadin-vertical-layout primary-style-name="centering-layout" spacing="false" size-auto margin="false" _id="centeringLayout">
+    <vaadin-vertical-layout style-name="login-panel" spacing="false" size-auto margin="false" _id="loginPanel" :middle :center>
+     <vaadin-horizontal-layout spacing="false" width-full _id="buttons" :center>
       <vaadin-button enabled="false" style-name="borderless-colored" width-full plain-text _id="signIn">
         SIGN IN 
       </vaadin-button>
@@ -23,7 +23,7 @@
     </vaadin-vertical-layout>
    </vaadin-vertical-layout>
    <vaadin-css-layout style-name="login-information" _id="loginInformation">
-    <vaadin-label _id="loginInfoText">
+    <vaadin-label primary-style-name="" _id="loginInfoText">
      <h1>New Expense System</h1> Program jest jeszcze rozwijany, dlatego zachęcam do dzielenia się swoimi spostrzeżeniami i uwagami. Wszelkie wiadomości można wysyłać na adres 
      <a href="mailto:ExpenseSystem%20%3cexpense_system@mailplus.pl%3e?subject=uwagi">ExpenseSystem</a>
      <h1>Prywatność</h1> Wszystkie dane zgromadzone w arkuszu są zaszyfrowane. Nikt poza Tobą nie może ich odczytać. Dlatego 
