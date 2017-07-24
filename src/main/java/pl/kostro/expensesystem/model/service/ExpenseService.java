@@ -140,9 +140,8 @@ public class ExpenseService {
   public List<Expense> findExpensesToNotify() {
     LocalDateTime stopper = LocalDateTime.now();
     List<Expense> expenseList = null;
-    LocalDate date = LocalDate.now();
     try {
-      expenseList = er.findExpensesToNotify(date);
+      expenseList = er.findExpensesToNotify(LocalDate.now());
     } catch (NoResultException e) {
     }
     logger.info("Found {} expenses to notify", expenseList.size());
