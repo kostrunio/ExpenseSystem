@@ -26,7 +26,7 @@ public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
     uss = AppCtxProvider.getBean(UserSummaryService.class);
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
     setHeightByRows(expenseSheet.getUserLimitList().size());
-    setSizeUndefined();
+    setSelectionMode(SelectionMode.NONE);
     addColumn(UserLimitSumLeft::getUserLimit).setCaption(Msg.get("userLimitTable.user"));
     addColumn(UserLimitSumLeft::getSum).setCaption(Msg.get("userLimitTable.sum"));
     addColumn(UserLimitSumLeft::getLeft).setCaption(Msg.get("userLimitTable.left"));
