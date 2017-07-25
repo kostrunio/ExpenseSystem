@@ -125,9 +125,11 @@ public class ChartView extends ChartDesign {
       columnGrid.setItems(new YearValue(yearCategory.getYear(), monthValues2));
     }
 
+    lineGrid.setHeightByRows(yearCategoryList.size());
     chartLayout.addComponent(lineChart);
     chartLayout.addComponent(lineGrid);
     chartLayout.addComponent(columnChart);
+    columnGrid.setHeightByRows(yearCategoryList.size());
     chartLayout.addComponent(columnGrid);
     
     lineGrid.setHeightByRows(yearCategoryList.size());
