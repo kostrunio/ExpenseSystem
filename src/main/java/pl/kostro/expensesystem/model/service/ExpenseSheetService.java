@@ -319,13 +319,11 @@ public class ExpenseSheetService {
       firstDay = CalendarUtils.setFirstDay(firstDay, year);
       for (int m = 1; m <= 12; m++) {
         firstDay = firstDay.withMonth(m);
-        prepareExpenseMap(expenseSheet, firstDay,
-            CalendarUtils.getLastDay(firstDay), firstDay,
-            CalendarUtils.getLastDay(firstDay));
+        prepareExpenseMap(expenseSheet, firstDay, CalendarUtils.getLastDay(firstDay), firstDay, CalendarUtils.getLastDay(firstDay));
         for (Category category : expenseSheet.getCategoryList()) {
           CategoryExpense categoryExpense = getCategoryExpenseMap(expenseSheet, category);
           if (categoryExpense != null)
-            yearCategory.getCategory(m, categoryExpense.getCategory()).setSum(categoryExpense.getSum());
+            yearCategory.getCategory((m-1), categoryExpense.getCategory()).setSum(categoryExpense.getSum());
         }
       }
       yearCategoryList.add(yearCategory);

@@ -14,7 +14,7 @@ public class YearCategory {
   public YearCategory(int year, List<Category> categoryList) {
     this.year = year;
     categoryExpenseList = new ArrayList<List<CategoryExpense>>();
-    for (int m=1; m<=12; m++) {
+    for (int m=0; m<=11; m++) {
       List<CategoryExpense> monthCategoryList = new ArrayList<CategoryExpense>();
       for (Category category : categoryList) {
         CategoryExpense categoryExpense = new CategoryExpense(category);
