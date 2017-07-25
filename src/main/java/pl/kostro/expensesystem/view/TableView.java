@@ -88,6 +88,8 @@ public class TableView extends TableDesign {
     expenseGrid.addSelectionListener(event -> {
       if (expenseGrid.getSelectedItems().size() != 0)
         expenseForm.edit(expenseGrid.getSelectedItems().iterator().next());
+      else
+        expenseForm.setVisible(false);
     });
     
     if (expenseSheet.getFilter() != null) {
@@ -135,7 +137,7 @@ public class TableView extends TableDesign {
   
   public void refreshExpenses() {
     expenseGrid.setItems(es.findAllExpense(expenseSheet));
-    expenseGrid.sort("date", SortDirection.DESCENDING);
+    expenseGrid.sort(expenseGrid.getColumns().get(0), SortDirection.DESCENDING);
     expenseForm.setVisible(false);
   }
 }
