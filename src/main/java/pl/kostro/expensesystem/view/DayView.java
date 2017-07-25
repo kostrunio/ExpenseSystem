@@ -166,6 +166,8 @@ public class DayView extends DayDesign {
 
     for (int i = 0; i < categoryList.size(); i++) {
       VerticalLayout vertLay = new VerticalLayout();
+      vertLay.setMargin(false);
+      vertLay.setSpacing(false);
       vertLay.addStyleName("category-button");
       categoryGrid.addComponent(vertLay);
 
