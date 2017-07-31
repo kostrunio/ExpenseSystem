@@ -13,7 +13,7 @@ import pl.kostro.expensesystem.utils.expense.YearCategory;
 public class ChartGrid extends Grid<YearValue> {
 
   public ChartGrid(List<YearCategory> yearCategoryList) {
-    addColumn(YearValue::getYear).setCaption(Msg.get("grid.year"));
+    addColumn(YearValue::getYear).setCaption(Msg.get("chart.year"));
     addColumn(YearValue::getJanuary).setCaption(CalendarUtils.getMonthsName()[0]);
     addColumn(YearValue::getFebruary).setCaption(CalendarUtils.getMonthsName()[1]);
     addColumn(YearValue::getMarch).setCaption(CalendarUtils.getMonthsName()[2]);
