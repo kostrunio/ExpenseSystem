@@ -105,6 +105,8 @@ public class ChartView extends ChartDesign {
     Axis xAxis2 = columnConfiguration.getxAxis();
     xAxis2.setCategories(CalendarUtils.getMonthsName());
 
+    List<YearValue> lineGridData = new ArrayList<>();
+    List<YearValue> columnGridData = new ArrayList<>();
     for (YearCategory yearCategory : yearCategoryList) {
       BigDecimal sum = new BigDecimal(0);
       List<BigDecimal> monthValues1 = new ArrayList<BigDecimal>();
@@ -120,10 +122,13 @@ public class ChartView extends ChartDesign {
       Series yearLine1 = new ListSeries(yearCategory.getYear() + "", monthValues1.toArray(new BigDecimal[0]));
       Series yearLine2 = new ListSeries(yearCategory.getYear() + "", monthValues2.toArray(new BigDecimal[0]));
       lineConfiguration.addSeries(yearLine1);
-      lineGrid.setItems(new YearValue(yearCategory.getYear(), monthValues1));
+      lineGridData.add(new YearValue(yearCategory.getYear(), monthValues1));
       columnConfiguration.addSeries(yearLine2);
-      columnGrid.setItems(new YearValue(yearCategory.getYear(), monthValues2));
+      columnGridData.add(new YearValue(yearCategory.getYear(), monthValues2));
     }
+    
+    lineGrid.setItems(lineGridData);
+    columnGrid.setItems(columnGridData);
 
     lineGrid.setHeightByRows(yearCategoryList.size());
     chartLayout.addComponent(lineChart);
