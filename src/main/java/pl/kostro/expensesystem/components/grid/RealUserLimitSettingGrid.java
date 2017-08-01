@@ -6,6 +6,7 @@ import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -34,7 +35,7 @@ public class RealUserLimitSettingGrid extends Grid<UserLimit> implements Setting
     uls = AppCtxProvider.getBean(UserLimitService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
 
-    addColumn(item -> item.getUser().getName()).setCaption(Msg.get("settingsPage.realUserName")).setEditable(false);
+    addColumn(item -> item.getUser().getName()).setCaption(Msg.get("settingsPage.realUserName")).setEditorComponent(new TextField(), UserLimit::setUser).setEditable(false);
     addColumn(UserLimit::getLimit).setCaption(Msg.get("settingsPage.realUserLimit"));
     addColumn(UserLimit::getOrder).setCaption(Msg.get("settingsPage.realUserOrder"));
 

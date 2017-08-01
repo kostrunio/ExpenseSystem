@@ -72,6 +72,10 @@ public class UserLimit extends AbstractEntity {
   public void setUser(User user) {
     this.user = user;
   }
+  
+  public void setUser(String name) {
+    this.user.setName(name);
+  }
 
   public BigDecimal getLimit() {
     return getLimit(false);
