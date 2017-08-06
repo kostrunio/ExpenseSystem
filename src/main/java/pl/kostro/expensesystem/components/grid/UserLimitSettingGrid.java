@@ -1,11 +1,14 @@
 package pl.kostro.expensesystem.components.grid;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 
+import com.vaadin.data.Binder;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -33,9 +36,24 @@ public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsCha
     uls = AppCtxProvider.getBean(UserLimitService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
 
-    addColumn(item -> item.getUser().getName()).setCaption(Msg.get("settingsPage.userName"));
-    addColumn(UserLimit::getLimit).setCaption(Msg.get("settingsPage.userLimit"));
-    addColumn(UserLimit::getOrder).setCaption(Msg.get("settingsPage.userOrder"));
+    TextField limitField = new TextField();
+    TextField orderField = new TextField();
+    
+    Binder<UserLimit> binder = new Binder<>();
+    Binder.Binding<UserLimit, String> limitBinder = binder.forField(limitField)
+        .bind(userLimit -> userLimit.getLimit().toString(), (userLimit, value) -> userLimit.setLimit(new BigDecimal(value)));
+    Binder.Binding<UserLimit, String> orderBinder = binder.forField(orderField)
+        .bind(userLimit -> userLimit.getOrder()+"", (userLimit, value) -> userLimit.setOrder(Integer.parseInt(value)));
+    
+    addColumn(item -> item.getUser().getName())
+      .setCaption(Msg.get("settingsPage.userName"))
+      .setEditorComponent(new TextField(), UserLimit::setUser);
+    addColumn(UserLimit::getLimit)
+      .setCaption(Msg.get("settingsPage.userLimit"))
+      .setEditorBinding(limitBinder);
+    addColumn(UserLimit::getOrder)
+      .setCaption(Msg.get("settingsPage.userOrder"))
+      .setEditorBinding(orderBinder);
 
     addSelectionListener(event -> deleteUserLimitButton.setEnabled(event.getAllSelectedItems().size() != 0));
 

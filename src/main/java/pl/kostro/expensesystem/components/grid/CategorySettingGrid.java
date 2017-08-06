@@ -1,11 +1,15 @@
 package pl.kostro.expensesystem.components.grid;
 
+import java.math.BigDecimal;
 import java.text.MessageFormat;
 
+import com.vaadin.data.Binder;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -33,8 +37,20 @@ public class CategorySettingGrid extends Grid<Category> implements SettingsChang
     cs = AppCtxProvider.getBean(CategoryService.class);
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    addColumn(Category::getName).setCaption(Msg.get("settingsPage.categoryName"));
-    addColumn(Category::getMultiplier).setCaption(Msg.get("settingsPage.categoryMultiplier"));
+    
+    ComboBox<BigDecimal> multiplierField = new ComboBox<>();
+    multiplierField.setItems(new BigDecimal("-1"), new BigDecimal("1"));
+    
+    Binder<Category> binder = new Binder<>();
+    Binder.Binding<Category, BigDecimal> multiplierBinder = binder.forField(multiplierField)
+        .bind(Category::getMultiplier, Category::setMultiplier);
+    
+    addColumn(Category::getName)
+      .setCaption(Msg.get("settingsPage.categoryName"))
+      .setEditorComponent(new TextField(), Category::setName);
+    addColumn(Category::getMultiplier)
+      .setCaption(Msg.get("settingsPage.categoryMultiplier"))
+      .setEditorBinding(multiplierBinder);
 
     addSelectionListener(event -> {
       moveUpCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
