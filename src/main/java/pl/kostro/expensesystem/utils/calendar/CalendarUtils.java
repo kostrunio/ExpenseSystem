@@ -1,11 +1,24 @@
 package pl.kostro.expensesystem.utils.calendar;
 
-import java.text.DateFormatSymbols;
 import java.time.LocalDate;
+
+import pl.kostro.expensesystem.Msg;
 
 public class CalendarUtils {
 
-  private static String[] monthsName = new DateFormatSymbols().getMonths();
+  private static String[] monthsName =
+    {Msg.get("expenseSheet.january"),
+      Msg.get("expenseSheet.february"),
+      Msg.get("expenseSheet.march"),
+      Msg.get("expenseSheet.april"),
+      Msg.get("expenseSheet.may"),
+      Msg.get("expenseSheet.june"),
+      Msg.get("expenseSheet.july"),
+      Msg.get("expenseSheet.august"),
+      Msg.get("expenseSheet.september"),
+      Msg.get("expenseSheet.october"),
+      Msg.get("expenseSheet.november"),
+      Msg.get("expenseSheet.december")};
 
   public static String[] getMonthsName() {
     return monthsName;
