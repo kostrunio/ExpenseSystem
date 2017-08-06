@@ -12,8 +12,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.transaction.Transactional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -354,22 +357,31 @@ public class ExpenseSheetService {
         userLimitList.add(userLimit);
     return userLimitList;
   }
-  
+
+  @Transactional
   public void fetchCategoryList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    expenseSheet.setCategoryList(eshr.findCategoryList(expenseSheet));
+    ExpenseSheet attached = eshr.findOne(expenseSheet.getId());
+    attached.getCategoryList().size();
+    BeanUtils.copyProperties(attached, expenseSheet);
     logger.info("fetchCategoryList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
-  
+
+  @Transactional
   public void fetchExpenseList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    expenseSheet.setExpenseList(eshr.findExpenseList(expenseSheet));
+    ExpenseSheet attached = eshr.findOne(expenseSheet.getId());
+    attached.getExpenseList().size();
+    BeanUtils.copyProperties(attached, expenseSheet);
     logger.info("fetchExpenseList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
-  
+
+  @Transactional
   public void fetchUserLimitList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    expenseSheet.setUserLimitList(eshr.findUserLimitList(expenseSheet));
+    ExpenseSheet attached = eshr.findOne(expenseSheet.getId());
+    attached.getUserLimitList().size();
+    BeanUtils.copyProperties(attached, expenseSheet);
     logger.info("fetchUserLimitList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }

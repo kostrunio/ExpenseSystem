@@ -6,9 +6,11 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -92,9 +94,12 @@ public class RealUserService {
     return loggedUser;
   }
 
+  @Transactional
   public void fetchExpenseSheetList(RealUser realUser) {
     LocalDateTime stopper = LocalDateTime.now();
-    realUser.setExpenseSheetList(rur.fetchExpenseSheetList(realUser));
+    RealUser attached = rur.findOne(realUser.getId());
+    attached.getExpenseSheetList().size();
+    BeanUtils.copyProperties(attached, realUser);
     logger.info("fetchExpenseSheetList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }
