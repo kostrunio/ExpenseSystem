@@ -40,18 +40,18 @@ public class DayView extends DayDesign {
 
   private Logger logger = LogManager.getLogger();
   private ExpenseSheet expenseSheet;
-  private LocalDate calendar;
+  private LocalDate date;
   private Category category;
   private Expense expense;
   private boolean modify;
 
   private Button.ClickListener prevClick = event -> {
-    calendar = calendar.minusDays(1);
+    date = date.minusDays(1);
     removeAllComponents();
     addComponent(new DayView());
   };
   private Button.ClickListener nextClick = event -> {
-    calendar = calendar.plusDays(1);
+    date = date.plusDays(1);
     removeAllComponents();
     addComponent(new DayView());
   };
@@ -92,7 +92,7 @@ public class DayView extends DayDesign {
     }
   };
   private ValueChangeListener<LocalDate> dateChanged = event -> {
-    calendar = event.getValue();
+    date = event.getValue();
     removeAllComponents();
     addComponent(new DayView());
   };
@@ -107,11 +107,11 @@ public class DayView extends DayDesign {
     logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.category = expenseSheet.getCategoryList().get(0);
-    this.calendar = VaadinSession.getCurrent().getAttribute(LocalDate.class);
+    this.date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
 
     setCaption();
     thisDateField.setDateFormat("yyyy-MM-dd");
-    thisDateField.setValue(calendar);
+    thisDateField.setValue(date);
     previousDayButton.addClickListener(prevClick);
     thisDateField.addValueChangeListener(dateChanged);
     nextDayButton.addClickListener(nextClick);
@@ -161,7 +161,7 @@ public class DayView extends DayDesign {
       Button expButton = new Button();
       vertLay.addComponent(expButton);
       vertLay.setComponentAlignment(expButton, Alignment.TOP_CENTER);
-      DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, calendar);
+      DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, date);
       if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
         expButton.setCaption("0");
       else {
@@ -177,7 +177,7 @@ public class DayView extends DayDesign {
     expenseGrid.removeAllComponents();
     categoryLabel.setValue(category.getName());
     List<Expense> expenseList;
-    DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, calendar);
+    DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, date);
     if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
       expenseList = new ArrayList<Expense>();
     else {
@@ -220,7 +220,7 @@ public class DayView extends DayDesign {
         expenseGrid.addComponent(notifyLabel, 4, i);
       }
     }
-    buildAddNewExpense(es.prepareNewExpense(expenseSheet, calendar, category,
+    buildAddNewExpense(es.prepareNewExpense(expenseSheet, date, category,
         expenseSheet.getUserLimitList().get(0).getUser()), false);
   }
 

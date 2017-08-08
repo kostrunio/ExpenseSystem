@@ -40,7 +40,7 @@ public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
     });
   }
   
-  public void fulfill(LocalDate calendar) {
+  public void fulfill(LocalDate date) {
     List<UserLimitSumLeft> values = new ArrayList<>();
     for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
       BigDecimal actSum;
@@ -48,7 +48,7 @@ public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
         actSum = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
       else
         actSum = new BigDecimal(0);
-      values.add(new UserLimitSumLeft(userLimit, actSum, userLimit.isContinuousSummary() ? uss.calculateSum(userLimit, calendar) : userLimit.getLimit().subtract(actSum)));
+      values.add(new UserLimitSumLeft(userLimit, actSum, userLimit.isContinuousSummary() ? uss.calculateSum(userLimit, date) : userLimit.getLimit().subtract(actSum)));
     }
     setItems(values);
   }

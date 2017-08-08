@@ -33,7 +33,7 @@ public class TableView extends TableDesign {
   private ExpenseService es;
 
   private Logger logger = LogManager.getLogger();
-  private LocalDate calendar;
+  private LocalDate date;
   private ExpenseSheet expenseSheet;
   private Button.ClickListener filterClicked = event -> {
     User filterUser = null;
@@ -67,7 +67,7 @@ public class TableView extends TableDesign {
     es = AppCtxProvider.getBean(ExpenseService.class);
     logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    this.calendar = VaadinSession.getCurrent().getAttribute(LocalDate.class);
+    this.date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
     setCaption();
     fromDateField.setDateFormat("yyyy-MM-dd");
     toDateField.setDateFormat("yyyy-MM-dd");
@@ -75,8 +75,8 @@ public class TableView extends TableDesign {
 
     expenseForm.prepare(expenseSheet, this);
     
-    fromDateField.setValue(calendar.withDayOfMonth(1));
-    toDateField.setValue(calendar.withDayOfMonth(calendar.lengthOfMonth()));
+    fromDateField.setValue(date.withDayOfMonth(1));
+    toDateField.setValue(date.withDayOfMonth(date.lengthOfMonth()));
     categoryBox.setItems(expenseSheet.getCategoryList());
     userBox.setItems(expenseSheet.getUserLimitList());
     commentBox.setNewItemHandler(addComment);
