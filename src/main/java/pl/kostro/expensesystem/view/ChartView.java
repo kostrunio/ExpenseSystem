@@ -18,7 +18,6 @@ import com.vaadin.addon.charts.model.Series;
 import com.vaadin.addon.charts.model.Tooltip;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
@@ -40,12 +39,7 @@ public class ChartView extends ChartDesign {
   private Logger logger = LogManager.getLogger();
   private ExpenseSheetService eshs;
   private ExpenseSheet expenseSheet;
-  private Button.ClickListener searchClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      refreshFilter();
-    }
-  };
+  private Button.ClickListener searchClick = event -> refreshFilter();
 
   public ChartView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);

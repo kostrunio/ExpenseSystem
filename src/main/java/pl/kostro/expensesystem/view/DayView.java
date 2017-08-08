@@ -7,12 +7,13 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.ComboBox.NewItemHandler;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -44,78 +45,62 @@ public class DayView extends DayDesign {
   private Expense expense;
   private boolean modify;
 
-  private Button.ClickListener prevClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      calendar = calendar.minusDays(1);
-      removeAllComponents();
-      addComponent(new DayView());
+  private Button.ClickListener prevClick = event -> {
+    calendar = calendar.minusDays(1);
+    removeAllComponents();
+    addComponent(new DayView());
+  };
+  private Button.ClickListener nextClick = event -> {
+    calendar = calendar.plusDays(1);
+    removeAllComponents();
+    addComponent(new DayView());
+  };
+  private Button.ClickListener backClick = event -> {
+    removeAllComponents();
+    addComponent(new MonthView());
+  };
+  private Button.ClickListener categoryClick = event -> {
+    if (event.getButton().getData() instanceof Category) {
+      category = (Category) event.getButton().getData();
+      prepareExpenseListLayout();
     }
   };
-  private Button.ClickListener nextClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      calendar = calendar.plusDays(1);
-      removeAllComponents();
-      addComponent(new DayView());
+  private Button.ClickListener valueClick = event -> {
+    if (event.getButton().getData() instanceof Expense) {
+      buildAddNewExpense((Expense) event.getButton().getData(), true);
     }
   };
-  private Button.ClickListener backClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      removeAllComponents();
-      addComponent(new MonthView());
+  private Button.ClickListener removeClick = event -> {
+    if (event.getButton().getData() instanceof Expense) {
+      final Expense expense = (Expense) event.getButton().getData();
+      ConfirmDialog.show(getUI(), Msg.get("category.removeLabel"), Msg.get("category.removeQuestion"),
+          Msg.get("category.removeYes"), Msg.get("category.removeNo"), dialog -> {
+            if (dialog.isConfirmed()) {
+              es.removeExpense(expenseSheet, expense);
+              prepareCategoryListLayout();
+              prepareExpenseListLayout();
+            }
+          });
     }
   };
-  private Button.ClickListener categoryClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      if (event.getButton().getData() instanceof Category) {
-        category = (Category) event.getButton().getData();
-        prepareExpenseListLayout();
-      }
+  private Button.ClickListener saveClick = event -> {
+    if (userBox.getValue() instanceof UserLimit) {
+      es.saveExpense(expenseSheet, expense, userBox.getValue(), formulaField.getValue(),
+          commentBox.getValue(), notifyBox.getValue(), modify);
+      prepareCategoryListLayout();
+      prepareExpenseListLayout();
     }
   };
-  private Button.ClickListener valueClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      if (event.getButton().getData() instanceof Expense) {
-        buildAddNewExpense((Expense) event.getButton().getData(), true);
-      }
-    }
+  private ValueChangeListener<LocalDate> dateChanged = event -> {
+    calendar = event.getValue();
+    removeAllComponents();
+    addComponent(new DayView());
   };
-  private Button.ClickListener removeClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      if (event.getButton().getData() instanceof Expense) {
-        final Expense expense = (Expense) event.getButton().getData();
-        ConfirmDialog.show(getUI(), Msg.get("category.removeLabel"), Msg.get("category.removeQuestion"),
-            Msg.get("category.removeYes"), Msg.get("category.removeNo"), new ConfirmDialog.Listener() {
-              @Override
-              public void onClose(ConfirmDialog dialog) {
-                if (dialog.isConfirmed()) {
-                  es.removeExpense(expenseSheet, expense);
-                  prepareCategoryListLayout();
-                  prepareExpenseListLayout();
-                }
-              }
-            });
-      }
-    }
-  };
+  @SuppressWarnings("rawtypes")
+  private ValueChangeListener verifyFormula = event -> verifyFormula(formulaField.getValue());
+  private NewItemHandler addComment = event -> {};
 
-  private Button.ClickListener saveClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      if (userBox.getValue() instanceof UserLimit) {
-        es.saveExpense(expenseSheet, expense, userBox.getValue(), formulaField.getValue(),
-            commentBox.getValue(), notifyBox.getValue(), modify);
-        prepareCategoryListLayout();
-        prepareExpenseListLayout();
-      }
-    }
-  };
-
+  @SuppressWarnings("unchecked")
   public DayView() {
     es = AppCtxProvider.getBean(ExpenseService.class);
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
@@ -128,11 +113,7 @@ public class DayView extends DayDesign {
     thisDateField.setDateFormat("yyyy-MM-dd");
     thisDateField.setValue(calendar);
     previousDayButton.addClickListener(prevClick);
-    thisDateField.addValueChangeListener(event -> {
-      calendar = event.getValue();
-      removeAllComponents();
-      addComponent(new DayView());
-    });
+    thisDateField.addValueChangeListener(dateChanged);
     nextDayButton.addClickListener(nextClick);
 
     prepareCategoryListLayout();
@@ -140,11 +121,11 @@ public class DayView extends DayDesign {
 
     userBox.setEmptySelectionAllowed(false);
     userBox.setItems(expenseSheet.getUserLimitList());
-    userBox.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
-    formulaField.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
-    commentBox.setNewItemHandler(event -> {});
+    userBox.addValueChangeListener(verifyFormula);
+    formulaField.addValueChangeListener(verifyFormula);
+    commentBox.setNewItemHandler(addComment);
     commentBox.setEmptySelectionAllowed(true);
-    commentBox.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
+    commentBox.addValueChangeListener(verifyFormula);
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
     saveButton.addClickListener(saveClick);
     prepareExpenseListLayout();

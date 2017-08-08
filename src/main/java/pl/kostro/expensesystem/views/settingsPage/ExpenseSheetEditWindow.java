@@ -10,7 +10,6 @@ import org.apache.logging.log4j.Logger;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -28,6 +27,16 @@ public class ExpenseSheetEditWindow extends Window {
   private Logger logger = LogManager.getLogger();
   private final TextField nameField = new TextField(Msg.get("expenseSheet.name"));
   private ExpenseSheetEditListener listener;
+
+  private ClickListener cancelClicked = event -> close();
+  private ClickListener saveClicked = event -> {
+    if (nameField.getValue().isEmpty()) {
+      ShowNotification.fieldEmpty(nameField.getCaption());
+      return;
+    }
+    listener.expenseSheetNameEdited(nameField);
+    close();
+  };
 
   public ExpenseSheetEditWindow(ExpenseSheetEditListener listener, ExpenseSheet expenseSheet) {
     logger.info("show");
@@ -61,27 +70,12 @@ public class ExpenseSheetEditWindow extends Window {
 
     Button cancel = new Button(Msg.get("expenseSheet.cancel"));
     cancel.setClickShortcut(KeyCode.ESCAPE, null);
-    cancel.addClickListener(new ClickListener() {
-      @Override
-      public void buttonClick(final ClickEvent event) {
-        close();
-      }
-    });
+    cancel.addClickListener(cancelClicked);
 
     Button save = new Button(Msg.get("expenseSheet.save"));
     save.addStyleName(ValoTheme.BUTTON_FRIENDLY);
     save.setClickShortcut(KeyCode.ENTER, null);
-    save.addClickListener(new ClickListener() {
-      @Override
-      public void buttonClick(final ClickEvent event) {
-        if (nameField.getValue().isEmpty()) {
-          ShowNotification.fieldEmpty(nameField.getCaption());
-          return;
-        }
-        listener.expenseSheetNameEdited(nameField);
-        close();
-      }
-    });
+    save.addClickListener(saveClicked);
 
     footer.addComponents(cancel, save);
     footer.setExpandRatio(cancel, 1);

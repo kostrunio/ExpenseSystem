@@ -7,7 +7,6 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -34,6 +33,25 @@ public class AddSheetWindow extends Window {
   private final TextField nameField = new TextField(Msg.get("newSheet.label"));
   private final PasswordField passwordField = new PasswordField(Msg.get("newSheet.password"));
   private final PasswordField rePasswordField = new PasswordField(Msg.get("newSheet.repassword"));
+
+  private ClickListener cancelClicked = event -> close();
+  private ClickListener saveClicked = event -> {
+    if (nameField.isEmpty()) {
+      ShowNotification.fieldEmpty(nameField.getCaption());
+      return;
+    }
+    if (passwordField.getValue().isEmpty()
+        || rePasswordField.getValue().isEmpty()
+        || !passwordField.getValue().equals(rePasswordField.getValue())) {
+      ShowNotification.passwordProblem();
+      return;
+    }
+    RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
+    ExpenseSheet expenseSheet = eshs.createExpenseSheet(loggedUser, nameField.getValue(), passwordField.getValue());
+    VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
+    ((ExpenseSystemUI)getUI()).getMainView().refresh();
+    close();
+  };
 
   public AddSheetWindow() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
@@ -65,36 +83,12 @@ public class AddSheetWindow extends Window {
 
     Button cancel = new Button(Msg.get("newSheet.cancel"));
     cancel.setClickShortcut(KeyCode.ESCAPE, null);
-    cancel.addClickListener(new ClickListener() {
-      @Override
-      public void buttonClick(final ClickEvent event) {
-        close();
-      }
-    });
+    cancel.addClickListener(cancelClicked);
 
     Button save = new Button(Msg.get("newSheet.save"));
     save.addStyleName(ValoTheme.BUTTON_FRIENDLY);
     save.setClickShortcut(KeyCode.ENTER, null);
-    save.addClickListener(new ClickListener() {
-      @Override
-      public void buttonClick(final ClickEvent event) {
-        if (nameField.isEmpty()) {
-          ShowNotification.fieldEmpty(nameField.getCaption());
-          return;
-        }
-        if (passwordField.getValue().isEmpty()
-            || rePasswordField.getValue().isEmpty()
-            || !passwordField.getValue().equals(rePasswordField.getValue())) {
-          ShowNotification.passwordProblem();
-          return;
-        }
-        RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
-        ExpenseSheet expenseSheet = eshs.createExpenseSheet(loggedUser, nameField.getValue(), passwordField.getValue());
-        VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
-        ((ExpenseSystemUI)getUI()).getMainView().refresh();
-        close();
-      }
-    });
+    save.addClickListener(saveClicked);
 
     footer.addComponents(cancel, save);
     footer.setExpandRatio(cancel, 1);

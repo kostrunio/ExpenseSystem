@@ -11,8 +11,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox.NewItemHandler;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -39,94 +38,74 @@ public class ExpenseView extends ExpenseDesign implements View {
   private Logger logger = LogManager.getLogger();
   private LocalDate calendar = LocalDate.now();
   private ExpenseSheet expenseSheet;
-  private Button.ClickListener editClick = new ClickListener() {
-    @Override
-    public void buttonClick(final ClickEvent event) {
-      root.removeAllComponents();
-      root.addComponent(new SettingsView());
-    }
+  private Button.ClickListener editClick = event -> {
+    root.removeAllComponents();
+    root.addComponent(new SettingsView());
   };
-  private Button.ClickListener chartClick = new ClickListener() {
-    @Override
-    public void buttonClick(final ClickEvent event) {
-      root.removeAllComponents();
-      root.addComponent(new ChartView());
-    }
+  private Button.ClickListener chartClick = event -> {
+    root.removeAllComponents();
+    root.addComponent(new ChartView());
   };
-  private Button.ClickListener filterClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      searchPanel.setVisible(!searchPanel.isVisible());
-      if (searchPanel.isVisible()) {
-        prepareSearchLayout();
-      } else {
-        expenseSheet.setFilter(null);
-        mainView.removeAllComponents();
-        mainView.addComponent(new MonthView());
-      }
-    }
-  };
-  private Button.ClickListener tableClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      searchPanel.setVisible(false);
-      mainView.removeAllComponents();
-      if (yearMenu.isEnabled()) {
-        yearMenu.setEnabled(false);
-        monthMenu.setVisible(false);
-        filterButton.setEnabled(false);
-        mainView.addComponent(new TableView());
-      } else {
-        expenseSheet.setFilter(null);
-        yearMenu.setEnabled(true);
-        monthMenu.setVisible(true);
-        filterButton.setEnabled(true);
-        mainView.addComponent(new MonthView());
-      }
-    }
-  };
-  private Button.ClickListener searchClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      User filterUser = null;
-      String filterFormula = null;
-      String filterComment = null;
-      if (userCombo.getValue() instanceof UserLimit) {
-        filterUser = ((UserLimit) userCombo.getValue()).getUser();
-      }
-      if (formulaField.getValue() != null) {
-        filterFormula = formulaField.getValue().toString().replaceAll(",", ".");
-      }
-      if (commentCombo.getValue() != null) {
-        filterComment = commentCombo.getValue().toString();
-      }
-      List<Category> categories = new ArrayList<Category>();
-      categories.add((Category) categoryCombo.getValue());
-      List<User> users = new ArrayList<User>();
-      users.add((User) filterUser);
-      expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));
+  private Button.ClickListener filterClick = event -> {
+    searchPanel.setVisible(!searchPanel.isVisible());
+    if (searchPanel.isVisible()) {
+      prepareSearchLayout();
+    } else {
+      expenseSheet.setFilter(null);
       mainView.removeAllComponents();
       mainView.addComponent(new MonthView());
     }
   };
-  private MenuBar.Command yearCommand = new MenuBar.Command() {
-    @Override
-    public void menuSelected(MenuItem selectedItem) {
-      calendar = CalendarUtils.setFirstDay(calendar, selectedItem.getText());
-      mainView.removeAllComponents();
+  private Button.ClickListener tableClick = event -> {
+    searchPanel.setVisible(false);
+    mainView.removeAllComponents();
+    if (yearMenu.isEnabled()) {
+      yearMenu.setEnabled(false);
+      monthMenu.setVisible(false);
+      filterButton.setEnabled(false);
+      mainView.addComponent(new TableView());
+    } else {
+      expenseSheet.setFilter(null);
+      yearMenu.setEnabled(true);
+      monthMenu.setVisible(true);
+      filterButton.setEnabled(true);
       mainView.addComponent(new MonthView());
-      checkedYear(selectedItem.getText());
     }
   };
-  private MenuBar.Command monthCommand = new MenuBar.Command() {
-    @Override
-    public void menuSelected(MenuItem selectedItem) {
-      mainView.removeAllComponents();
-      CalendarUtils.setFirstDay(calendar, CalendarUtils.getMonthNumber(selectedItem.getText()));
-      mainView.addComponent(new MonthView());
-      checkedMonth(selectedItem.getText());
+  private Button.ClickListener searchClick = event -> {
+    User filterUser = null;
+    String filterFormula = null;
+    String filterComment = null;
+    if (userCombo.getValue() instanceof UserLimit) {
+      filterUser = ((UserLimit) userCombo.getValue()).getUser();
     }
+    if (formulaField.getValue() != null) {
+      filterFormula = formulaField.getValue().toString().replaceAll(",", ".");
+    }
+    if (commentCombo.getValue() != null) {
+      filterComment = commentCombo.getValue().toString();
+    }
+    List<Category> categories = new ArrayList<Category>();
+    categories.add((Category) categoryCombo.getValue());
+    List<User> users = new ArrayList<User>();
+    users.add((User) filterUser);
+    expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));
+    mainView.removeAllComponents();
+    mainView.addComponent(new MonthView());
   };
+  private MenuBar.Command yearCommand = selectedItem -> {
+  calendar = CalendarUtils.setFirstDay(calendar, selectedItem.getText());
+  mainView.removeAllComponents();
+  mainView.addComponent(new MonthView());
+  checkedYear(selectedItem.getText());
+  };
+  private MenuBar.Command monthCommand = selectedItem -> {
+    mainView.removeAllComponents();
+    CalendarUtils.setFirstDay(calendar, CalendarUtils.getMonthNumber(selectedItem.getText()));
+    mainView.addComponent(new MonthView());
+    checkedMonth(selectedItem.getText());
+  };
+  private NewItemHandler addComment = event -> {};
   
   public ExpenseView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
@@ -152,7 +131,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     categoryCombo.setItems(expenseSheet.getCategoryList());
     userCombo.setItems(expenseSheet.getUserLimitList());
     formulaField.clear();
-    commentCombo.setNewItemHandler(event -> {});
+    commentCombo.setNewItemHandler(addComment);
     commentCombo.setEmptySelectionAllowed(true);
     commentCombo.setItems(eshs.getAllComments(expenseSheet));
   }

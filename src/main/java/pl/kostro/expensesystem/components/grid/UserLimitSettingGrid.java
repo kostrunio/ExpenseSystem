@@ -4,9 +4,11 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 
 import com.vaadin.data.Binder;
+import com.vaadin.event.selection.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.components.grid.EditorSaveListener;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
@@ -30,6 +32,25 @@ public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsCha
   private Button deleteUserLimitButton;
 
   private ExpenseSheet expenseSheet;
+
+  private SelectionListener<UserLimit> itemSelected = event -> deleteUserLimitButton.setEnabled(event.getAllSelectedItems().size() != 0);
+  private EditorSaveListener<UserLimit> saveUserLimit = event -> {
+    uls.merge(event.getBean());
+    refreshValues();
+  };
+  private ClickListener addUserClicked = event -> UI.getCurrent().addWindow(new AddUserWindow(UserLimitSettingGrid.this));
+  private ClickListener deleteUserClicked = event -> {
+    ConfirmDialog.show(getUI(), Msg.get("settingsPage.removeUserLabel"),
+        MessageFormat.format(Msg.get("settingsPage.removeUserQuestion"),
+            new Object[] { getItem().getUser().getName() }),
+        Msg.get("settingsPage.removeUserYes"), Msg.get("settingsPage.removeUserNo"), dialog -> {
+          if (dialog.isConfirmed()) {
+            ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+            uls.removeUserLimit(expenseSheet, getItem());
+            refreshValues();
+          }
+        });
+  };
 
   public UserLimitSettingGrid() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
@@ -55,47 +76,22 @@ public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsCha
       .setCaption(Msg.get("settingsPage.userOrder"))
       .setEditorBinding(orderBinder);
 
-    addSelectionListener(event -> deleteUserLimitButton.setEnabled(event.getAllSelectedItems().size() != 0));
+    addSelectionListener(itemSelected);
 
     getEditor().setEnabled(true);
     getEditor().setSaveCaption(Msg.get("settingsPage.userSave"));
     getEditor().setCancelCaption(Msg.get("settingsPage.userCancel"));
-    getEditor().addSaveListener(event -> {
-      uls.merge(event.getBean());
-      refreshValues();
-    });
+    getEditor().addSaveListener(saveUserLimit);
   }
 
   public void setAddUserLimitButton(Button button) {
     addUserLimitButton = button;
-    addUserLimitButton.addClickListener(new Button.ClickListener() {
-      @Override
-      public void buttonClick(ClickEvent event) {
-        UI.getCurrent().addWindow(new AddUserWindow(UserLimitSettingGrid.this));
-      }
-    });
+    addUserLimitButton.addClickListener(addUserClicked);
   }
 
   public void setDeleteUserLimitButton(Button button) {
     deleteUserLimitButton = button;
-    deleteUserLimitButton.addClickListener(new Button.ClickListener() {
-      @Override
-      public void buttonClick(ClickEvent event) {
-        ConfirmDialog.show(getUI(), Msg.get("settingsPage.removeUserLabel"),
-            MessageFormat.format(Msg.get("settingsPage.removeUserQuestion"),
-                new Object[] { getItem().getUser().getName() }),
-            Msg.get("settingsPage.removeUserYes"), Msg.get("settingsPage.removeUserNo"), new ConfirmDialog.Listener() {
-              @Override
-              public void onClose(ConfirmDialog dialog) {
-                if (dialog.isConfirmed()) {
-                  ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-                  uls.removeUserLimit(expenseSheet, getItem());
-                  refreshValues();
-                }
-              }
-            });
-      }
-    });
+    deleteUserLimitButton.addClickListener(deleteUserClicked);
   }
 
   public void refreshValues() {

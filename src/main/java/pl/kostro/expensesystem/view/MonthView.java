@@ -13,30 +13,28 @@ import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.MonthDesign;
 
 import com.google.common.eventbus.Subscribe;
+import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
 public class MonthView extends MonthDesign {
 
   private Logger logger = LogManager.getLogger();
   private LocalDate date;
-  private Button.ClickListener prevClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      date = date.minusMonths(1);
-      showCalendar();
-    }
+  private Button.ClickListener prevClick = event -> {
+    date = date.minusMonths(1);
+    showCalendar();
   };
-  private Button.ClickListener nextClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      date = date.plusMonths(1);
-      showCalendar();
-    }
+  private Button.ClickListener nextClick = event -> {
+    date = date.plusMonths(1);
+    showCalendar();
+  };
+  private ValueChangeListener<LocalDate> monthChanged = event -> {
+    date = event.getValue();
+    showCalendar();
   };
 
   public MonthView() {
@@ -50,10 +48,7 @@ public class MonthView extends MonthDesign {
     nextMonthButton.addClickListener(nextClick);
     firstDateField.setDateFormat("yyyy-MM-dd");
     thisMonthField.setDateFormat("MMMM yyyy");
-    thisMonthField.addValueChangeListener(event -> {
-      date = event.getValue();
-      showCalendar();
-    });
+    thisMonthField.addValueChangeListener(monthChanged);
     lastDateField.setDateFormat("yyyy-MM-dd");
 
     setCalendarSize();

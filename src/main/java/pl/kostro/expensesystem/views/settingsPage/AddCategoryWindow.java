@@ -7,7 +7,6 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -30,6 +29,18 @@ public class AddCategoryWindow extends Window {
 
   private final TextField nameField = new TextField(Msg.get("newCategory.label"));
   private SettingsChangeListener listener;
+
+  private ClickListener cancelClicked = event -> close();
+  private ClickListener saveClicked = event -> {
+    if (nameField.isEmpty()) {
+      ShowNotification.fieldEmpty(nameField.getCaption());
+      return;
+    }
+    ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    cs.createCategory(expenseSheet, nameField.getValue());
+    listener.refreshValues();
+    close();
+  };
 
   public AddCategoryWindow(SettingsChangeListener listener) {
     cs = AppCtxProvider.getBean(CategoryService.class);
@@ -62,29 +73,12 @@ public class AddCategoryWindow extends Window {
 
     Button cancel = new Button(Msg.get("newCategory.cancel"));
     cancel.setClickShortcut(KeyCode.ESCAPE, null);
-    cancel.addClickListener(new ClickListener() {
-      @Override
-      public void buttonClick(final ClickEvent event) {
-        close();
-      }
-    });
+    cancel.addClickListener(cancelClicked);
 
     Button save = new Button(Msg.get("newCategory.save"));
     save.addStyleName(ValoTheme.BUTTON_FRIENDLY);
     save.setClickShortcut(KeyCode.ENTER, null);
-    save.addClickListener(new ClickListener() {
-      @Override
-      public void buttonClick(final ClickEvent event) {
-        if (nameField.isEmpty()) {
-          ShowNotification.fieldEmpty(nameField.getCaption());
-          return;
-        }
-        ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-        cs.createCategory(expenseSheet, nameField.getValue());
-        listener.refreshValues();
-        close();
-      }
-    });
+    save.addClickListener(saveClicked);
 
     footer.addComponents(cancel, save);
     footer.setExpandRatio(cancel, 1);

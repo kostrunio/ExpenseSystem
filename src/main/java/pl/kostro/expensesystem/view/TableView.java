@@ -7,11 +7,11 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.vaadin.event.selection.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox.NewItemHandler;
 import com.vaadin.ui.Grid;
 
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -36,33 +36,32 @@ public class TableView extends TableDesign {
   private Logger logger = LogManager.getLogger();
   private LocalDate calendar;
   private ExpenseSheet expenseSheet;
-  private Button.ClickListener filterClick = new ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      User filterUser = null;
-      if (userBox.getValue() instanceof UserLimit) {
-        filterUser = ((UserLimit) userBox.getValue()).getUser();
-      }
-      List<Category> categories = new ArrayList<Category>();
-      categories.add((Category) categoryBox.getValue());
-      List<User> users = new ArrayList<User>();
-      users.add((User) filterUser);
-      expenseSheet.setFilter(new Filter(
-          fromDateField.getValue(),
-          toDateField.getValue(),
-          categories,
-          users,
-          formulaField.getValue(),
-          (String)commentBox.getValue()));
-      refreshExpenses();
+  private Button.ClickListener filterClicked = event -> {
+    User filterUser = null;
+    if (userBox.getValue() instanceof UserLimit) {
+      filterUser = ((UserLimit) userBox.getValue()).getUser();
     }
+    List<Category> categories = new ArrayList<Category>();
+    categories.add((Category) categoryBox.getValue());
+    List<User> users = new ArrayList<User>();
+    users.add((User) filterUser);
+    expenseSheet.setFilter(new Filter(
+        fromDateField.getValue(),
+        toDateField.getValue(),
+        categories,
+        users,
+        formulaField.getValue(),
+        (String)commentBox.getValue()));
+    refreshExpenses();
   };
-  private Button.ClickListener newClick = new ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      expenseForm.edit(new Expense());
-    }
+  private Button.ClickListener newClicked = event -> expenseForm.edit(new Expense());
+  private SelectionListener<Expense> itemClicked = event -> {
+    if (expenseGrid.getSelectedItems().size() != 0)
+      expenseForm.edit(expenseGrid.getSelectedItems().iterator().next());
+    else
+      expenseForm.setVisible(false);
   };
+  private NewItemHandler addComment = event -> {};
   
   public TableView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
@@ -81,16 +80,11 @@ public class TableView extends TableDesign {
     toDateField.setValue(CalendarUtils.getLastDay(calendar));
     categoryBox.setItems(expenseSheet.getCategoryList());
     userBox.setItems(expenseSheet.getUserLimitList());
-    commentBox.setNewItemHandler(event -> {});
+    commentBox.setNewItemHandler(addComment);
     commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshs.getAllComments(expenseSheet));
-    filterButton.addClickListener(filterClick);
-    newExpenseButton.addClickListener(newClick);
-    expenseGrid.addSelectionListener(event -> {
-      if (expenseGrid.getSelectedItems().size() != 0)
-        expenseForm.edit(expenseGrid.getSelectedItems().iterator().next());
-      else
-        expenseForm.setVisible(false);
-    });
+    filterButton.addClickListener(filterClicked);
+    newExpenseButton.addClickListener(newClicked);
+    expenseGrid.addSelectionListener(itemClicked);
     
     if (expenseSheet.getFilter() != null) {
       if (expenseSheet.getFilter().getCategories() != null

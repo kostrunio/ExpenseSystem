@@ -5,9 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.LoginForm;
-import com.vaadin.ui.LoginForm.LoginEvent;
 import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -25,40 +23,31 @@ public class LoginView extends LoginDesign {
 
   private Logger logger = LogManager.getLogger();
 
-  private Button.ClickListener signInClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      signInEnable();
-      registerForm.setVisible(false);
-      loginForm.setVisible(true);
-    }
+  private Button.ClickListener signInClick = event -> {
+    signInEnable();
+    registerForm.setVisible(false);
+    loginForm.setVisible(true);
   };
-  private Button.ClickListener signUpClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      signUpEnable();
-      loginForm.setVisible(false);
-      registerForm.setVisible(true);
-    }
+  private Button.ClickListener signUpClick = event -> {
+    signUpEnable();
+    loginForm.setVisible(false);
+    registerForm.setVisible(true);
   };
-  private LoginForm.LoginListener loginEvent = new LoginForm.LoginListener() {
-    @Override
-    public void onLogin(LoginEvent event) {
-      RealUser loggedUser = null;
-      try {
-        loggedUser = rus.getUserData(event.getLoginParameter("username"), event.getLoginParameter("password"));
-        if (loggedUser == null) {
-          ShowNotification.logonProblem();
-          loginForm.getLoginButton().setEnabled(true);
-        } else {
-          VaadinSession.getCurrent().setAttribute(RealUser.class, loggedUser);
-          ((ExpenseSystemUI) getUI()).updateContent();
-        }
-      } catch (Exception e) {
-        e.printStackTrace();
-        ShowNotification.dbProblem(e.getMessage());
+  private LoginForm.LoginListener loginEvent = event -> {
+    RealUser loggedUser = null;
+    try {
+      loggedUser = rus.getUserData(event.getLoginParameter("username"), event.getLoginParameter("password"));
+      if (loggedUser == null) {
+        ShowNotification.logonProblem();
         loginForm.getLoginButton().setEnabled(true);
+      } else {
+        VaadinSession.getCurrent().setAttribute(RealUser.class, loggedUser);
+        ((ExpenseSystemUI) getUI()).updateContent();
       }
+    } catch (Exception e) {
+      e.printStackTrace();
+      ShowNotification.dbProblem(e.getMessage());
+      loginForm.getLoginButton().setEnabled(true);
     }
   };
 

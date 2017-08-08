@@ -14,7 +14,6 @@ import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.ContentMode;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
@@ -39,35 +38,18 @@ public class MainView extends MainDesign {
 
   private Map<String, Button> viewButtons = new HashMap<String, Button>();
 
-  private ClickListener showMenuClick = new ClickListener() {
-    @Override
-    public void buttonClick(final ClickEvent event) {
-      if (menuPart.getStyleName().contains(VALO_MENU_VISIBLE)) {
-        menuPart.removeStyleName(VALO_MENU_VISIBLE);
-      } else {
-        menuPart.addStyleName(VALO_MENU_VISIBLE);
-      }
+  private ClickListener showMenuClick = event -> {
+    if (menuPart.getStyleName().contains(VALO_MENU_VISIBLE)) {
+      menuPart.removeStyleName(VALO_MENU_VISIBLE);
+    } else {
+      menuPart.addStyleName(VALO_MENU_VISIBLE);
     }
   };
-  private ClickListener addSheetClick = new ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      UI.getCurrent().addWindow(new AddSheetWindow());
-    }
-  };
-  private ClickListener accountClick = new ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      UI.getCurrent().getNavigator().navigateTo("account");
-    }
-  };
-  private ClickListener logoutClick = new ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      VaadinSession.getCurrent().getSession().invalidate();
-      Page.getCurrent().reload();
-    }
-
+  private ClickListener addSheetClick = event -> UI.getCurrent().addWindow(new AddSheetWindow());
+  private ClickListener accountClick = event -> UI.getCurrent().getNavigator().navigateTo("account");
+  private ClickListener logoutClick = event -> {
+    VaadinSession.getCurrent().getSession().invalidate();
+    Page.getCurrent().reload();
   };
   private ViewProvider errorProvider = new ViewProvider() {
     @Override
@@ -128,12 +110,7 @@ public class MainView extends MainDesign {
   }
 
   private void createButton(final String name, String caption, boolean defaultExpense) {
-    Button button = new Button(caption, new ClickListener() {
-      @Override
-      public void buttonClick(ClickEvent event) {
-        getUI().getNavigator().navigateTo(name);
-      }
-    });
+    Button button = new Button(caption, event -> getUI().getNavigator().navigateTo(name));
     button.setPrimaryStyleName(ValoTheme.MENU_ITEM);
     if (defaultExpense)
       button.setIcon(VaadinIcons.HOME);

@@ -2,10 +2,10 @@ package pl.kostro.expensesystem.components.form;
 
 import java.time.LocalDate;
 
+import com.vaadin.data.HasValue;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.ComboBox.NewItemHandler;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
@@ -30,47 +30,38 @@ public class ExpenseForm extends ExpenseFormDesign {
   private Expense expense;
   private TableView view;
 
-  private Button.ClickListener saveClick = new ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      expense.setDate(dateField.getValue());
-      expense.setCategory((Category) categoryBox.getValue());
-      expense.setUser(((UserLimit) userBox.getValue()).getUser());
-      expense.setFormula(formulaField.getValue());
-      if (commentBox.getValue() != null && !commentBox.getValue().toString().isEmpty())
-        expense.setComment(commentBox.getValue().toString());
-      expense.setNotify(notifyBox.getValue());
-      expense.setExpenseSheet(expenseSheet);
-      expense = es.merge(expense);
-      if (!expenseSheet.getExpenseList().contains(expense))
-        expenseSheet.getExpenseList().add(expense);
-      view.refreshExpenses();
-    }
+  private Button.ClickListener saveClick = event -> {
+    expense.setDate(dateField.getValue());
+    expense.setCategory((Category) categoryBox.getValue());
+    expense.setUser(((UserLimit) userBox.getValue()).getUser());
+    expense.setFormula(formulaField.getValue());
+    if (commentBox.getValue() != null && !commentBox.getValue().toString().isEmpty())
+      expense.setComment(commentBox.getValue().toString());
+    expense.setNotify(notifyBox.getValue());
+    expense.setExpenseSheet(expenseSheet);
+    expense = es.merge(expense);
+    if (!expenseSheet.getExpenseList().contains(expense))
+      expenseSheet.getExpenseList().add(expense);
+    view.refreshExpenses();
   };
-  private Button.ClickListener duplicateClick = new ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      Expense newExpense = new Expense(expense.getDate(), expense.getFormula(), expense.getCategory(),
-          expense.getUser(), expense.getComment(), expense.isNotify(), expense.getExpenseSheet());
-      edit(newExpense);
-      saveButton.setEnabled(false);
-    }
+  private Button.ClickListener duplicateClick = event -> {
+    Expense newExpense = new Expense(expense.getDate(), expense.getFormula(), expense.getCategory(),
+        expense.getUser(), expense.getComment(), expense.isNotify(), expense.getExpenseSheet());
+    edit(newExpense);
+    saveButton.setEnabled(false);
   };
-  private Button.ClickListener removeClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      ConfirmDialog.show(getUI(), Msg.get("expensForm.removeLabel"), Msg.get("expensForm.removeQuestion"),
-          Msg.get("expensForm.removeYes"), Msg.get("expensForm.removeNo"), new ConfirmDialog.Listener() {
-            @Override
-            public void onClose(ConfirmDialog dialog) {
-              if (dialog.isConfirmed()) {
-                es.removeExpense(expenseSheet, expense);
-                view.refreshExpenses();
-              }
-            }
-          });
-    }
+  private Button.ClickListener removeClick = event -> {
+    ConfirmDialog.show(getUI(), Msg.get("expensForm.removeLabel"), Msg.get("expensForm.removeQuestion"),
+        Msg.get("expensForm.removeYes"), Msg.get("expensForm.removeNo"), dialog -> {
+          if (dialog.isConfirmed()) {
+            es.removeExpense(expenseSheet, expense);
+            view.refreshExpenses();
+          }
+    });
   };
+  @SuppressWarnings("rawtypes")
+  private HasValue.ValueChangeListener verifyFormula = event -> verifyFormula(formulaField.getValue());
+  private NewItemHandler addNewComment = newItem -> {};
 
   public ExpenseForm() {
     es = AppCtxProvider.getBean(ExpenseService.class);
@@ -90,24 +81,25 @@ public class ExpenseForm extends ExpenseFormDesign {
     notifyBox.setCaption(Msg.get("expensForm.notify"));
   }
 
+  @SuppressWarnings("unchecked")
   private void configureComponents() {
     dateField.setDateFormat("yyyy-MM-dd");
-    dateField.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
+    dateField.addValueChangeListener(verifyFormula);
 
     categoryBox.setEmptySelectionAllowed(false);
-    categoryBox.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
+    categoryBox.addValueChangeListener(verifyFormula);
 
     userBox.setEmptySelectionAllowed(false);
-    userBox.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
+    userBox.addValueChangeListener(verifyFormula);
 
     formulaField.focus();
-    formulaField.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
+    formulaField.addValueChangeListener(verifyFormula);
 
-    commentBox.setNewItemHandler(inputString -> {});
+    commentBox.setNewItemHandler(addNewComment);
     commentBox.setEmptySelectionAllowed(true);
-    commentBox.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
+    commentBox.addValueChangeListener(verifyFormula);
 
-    notifyBox.addValueChangeListener(event -> verifyFormula(formulaField.getValue()));
+    notifyBox.addValueChangeListener(verifyFormula);
 
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
     saveButton.addClickListener(saveClick);

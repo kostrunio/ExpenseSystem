@@ -4,13 +4,15 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 
 import com.vaadin.data.Binder;
+import com.vaadin.event.selection.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.components.grid.EditorSaveListener;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
@@ -32,6 +34,34 @@ public class CategorySettingGrid extends Grid<Category> implements SettingsChang
   private Button moveUpCategoryButton;
   private Button moveDownCategoryButton;
   private Button deleteCategoryButton;
+  
+  private SelectionListener<Category> itemSelected = event -> {
+    moveUpCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
+    moveDownCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
+    deleteCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
+  };
+  private EditorSaveListener<Category> saveCategory = event -> cs.merge(event.getBean());
+  private ClickListener addCategoryClicked = event -> UI.getCurrent().addWindow(new AddCategoryWindow(CategorySettingGrid.this));
+  private ClickListener moveUpClicked = event -> {
+    Category category = getItem();
+    expenseSheet = eshs.moveCategoryUp(expenseSheet, category);
+    refreshValues();
+  };
+  private ClickListener moveDownClick = event -> {
+    Category category = getItem();
+    expenseSheet = eshs.moveCategoryDown(expenseSheet, category);
+    refreshValues();
+  };
+  private ClickListener deleteCategoryClick = event -> {
+    ConfirmDialog.show(getUI(), Msg.get("settingsPage.removeCategoryLabel"),
+        MessageFormat.format(Msg.get("settingsPage.removeCategoryQuestion"), new Object[] { getItem().getName() }),
+        Msg.get("settingsPage.removeCategoryYes"), Msg.get("settingsPage.removeCategoryNo"), dialog -> {
+          if (dialog.isConfirmed()) {
+            expenseSheet = cs.removeCategory(expenseSheet, getItem());
+            refreshValues();
+          }
+        });
+  };
 
   public CategorySettingGrid() {
     cs = AppCtxProvider.getBean(CategoryService.class);
@@ -52,71 +82,32 @@ public class CategorySettingGrid extends Grid<Category> implements SettingsChang
       .setCaption(Msg.get("settingsPage.categoryMultiplier"))
       .setEditorBinding(multiplierBinder);
 
-    addSelectionListener(event -> {
-      moveUpCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
-      moveDownCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
-      deleteCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
-    });
+    addSelectionListener(itemSelected);
     
     getEditor().setEnabled(true);
     getEditor().setSaveCaption(Msg.get("settingsPage.categorySave"));
     getEditor().setCancelCaption(Msg.get("settingsPage.categoryCancel"));
-    getEditor().addSaveListener(event -> cs.merge(event.getBean()));
+    getEditor().addSaveListener(saveCategory);
   }
 
   public void setAddCategoryButton(Button button) {
     addCategoryButton = button;
-    addCategoryButton.addClickListener(new Button.ClickListener() {
-      @Override
-      public void buttonClick(ClickEvent event) {
-        UI.getCurrent().addWindow(new AddCategoryWindow(CategorySettingGrid.this));
-      }
-    });
+    addCategoryButton.addClickListener(addCategoryClicked);
   }
 
   public void setMoveUpCategoryButton(Button button) {
     moveUpCategoryButton = button;
-    moveUpCategoryButton.addClickListener(new Button.ClickListener() {
-      @Override
-      public void buttonClick(ClickEvent event) {
-        Category category = getItem();
-        expenseSheet = eshs.moveCategoryUp(expenseSheet, category);
-        refreshValues();
-      }
-    });
+    moveUpCategoryButton.addClickListener(moveUpClicked);
   }
 
   public void setMoveDownCategoryButton(Button button) {
     moveDownCategoryButton = button;
-    moveDownCategoryButton.addClickListener(new Button.ClickListener() {
-      @Override
-      public void buttonClick(ClickEvent event) {
-        Category category = getItem();
-        expenseSheet = eshs.moveCategoryDown(expenseSheet, category);
-        refreshValues();
-      }
-    });
+    moveDownCategoryButton.addClickListener(moveDownClick);
   }
 
   public void setDeleteCategoryButton(Button button) {
     deleteCategoryButton = button;
-    deleteCategoryButton.addClickListener(new Button.ClickListener() {
-      @Override
-      public void buttonClick(ClickEvent event) {
-        ConfirmDialog.show(getUI(), Msg.get("settingsPage.removeCategoryLabel"),
-            MessageFormat.format(Msg.get("settingsPage.removeCategoryQuestion"), new Object[] { getItem().getName() }),
-            Msg.get("settingsPage.removeCategoryYes"), Msg.get("settingsPage.removeCategoryNo"),
-            new ConfirmDialog.Listener() {
-              @Override
-              public void onClose(ConfirmDialog dialog) {
-                if (dialog.isConfirmed()) {
-                  expenseSheet = cs.removeCategory(expenseSheet, getItem());
-                  refreshValues();
-                }
-              }
-            });
-      }
-    });
+    deleteCategoryButton.addClickListener(deleteCategoryClick);
   }
 
   public void refreshValues() {

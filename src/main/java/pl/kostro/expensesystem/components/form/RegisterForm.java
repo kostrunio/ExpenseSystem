@@ -1,6 +1,5 @@
 package pl.kostro.expensesystem.components.form;
 
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -17,24 +16,21 @@ public class RegisterForm extends RegisterFormDesign {
   
   private RealUserService rus;
   
-  private ClickListener saveListener = new ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      if (!nameField.getValue().isEmpty())
-        if (rus.findRealUser(nameField.getValue()) != null) {
-          ShowNotification.registerProblem(nameField.getValue());
-          return;
-        }
-      if (!nameField.getValue().isEmpty() && !passwordField.getValue().isEmpty()
-          && passwordField.getValue().equals(rePasswordField.getValue())) {
-        RealUser realUser = rus.createRealUser(nameField.getValue(), passwordField.getValue(), emailField.getValue());
-        SendEmail.welcome(realUser);
-        ShowNotification.registerOK();
-        ((ExpenseSystemUI) getUI()).updateContent();
-      } else {
-        ShowNotification.registerProblem();
-        saveButton.setEnabled(true);
+  private ClickListener saveListener = event -> {
+    if (!nameField.getValue().isEmpty())
+      if (rus.findRealUser(nameField.getValue()) != null) {
+        ShowNotification.registerProblem(nameField.getValue());
+        return;
       }
+    if (!nameField.getValue().isEmpty() && !passwordField.getValue().isEmpty()
+        && passwordField.getValue().equals(rePasswordField.getValue())) {
+      RealUser realUser = rus.createRealUser(nameField.getValue(), passwordField.getValue(), emailField.getValue());
+      SendEmail.welcome(realUser);
+      ShowNotification.registerOK();
+      ((ExpenseSystemUI) getUI()).updateContent();
+    } else {
+      ShowNotification.registerProblem();
+      saveButton.setEnabled(true);
     }
   };
 

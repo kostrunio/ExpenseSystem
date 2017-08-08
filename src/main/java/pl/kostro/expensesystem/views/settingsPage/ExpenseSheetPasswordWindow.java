@@ -13,7 +13,6 @@ import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
@@ -30,6 +29,22 @@ public class ExpenseSheetPasswordWindow extends Window {
 
   private Logger logger = LogManager.getLogger();
   private final PasswordField nameField = new PasswordField();
+
+  private ClickListener cancelClicked = event -> close();
+  private ClickListener saveClicked = event -> {
+    ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    expenseSheet.setKey(nameField.getValue());
+    if (expenseSheet.getUserLimitList().size() > 0) {
+      try {
+        expenseSheet.getUserLimitList().get(0).getLimit();
+      } catch (NullPointerException e) {
+        ShowNotification.badSheetPassword();
+        expenseSheet.setKey(null);
+        return;
+      }
+    }
+    close();
+  };
 
   public ExpenseSheetPasswordWindow() {
     logger.info("show");
@@ -61,33 +76,12 @@ public class ExpenseSheetPasswordWindow extends Window {
 
     Button cancel = new Button(Msg.get("expenseSheetPassord.cancel"));
     cancel.setClickShortcut(KeyCode.ESCAPE, null);
-    cancel.addClickListener(new ClickListener() {
-      @Override
-      public void buttonClick(final ClickEvent event) {
-        close();
-      }
-    });
+    cancel.addClickListener(cancelClicked);
 
     Button save = new Button(Msg.get("expenseSheetPassord.save"));
     save.addStyleName(ValoTheme.BUTTON_FRIENDLY);
     save.setClickShortcut(KeyCode.ENTER, null);
-    save.addClickListener(new ClickListener() {
-      @Override
-      public void buttonClick(final ClickEvent event) {
-        ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-        expenseSheet.setKey(nameField.getValue());
-        if (expenseSheet.getUserLimitList().size() > 0) {
-          try {
-            expenseSheet.getUserLimitList().get(0).getLimit();
-          } catch (NullPointerException e) {
-            ShowNotification.badSheetPassword();
-            expenseSheet.setKey(null);
-            return;
-          }
-        }
-        close();
-      }
-    });
+    save.addClickListener(saveClicked);
 
     footer.addComponents(cancel, save);
     footer.setExpandRatio(cancel, 1);

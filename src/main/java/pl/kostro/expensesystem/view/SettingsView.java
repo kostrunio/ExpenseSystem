@@ -7,8 +7,6 @@ import org.apache.logging.log4j.Logger;
 
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
@@ -33,29 +31,15 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
   private ExpenseSheetService eshs;
   private RealUserService rus;
   private ExpenseSheet expenseSheet;
-  private Button.ClickListener editClick = new ClickListener() {
-    @Override
-    public void buttonClick(final ClickEvent event) {
-      UI.getCurrent().addWindow(new ExpenseSheetEditWindow(SettingsView.this, expenseSheet));
-    }
-  };
-  private Button.ClickListener passwordClick = new ClickListener() {
-    @Override
-    public void buttonClick(final ClickEvent event) {
-      UI.getCurrent().addWindow(new ExpenseSheetEditPasswordWindow(SettingsView.this));
-    }
-  };
-  private Button.ClickListener removeClick = new Button.ClickListener() {
-    @Override
-    public void buttonClick(ClickEvent event) {
-      ConfirmDialog.show(getUI(),
-          Msg.get("settingsPage.removeSheetLabel"),
-          MessageFormat.format(Msg.get("settingsPage.removeSheetQuestion"), expenseSheet.getName()),
-          Msg.get("settingsPage.removeSheetYes"),
-          Msg.get("settingsPage.removeSheetNo"),
-          new ConfirmDialog.Listener() {
-        @Override
-        public void onClose(ConfirmDialog dialog) {
+  private Button.ClickListener editClick = event -> UI.getCurrent().addWindow(new ExpenseSheetEditWindow(SettingsView.this, expenseSheet));
+  private Button.ClickListener passwordClick = event -> UI.getCurrent().addWindow(new ExpenseSheetEditPasswordWindow(SettingsView.this));
+  private Button.ClickListener removeClick = event -> {
+    ConfirmDialog.show(getUI(),
+        Msg.get("settingsPage.removeSheetLabel"),
+        MessageFormat.format(Msg.get("settingsPage.removeSheetQuestion"), expenseSheet.getName()),
+        Msg.get("settingsPage.removeSheetYes"),
+        Msg.get("settingsPage.removeSheetNo"),
+        dialog -> {
           if (dialog.isConfirmed()) {
             eshs.removeExpenseSheet(expenseSheet);
             RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
@@ -66,9 +50,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
             ((ExpenseSystemUI)getUI()).getMainView().refresh();
             UI.getCurrent().getNavigator().navigateTo("");
           }
-        }
-      });
-    }
+        });
   };
 
   public SettingsView() {
