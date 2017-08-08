@@ -36,7 +36,7 @@ public class ExpenseView extends ExpenseDesign implements View {
   private ExpenseSheetService eshs;
 
   private Logger logger = LogManager.getLogger();
-  private LocalDate calendar = LocalDate.now();
+  private LocalDate date = LocalDate.now();
   private ExpenseSheet expenseSheet;
   private Button.ClickListener editClick = event -> {
     root.removeAllComponents();
@@ -94,14 +94,16 @@ public class ExpenseView extends ExpenseDesign implements View {
     mainView.addComponent(new MonthView());
   };
   private MenuBar.Command yearCommand = selectedItem -> {
-  calendar = CalendarUtils.setFirstDay(calendar, selectedItem.getText());
+  date = date.withYear(Integer.parseInt(selectedItem.getText())).withDayOfMonth(1);
+  VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
   mainView.removeAllComponents();
   mainView.addComponent(new MonthView());
   checkedYear(selectedItem.getText());
   };
   private MenuBar.Command monthCommand = selectedItem -> {
     mainView.removeAllComponents();
-    CalendarUtils.setFirstDay(calendar, CalendarUtils.getMonthNumber(selectedItem.getText()));
+    date = date.withMonth(CalendarUtils.getMonthNumber(selectedItem.getText())).withDayOfMonth(1);
+    VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
     mainView.addComponent(new MonthView());
     checkedMonth(selectedItem.getText());
   };
@@ -144,15 +146,15 @@ public class ExpenseView extends ExpenseDesign implements View {
     for (String year : eshs.getYearList(expenseSheet))
       yearMenu.addItem(year, yearCommand).setCheckable(true);
     filterButton.addClickListener(filterClick);
+    searchButton.addClickListener(searchClick);
     tableButton.addClickListener(tableClick);
     for (String monthName : CalendarUtils.getMonthsName())
       monthMenu.addItem(monthName, monthCommand).setCheckable(true);
-    searchButton.addClickListener(searchClick);
     root.addComponent(content);
     root.setExpandRatio(content, 1);
 
-    calendar = calendar.withDayOfMonth(1);
-    VaadinSession.getCurrent().setAttribute(LocalDate.class, calendar);
+    date = date.withDayOfMonth(1);
+    VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
     mainView.addComponent(new MonthView());
   }
 

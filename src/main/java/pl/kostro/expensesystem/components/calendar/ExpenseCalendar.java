@@ -39,8 +39,7 @@ public class ExpenseCalendar extends Calendar {
     @Override
     public List<CalendarEvent> getEvents(Date startDate, Date endDate) {
       Map<LocalDate, DateExpense> eventToShow = eshs.prepareExpenseMap(expenseSheet, startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
-          CalendarUtils.getFirstDay(calendar), CalendarUtils.getLastDay(calendar));
-      monthView.fulfillTables();
+          calendar.withDayOfMonth(1), calendar.withDayOfMonth(calendar.lengthOfMonth()));
       return converter.transformExpensesToEvents(expenseSheet, eventToShow);
     }
   };

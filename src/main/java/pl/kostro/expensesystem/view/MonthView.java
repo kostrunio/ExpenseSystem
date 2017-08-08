@@ -27,21 +27,23 @@ public class MonthView extends MonthDesign {
   private Button.ClickListener prevClick = event -> {
     date = date.minusMonths(1);
     showCalendar();
+    fulfillTables();
   };
   private Button.ClickListener nextClick = event -> {
     date = date.plusMonths(1);
     showCalendar();
+    fulfillTables();
   };
   private ValueChangeListener<LocalDate> monthChanged = event -> {
     date = event.getValue();
     showCalendar();
+    fulfillTables();
   };
 
   public MonthView() {
     logger.info("create");
     ExpenseSystemEventBus.register(this);
-    this.date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
-    date = CalendarUtils.setFirstDay(date);
+    date = VaadinSession.getCurrent().getAttribute(LocalDate.class).withDayOfMonth(1);
     previousMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_LEFT);
     previousMonthButton.addClickListener(prevClick);
     nextMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_RIGHT);
@@ -53,16 +55,17 @@ public class MonthView extends MonthDesign {
 
     setCalendarSize();
     showCalendar();
+    fulfillTables();
   }
 
   public void showCalendar() {
     if (getParent() != null && getParent().getParent().getParent().getParent() instanceof ExpenseView) {
       ((ExpenseView)getParent().getParent().getParent().getParent()).checkedYear(date.getYear()+"");
-      ((ExpenseView)getParent().getParent().getParent().getParent()).checkedMonth(CalendarUtils.getMonthName(date.getMonthValue()));
+      ((ExpenseView)getParent().getParent().getParent().getParent()).checkedMonth(CalendarUtils.getMonthName(date.getMonthValue()-1));
     }
     thisMonthField.setValue(date);
-    firstDateField.setValue(CalendarUtils.getFirstDay(date));
-    lastDateField.setValue(CalendarUtils.getLastDay(date));
+    firstDateField.setValue(date.withDayOfMonth(1));
+    lastDateField.setValue(date.withDayOfMonth(date.lengthOfMonth()));
     monthCalendar.setMonthView(this);
     monthCalendar.setStartDate(Date.from(firstDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
     monthCalendar.setEndDate(Date.from(lastDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));

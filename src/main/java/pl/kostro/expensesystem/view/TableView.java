@@ -24,7 +24,6 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Filter;
-import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.TableDesign;
 
 @SuppressWarnings("serial")
@@ -76,8 +75,8 @@ public class TableView extends TableDesign {
 
     expenseForm.prepare(expenseSheet, this);
     
-    fromDateField.setValue(CalendarUtils.getFirstDay(calendar));
-    toDateField.setValue(CalendarUtils.getLastDay(calendar));
+    fromDateField.setValue(calendar.withDayOfMonth(1));
+    toDateField.setValue(calendar.withDayOfMonth(calendar.lengthOfMonth()));
     categoryBox.setItems(expenseSheet.getCategoryList());
     userBox.setItems(expenseSheet.getUserLimitList());
     commentBox.setNewItemHandler(addComment);
