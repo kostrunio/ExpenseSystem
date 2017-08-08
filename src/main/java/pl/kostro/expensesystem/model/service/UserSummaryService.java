@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,6 +63,7 @@ public class UserSummaryService {
 
   public BigDecimal calculateSum(UserLimit userLimit, LocalDate date) {
     BigDecimal sum = new BigDecimal(0);
+    uls.fetchUserSummaryList(userLimit);
     for (UserSummary userSummary : userLimit.getUserSummaryList()) {
       if (!userSummary.getDate().isAfter(date)) {
         sum = sum.add(userSummary.getLimit());
@@ -72,9 +74,11 @@ public class UserSummaryService {
   }
 
   public UserSummary findUserSummary(UserLimit userLimit, LocalDate date) {
-    for (UserSummary userSummary : userLimit.getUserSummaryList())
-      if (userSummary.getDate() == date)
-        return userSummary;
+    Optional<UserSummary> result = userLimit.getUserSummaryList().stream()
+        .filter(us -> us.getDate().isEqual(date))
+        .findFirst();
+    if (result.isPresent())
+      return result.get();
     return createUserSummary(userLimit, date);
   }
 
@@ -88,7 +92,7 @@ public class UserSummaryService {
       BigDecimal exSummary = new BigDecimal(0);
       if (expenseSheet.getUserLimitExpenseMap().get(userLimit) != null)
         exSummary = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
-      if (userSummary.getSum().doubleValue() != exSummary.doubleValue()) {
+      if (userSummary.getSum().compareTo(exSummary) != 0) {
         ShowNotification.changeSummary(userLimit.getUser().getName(), userSummary.getSum(), exSummary);
         userSummary.setSum(exSummary);
         merge(userSummary);

@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -96,9 +97,13 @@ public class RealUserService {
   @Transactional
   public void fetchExpenseSheetList(RealUser realUser) {
     LocalDateTime stopper = LocalDateTime.now();
-    RealUser attached = rur.getOne(realUser.getId());
-    attached.getExpenseSheetList().size();
-    realUser.setExpenseSheetList(attached.getExpenseSheetList());
+    try {
+      realUser.getExpenseSheetList().size();
+    } catch (LazyInitializationException e) {
+      RealUser attached = rur.getOne(realUser.getId());
+      attached.getExpenseSheetList().size();
+      realUser.setExpenseSheetList(attached.getExpenseSheetList());
+    }
     logger.info("fetchExpenseSheetList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }

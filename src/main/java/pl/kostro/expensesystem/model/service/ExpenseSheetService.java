@@ -7,13 +7,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.OptionalInt;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +32,6 @@ import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
 import pl.kostro.expensesystem.model.repository.RealUserRepository;
 import pl.kostro.expensesystem.model.repository.UserLimitRepository;
 import pl.kostro.expensesystem.utils.Filter;
-import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
 import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
@@ -125,9 +127,11 @@ public class ExpenseSheetService {
   }
 
   public ExpenseSheet findExpenseSheet(RealUser realUser, int id) {
-    for (ExpenseSheet expenseSheet : realUser.getExpenseSheetList())
-      if (expenseSheet.getId() == id)
-        return expenseSheet;
+    Optional<ExpenseSheet> result = realUser.getExpenseSheetList().stream()
+      .filter(esh -> esh.getId() == id)
+      .findFirst();
+    if (result.isPresent())
+      return result.get();
     return realUser.getDefaultExpenseSheet();
   }
 
@@ -202,31 +206,34 @@ public class ExpenseSheetService {
   }
 
   public UserLimit getUserLimitForUser(ExpenseSheet expenseSheet, User user) {
-    for (UserLimit userLimit : expenseSheet.getUserLimitList())
-      if (userLimit.getUser().equals(user))
-        return userLimit;
-    return null;
+    Optional<UserLimit> result = expenseSheet.getUserLimitList().stream()
+      .filter(ul -> ul.getUser().equals(user))
+      .findFirst();
+    if (result.isPresent())
+      return result.get();
+    else
+      return null;
   }
 
-  public List<String> getAllComments(ExpenseSheet expenseSheet) {
+  public Set<String> getAllComments(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    List<String> commentsList = expenseSheet.getExpenseList().stream()
+    Set<String> commentsList = expenseSheet.getExpenseList().stream()
         .filter(e -> e.getComment() != null && !e.getComment().isEmpty())
         .map(e -> e.getComment())
         .sorted()
-        .collect(Collectors.toList());
+        .collect(Collectors.toSet());
     logger.info("getAllComments finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return commentsList;
   }
 
-  public List<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
+  public Set<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
     LocalDateTime stopper = LocalDateTime.now();
-    List<String> commentsList = expenseSheet.getExpenseList().stream()
+    Set<String> commentsList = expenseSheet.getExpenseList().stream()
         .filter(e -> e.getCategory().equals(category))
         .filter(e -> e.getComment() != null && !e.getComment().isEmpty())
         .map(e -> e.getComment())
         .sorted()
-        .collect(Collectors.toList());
+        .collect(Collectors.toSet());
     logger.info("getCommentForCategory finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return commentsList;
   }
@@ -247,10 +254,7 @@ public class ExpenseSheetService {
 
   public DateExpense getDateExpenseMap(ExpenseSheet expenseSheet, LocalDate date) {
     if (date.isBefore(expenseSheet.getFirstDate()) || date.isAfter(expenseSheet.getLastDate())) {
-      prepareExpenseMap(expenseSheet,
-          CalendarUtils.getFirstDay(date),
-          CalendarUtils.getLastDay(date), null,
-          null);
+      prepareExpenseMap(expenseSheet, date.withDayOfMonth(1), date.withDayOfMonth(date.lengthOfMonth()), null, null);
     }
     return expenseSheet.getDateExpenseMap().get(date);
   }
@@ -307,10 +311,10 @@ public class ExpenseSheetService {
     LocalDate firstDay = LocalDate.now();
     for (String year : getYearList(expenseSheet)) {
       YearCategory yearCategory = new YearCategory(Integer.parseInt(year), expenseSheet.getCategoryList());
-      firstDay = CalendarUtils.setFirstDay(firstDay, year);
+      firstDay = firstDay.withYear(Integer.parseInt(year)).withDayOfMonth(1);
       for (int m = 1; m <= 12; m++) {
         firstDay = firstDay.withMonth(m);
-        prepareExpenseMap(expenseSheet, firstDay, CalendarUtils.getLastDay(firstDay), firstDay, CalendarUtils.getLastDay(firstDay));
+        prepareExpenseMap(expenseSheet, firstDay, firstDay.withDayOfMonth(firstDay.lengthOfMonth()), firstDay, firstDay.withDayOfMonth(firstDay.lengthOfMonth()));
         for (Category category : expenseSheet.getCategoryList()) {
           CategoryExpense categoryExpense = getCategoryExpenseMap(expenseSheet, category);
           if (categoryExpense != null)
@@ -348,27 +352,39 @@ public class ExpenseSheetService {
   @Transactional
   public void fetchCategoryList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    ExpenseSheet attached = eshr.getOne(expenseSheet.getId());
-    attached.getCategoryList().size();
-    expenseSheet.setCategoryList(attached.getCategoryList());
+    try {
+      expenseSheet.getCategoryList().size();
+    } catch (LazyInitializationException e) {
+      ExpenseSheet attached = eshr.getOne(expenseSheet.getId());
+      attached.getCategoryList().size();
+      expenseSheet.setCategoryList(attached.getCategoryList());
+    }
     logger.info("fetchCategoryList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   @Transactional
   public void fetchExpenseList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    ExpenseSheet attached = eshr.getOne(expenseSheet.getId());
-    attached.getExpenseList().size();
-    expenseSheet.setExpenseList(attached.getExpenseList());
+    try {
+      expenseSheet.getExpenseList().size();
+    } catch (LazyInitializationException e) {
+      ExpenseSheet attached = eshr.getOne(expenseSheet.getId());
+      attached.getExpenseList().size();
+      expenseSheet.setExpenseList(attached.getExpenseList());
+    }
     logger.info("fetchExpenseList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   @Transactional
   public void fetchUserLimitList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    ExpenseSheet attached = eshr.getOne(expenseSheet.getId());
-    attached.getUserLimitList().size();
-    expenseSheet.setUserLimitList(attached.getUserLimitList());
+    try {
+      expenseSheet.getUserLimitList().size();
+    } catch (LazyInitializationException e) {
+      ExpenseSheet attached = eshr.getOne(expenseSheet.getId());
+      attached.getUserLimitList().size();
+      expenseSheet.setUserLimitList(attached.getUserLimitList());
+    }
     logger.info("fetchUserLimitList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }
