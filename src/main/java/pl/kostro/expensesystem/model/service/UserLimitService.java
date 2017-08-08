@@ -3,8 +3,11 @@ package pl.kostro.expensesystem.model.service;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+import javax.transaction.Transactional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,9 +78,16 @@ public class UserLimitService {
     logger.info("encrypt finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
+  @Transactional
   public void fetchUserSummaryList(UserLimit userLimit) {
     LocalDateTime stopper = LocalDateTime.now();
-    userLimit.setUserSummaryList(ulr.findUserSummaryList(userLimit));
+    try {
+      userLimit.getUserSummaryList().size();
+    } catch (LazyInitializationException e) {
+      UserLimit attached = ulr.getOne(userLimit.getId());
+      attached.getUserSummaryList().size();
+      userLimit.setUserSummaryList(attached.getUserSummaryList());
+    }
     logger.info("fetchUserSummaryList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
