@@ -108,7 +108,7 @@ public class DayView extends DayDesign {
     @Override
     public void buttonClick(ClickEvent event) {
       if (userBox.getValue() instanceof UserLimit) {
-        es.saveExpense(expenseSheet, expense, (UserLimit) userBox.getValue(), formulaField.getValue(),
+        es.saveExpense(expenseSheet, expense, userBox.getValue(), formulaField.getValue(),
             commentBox.getValue(), notifyBox.getValue(), modify);
         prepareCategoryListLayout();
         prepareExpenseListLayout();

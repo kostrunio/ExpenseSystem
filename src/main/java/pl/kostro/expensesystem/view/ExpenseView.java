@@ -154,7 +154,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     formulaField.clear();
     commentCombo.setNewItemHandler(event -> {});
     commentCombo.setEmptySelectionAllowed(true);
-    commentCombo.setItems(eshs.getCommentsList(expenseSheet));
+    commentCombo.setItems(eshs.getAllComments(expenseSheet));
   }
 
   private void prepareView() {
@@ -167,8 +167,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     filterButton.addClickListener(filterClick);
     tableButton.addClickListener(tableClick);
     for (String monthName : CalendarUtils.getMonthsName())
-      if (!monthName.isEmpty())
-        monthMenu.addItem(monthName, monthCommand).setCheckable(true);
+      monthMenu.addItem(monthName, monthCommand).setCheckable(true);
     searchButton.addClickListener(searchClick);
     root.addComponent(content);
     root.setExpandRatio(content, 1);
