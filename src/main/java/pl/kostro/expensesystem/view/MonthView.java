@@ -8,7 +8,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import pl.kostro.expensesystem.event.ExpenseSystemEvent.BrowserResizeEvent;
+import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.event.ExpenseSystemEventBus;
+import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.MonthDesign;
 
@@ -22,28 +25,38 @@ import com.vaadin.ui.Button;
 @SuppressWarnings("serial")
 public class MonthView extends MonthDesign {
 
+  private UserSummaryService uss;
+  
   private Logger logger = LogManager.getLogger();
   private LocalDate date;
+
+  private ExpenseSheet expenseSheet;
+
   private Button.ClickListener prevClick = event -> {
     date = date.minusMonths(1);
     showCalendar();
     fulfillTables();
+    uss.checkSummary(expenseSheet, date);
   };
   private Button.ClickListener nextClick = event -> {
     date = date.plusMonths(1);
     showCalendar();
     fulfillTables();
+    uss.checkSummary(expenseSheet, date);
   };
   private ValueChangeListener<LocalDate> monthChanged = event -> {
     date = event.getValue();
     showCalendar();
     fulfillTables();
+    uss.checkSummary(expenseSheet, date);
   };
 
   public MonthView() {
     logger.info("create");
     ExpenseSystemEventBus.register(this);
+    uss = AppCtxProvider.getBean(UserSummaryService.class);
     date = VaadinSession.getCurrent().getAttribute(LocalDate.class).withDayOfMonth(1);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     previousMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_LEFT);
     previousMonthButton.addClickListener(prevClick);
     nextMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_RIGHT);
@@ -56,6 +69,7 @@ public class MonthView extends MonthDesign {
     setCalendarSize();
     showCalendar();
     fulfillTables();
+    uss.checkSummary(expenseSheet, date);
   }
 
   public void showCalendar() {

@@ -55,8 +55,6 @@ public class ExpenseSheetService {
   private RealUserService rus;
   @Autowired
   private UserLimitService uls;
-  @Autowired
-  private UserSummaryService uss;
 
   private static Logger logger = LogManager.getLogger();
 
@@ -162,7 +160,6 @@ public class ExpenseSheetService {
         addExpenseToUserLimitMap(expenseSheet, expense);
       }
     }
-    uss.checkSummary(expenseSheet, firstDay);
     logger.info("prepareExpenseMap finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseSheet.getDateExpenseMap();
   }
