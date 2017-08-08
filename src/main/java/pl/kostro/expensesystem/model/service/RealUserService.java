@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -92,9 +93,12 @@ public class RealUserService {
     return loggedUser;
   }
 
+  @Transactional
   public void fetchExpenseSheetList(RealUser realUser) {
     LocalDateTime stopper = LocalDateTime.now();
-    realUser.setExpenseSheetList(rur.fetchExpenseSheetList(realUser));
+    RealUser attached = rur.getOne(realUser.getId());
+    attached.getExpenseSheetList().size();
+    realUser.setExpenseSheetList(attached.getExpenseSheetList());
     logger.info("fetchExpenseSheetList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }

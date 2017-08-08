@@ -4,13 +4,13 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.OptionalInt;
+import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -133,10 +133,11 @@ public class ExpenseSheetService {
 
   private List<Expense> getExpenseList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    List<Expense> expenseListToReturn = new ArrayList<Expense>();
-    for (Expense expense : es.findExpenseForDates(expenseSheet))
-      if (Filter.matchFilter(expense, expenseSheet.getFilter()))
-        expenseListToReturn.add(expense);
+    List<Expense> expenseListToReturn = expenseSheet.getExpenseList().parallelStream()
+    .filter(e -> !e.getDate().isBefore(expenseSheet.getFirstDate()))
+    .filter(e -> !e.getDate().isAfter(expenseSheet.getLastDate()))
+    .filter(e -> Filter.matchFilter(e, expenseSheet.getFilter()))
+    .collect(Collectors.toList());
     logger.info("getExpenseList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseListToReturn;
   }
@@ -207,37 +208,38 @@ public class ExpenseSheetService {
     return null;
   }
 
-  public Set<String> getAllComments(ExpenseSheet expenseSheet) {
+  public List<String> getAllComments(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    Set<String> commentList = new TreeSet<String>();
-    for (Expense expense : expenseSheet.getExpenseList())
-      if (expense.getComment() != null && !expense.getComment().equals(""))
-        commentList.add(expense.getComment());
+    List<String> commentsList = expenseSheet.getExpenseList().stream()
+        .filter(e -> e.getComment() != null && !e.getComment().isEmpty())
+        .map(e -> e.getComment())
+        .sorted()
+        .collect(Collectors.toList());
     logger.info("getAllComments finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    return commentList;
+    return commentsList;
   }
 
-  public Set<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
+  public List<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
     LocalDateTime stopper = LocalDateTime.now();
-    Set<String> commentList = new TreeSet<String>();
-    for (Expense expense : es.findExpenseByCategory(expenseSheet, category))
-      if (expense.getComment() != null && !expense.getComment().equals(""))
-        commentList.add(expense.getComment());
+    List<String> commentsList = expenseSheet.getExpenseList().stream()
+        .filter(e -> e.getCategory().equals(category))
+        .filter(e -> e.getComment() != null && !e.getComment().isEmpty())
+        .map(e -> e.getComment())
+        .sorted()
+        .collect(Collectors.toList());
     logger.info("getCommentForCategory finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    return commentList;
+    return commentsList;
   }
 
   public List<String> getYearList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
     List<String> yearList = new ArrayList<String>();
-    int thisYear = new GregorianCalendar().get(Calendar.YEAR);
-    int firstYear = thisYear;
-    LocalDate date = LocalDate.now();
-    date = es.findFirstExpense(expenseSheet).getDate();
-    int year = date.getYear();
-    if (year < firstYear)
-      firstYear = year;
-    for (int i = firstYear; i <= thisYear; i++)
+    int year = LocalDate.now().getYear();
+    OptionalInt expYear = expenseSheet.getExpenseList().parallelStream()
+      .mapToInt(e -> e.getDate().getYear())
+      .min();
+    if (expYear.isPresent()) year = expYear.getAsInt();
+    for (int i = year; i <= LocalDate.now().getYear(); i++)
       yearList.add(Integer.toString(i));
     logger.info("getYearList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return yearList;
@@ -259,17 +261,6 @@ public class ExpenseSheetService {
 
   public UserLimitExpense getUserLimitExpenseMap(ExpenseSheet expenseSheet, UserLimit userLimit) {
     return expenseSheet.getUserLimitExpenseMap().get(userLimit);
-  }
-
-  public Set<String> getCommentsList(ExpenseSheet expenseSheet) {
-    LocalDateTime stopper = LocalDateTime.now();
-    Set<String> commentsList = new TreeSet<String>();
-    for (Expense expense : expenseSheet.getExpenseList()) {
-      if (expense.getComment() != null && !expense.getComment().equals(""))
-        commentsList.add(expense.getComment());
-    }
-    logger.info("getCommentsList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    return commentsList;
   }
 
   public ExpenseSheet moveCategoryUp(ExpenseSheet expenseSheet, Category category) {
@@ -340,10 +331,9 @@ public class ExpenseSheetService {
   }
 
   public List<UserLimit> getUserLimitListRealUser(ExpenseSheet expenseSheet) {
-    List<UserLimit> userLimitList = new ArrayList<UserLimit>();
-    for (UserLimit userLimit : expenseSheet.getUserLimitList())
-      if (userLimit.getUser() instanceof RealUser)
-        userLimitList.add(userLimit);
+    List<UserLimit> userLimitList = expenseSheet.getUserLimitList().stream()
+        .filter(uL -> uL.getUser() instanceof RealUser)
+        .collect(Collectors.toList());
     return userLimitList;
   }
 
@@ -354,22 +344,31 @@ public class ExpenseSheetService {
         userLimitList.add(userLimit);
     return userLimitList;
   }
-  
+
+  @Transactional
   public void fetchCategoryList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    expenseSheet.setCategoryList(eshr.findCategoryList(expenseSheet));
+    ExpenseSheet attached = eshr.getOne(expenseSheet.getId());
+    attached.getCategoryList().size();
+    expenseSheet.setCategoryList(attached.getCategoryList());
     logger.info("fetchCategoryList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
-  
+
+  @Transactional
   public void fetchExpenseList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    expenseSheet.setExpenseList(eshr.findExpenseList(expenseSheet));
+    ExpenseSheet attached = eshr.getOne(expenseSheet.getId());
+    attached.getExpenseList().size();
+    expenseSheet.setExpenseList(attached.getExpenseList());
     logger.info("fetchExpenseList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
-  
+
+  @Transactional
   public void fetchUserLimitList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    expenseSheet.setUserLimitList(eshr.findUserLimitList(expenseSheet));
+    ExpenseSheet attached = eshr.getOne(expenseSheet.getId());
+    attached.getUserLimitList().size();
+    expenseSheet.setUserLimitList(attached.getUserLimitList());
     logger.info("fetchUserLimitList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }
