@@ -29,13 +29,13 @@ public class CategoryService {
     cr.save(category);
     expenseSheet.getCategoryList().add(category);
     expenseSheet = eshr.save(expenseSheet);
-    logger.info("createCategory finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("createCategory for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void merge(Category category) {
     LocalDateTime stopper = LocalDateTime.now();
     cr.save(category);
-    logger.info("merge finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("merge for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public ExpenseSheet removeCategory(ExpenseSheet expenseSheet, Category category) {
@@ -46,7 +46,7 @@ public class CategoryService {
       cat.setOrder(i++);
     expenseSheet = eshr.save(expenseSheet);
     cr.delete(category);
-    logger.info("removeCategory finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("removeCategory for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseSheet;
   }
 
@@ -58,7 +58,7 @@ public class CategoryService {
     LocalDateTime stopper = LocalDateTime.now();
     category.setName(category.getName(true), true);
     cr.save(category);
-    logger.info("encrypt finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("encrypt for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
 }

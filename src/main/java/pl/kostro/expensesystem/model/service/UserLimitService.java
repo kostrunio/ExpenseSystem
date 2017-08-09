@@ -45,14 +45,14 @@ public class UserLimitService {
       RealUser realUser = (RealUser) user;
       realUser.getExpenseSheetList().add(expenseSheet);
       rur.save(realUser);
-      logger.info("createUserLimit finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+      logger.info("createUserLimit for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
   }
 
   public void merge(UserLimit userLimit) {
     LocalDateTime stopper = LocalDateTime.now();
     ulr.save(userLimit);
-    logger.info("merge finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("merge for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void removeUserLimit(ExpenseSheet expenseSheet, UserLimit userLimit) {
@@ -61,7 +61,7 @@ public class UserLimitService {
     ulr.delete(userLimit);
     if (!(userLimit.getUser() instanceof RealUser))
       rur.delete(userLimit.getUser().getId());
-    logger.info("removeUserLimit finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("removeUserLimit for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void decrypt(UserLimit userLimit) {
@@ -75,20 +75,20 @@ public class UserLimitService {
     for (UserSummary userSummary : userLimit.getUserSummaryList())
       uss.encrypt(userSummary);
     ulr.save(userLimit);
-    logger.info("encrypt finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("encrypt for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   @Transactional
   public void fetchUserSummaryList(UserLimit userLimit) {
-    LocalDateTime stopper = LocalDateTime.now();
     try {
       userLimit.getUserSummaryList().size();
     } catch (LazyInitializationException e) {
+      LocalDateTime stopper = LocalDateTime.now();
       UserLimit attached = ulr.getOne(userLimit.getId());
       attached.getUserSummaryList().size();
       userLimit.setUserSummaryList(attached.getUserSummaryList());
+      logger.info("fetchUserSummaryList for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
-    logger.info("fetchUserSummaryList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
 }

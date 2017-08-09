@@ -43,7 +43,7 @@ public class RealUserService {
     realUser.setPassword(new String(messageDigest.digest()));
     realUser.setEmail(email);
     rur.save(realUser);
-    logger.info("createRealUser finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("createRealUser for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return realUser;
   }
 
@@ -54,7 +54,7 @@ public class RealUserService {
       realUser.setPassword(new String(messageDigest.digest()));
     }
     rur.save(realUser);
-    logger.info("merge finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("merge for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public RealUser refresh(RealUser realUser) {
@@ -65,45 +65,45 @@ public class RealUserService {
     LocalDateTime stopper = LocalDateTime.now();
     realUser.setDefaultExpenseSheet(expenseSheet);
     rur.save(realUser);
-    logger.info("setDefaultExpenseSheet finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("setDefaultExpenseSheet for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public RealUser getUserData(String userName, String password) {
     LocalDateTime stopper = LocalDateTime.now();
     messageDigest.update(password.getBytes());
-    RealUser loggedUser = rur.findByNameAndPassword(userName, new String(messageDigest.digest()));
-    if (loggedUser == null) return null; 
-    loggedUser.setClearPassword(password);
-    loggedUser.setLogDate(LocalDateTime.now());
-    if (loggedUser.getPasswordByte() == null)
-      loggedUser.setPasswordByte(messageDigest.digest());
-    rur.save(loggedUser);
-    logger.info("getUserData finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    return loggedUser;
+    RealUser realUser = rur.findByNameAndPassword(userName, new String(messageDigest.digest()));
+    if (realUser == null) return null; 
+    realUser.setClearPassword(password);
+    realUser.setLogDate(LocalDateTime.now());
+    if (realUser.getPasswordByte() == null)
+      realUser.setPasswordByte(messageDigest.digest());
+    rur.save(realUser);
+    logger.info("getUserData for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    return realUser;
   }
 
   public RealUser findRealUser(String userName) {
     LocalDateTime stopper = LocalDateTime.now();
-    RealUser loggedUser = null;
+    RealUser realUser = null;
     try {
-      loggedUser = rur.findByName(userName);
+      realUser = rur.findByName(userName);
     } catch (NoResultException e) {
 
     }
-    logger.info("findRealUser finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    return loggedUser;
+    logger.info("findRealUser for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    return realUser;
   }
 
   @Transactional
   public void fetchExpenseSheetList(RealUser realUser) {
-    LocalDateTime stopper = LocalDateTime.now();
     try {
       realUser.getExpenseSheetList().size();
     } catch (LazyInitializationException e) {
+      LocalDateTime stopper = LocalDateTime.now();
       RealUser attached = rur.getOne(realUser.getId());
       attached.getExpenseSheetList().size();
       realUser.setExpenseSheetList(attached.getExpenseSheetList());
+      logger.info("fetchExpenseSheetList for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
-    logger.info("fetchExpenseSheetList finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }

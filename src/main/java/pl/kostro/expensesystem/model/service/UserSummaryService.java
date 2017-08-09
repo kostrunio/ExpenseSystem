@@ -37,14 +37,14 @@ public class UserSummaryService {
     usr.save(userSummary);
     userLimit.getUserSummaryList().add(userSummary);
     ulr.save(userLimit);
-    logger.info("createUserSummary finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("createUserSummary for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return userSummary;
   }
 
   public UserSummary merge(UserSummary userSummary) {
     LocalDateTime stopper = LocalDateTime.now();
     usr.save(userSummary);
-    logger.info("merge finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("merge for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return userSummary;
   }
 
@@ -58,7 +58,7 @@ public class UserSummaryService {
     userSummary.setLimit(userSummary.getLimit(true), true);
     userSummary.setSum(userSummary.getSum(true), true);
     usr.save(userSummary);
-    logger.info("encrypt finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("encrypt for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public BigDecimal calculateSum(UserLimit userLimit, LocalDate date) {
@@ -88,17 +88,19 @@ public class UserSummaryService {
       return;
     for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
       uls.fetchUserSummaryList(userLimit);
+      logger.debug("checkSummary for: {} at {}", userLimit, date);
       UserSummary userSummary = findUserSummary(userLimit, date);
       BigDecimal exSummary = new BigDecimal(0);
       if (expenseSheet.getUserLimitExpenseMap().get(userLimit) != null)
         exSummary = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
+      logger.debug("exSummary: {}; userSummary: {}", exSummary, userSummary.getSum());
       if (userSummary.getSum().compareTo(exSummary) != 0) {
         ShowNotification.changeSummary(userLimit.getUser().getName(), userSummary.getSum(), exSummary);
         userSummary.setSum(exSummary);
         merge(userSummary);
       }
     }
-    logger.info("checkSummary finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("checkSummary for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
 }

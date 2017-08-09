@@ -24,7 +24,7 @@ public class UserService {
     User user = new User();
     user.setName(name);
     ur.save(user);
-    logger.info("createUser finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("createUser for {} finish: {} ms", user, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return user;
   }
 
