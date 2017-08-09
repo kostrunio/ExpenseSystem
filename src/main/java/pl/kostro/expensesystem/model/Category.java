@@ -93,7 +93,7 @@ public class Category extends AbstractEntity {
 
   @Override
   public String toString() {
-    return getName();
+    return getClass().getSimpleName()+"["+getName()+"]";
   }
 
 }

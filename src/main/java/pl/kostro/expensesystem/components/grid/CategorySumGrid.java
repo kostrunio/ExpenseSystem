@@ -27,7 +27,7 @@ public class CategorySumGrid extends Grid<CategorySum> {
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
     setHeightByRows(expenseSheet.getCategoryList().size());
     setSelectionMode(SelectionMode.NONE);
-    addColumn(CategorySum::getCategory).setCaption(Msg.get("categoryTable.category"));
+    addColumn(item -> item.getCategory().getName()).setCaption(Msg.get("categoryTable.category"));
     addColumn(CategorySum::getSum).setCaption(Msg.get("categoryTable.sum"));
   }
   

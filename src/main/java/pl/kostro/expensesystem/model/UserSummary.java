@@ -115,7 +115,6 @@ public class UserSummary extends AbstractEntity {
 
   @Override
   public String toString() {
-    return date + " " + limit + " " + sum;
+    return getClass().getSimpleName()+"["+getDate()+"; "+getLimit()+"; "+getSum()+"]";
   }
-
 }

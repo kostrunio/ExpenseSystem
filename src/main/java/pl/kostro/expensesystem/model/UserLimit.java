@@ -127,8 +127,9 @@ public class UserLimit extends AbstractEntity {
     this.continuousSummary = continuousSummary;
   }
 
+  @Override
   public String toString() {
-    return user.getName();
+    return getClass().getSimpleName()+"["+getUser().getName()+"]";
   }
 
 }

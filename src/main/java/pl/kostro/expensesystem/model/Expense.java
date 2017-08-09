@@ -179,7 +179,7 @@ public class Expense extends AbstractEntity {
 
   @Override
   public String toString() {
-    return "Expense: " + date + ";" + category + ";" + value;
+    return getClass().getSimpleName()+"[" + getDate() + ";" + getCategory() + ";" + getValue() + "]";
   }
 
 }

@@ -201,4 +201,8 @@ public class ExpenseSheet extends AbstractEntity {
     this.lastDate = lastDate;
   }
 
+  @Override
+  public String toString() {
+    return getClass().getSimpleName()+"["+getName()+"]";
+  }
 }

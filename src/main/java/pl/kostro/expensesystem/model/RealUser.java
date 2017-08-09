@@ -111,4 +111,8 @@ public class RealUser extends User {
     this.clearPassword = clearPassword;
   }
 
+  @Override
+  public String toString() {
+    return getClass().getSimpleName()+"["+getName()+"]";
+  }
 }
