@@ -129,7 +129,7 @@ public class TableView extends TableDesign {
   }
   
   public void refreshExpenses() {
-    expenseGrid.setItems(es.findAllExpense(expenseSheet));
+    expenseGrid.setItems(eshs.findAllExpense(expenseSheet));
     expenseGrid.sort(expenseGrid.getColumns().get(0), SortDirection.DESCENDING);
     expenseForm.setVisible(false);
   }
