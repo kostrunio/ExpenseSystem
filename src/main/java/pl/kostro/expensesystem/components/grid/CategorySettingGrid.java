@@ -12,6 +12,7 @@ import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
+import com.vaadin.ui.components.grid.EditorOpenListener;
 import com.vaadin.ui.components.grid.EditorSaveListener;
 
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -26,9 +27,12 @@ import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 
 @SuppressWarnings("serial")
 public class CategorySettingGrid extends Grid<Category> implements SettingsChangeListener {
+
   private CategoryService cs;
   private ExpenseSheetService eshs;
   private ExpenseSheet expenseSheet;
+  
+  private Binder<Category> binder = new Binder<>();
 
   private Button addCategoryButton;
   private Button moveUpCategoryButton;
@@ -40,6 +44,7 @@ public class CategorySettingGrid extends Grid<Category> implements SettingsChang
     moveDownCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
     deleteCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
   };
+  private EditorOpenListener<Category> editorOpen = event -> binder.setBean(event.getBean());
   private EditorSaveListener<Category> saveCategory = event -> cs.merge(event.getBean());
   private ClickListener addCategoryClicked = event -> UI.getCurrent().addWindow(new AddCategoryWindow(CategorySettingGrid.this));
   private ClickListener moveUpClicked = event -> {
@@ -69,11 +74,10 @@ public class CategorySettingGrid extends Grid<Category> implements SettingsChang
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     
     ComboBox<BigDecimal> multiplierField = new ComboBox<>();
+    multiplierField.setEmptySelectionAllowed(false);
     multiplierField.setItems(new BigDecimal("-1"), new BigDecimal("1"));
     
-    Binder<Category> binder = new Binder<>();
-    Binder.Binding<Category, BigDecimal> multiplierBinder = binder.forField(multiplierField)
-        .bind(Category::getMultiplier, Category::setMultiplier);
+    Binder.Binding<Category, BigDecimal> multiplierBinder = binder.bind(multiplierField, Category::getMultiplier, Category::setMultiplier);
     
     addColumn(Category::getName)
       .setCaption(Msg.get("settingsPage.categoryName"))
@@ -87,6 +91,7 @@ public class CategorySettingGrid extends Grid<Category> implements SettingsChang
     getEditor().setEnabled(true);
     getEditor().setSaveCaption(Msg.get("settingsPage.categorySave"));
     getEditor().setCancelCaption(Msg.get("settingsPage.categoryCancel"));
+    getEditor().addOpenListener(editorOpen);
     getEditor().addSaveListener(saveCategory);
   }
 

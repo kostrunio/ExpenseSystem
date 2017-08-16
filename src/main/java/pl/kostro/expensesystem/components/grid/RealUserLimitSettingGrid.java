@@ -8,6 +8,7 @@ import com.vaadin.event.selection.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
+import com.vaadin.ui.components.grid.EditorOpenListener;
 import com.vaadin.ui.components.grid.EditorSaveListener;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
@@ -33,8 +34,11 @@ public class RealUserLimitSettingGrid extends Grid<UserLimit> implements Setting
   private Button deleteUserLimitButton;
 
   private ExpenseSheet expenseSheet;
+  
+  private Binder<UserLimit> binder = new Binder<>();
 
   private SelectionListener<UserLimit> itemSelected = event -> deleteUserLimitButton.setEnabled(event.getAllSelectedItems().size() != 0);
+  private EditorOpenListener<UserLimit> editorOpen = event -> binder.setBean(event.getBean());
   private EditorSaveListener<UserLimit> saveRealUserLimit = event -> {
     uls.merge(event.getBean());
     refreshValues();
@@ -64,7 +68,6 @@ public class RealUserLimitSettingGrid extends Grid<UserLimit> implements Setting
     TextField limitField = new TextField();
     TextField orderField = new TextField();
     
-    Binder<UserLimit> binder = new Binder<>();
     Binder.Binding<UserLimit, String> limitBinder = binder.forField(limitField)
         .bind(userLimit -> userLimit.getLimit().toString(), (userLimit, value) -> userLimit.setLimit(new BigDecimal(value)));
     Binder.Binding<UserLimit, String> orderBinder = binder.forField(orderField)
@@ -86,6 +89,7 @@ public class RealUserLimitSettingGrid extends Grid<UserLimit> implements Setting
     getEditor().setEnabled(true);
     getEditor().setSaveCaption(Msg.get("settingsPage.realUserSave"));
     getEditor().setCancelCaption(Msg.get("settingsPage.realUserCancel"));
+    getEditor().addOpenListener(editorOpen);
     getEditor().addSaveListener(saveRealUserLimit);
   }
 
