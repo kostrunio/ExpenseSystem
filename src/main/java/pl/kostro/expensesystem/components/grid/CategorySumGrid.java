@@ -24,8 +24,9 @@ public class CategorySumGrid extends Grid<CategorySum> {
 
   public CategorySumGrid() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
-    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
-    setHeightByRows(expenseSheet.getCategoryList().size());
+    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    if (expenseSheet.getCategoryList().size() > 0)
+      setHeightByRows(expenseSheet.getCategoryList().size());
     setSelectionMode(SelectionMode.NONE);
     addColumn(item -> item.getCategory().getName()).setCaption(Msg.get("categoryTable.category"));
     addColumn(CategorySum::getSum).setCaption(Msg.get("categoryTable.sum"));
