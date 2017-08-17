@@ -1,6 +1,5 @@
 package pl.kostro.expensesystem.view;
 
-import java.sql.Date;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
@@ -64,8 +63,8 @@ public class MonthView extends MonthDesign {
     firstDateField.setValue(date.withDayOfMonth(1));
     lastDateField.setValue(date.withDayOfMonth(date.lengthOfMonth()));
     monthCalendar.setMonthView(this);
-    monthCalendar.setStartDate(Date.from(firstDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
-    monthCalendar.setEndDate(Date.from(lastDateField.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+    monthCalendar.setStartDate(firstDateField.getValue().atStartOfDay(ZoneId.systemDefault()));
+    monthCalendar.setEndDate(lastDateField.getValue().atStartOfDay(ZoneId.systemDefault()));
   }
 
   public void fulfillTables() {

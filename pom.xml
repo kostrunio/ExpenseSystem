@@ -81,7 +81,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-compatibility-server</artifactId>
+			<artifactId>vaadin-server</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
@@ -89,7 +89,7 @@
 		</dependency>
 		<dependency>
 			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-compatibility-client</artifactId>
+			<artifactId>vaadin-client</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<!-- Needed when using the widgetset optimizer (custom ConnectorBundleLoaderFactory). 
@@ -100,7 +100,7 @@
 			<scope>provided</scope> </dependency> -->
 		<dependency>
 			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-compatibility-themes</artifactId>
+			<artifactId>vaadin-themes</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.postgresql</groupId>
@@ -110,6 +110,11 @@
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-charts</artifactId>
 			<version>4.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.vaadin.blackbluegl</groupId>
+			<artifactId>calendar-component</artifactId>
+			<version>2.0-BETA2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
