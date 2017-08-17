@@ -5,10 +5,13 @@ import java.time.ZoneId;
 import java.util.Map;
 
 import com.vaadin.server.VaadinSession;
+
 import org.vaadin.addon.calendar.Calendar;
 import org.vaadin.addon.calendar.item.BasicItem;
 import org.vaadin.addon.calendar.item.CalendarItemProvider;
+import org.vaadin.addon.calendar.ui.CalendarComponentEvents.BackwardHandler;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents.DateClickHandler;
+import org.vaadin.addon.calendar.ui.CalendarComponentEvents.ForwardHandler;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents.ItemClickHandler;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents.WeekClickHandler;
 
@@ -57,6 +60,15 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
     monthView.addComponent(new DayView());
   };
 
+  private BackwardHandler prevClick = event -> {
+    VaadinSession.getCurrent().setAttribute(LocalDate.class, date.minusMonths(1));
+    monthView.showCalendar();
+  };
+  private ForwardHandler nextClick = event -> {
+    VaadinSession.getCurrent().setAttribute(LocalDate.class, date.plusMonths(1));
+    monthView.showCalendar();
+  };
+
   public ExpenseCalendar() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     uss = AppCtxProvider.getBean(UserSummaryService.class);
@@ -69,6 +81,10 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
     setHandler(weekClick);
 
     setHandler(eventClick);
+
+    setHandler(prevClick);
+
+    setHandler(nextClick);
   }
 
   public void setMonthView(MonthView monthView) {

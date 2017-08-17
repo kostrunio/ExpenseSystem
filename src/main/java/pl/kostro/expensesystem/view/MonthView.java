@@ -16,7 +16,7 @@ import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 
 @SuppressWarnings("serial")
 public class MonthView extends MonthDesign {
@@ -24,11 +24,11 @@ public class MonthView extends MonthDesign {
   private Logger logger = LogManager.getLogger();
   private LocalDate date;
 
-  private Button.ClickListener prevClick = event -> {
+  private ClickListener prevClick = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date.minusMonths(1));
     showCalendar();
   };
-  private Button.ClickListener nextClick = event -> {
+  private ClickListener nextClick = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date.plusMonths(1));
     showCalendar();
   };
