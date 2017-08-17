@@ -120,6 +120,7 @@ public class DayView extends DayDesign {
     backButton.addClickListener(backClick);
 
     userBox.setEmptySelectionAllowed(false);
+    userBox.setItemCaptionGenerator(item -> item.getUser().getName());
     userBox.setItems(expenseSheet.getUserLimitList());
     userBox.addValueChangeListener(verifyFormula);
     formulaField.addValueChangeListener(verifyFormula);

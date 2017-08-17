@@ -86,9 +86,11 @@ public class ExpenseForm extends ExpenseFormDesign {
     dateField.setDateFormat("yyyy-MM-dd");
     dateField.addValueChangeListener(verifyFormula);
 
+    categoryBox.setItemCaptionGenerator(item -> item.getName());
     categoryBox.setEmptySelectionAllowed(false);
     categoryBox.addValueChangeListener(verifyFormula);
 
+    userBox.setItemCaptionGenerator(item -> item.getUser().getName());
     userBox.setEmptySelectionAllowed(false);
     userBox.addValueChangeListener(verifyFormula);
 

@@ -21,7 +21,6 @@ import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
-import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.view.design.TableDesign;
@@ -30,7 +29,6 @@ import pl.kostro.expensesystem.view.design.TableDesign;
 public class TableView extends TableDesign {
   
   private ExpenseSheetService eshs;
-  private ExpenseService es;
 
   private Logger logger = LogManager.getLogger();
   private LocalDate date;
@@ -64,7 +62,6 @@ public class TableView extends TableDesign {
   
   public TableView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
-    es = AppCtxProvider.getBean(ExpenseService.class);
     logger.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     this.date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
@@ -77,7 +74,9 @@ public class TableView extends TableDesign {
     
     fromDateField.setValue(date.withDayOfMonth(1));
     toDateField.setValue(date.withDayOfMonth(date.lengthOfMonth()));
+    categoryBox.setItemCaptionGenerator(item -> item.getName());
     categoryBox.setItems(expenseSheet.getCategoryList());
+    userBox.setItemCaptionGenerator(item -> item.getUser().getName());
     userBox.setItems(expenseSheet.getUserLimitList());
     commentBox.setNewItemHandler(addComment);
     commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshs.getAllComments(expenseSheet));
@@ -121,8 +120,8 @@ public class TableView extends TableDesign {
     commentBox.setCaption(Msg.get("findPage.comment"));
     newExpenseButton.setCaption(Msg.get("findPage.add"));
     expenseGrid.addColumn(Expense::getDate).setCaption(Msg.get("findPage.date"));
-    expenseGrid.addColumn(Expense::getCategory).setCaption(Msg.get("findPage.category"));
-    expenseGrid.addColumn(Expense::getUser).setCaption(Msg.get("findPage.user"));
+    expenseGrid.addColumn(item -> item.getCategory().getName()).setCaption(Msg.get("findPage.category"));
+    expenseGrid.addColumn(item -> item.getUser().getName()).setCaption(Msg.get("findPage.user"));
     expenseGrid.addColumn(Expense::getFormula).setCaption(Msg.get("findPage.formula"));
     expenseGrid.addColumn(Expense::getValue).setCaption(Msg.get("findPage.value"));
     expenseGrid.addColumn(Expense::getComment).setCaption(Msg.get("findPage.comment"));

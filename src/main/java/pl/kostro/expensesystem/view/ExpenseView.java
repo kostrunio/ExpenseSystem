@@ -130,7 +130,9 @@ public class ExpenseView extends ExpenseDesign implements View {
   }
 
   private void prepareSearchLayout() {
+    categoryCombo.setItemCaptionGenerator(item -> item.getName());
     categoryCombo.setItems(expenseSheet.getCategoryList());
+    userCombo.setItemCaptionGenerator(item -> item.getUser().getName());
     userCombo.setItems(expenseSheet.getUserLimitList());
     formulaField.clear();
     commentCombo.setNewItemHandler(addComment);
