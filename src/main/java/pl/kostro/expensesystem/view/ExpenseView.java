@@ -11,6 +11,7 @@ import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox.NewItemHandler;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.MenuBar;
@@ -42,11 +43,11 @@ public class ExpenseView extends ExpenseDesign implements View {
     root.removeAllComponents();
     root.addComponent(new SettingsView());
   };
-  private Button.ClickListener chartClick = event -> {
+  private ClickListener chartClick = event -> {
     root.removeAllComponents();
     root.addComponent(new ChartView());
   };
-  private Button.ClickListener filterClick = event -> {
+  private ClickListener filterClick = event -> {
     searchPanel.setVisible(!searchPanel.isVisible());
     if (searchPanel.isVisible()) {
       prepareSearchLayout();
@@ -56,7 +57,7 @@ public class ExpenseView extends ExpenseDesign implements View {
       mainView.addComponent(new MonthView());
     }
   };
-  private Button.ClickListener tableClick = event -> {
+  private ClickListener tableClick = event -> {
     searchPanel.setVisible(false);
     mainView.removeAllComponents();
     if (yearMenu.isEnabled()) {
@@ -72,7 +73,23 @@ public class ExpenseView extends ExpenseDesign implements View {
       mainView.addComponent(new MonthView());
     }
   };
-  private Button.ClickListener searchClick = event -> {
+  private ClickListener userSummaryClick = event -> {
+    searchPanel.setVisible(false);
+    mainView.removeAllComponents();
+    if (yearMenu.isEnabled()) {
+      yearMenu.setEnabled(false);
+      monthMenu.setVisible(false);
+      filterButton.setEnabled(false);
+      mainView.addComponent(new UserSummaryView());
+    } else {
+      expenseSheet.setFilter(null);
+      yearMenu.setEnabled(true);
+      monthMenu.setVisible(true);
+      filterButton.setEnabled(true);
+      mainView.addComponent(new MonthView());
+    }
+  };
+  private ClickListener searchClick = event -> {
     User filterUser = null;
     String filterFormula = null;
     String filterComment = null;
@@ -150,6 +167,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     filterButton.addClickListener(filterClick);
     searchButton.addClickListener(searchClick);
     tableButton.addClickListener(tableClick);
+    userSummaryButton.addClickListener(userSummaryClick);
     for (String monthName : CalendarUtils.getMonthsName())
       monthMenu.addItem(monthName, monthCommand).setCheckable(true);
     root.addComponent(content);

@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+ <head>
+  <meta charset="UTF-8">
+  <meta name="design-properties" content="{&quot;RULERS_VISIBLE&quot;:true,&quot;GUIDELINES_VISIBLE&quot;:false,&quot;SNAP_TO_OBJECTS&quot;:true,&quot;SNAP_TO_GRID&quot;:true,&quot;SNAPPING_DISTANCE&quot;:10,&quot;GENERATE_GETTERS&quot;:false,&quot;JAVA_SOURCES_ROOT&quot;:&quot;src/main/java&quot;,&quot;THEME&quot;:&quot;expensesystem&quot;}">
+  <meta name="vaadin-version" content="8.0.5">
+  <meta name="package-mapping" content="pl_kostro_expensesystem_components_form:pl.kostro.expensesystem.components.form">
+ </head>
+ <body>
+  <vaadin-vertical-layout size-full margin="false">
+   <vaadin-panel size-auto _id="actionPanel">
+    <vaadin-horizontal-layout width-full margin _id="actionsLayout">
+     <vaadin-combo-box data-item-type="pl.kostro.expensesystem.model.UserLimit" item-caption-mode="id" _id="userBox"></vaadin-combo-box>
+    </vaadin-horizontal-layout>
+   </vaadin-panel>
+   <vaadin-horizontal-layout size-full _id="workingLayout">
+    <vaadin-grid size-full data-item-type="pl.kostro.expensesystem.model.UserSummary" _id="userSummaryGrid" :expand>
+     <table>
+      <colgroup>
+       <col column-id="id" sortable>
+       <col column-id="date" sortable>
+       <col column-id="limit" sortable>
+       <col column-id="sum" sortable>
+      </colgroup>
+      <thead>
+       <tr default>
+        <th plain-text column-ids="id">Id</th>
+        <th plain-text column-ids="date">Date</th>
+        <th plain-text column-ids="limit">Limit</th>
+        <th plain-text column-ids="sum">Sum</th>
+       </tr>
+      </thead>
+      <tbody></tbody>
+     </table>
+    </vaadin-grid>
+   </vaadin-horizontal-layout>
+  </vaadin-vertical-layout>
+ </body>
+</html>

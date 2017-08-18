@@ -33,6 +33,7 @@ public class ExpenseDesign extends Panel {
   protected MenuBar yearMenu;
   protected Button filterButton;
   protected Button tableButton;
+  protected Button userSummaryButton;
   
   protected MenuBar monthMenu;
 
@@ -138,6 +139,16 @@ public class ExpenseDesign extends Panel {
 
     menuLayout.addComponent(tableButton);
     menuLayout.setComponentAlignment(tableButton, Alignment.MIDDLE_RIGHT);
+
+    // userSummaryBurron
+    userSummaryButton = new Button();
+    userSummaryButton.setIcon(VaadinIcons.FILE_TREE_SMALL);
+    userSummaryButton.addStyleName(ValoTheme.BUTTON_ICON_ONLY);
+    userSummaryButton.addStyleName(ValoTheme.BUTTON_BORDERLESS);
+    userSummaryButton.setCaption(Msg.get("expense.userSummary"));
+
+    menuLayout.addComponent(userSummaryButton);
+    menuLayout.setComponentAlignment(userSummaryButton, Alignment.MIDDLE_RIGHT);
 
     return menuLayout;
   }
