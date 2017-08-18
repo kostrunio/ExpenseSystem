@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 
@@ -31,9 +31,9 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
   private ExpenseSheetService eshs;
   private RealUserService rus;
   private ExpenseSheet expenseSheet;
-  private Button.ClickListener editClick = event -> UI.getCurrent().addWindow(new ExpenseSheetEditWindow(SettingsView.this, expenseSheet));
-  private Button.ClickListener passwordClick = event -> UI.getCurrent().addWindow(new ExpenseSheetEditPasswordWindow(SettingsView.this));
-  private Button.ClickListener removeClick = event -> {
+  private ClickListener editClick = event -> UI.getCurrent().addWindow(new ExpenseSheetEditWindow(SettingsView.this, expenseSheet));
+  private ClickListener passwordClick = event -> UI.getCurrent().addWindow(new ExpenseSheetEditPasswordWindow(SettingsView.this));
+  private ClickListener removeClick = event -> {
     ConfirmDialog.show(getUI(),
         Msg.get("settingsPage.removeSheetLabel"),
         MessageFormat.format(Msg.get("settingsPage.removeSheetQuestion"), expenseSheet.getName()),
@@ -52,6 +52,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
           }
         });
   };
+  private ClickListener backClick = event -> UI.getCurrent().getNavigator().navigateTo(UI.getCurrent().getNavigator().getState());
 
   public SettingsView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
@@ -70,6 +71,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
     realUserGrid.setDeleteUserLimitButton(deleteRealUserButton);
     userGrid.setAddUserLimitButton(addUserButton);
     userGrid.setDeleteUserLimitButton(deleteUserButton);
+    backButton.addClickListener(backClick);
     disableAllButtons();
     
     if (expenseSheet != null) {
@@ -89,6 +91,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
     categoryPanel.setCaption(Msg.get("settingsPage.categoryLabel"));
     realUserPanel.setCaption(Msg.get("settingsPage.realUserLabel"));
     userPanel.setCaption(Msg.get("settingsPage.userLabel"));
+    backButton.setCaption(Msg.get("settingsPage.back"));
   }
   
   private void disableAllButtons() {

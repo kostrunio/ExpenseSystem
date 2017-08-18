@@ -51,6 +51,7 @@ public class SettingsDesign extends VerticalLayout {
   protected HorizontalLayout userButtonLayout;
   protected Button addUserButton;
   protected Button deleteUserButton;
+  protected Button backButton;
 
   public SettingsDesign() {
     Design.read(this);
