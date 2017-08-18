@@ -32,6 +32,9 @@ public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsCha
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
 
+  private TextField limitField = new TextField();
+  private TextField orderField = new TextField();
+
   private ExpenseSheet expenseSheet;
   
   private Binder<UserLimit> binder = new Binder<>();
@@ -61,11 +64,8 @@ public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsCha
     uls = AppCtxProvider.getBean(UserLimitService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
 
-    TextField limitField = new TextField();
-    TextField orderField = new TextField();
-    
     Binder.Binding<UserLimit, String> limitBinder = binder.forField(limitField)
-        .bind(userLimit -> userLimit.getLimit().toString(), (userLimit, value) -> userLimit.setLimit(new BigDecimal(value)));
+        .bind(userLimit -> userLimit.getLimit().toString(), (userLimit, value) -> userLimit.setLimit(new BigDecimal(value.replaceAll(",", "."))));
     Binder.Binding<UserLimit, String> orderBinder = binder.forField(orderField)
         .bind(userLimit -> userLimit.getOrder()+"", (userLimit, value) -> userLimit.setOrder(Integer.parseInt(value)));
     
