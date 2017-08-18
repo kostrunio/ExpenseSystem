@@ -47,6 +47,7 @@ public class ChartView extends ChartDesign {
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     expenseSheet.setFilter(new Filter(null, null, null, null));
     setCaption();
+    categoryCombo.setItemCaptionGenerator(item -> item.getName());
     categoryCombo.setItems(expenseSheet.getCategoryList());
     userCombo.setItems(expenseSheet.getUserLimitList());
     userCombo.setItemCaptionGenerator(item -> item.getUser().getName());
