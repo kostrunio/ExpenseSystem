@@ -64,12 +64,14 @@ public class ExpenseView extends ExpenseDesign implements View {
       yearMenu.setEnabled(false);
       monthMenu.setVisible(false);
       filterButton.setEnabled(false);
+      userSummaryButton.setEnabled(false);
       mainView.addComponent(new TableView());
     } else {
       expenseSheet.setFilter(null);
       yearMenu.setEnabled(true);
       monthMenu.setVisible(true);
       filterButton.setEnabled(true);
+      userSummaryButton.setEnabled(true);
       mainView.addComponent(new MonthView());
     }
   };
@@ -80,12 +82,14 @@ public class ExpenseView extends ExpenseDesign implements View {
       yearMenu.setEnabled(false);
       monthMenu.setVisible(false);
       filterButton.setEnabled(false);
+      tableButton.setEnabled(false);
       mainView.addComponent(new UserSummaryView());
     } else {
       expenseSheet.setFilter(null);
       yearMenu.setEnabled(true);
       monthMenu.setVisible(true);
       filterButton.setEnabled(true);
+      tableButton.setEnabled(true);
       mainView.addComponent(new MonthView());
     }
   };
