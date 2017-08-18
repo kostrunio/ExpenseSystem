@@ -44,8 +44,24 @@ public class ExpenseView extends ExpenseDesign implements View {
     root.addComponent(new SettingsView());
   };
   private ClickListener chartClick = event -> {
-    root.removeAllComponents();
-    root.addComponent(new ChartView());
+    searchPanel.setVisible(false);
+    mainView.removeAllComponents();
+    if (yearMenu.isEnabled()) {
+      yearMenu.setEnabled(false);
+      monthMenu.setVisible(false);
+      filterButton.setEnabled(false);
+      tableButton.setEnabled(false);
+      userSummaryButton.setEnabled(false);
+      mainView.addComponent(new ChartView());
+    } else {
+      expenseSheet.setFilter(null);
+      yearMenu.setEnabled(true);
+      monthMenu.setVisible(true);
+      filterButton.setEnabled(true);
+      tableButton.setEnabled(true);
+      userSummaryButton.setEnabled(true);
+      mainView.addComponent(new MonthView());
+    }
   };
   private ClickListener filterClick = event -> {
     searchPanel.setVisible(!searchPanel.isVisible());
