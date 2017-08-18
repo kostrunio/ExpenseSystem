@@ -10,7 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.vaadin.event.selection.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.data.sort.SortDirection;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox.NewItemHandler;
 import com.vaadin.ui.Grid;
 
@@ -33,7 +33,7 @@ public class TableView extends TableDesign {
   private Logger logger = LogManager.getLogger();
   private LocalDate date;
   private ExpenseSheet expenseSheet;
-  private Button.ClickListener filterClicked = event -> {
+  private ClickListener filterClicked = event -> {
     User filterUser = null;
     if (userBox.getValue() instanceof UserLimit) {
       filterUser = ((UserLimit) userBox.getValue()).getUser();
@@ -51,7 +51,7 @@ public class TableView extends TableDesign {
         (String)commentBox.getValue()));
     refreshExpenses();
   };
-  private Button.ClickListener newClicked = event -> expenseForm.edit(new Expense());
+  private ClickListener newClicked = event -> expenseForm.edit(new Expense());
   private SelectionListener<Expense> itemClicked = event -> {
     if (expenseGrid.getSelectedItems().size() != 0)
       expenseForm.edit(expenseGrid.getSelectedItems().iterator().next());
@@ -63,8 +63,8 @@ public class TableView extends TableDesign {
   public TableView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("create");
-    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    this.date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
     setCaption();
     fromDateField.setDateFormat("yyyy-MM-dd");
     toDateField.setDateFormat("yyyy-MM-dd");
