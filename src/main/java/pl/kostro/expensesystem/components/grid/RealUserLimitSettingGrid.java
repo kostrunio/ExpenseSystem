@@ -69,7 +69,7 @@ public class RealUserLimitSettingGrid extends Grid<UserLimit> implements Setting
     TextField orderField = new TextField();
     
     Binder.Binding<UserLimit, String> limitBinder = binder.forField(limitField)
-        .bind(userLimit -> userLimit.getLimit().toString(), (userLimit, value) -> userLimit.setLimit(new BigDecimal(value)));
+        .bind(userLimit -> userLimit.getLimit().toString(), (userLimit, value) -> userLimit.setLimit(new BigDecimal(value.replaceAll(",", "."))));
     Binder.Binding<UserLimit, String> orderBinder = binder.forField(orderField)
         .bind(userLimit -> userLimit.getOrder()+"", (userLimit, value) -> userLimit.setOrder(Integer.parseInt(value)));
     
