@@ -46,12 +46,12 @@ public class DayView extends DayDesign {
   private boolean modify;
 
   private Button.ClickListener prevClick = event -> {
-    date = date.minusDays(1);
+    VaadinSession.getCurrent().setAttribute(LocalDate.class, date.minusDays(1));
     removeAllComponents();
     addComponent(new DayView());
   };
   private Button.ClickListener nextClick = event -> {
-    date = date.plusDays(1);
+    VaadinSession.getCurrent().setAttribute(LocalDate.class, date.plusDays(1));
     removeAllComponents();
     addComponent(new DayView());
   };
@@ -92,7 +92,7 @@ public class DayView extends DayDesign {
     }
   };
   private ValueChangeListener<LocalDate> dateChanged = event -> {
-    date = event.getValue();
+    VaadinSession.getCurrent().setAttribute(LocalDate.class, event.getValue());
     removeAllComponents();
     addComponent(new DayView());
   };
@@ -105,9 +105,9 @@ public class DayView extends DayDesign {
     es = AppCtxProvider.getBean(ExpenseService.class);
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("create");
-    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    this.category = expenseSheet.getCategoryList().get(0);
-    this.date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    category = expenseSheet.getCategoryList().get(0);
+    date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
 
     setCaption();
     thisDateField.setDateFormat("yyyy-MM-dd");
