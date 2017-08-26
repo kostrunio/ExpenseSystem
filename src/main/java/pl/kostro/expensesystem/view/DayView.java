@@ -98,7 +98,7 @@ public class DayView extends DayDesign {
   };
   @SuppressWarnings("rawtypes")
   private ValueChangeListener verifyFormula = event -> verifyFormula(formulaField.getValue());
-  private NewItemHandler addComment = event -> {};
+  private NewItemHandler addComment = event -> commentBox.setValue(event);
 
   @SuppressWarnings("unchecked")
   public DayView() {

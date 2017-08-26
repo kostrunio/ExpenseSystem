@@ -58,7 +58,7 @@ public class TableView extends TableDesign {
     else
       expenseForm.setVisible(false);
   };
-  private NewItemHandler addComment = event -> {};
+  private NewItemHandler addComment = event -> commentBox.setValue(event);
   
   public TableView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);

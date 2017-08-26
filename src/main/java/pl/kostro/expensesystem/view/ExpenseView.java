@@ -144,7 +144,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     mainView.addComponent(new MonthView());
     checkedMonth(selectedItem.getText());
   };
-  private NewItemHandler addComment = event -> {};
+  private NewItemHandler addComment = event -> commentCombo.setValue(event);
   
   public ExpenseView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
