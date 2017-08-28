@@ -135,7 +135,7 @@ public class ExpenseSheetService {
 
   public List<Expense> findAllExpense(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    List<Expense> expenseListToReturn = expenseSheet.getExpenseList().parallelStream()
+    List<Expense> expenseListToReturn = expenseSheet.getExpenseList().stream()
         .filter(e -> Filter.matchFilter(e, expenseSheet.getFilter()))
         .collect(Collectors.toList());
     ExpenseService.logger.info("findAllExpense for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
@@ -144,7 +144,7 @@ public class ExpenseSheetService {
 
   private List<Expense> getExpenseList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    List<Expense> expenseListToReturn = expenseSheet.getExpenseList().parallelStream()
+    List<Expense> expenseListToReturn = expenseSheet.getExpenseList().stream()
     .filter(e -> !e.getDate().isBefore(expenseSheet.getFirstDate()))
     .filter(e -> !e.getDate().isAfter(expenseSheet.getLastDate()))
     .filter(e -> Filter.matchFilter(e, expenseSheet.getFilter()))
