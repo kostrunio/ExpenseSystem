@@ -1,4 +1,0 @@
-rm -r /var/lib/openshift/597293667628e1c1d100001f/app-deployments/*
-rm -r /var/lib/openshift/597293667628e1c1d100001f/app-root/runtime/repo/target/*
-rm -r /var/lib/openshift/597293667628e1c1d100001f/app-root/runtime/repo/deployments/*
-rm -r /var/lib/openshift/597293667628e1c1d100001f/.m2/repository/*

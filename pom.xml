@@ -61,12 +61,12 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-spring-boot-starter</artifactId>
-<!-- 			<exclusions>
+			<exclusions>
 				<exclusion>
 					<groupId>org.springframework.boot</groupId>
 					<artifactId>spring-boot-starter-tomcat</artifactId>
 				</exclusion>
-			</exclusions> -->
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>javax</groupId>
@@ -173,21 +173,6 @@
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>com.vaadin</groupId>
-				<artifactId>vaadin-maven-plugin</artifactId>
-				<version>${vaadin.version}</version>
-				<configuration>
-					<extraJvmArgs>-Xmx1G</extraJvmArgs>
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>update-theme</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 			</plugin>
@@ -221,24 +206,8 @@
 			<!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
 			<id>openshift</id>
 			<build>
-				<finalName>test</finalName>
+				<finalName>new</finalName>
 				<plugins>
-					<plugin>
-						<groupId>com.vaadin</groupId>
-						<artifactId>vaadin-maven-plugin</artifactId>
-						<version>${vaadin.version}</version>
-						<configuration>
-							<extraJvmArgs>-Xmx1G</extraJvmArgs>
-						</configuration>
-						<executions>
-							<execution>
-								<goals>
-									<goal>update-theme</goal>
-									<goal>compile-theme</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>

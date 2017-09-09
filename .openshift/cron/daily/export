@@ -1,1 +1,0 @@
-pg_dump -f /var/lib/openshift/597293667628e1c1d100001f/postgresql/export/`date +%Y-%m-%d`.dmp
