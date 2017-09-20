@@ -61,7 +61,7 @@ public class ExpenseForm extends ExpenseFormDesign {
   };
   @SuppressWarnings("rawtypes")
   private HasValue.ValueChangeListener verifyFormula = event -> verifyFormula(formulaField.getValue());
-  private NewItemHandler addNewComment = newItem -> {};
+  private NewItemHandler addComment = event -> commentBox.setValue(event);
 
   public ExpenseForm() {
     es = AppCtxProvider.getBean(ExpenseService.class);
@@ -97,7 +97,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     formulaField.focus();
     formulaField.addValueChangeListener(verifyFormula);
 
-    commentBox.setNewItemHandler(addNewComment);
+    commentBox.setNewItemHandler(addComment);
     commentBox.setEmptySelectionAllowed(true);
     commentBox.addValueChangeListener(verifyFormula);
 
