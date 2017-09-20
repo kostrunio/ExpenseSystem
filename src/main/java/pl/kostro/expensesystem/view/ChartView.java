@@ -80,6 +80,7 @@ public class ChartView extends ChartDesign {
 
   private void showCharts() {
     chartLayout.removeAllComponents();
+    chartLayout2.removeAllComponents();
     List<YearCategory> yearCategoryList = eshs.prepareYearCategoryList(expenseSheet);
     ChartGrid lineGrid = new ChartGrid(yearCategoryList);
     ChartGrid columnGrid = new ChartGrid(yearCategoryList);
