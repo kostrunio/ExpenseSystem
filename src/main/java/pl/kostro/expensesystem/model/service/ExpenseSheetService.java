@@ -162,6 +162,7 @@ public class ExpenseSheetService {
     expenseSheet.setFirstDate(startDate);
     expenseSheet.setLastDate(endDate);
     for (Expense expense : getExpenseList(expenseSheet)) {
+      if (expense.getValue() == null) continue;
       addExpenseToDateMap(expenseSheet, expense);
       if (firstDay != null && lastDay != null && !expense.getDate().isBefore(firstDay)
           && !expense.getDate().isAfter(lastDay)) {

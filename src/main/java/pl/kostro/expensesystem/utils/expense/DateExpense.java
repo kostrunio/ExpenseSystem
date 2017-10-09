@@ -67,9 +67,6 @@ public class DateExpense {
 	}
 	
 	public void addExpense(ExpenseSheet expenseSheet, Expense expense) {
-	  if (expense.getValue() == null) {
-	    return;
-	  }
 		setSum(getSum().add(expense.getValue().multiply(expense.getCategory().getMultiplier()).setScale(2, RoundingMode.HALF_UP)));
 		CategoryExpense categoryExpense = getCategoryExpenseMap().get(expense.getCategory());
 		if (categoryExpense == null) {
