@@ -1,67 +1,48 @@
-package pl.kostro.expensesystem.model;
+package pl.kostro.expensesystem.model.mongodb;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import javax.persistence.Column;
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 import com.vaadin.server.VaadinSession;
 
+import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.utils.Calculator;
 import pl.kostro.expensesystem.utils.Encryption;
-import pl.kostro.expensesystem.utils.LocalDatePersistenceConverter;
 
 @SuppressWarnings("serial")
-@Entity
-@Table(name = "expenses")
-public class Expense extends AbstractEntity {
+public class NewExpense extends NewAbstractEntity {
   @Id
-  @GeneratedValue(generator="increment")
-  @GenericGenerator(name = "increment", strategy = "increment")
-  @Column(name = "e_id")
-  private Long id;
-  @Column(name = "e_date")
-  @Convert(converter = LocalDatePersistenceConverter.class)
+  private String id;
+
   private LocalDate date;
   @Transient
   private String formula;
-  @Column(name = "e_formula_byte")
+
   private byte[] formula_byte;
   @Transient
   private BigDecimal value;
-  @OneToOne
-  @JoinColumn(name = "e_c_id")
-  private Category category;
-  @OneToOne
-  @JoinColumn(name = "e_u_id")
-  private User user;
+
+  private NewCategory category;
+
+  private NewUser user;
   @Transient
   private String comment;
-  @Column(name = "e_comment_byte")
-  private byte[] comment_byte;
-  @Column(name = "e_notify")
-  private boolean notify;
-  @ManyToOne
-  @JoinColumn(name = "e_es_id")
-  private ExpenseSheet expenseSheet;
 
-  public Expense() {
+  private byte[] comment_byte;
+
+  private boolean notify;
+
+  private NewExpenseSheet expenseSheet;
+
+  public NewExpense() {
     super();
   }
 
-  public Expense(LocalDate date, String formula, Category category, User user, String comment, boolean notify,
-      ExpenseSheet expenseSheet) {
+  public NewExpense(LocalDate date, String formula, NewCategory category, NewUser user, String comment, boolean notify,
+      NewExpenseSheet expenseSheet) {
     this.date = date;
     setFormula(formula);
     this.category = category;
@@ -71,11 +52,21 @@ public class Expense extends AbstractEntity {
     this.expenseSheet = expenseSheet;
   }
 
-  public Long getId() {
+  public NewExpense(Expense expense, NewCategory newCategory, NewUser newUser, NewExpenseSheet newExpenseSheet) {
+    this.date = expense.getDate();
+    this.formula_byte = expense.getFormulaByte();
+    this.category = newCategory;
+    this.user = newUser;
+    this.comment_byte = expense.getCommentByte();
+    this.notify = expense.isNotify();
+    this.expenseSheet = newExpenseSheet;
+  }
+
+  public String getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -93,7 +84,7 @@ public class Expense extends AbstractEntity {
 
   public String getFormula(boolean encrypt) {
     if ((formula == null || formula.isEmpty()) && formula_byte != null && !encrypt) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(NewExpenseSheet.class).getKey());
       formula = enc.decryption(formula_byte);
     }
     return formula;
@@ -106,13 +97,9 @@ public class Expense extends AbstractEntity {
   public void setFormula(String formula, boolean encrypt) {
     if (formula_byte != null && formula.equals(this.formula) && !encrypt)
       return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(NewExpenseSheet.class).getKey());
     this.formula_byte = enc.encryption(formula);
     this.formula = formula;
-  }
-
-  public byte[] getFormulaByte() {
-    return formula_byte;
   }
 
   public BigDecimal getValue() {
@@ -125,19 +112,19 @@ public class Expense extends AbstractEntity {
     }
   }
 
-  public Category getCategory() {
+  public NewCategory getCategory() {
     return category;
   }
 
-  public void setCategory(Category category) {
+  public void setCategory(NewCategory category) {
     this.category = category;
   }
 
-  public User getUser() {
+  public NewUser getUser() {
     return user;
   }
 
-  public void setUser(User user) {
+  public void setUser(NewUser user) {
     this.user = user;
   }
 
@@ -147,7 +134,7 @@ public class Expense extends AbstractEntity {
 
   public String getComment(boolean encrypt) {
     if ((comment == null || comment.isEmpty()) && comment_byte != null && !encrypt) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(NewExpenseSheet.class).getKey());
       comment = enc.decryption(comment_byte);
     }
     return comment;
@@ -160,13 +147,9 @@ public class Expense extends AbstractEntity {
   public void setComment(String comment, boolean encrypt) {
     if (comment_byte != null && comment.equals(this.comment) && !encrypt)
       return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(NewExpenseSheet.class).getKey());
     this.comment_byte = enc.encryption(comment);
     this.comment = comment;
-  }
-
-  public byte[] getCommentByte() {
-    return comment_byte;
   }
 
   public boolean isNotify() {
@@ -177,11 +160,11 @@ public class Expense extends AbstractEntity {
     this.notify = notify;
   }
 
-  public ExpenseSheet getExpenseSheet() {
+  public NewExpenseSheet getExpenseSheet() {
     return expenseSheet;
   }
 
-  public void setExpenseSheet(ExpenseSheet expenseSheet) {
+  public void setExpenseSheet(NewExpenseSheet expenseSheet) {
     this.expenseSheet = expenseSheet;
   }
 

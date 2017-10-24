@@ -1,75 +1,67 @@
-package pl.kostro.expensesystem.model;
+package pl.kostro.expensesystem.model.mongodb;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.OrderBy;
-import javax.persistence.Table;
-import javax.persistence.Transient;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
-import org.hibernate.annotations.GenericGenerator;
-
+import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.utils.Encryption;
 
 import com.vaadin.server.VaadinSession;
 
 @SuppressWarnings("serial")
-@Entity
-@Table(name = "users_limits")
-public class UserLimit extends AbstractEntity {
+public class NewUserLimit extends NewAbstractEntity {
   @Id
-  @GeneratedValue(generator="increment")
-  @GenericGenerator(name = "increment", strategy = "increment")
-  @Column(name = "ul_id")
-  private Long id;
-  @OneToOne
-  @JoinColumn(name = "ul_u_id")
-  private User user;
+  private String id;
+
+  private NewUser user;
   @Transient
   private BigDecimal limit;
-  @Column(name = "ul_limit_byte")
+
   private byte[] limit_byte;
-  @Column(name = "ul_order")
+
   private int order;
-  @OneToMany(cascade = CascadeType.REMOVE)
-  @JoinColumn(name = "us_ul_id")
-  @OrderBy(value = "date")
-  private List<UserSummary> userSummaryList;
-  @Column(name = "ul_cont_summary")
+
+  private List<NewUserSummary> userSummaryList;
+
   private boolean continuousSummary;
 
-  public UserLimit() {
+  public NewUserLimit() {
     super();
   }
 
-  public UserLimit(User user, int order) {
+  public NewUserLimit(NewUser user, int order) {
     this.user = user;
     setLimit(new BigDecimal(0));
     this.order = order;
   }
 
-  public Long getId() {
+  public NewUserLimit(UserLimit userLimit, NewRealUser newRealUser, NewUser newUser) {
+    if (newRealUser != null)
+      this.user = newRealUser;
+    else if (newUser != null)
+      this.user = newUser;
+    this.limit_byte = userLimit.getLimitByte();
+    this.order = userLimit.getOrder();
+    this.continuousSummary = userLimit.isContinuousSummary();
+    
+  }
+  public String getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(String id) {
     this.id = id;
   }
 
-  public User getUser() {
+  public NewUser getUser() {
     return user;
   }
 
-  public void setUser(User user) {
+  public void setUser(NewUser user) {
     this.user = user;
   }
   
@@ -84,7 +76,7 @@ public class UserLimit extends AbstractEntity {
   public BigDecimal getLimit(boolean encrypt) {
     if (limit == null && limit_byte != null && !encrypt) {
       try {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(NewExpenseSheet.class).getKey());
       limit = new BigDecimal(enc.decryption(limit_byte));
       } catch (NullPointerException e) {
         return new BigDecimal("-1");
@@ -100,13 +92,9 @@ public class UserLimit extends AbstractEntity {
   public void setLimit(BigDecimal limit, boolean encrypt) {
     if (limit_byte != null && limit.equals(this.limit) && !encrypt)
       return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(NewExpenseSheet.class).getKey());
     this.limit_byte = enc.encryption(limit.toString());
     this.limit = limit;
-  }
-
-  public byte[] getLimitByte() {
-    return limit_byte;
   }
 
   public int getOrder() {
@@ -117,13 +105,13 @@ public class UserLimit extends AbstractEntity {
     this.order = order;
   }
 
-  public List<UserSummary> getUserSummaryList() {
+  public List<NewUserSummary> getUserSummaryList() {
     if (userSummaryList == null)
-      userSummaryList = new ArrayList<UserSummary>();
+      userSummaryList = new ArrayList<NewUserSummary>();
     return userSummaryList;
   }
 
-  public void setUserSummaryList(List<UserSummary> userSummaryList) {
+  public void setUserSummaryList(List<NewUserSummary> userSummaryList) {
     this.userSummaryList = userSummaryList;
   }
 

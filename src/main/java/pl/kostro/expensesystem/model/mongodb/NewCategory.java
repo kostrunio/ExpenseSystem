@@ -1,54 +1,49 @@
-package pl.kostro.expensesystem.model;
+package pl.kostro.expensesystem.model.mongodb;
 
 import java.math.BigDecimal;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 import com.vaadin.server.VaadinSession;
 
+import pl.kostro.expensesystem.model.Category;
 import pl.kostro.expensesystem.utils.Encryption;
 
 @SuppressWarnings("serial")
-@Entity
-@Table(name = "categories")
-public class Category extends AbstractEntity {
+public class NewCategory extends NewAbstractEntity {
   @Id
-  @GeneratedValue(generator="increment")
-  @GenericGenerator(name = "increment", strategy = "increment")
-  @Column(name = "c_id")
-  private Long id;
+  private String id;
   @Transient
   private String name;
-  @Column(name = "c_name_byte")
+
   private byte[] name_byte;
-  @Column(name = "c_multiplier")
+
   private BigDecimal multiplier;
-  @Column(name = "c_order")
+
   private int order;
 
-  public Category() {
+  public NewCategory() {
     super();
   }
 
-  public Category(String name, int order) {
+  public NewCategory(String name, int order) {
     super();
     setName(name);
     this.multiplier = new BigDecimal(1);
     this.order = order;
   }
 
-  public Long getId() {
+  public NewCategory(Category category) {
+    this.name_byte = category.getNameByte();
+    this.multiplier = category.getMultiplier();
+    this.order = category.getOrder();
+  }
+  public String getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(String id) {
     this.id = id;
   }
   
@@ -59,7 +54,7 @@ public class Category extends AbstractEntity {
   public String getName(boolean encrypt) {
     if ((name == null || name.isEmpty()) && name_byte != null && !encrypt) {
       try {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(NewExpenseSheet.class).getKey());
       name = enc.decryption(name_byte);
       } catch (NullPointerException e) {
         return name_byte.toString();
@@ -74,15 +69,11 @@ public class Category extends AbstractEntity {
 
   public void setName(String name, boolean encrypt) {
     if (name_byte != null && name.equals(this.name) && !encrypt) return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(NewExpenseSheet.class).getKey());
     this.name_byte = enc.encryption(name);
     this.name = name;
   }
-
-  public byte[] getNameByte() {
-    return name_byte;
-  }
-
+  
   public BigDecimal getMultiplier() {
     return multiplier;
   }

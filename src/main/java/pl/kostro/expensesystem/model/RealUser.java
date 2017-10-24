@@ -113,6 +113,6 @@ public class RealUser extends User {
 
   @Override
   public String toString() {
-    return getClass().getSimpleName()+"["+getName()+"]";
+    return getClass().getSimpleName()+"["+getName()+", " + getLogDate() + "]";
   }
 }
