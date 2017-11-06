@@ -90,7 +90,7 @@ public class RealUserService {
     } catch (NoResultException e) {
 
     }
-    logger.info("findRealUser for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("findRealUser for {} finish: {} ms", userName, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return realUser;
   }
 
