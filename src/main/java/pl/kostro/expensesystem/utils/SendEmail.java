@@ -3,9 +3,6 @@ package pl.kostro.expensesystem.utils;
 import java.text.MessageFormat;
 import java.util.Properties;
 
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -21,6 +18,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 
@@ -38,14 +36,10 @@ public class SendEmail {
       message.setSubject(Msg.get("email.welcome.subject"));
       message.setContent(Msg.get("email.welcome.text"), "text/html");
       
-      MimeBodyPart messageBodyPart = new MimeBodyPart();
       Multipart multipart = new MimeMultipart();
-      messageBodyPart = new MimeBodyPart();
-      String file = Msg.get("email.welcome.patch");
-      String fileName = Msg.get("email.welcome.fileName");
-      DataSource source = new FileDataSource(file);
-      messageBodyPart.setDataHandler(new DataHandler(source));
-      messageBodyPart.setFileName(fileName);
+      ClassLoader CLDR = SpringMain.class.getClassLoader();
+      MimeBodyPart messageBodyPart = new MimeBodyPart(CLDR.getResourceAsStream(Msg.get("email.welcome.fileName")));
+      messageBodyPart.setFileName(Msg.get("email.welcome.fileName"));
       multipart.addBodyPart(messageBodyPart);
       message.setContent(multipart);
 
@@ -82,15 +76,15 @@ public class SendEmail {
   
   private static Session prepareSession() {
     Properties props = new Properties();
-    props.put("mail.smtp.host", System.getenv("OPENSHIFT_MAIL_HOST"));
-    props.put("mail.smtp.socketFactory.port", System.getenv("OPENSHIFT_MAIL_PORT"));
+    props.put("mail.smtp.host", System.getenv("MAIL_HOST"));
+    props.put("mail.smtp.socketFactory.port", System.getenv("MAIL_PORT"));
     props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
     props.put("mail.smtp.auth", "true");
-    props.put("mail.smtp.port", System.getenv("OPENSHIFT_MAIL_PORT"));
+    props.put("mail.smtp.port", System.getenv("MAIL_PORT"));
     Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
-        return new PasswordAuthentication(System.getenv("OPENSHIFT_MAIL_USERNAME"), System.getenv("OPENSHIFT_MAIL_PASSWORD"));
+        return new PasswordAuthentication(System.getenv("MAIL_USERNAME"), System.getenv("MAIL_PASSWORD"));
       }
     });
     return session;
@@ -116,4 +110,5 @@ public class SendEmail {
       throw new RuntimeException(e);
     }
   }
+
 }
