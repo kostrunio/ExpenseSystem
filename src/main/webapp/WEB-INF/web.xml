@@ -12,21 +12,4 @@
 		<welcome-file>default.htm</welcome-file>
 		<welcome-file>default.jsp</welcome-file>
 	</welcome-file-list>
-	<context-param>
-		<description>Vaadin production mode</description>
-		<param-name>productionMode</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<servlet>
-		<servlet-name>ExpenseSystemServlet</servlet-name>
-		<servlet-class>pl.kostro.expensesystem.ExpenseSystemServlet</servlet-class>
-		<init-param>
-			<param-name>UI</param-name>
-			<param-value>pl.kostro.expensesystem.ExpenseSystemUI</param-value>
-		</init-param>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>ExpenseSystemServlet</servlet-name>
-		<url-pattern>/*</url-pattern>
-	</servlet-mapping>
 </web-app>

@@ -5,12 +5,16 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.vaadin.server.VaadinServlet;
+import org.springframework.stereotype.Component;
+
+import com.vaadin.spring.server.SpringVaadinServlet;
 
 import pl.kostro.expensesystem.utils.SendEmail;
 
-@SuppressWarnings("serial")
-public class ExpenseSystemServlet extends VaadinServlet {
+@Component("vaadinServlet")
+public class ExpenseSystemServlet extends SpringVaadinServlet {
+
+  private static final long serialVersionUID = 3389588943611093398L;
 
     @Override
     protected final void servletInitialized() throws ServletException {
