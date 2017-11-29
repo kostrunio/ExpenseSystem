@@ -44,7 +44,7 @@ import pl.kostro.expensesystem.view.MainView;
 @Widgetset("pl.kostro.expensesystem.ExpenseSystemWidgetset")
 public class ExpenseSystemUI extends UI {
 
-  private Logger logger = LogManager.getLogger();
+  private static Logger logger = LogManager.getLogger();
   private final ExpenseSystemEventBus expenseEventbus = new ExpenseSystemEventBus();
   private MainView mainView;
 
@@ -60,6 +60,7 @@ public class ExpenseSystemUI extends UI {
         new BrowserWindowResizeListener() {
             @Override
             public void browserWindowResized(final BrowserWindowResizeEvent event) {
+              logger.debug("new width: " + event.getWidth());
               ExpenseSystemEventBus.post(new BrowserResizeEvent());
             }
         });
