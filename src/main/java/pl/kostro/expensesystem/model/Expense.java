@@ -55,6 +55,8 @@ public class Expense extends AbstractEntity {
   @ManyToOne
   @JoinColumn(name = "e_es_id")
   private ExpenseSheet expenseSheet;
+  @Transient
+  private boolean encoded = true;
 
   public Expense() {
     super();
@@ -88,24 +90,20 @@ public class Expense extends AbstractEntity {
   }
 
   public String getFormula() {
-    return getFormula(false);
-  }
-
-  public String getFormula(boolean encrypt) {
-    if ((formula == null || formula.isEmpty()) && formula_byte != null && !encrypt) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
-      formula = enc.decryption(formula_byte);
-    }
+    if (encoded) decode();
     return formula;
   }
 
-  public void setFormula(String formula) {
-    setFormula(formula, false);
+  private void decode() {
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+    if (formula_byte != null)
+      formula = enc.decryption(formula_byte);
+    if (comment_byte != null)
+      comment = enc.decryption(comment_byte);
+    encoded = false;
   }
 
-  public void setFormula(String formula, boolean encrypt) {
-    if (formula_byte != null && formula.equals(this.formula) && !encrypt)
-      return;
+  public void setFormula(String formula) {
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.formula_byte = enc.encryption(formula);
     this.formula = formula;
@@ -138,24 +136,11 @@ public class Expense extends AbstractEntity {
   }
 
   public String getComment() {
-    return getComment(false);
-  }
-
-  public String getComment(boolean encrypt) {
-    if ((comment == null || comment.isEmpty()) && comment_byte != null && !encrypt) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
-      comment = enc.decryption(comment_byte);
-    }
+    if (encoded) decode();
     return comment;
   }
 
   public void setComment(String comment) {
-    setComment(comment, false);
-  }
-
-  public void setComment(String comment, boolean encrypt) {
-    if (comment_byte != null && comment.equals(this.comment) && !encrypt)
-      return;
     Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     this.comment_byte = enc.encryption(comment);
     this.comment = comment;

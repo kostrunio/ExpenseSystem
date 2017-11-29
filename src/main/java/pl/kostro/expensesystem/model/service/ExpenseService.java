@@ -61,8 +61,8 @@ public class ExpenseService {
 
   public void encrypt(Expense expense) {
     LocalDateTime stopper = LocalDateTime.now();
-    expense.setFormula(expense.getFormula(true), true);
-    expense.setComment(expense.getComment(true), true);
+    expense.setFormula(expense.getFormula());
+    expense.setComment(expense.getComment());
     expense = er.save(expense);
     logger.info("encrypt for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
