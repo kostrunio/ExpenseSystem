@@ -1,27 +1,19 @@
 package pl.kostro.expensesystem;
 
-import java.io.IOException;
 import java.util.Locale;
 import java.util.TimeZone;
-
-import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.Title;
-import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.Page;
 import com.vaadin.server.Page.BrowserWindowResizeEvent;
 import com.vaadin.server.Page.BrowserWindowResizeListener;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
-import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.Component;
@@ -30,7 +22,6 @@ import com.vaadin.ui.UI;
 import pl.kostro.expensesystem.event.ExpenseSystemEvent.BrowserResizeEvent;
 import pl.kostro.expensesystem.event.ExpenseSystemEventBus;
 import pl.kostro.expensesystem.model.RealUser;
-import pl.kostro.expensesystem.utils.SendEmail;
 import pl.kostro.expensesystem.view.LoginView;
 import pl.kostro.expensesystem.view.MainView;
 
@@ -90,26 +81,5 @@ public class ExpenseSystemUI extends UI {
 
   public MainView getMainView() {
     return mainView;
-  }
-
-  @WebServlet(urlPatterns = "/*", name = "ExpenseSystemUIServlet", asyncSupported = true)
-  @VaadinServletConfiguration(ui = ExpenseSystemUI.class, productionMode = false)
-  public static class ExpenseSystemUIServlet extends VaadinServlet {
-//    @Override
-//    protected final void servletInitialized() throws ServletException {
-//      super.servletInitialized();
-//      getService().addSessionInitListener(new ExpenseSystemSessionInitListener());
-//    }
-    
-    @Override
-    protected void service(HttpServletRequest request,
-        HttpServletResponse response) throws ServletException, IOException {
-      try {
-        super.service(request, response);
-      } catch (Exception | Error e) {
-        SendEmail.exception(e.getMessage(), e.getStackTrace());
-        throw (e);
-      }
-    }
   }
 }
