@@ -95,11 +95,11 @@ public class ExpenseSystemUI extends UI {
   @WebServlet(urlPatterns = "/*", name = "ExpenseSystemUIServlet", asyncSupported = true)
   @VaadinServletConfiguration(ui = ExpenseSystemUI.class, productionMode = false)
   public static class ExpenseSystemUIServlet extends VaadinServlet {
-    @Override
-    protected final void servletInitialized() throws ServletException {
-      super.servletInitialized();
-      getService().addSessionInitListener(new ExpenseSystemSessionInitListener());
-    }
+//    @Override
+//    protected final void servletInitialized() throws ServletException {
+//      super.servletInitialized();
+//      getService().addSessionInitListener(new ExpenseSystemSessionInitListener());
+//    }
     
     @Override
     protected void service(HttpServletRequest request,
