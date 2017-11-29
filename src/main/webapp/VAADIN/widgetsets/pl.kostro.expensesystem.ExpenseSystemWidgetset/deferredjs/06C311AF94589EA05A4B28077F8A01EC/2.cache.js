@@ -1,1 +1,0 @@
-$wnd.pl_kostro_expensesystem_ExpenseSystemWidgetset.runAsyncCallback2('nib(1910,1,rne);_.Yb=function Uzc(){rdc((!jdc&&(jdc=new Adc),jdc),this.a.d)};Vge(Ch)(2);\n//# sourceURL=pl.kostro.expensesystem.ExpenseSystemWidgetset-2.js\n')

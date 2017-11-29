@@ -1,4 +1,4 @@
-06C311AF94589EA05A4B28077F8A01EC.cache.js
+A2F31863E318E35B42DD458A37352544.cache.js
 ClientBundle.enableInlining true
 audioElementSupport maybe
 canvasElementSupport maybe
@@ -8,6 +8,7 @@ compiler.stackMode native
 compiler.useSourceMaps false
 compiler.useSymbolMaps false
 dragEventSupport maybe
+gwt.cspCompatModeEnabled false
 gwt.enableDebugId false
 gwt.forceBidi false
 gwt.logging.consoleHandler ENABLED
@@ -19,6 +20,7 @@ gwt.logging.simpleConsoleHandler DISABLED
 gwt.logging.simpleRemoteHandler DISABLED
 gwt.logging.systemHandler DISABLED
 gwt.suppressNonStaticFinalFieldWarnings false
+gwt.uncaughtexceptionhandler.windowonerror REPORT_IF_NO_HANDLER
 history.noDoubleEncoding false
 jre.checkedMode DISABLED
 jre.checks.api AUTO
