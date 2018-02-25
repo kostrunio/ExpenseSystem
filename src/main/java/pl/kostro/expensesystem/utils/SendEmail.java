@@ -3,6 +3,9 @@ package pl.kostro.expensesystem.utils;
 import java.text.MessageFormat;
 import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -18,7 +21,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.SpringMain;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 
@@ -34,11 +36,14 @@ public class SendEmail {
       message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(user.getName() + "<" + user.getEmail() + ">"));
       
       message.setSubject(Msg.get("email.welcome.subject"));
-      message.setContent(Msg.get("email.welcome.text"), "text/html");
-      
       Multipart multipart = new MimeMultipart();
-      ClassLoader CLDR = SpringMain.class.getClassLoader();
-      MimeBodyPart messageBodyPart = new MimeBodyPart(CLDR.getResourceAsStream(Msg.get("email.welcome.fileName")));
+      MimeBodyPart messageBodyPart = new MimeBodyPart();
+      messageBodyPart.setText(Msg.get("email.welcome.text"), "UTF-8");
+      multipart.addBodyPart(messageBodyPart);
+      
+      messageBodyPart = new MimeBodyPart();
+      DataSource source = new FileDataSource(Msg.get("email.welcome.path"));
+      messageBodyPart.setDataHandler(new DataHandler(source));
       messageBodyPart.setFileName(Msg.get("email.welcome.fileName"));
       multipart.addBodyPart(messageBodyPart);
       message.setContent(multipart);
