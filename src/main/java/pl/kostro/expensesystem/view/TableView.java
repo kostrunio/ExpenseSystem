@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.view;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,8 @@ import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.ComboBox.NewItemHandler;
 import com.vaadin.ui.Grid;
+import com.vaadin.ui.Grid.Column;
+import com.vaadin.ui.components.grid.FooterRow;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
@@ -33,6 +36,11 @@ public class TableView extends TableDesign {
   private Logger logger = LogManager.getLogger();
   private LocalDate date;
   private ExpenseSheet expenseSheet;
+  private FooterRow footer = expenseGrid.prependFooterRow();
+  private Column<Expense, LocalDate> dateColumn;
+  private Column<Expense, Object> categoryColumn;
+  private Column<Expense, String> formulaColumn;
+  private Column<Expense, BigDecimal> valueColumn;
   private ClickListener filterClicked = event -> {
     User filterUser = null;
     if (userBox.getValue() instanceof UserLimit) {
@@ -119,17 +127,34 @@ public class TableView extends TableDesign {
     formulaField.setCaption(Msg.get("findPage.formula"));
     commentBox.setCaption(Msg.get("findPage.comment"));
     newExpenseButton.setCaption(Msg.get("findPage.add"));
-    expenseGrid.addColumn(Expense::getDate).setCaption(Msg.get("findPage.date"));
-    expenseGrid.addColumn(item -> item.getCategory().getName()).setCaption(Msg.get("findPage.category"));
+    dateColumn = expenseGrid.addColumn(Expense::getDate);
+    dateColumn.setCaption(Msg.get("findPage.date"));
+    categoryColumn = expenseGrid.addColumn(item -> item.getCategory().getName());
+    categoryColumn.setCaption(Msg.get("findPage.category"));
     expenseGrid.addColumn(item -> item.getUser().getName()).setCaption(Msg.get("findPage.user"));
-    expenseGrid.addColumn(Expense::getFormula).setCaption(Msg.get("findPage.formula"));
-    expenseGrid.addColumn(Expense::getValue).setCaption(Msg.get("findPage.value"));
+    formulaColumn = expenseGrid.addColumn(Expense::getFormula);
+    formulaColumn.setCaption(Msg.get("findPage.formula"));
+    valueColumn = expenseGrid.addColumn(Expense::getValue);
+    valueColumn.setCaption(Msg.get("findPage.value"));
     expenseGrid.addColumn(Expense::getComment).setCaption(Msg.get("findPage.comment"));
+    footer.getCell(dateColumn).setText(Msg.get("findPage.rows"));
+    footer.getCell(formulaColumn).setText(Msg.get("findPage.sum"));
   }
   
   public void refreshExpenses() {
-    expenseGrid.setItems(eshs.findAllExpense(expenseSheet));
+    List<Expense> expensesList = eshs.findAllExpense(expenseSheet);
+    expenseGrid.setItems(expensesList);
+    footer.getCell(categoryColumn).setText(""+expensesList.size());
+    footer.getCell(valueColumn).setHtml("<b>" + calcualteSum(expensesList) + "</b>");
     expenseGrid.sort(expenseGrid.getColumns().get(0), SortDirection.DESCENDING);
     expenseForm.setVisible(false);
+  }
+
+  private BigDecimal calcualteSum(List<Expense> expensesList) {
+    BigDecimal result = new BigDecimal(0);
+    for(Expense exp : expensesList) {
+      result = result.add(exp.getValue());
+    }
+    return result;
   }
 }
