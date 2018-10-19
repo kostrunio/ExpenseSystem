@@ -92,12 +92,14 @@ public class ExpenseDesign extends Panel {
   protected Component buildContent() {
     expenseLayout = new VerticalLayout();
     expenseLayout.setMargin(false);
+    expenseLayout.setSizeFull();
     expenseLayout.addComponent(buildMenus());
 
     mainView = new VerticalLayout();
     mainView.setMargin(false);
     mainView.setSpacing(false);
     expenseLayout.addComponent(mainView);
+    expenseLayout.setComponentAlignment(mainView, Alignment.TOP_RIGHT);
 
     return expenseLayout;
   }
