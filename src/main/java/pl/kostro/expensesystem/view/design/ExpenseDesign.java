@@ -51,7 +51,7 @@ public class ExpenseDesign extends Panel {
     addStyleName(ValoTheme.PANEL_BORDERLESS);
     setSizeFull();
     root = new VerticalLayout();
-    root.setSizeUndefined();
+    root.setSizeFull();
     root.setSpacing(false);
     setContent(root);
   }
