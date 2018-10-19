@@ -85,6 +85,7 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
     setHandler(prevClick);
 
     setHandler(nextClick);
+    
   }
 
   public void setMonthView(MonthView monthView) {
