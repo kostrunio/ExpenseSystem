@@ -8,6 +8,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.vaadin.data.HasValue;
 import com.vaadin.event.selection.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.data.sort.SortDirection;
@@ -41,7 +42,8 @@ public class TableView extends TableDesign {
   private Column<Expense, Object> categoryColumn;
   private Column<Expense, String> formulaColumn;
   private Column<Expense, BigDecimal> valueColumn;
-  private ClickListener filterClicked = event -> {
+  @SuppressWarnings("rawtypes")
+  private HasValue.ValueChangeListener filterChanged = event -> {
     User filterUser = null;
     if (userBox.getValue() instanceof UserLimit) {
       filterUser = ((UserLimit) userBox.getValue()).getUser();
@@ -68,6 +70,7 @@ public class TableView extends TableDesign {
   };
   private NewItemHandler addComment = event -> commentBox.setValue(event);
   
+  @SuppressWarnings("unchecked")
   public TableView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("create");
@@ -81,14 +84,18 @@ public class TableView extends TableDesign {
     expenseForm.prepare(expenseSheet, this);
     
     fromDateField.setValue(date.withDayOfMonth(1));
+    fromDateField.addValueChangeListener(filterChanged);
     toDateField.setValue(date.withDayOfMonth(date.lengthOfMonth()));
+    toDateField.addValueChangeListener(filterChanged);
     categoryBox.setItemCaptionGenerator(item -> item.getName());
     categoryBox.setItems(expenseSheet.getCategoryList());
+    categoryBox.addValueChangeListener(filterChanged);
     userBox.setItemCaptionGenerator(item -> item.getUser().getName());
     userBox.setItems(expenseSheet.getUserLimitList());
+    userBox.addValueChangeListener(filterChanged);
     commentBox.setNewItemHandler(addComment);
     commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshs.getAllComments(expenseSheet));
-    filterButton.addClickListener(filterClicked);
+    commentBox.addValueChangeListener(filterChanged);
     newExpenseButton.addClickListener(newClicked);
     expenseGrid.addSelectionListener(itemClicked);
     

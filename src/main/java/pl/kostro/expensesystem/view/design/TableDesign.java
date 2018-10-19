@@ -33,7 +33,6 @@ public class TableDesign extends VerticalLayout {
   protected ComboBox<pl.kostro.expensesystem.model.UserLimit> userBox;
   protected TextField formulaField;
   protected ComboBox<java.lang.String> commentBox;
-  protected Button filterButton;
   protected Button newExpenseButton;
   protected HorizontalLayout workingLayout;
   protected Grid<pl.kostro.expensesystem.model.Expense> expenseGrid;
