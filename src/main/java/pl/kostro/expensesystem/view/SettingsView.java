@@ -52,7 +52,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
           }
         });
   };
-  private ClickListener backClick = event -> UI.getCurrent().getNavigator().navigateTo(UI.getCurrent().getNavigator().getState());
+  private ClickListener backClick = event -> ((ExpenseSystemUI) getUI()).updateContent();
 
   public SettingsView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
