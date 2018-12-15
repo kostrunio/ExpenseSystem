@@ -43,7 +43,6 @@ public class ExpenseDesign extends Panel {
   protected ComboBox<UserLimit> userCombo;
   protected TextField formulaField;
   protected ComboBox<String> commentCombo;
-  protected Button searchButton;
 
   protected VerticalLayout mainView;
 
@@ -185,13 +184,6 @@ public class ExpenseDesign extends Panel {
     commentCombo = new ComboBox<>();
     commentCombo.setCaption(Msg.get("expense.comment"));
     searchLayout.addComponent(commentCombo);
-
-    // searchButton
-    searchButton = new Button();
-    searchButton.setCaption(Msg.get("expense.search"));
-
-    searchLayout.addComponent(searchButton);
-    searchLayout.setComponentAlignment(searchButton, Alignment.BOTTOM_RIGHT);
 
     return searchPanel;
   }

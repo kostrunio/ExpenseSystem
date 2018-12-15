@@ -23,7 +23,6 @@ public class ChartDesign extends VerticalLayout {
   protected VerticalLayout chartLayout2;
   protected CheckBoxGroup<pl.kostro.expensesystem.model.Category> categoryCombo;
   protected CheckBoxGroup<pl.kostro.expensesystem.model.UserLimit> userCombo;
-  protected Button searchButton;
 
   public ChartDesign() {
     Design.read(this);

@@ -16,8 +16,8 @@ import com.vaadin.addon.charts.model.Configuration;
 import com.vaadin.addon.charts.model.ListSeries;
 import com.vaadin.addon.charts.model.Series;
 import com.vaadin.addon.charts.model.Tooltip;
+import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Button;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
@@ -39,7 +39,8 @@ public class ChartView extends ChartDesign {
   private Logger logger = LogManager.getLogger();
   private ExpenseSheetService eshs;
   private ExpenseSheet expenseSheet;
-  private Button.ClickListener searchClick = event -> refreshFilter();
+  private ValueChangeListener<Set<Category>> categoryChanged = event -> refreshFilter();
+  private ValueChangeListener<Set<UserLimit>> userChanged = event -> refreshFilter();
 
   public ChartView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
@@ -47,18 +48,18 @@ public class ChartView extends ChartDesign {
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     expenseSheet.setFilter(new Filter(null, null, null, null));
     setCaption();
+    categoryCombo.addValueChangeListener(categoryChanged);
     categoryCombo.setItemCaptionGenerator(item -> item.getName());
     categoryCombo.setItems(expenseSheet.getCategoryList());
+    userCombo.addValueChangeListener(userChanged);
     userCombo.setItems(expenseSheet.getUserLimitList());
     userCombo.setItemCaptionGenerator(item -> item.getUser().getName());
-    searchButton.addClickListener(searchClick);
     refreshFilter();
   }
 
   private void setCaption() {
     categoryCombo.setCaption(Msg.get("expense.category"));
     userCombo.setCaption(Msg.get("expense.user"));
-    searchButton.setCaption(Msg.get("expense.search"));
   }
 
   private void refreshFilter() {

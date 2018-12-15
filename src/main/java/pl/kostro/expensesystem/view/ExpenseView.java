@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinSession;
@@ -109,7 +110,31 @@ public class ExpenseView extends ExpenseDesign implements View {
       mainView.addComponent(new MonthView());
     }
   };
-  private ClickListener searchClick = event -> {
+  private MenuBar.Command yearCommand = selectedItem -> {
+  date = date.withYear(Integer.parseInt(selectedItem.getText())).withDayOfMonth(1);
+  VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
+  mainView.removeAllComponents();
+  mainView.addComponent(new MonthView());
+  checkedYear(selectedItem.getText());
+  };
+  private MenuBar.Command monthCommand = selectedItem -> {
+    mainView.removeAllComponents();
+    date = date.withMonth(CalendarUtils.getMonthNumber(selectedItem.getText())).withDayOfMonth(1);
+    VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
+    mainView.addComponent(new MonthView());
+    checkedMonth(selectedItem.getText());
+  };
+  private NewItemHandler addComment = event -> commentCombo.setValue(event);
+
+  private ValueChangeListener<Category> categoryChanged = event -> refreshFilter();
+
+  private ValueChangeListener<UserLimit> userChanged = event -> refreshFilter();
+
+  private ValueChangeListener<String> formulaChanged = event -> refreshFilter();
+
+  private ValueChangeListener<String> commentChanged = event -> refreshFilter();
+
+  private void refreshFilter() {
     User filterUser = null;
     String filterFormula = null;
     String filterComment = null;
@@ -130,22 +155,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     mainView.removeAllComponents();
     mainView.addComponent(new MonthView());
   };
-  private MenuBar.Command yearCommand = selectedItem -> {
-  date = date.withYear(Integer.parseInt(selectedItem.getText())).withDayOfMonth(1);
-  VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
-  mainView.removeAllComponents();
-  mainView.addComponent(new MonthView());
-  checkedYear(selectedItem.getText());
-  };
-  private MenuBar.Command monthCommand = selectedItem -> {
-    mainView.removeAllComponents();
-    date = date.withMonth(CalendarUtils.getMonthNumber(selectedItem.getText())).withDayOfMonth(1);
-    VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
-    mainView.addComponent(new MonthView());
-    checkedMonth(selectedItem.getText());
-  };
-  private NewItemHandler addComment = event -> commentCombo.setValue(event);
-  
+
   public ExpenseView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
   }
@@ -185,7 +195,10 @@ public class ExpenseView extends ExpenseDesign implements View {
     for (String year : eshs.getYearList(expenseSheet))
       yearMenu.addItem(year, yearCommand).setCheckable(true);
     filterButton.addClickListener(filterClick);
-    searchButton.addClickListener(searchClick);
+    categoryCombo.addValueChangeListener(categoryChanged);
+    userCombo.addValueChangeListener(userChanged);
+    formulaField.addValueChangeListener(formulaChanged);
+    commentCombo.addValueChangeListener(commentChanged);
     tableButton.addClickListener(tableClick);
     userSummaryButton.addClickListener(userSummaryClick);
     for (String monthName : CalendarUtils.getMonthsName())
