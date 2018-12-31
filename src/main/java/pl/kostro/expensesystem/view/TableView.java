@@ -150,7 +150,6 @@ public class TableView extends TableDesign {
   }
   
   public void refreshExpenses() {
-    logger.info("refreshExpenses");
     List<Expense> expensesList = eshs.findAllExpense(expenseSheet);
     expenseGrid.setItems(expensesList);
     footer.getCell(categoryColumn).setText(""+expensesList.size());
