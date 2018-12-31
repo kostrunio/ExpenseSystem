@@ -209,7 +209,8 @@ public class ExpenseSheetService {
 
   public void removeExpenseFromMap(ExpenseSheet expenseSheet, Expense expense) {
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
-    dateExpense.removeExpense(expense);
+    if (dateExpense != null)
+      dateExpense.removeExpense(expense);
   }
 
   public UserLimit getUserLimitForUser(ExpenseSheet expenseSheet, User user) {
