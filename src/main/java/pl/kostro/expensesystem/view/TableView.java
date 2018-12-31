@@ -93,6 +93,7 @@ public class TableView extends TableDesign {
     userBox.setItemCaptionGenerator(item -> item.getUser().getName());
     userBox.setItems(expenseSheet.getUserLimitList());
     userBox.addValueChangeListener(filterChanged);
+    formulaField.addValueChangeListener(filterChanged);
     commentBox.setNewItemHandler(addComment);
     commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshs.getAllComments(expenseSheet));
     commentBox.addValueChangeListener(filterChanged);
