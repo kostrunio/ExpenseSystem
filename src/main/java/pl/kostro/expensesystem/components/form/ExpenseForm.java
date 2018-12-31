@@ -130,28 +130,40 @@ public class ExpenseForm extends ExpenseFormDesign {
 
   public void edit(Expense expense) {
     this.expense = expense;
-    if (expense.getId() != null) {
+    if (expense.getDate() != null)
       dateField.setValue(expense.getDate());
+    else
+      dateField.setValue(LocalDate.now());
+    if (expense.getCategory() != null)
       categoryBox.setValue(expense.getCategory());
+    else
+      categoryBox.setValue(expenseSheet.getCategoryList().get(0));
+    if (expense.getUser() != null)
       userBox.setValue(eshs.getUserLimitForUser(expenseSheet, expense.getUser()));
-      formulaField.focus();
+    else
+      userBox.setValue(expenseSheet.getUserLimitList().get(0));
+    formulaField.focus();
+    if (expense.getFormula() != null)
       formulaField.setValue(expense.getFormula());
+    else
+      formulaField.setValue("");
+    if (expense.getComment() != null)
       commentBox.setValue(expense.getComment());
-      if (expense.isNotify() || expense.getDate().isAfter(LocalDate.now())) {
-        notifyBox.setValue(expense.isNotify());
-        notifyBox.setVisible(true);
-      }
+    commentBox.setValue("");
+    if (expense.isNotify() || (expense.getDate() != null && expense.getDate().isAfter(LocalDate.now()))) {
+      notifyBox.setValue(expense.isNotify());
+      notifyBox.setVisible(true);
+    }
+    if (expense.getId() != null) {
       if (expense.getId() == 0) {
         duplicateButton.setEnabled(false);
         removeButton.setEnabled(false);
       } else
         duplicateButton.setEnabled(true);
+      removeButton.setEnabled(true);
     } else {
-      if (expense.getUser() != null)
-        userBox.setValue(eshs.getUserLimitForUser(expenseSheet, expense.getUser()));
-      else
-        userBox.setValue(expenseSheet.getUserLimitList().get(0));
       duplicateButton.setEnabled(false);
+      removeButton.setEnabled(false);
     }
     setVisible(expense != null);
     saveButton.setEnabled(false);
