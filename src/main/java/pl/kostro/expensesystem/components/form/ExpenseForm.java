@@ -149,7 +149,8 @@ public class ExpenseForm extends ExpenseFormDesign {
       formulaField.setValue("");
     if (expense.getComment() != null)
       commentBox.setValue(expense.getComment());
-    commentBox.setValue("");
+    else
+      commentBox.setValue("");
     if (expense.isNotify() || (expense.getDate() != null && expense.getDate().isAfter(LocalDate.now()))) {
       notifyBox.setValue(expense.isNotify());
       notifyBox.setVisible(true);
