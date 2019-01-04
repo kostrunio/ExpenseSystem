@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.view;
 
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -7,9 +8,12 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.vaadin.haijian.Exporter;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.event.selection.SelectionListener;
+import com.vaadin.server.FileDownloader;
+import com.vaadin.server.StreamResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.ui.Button.ClickListener;
@@ -39,9 +43,18 @@ public class TableView extends TableDesign {
   private ExpenseSheet expenseSheet;
   private FooterRow footer = expenseGrid.prependFooterRow();
   private Column<Expense, LocalDate> dateColumn;
-  private Column<Expense, Object> categoryColumn;
+  private Column<Expense, String> categoryColumn;
   private Column<Expense, String> formulaColumn;
   private Column<Expense, BigDecimal> valueColumn;
+  
+  private StreamResource exportData = new StreamResource(new StreamResource.StreamSource() {
+    @Override
+    public InputStream getStream() {
+      return Exporter.exportAsExcel(expenseGrid);
+    }
+  }, "export.xls");
+  private FileDownloader excelFileDownloader = new FileDownloader(exportData);
+  
   @SuppressWarnings("rawtypes")
   private HasValue.ValueChangeListener filterChanged = event -> {
     User filterUser = null;
@@ -76,6 +89,9 @@ public class TableView extends TableDesign {
     logger.info("create");
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
+    
+    excelFileDownloader.extend(exportButton);
+    
     setCaption();
     fromDateField.setDateFormat("yyyy-MM-dd");
     toDateField.setDateFormat("yyyy-MM-dd");
@@ -135,18 +151,15 @@ public class TableView extends TableDesign {
     formulaField.setCaption(Msg.get("findPage.formula"));
     commentBox.setCaption(Msg.get("findPage.comment"));
     newExpenseButton.setCaption(Msg.get("findPage.add"));
-    dateColumn = expenseGrid.addColumn(Expense::getDate);
-    dateColumn.setCaption(Msg.get("findPage.date"));
-    categoryColumn = expenseGrid.addColumn(item -> item.getCategory().getName());
-    categoryColumn.setCaption(Msg.get("findPage.category"));
-    expenseGrid.addColumn(item -> item.getUser().getName()).setCaption(Msg.get("findPage.user"));
-    formulaColumn = expenseGrid.addColumn(Expense::getFormula);
-    formulaColumn.setCaption(Msg.get("findPage.formula"));
-    valueColumn = expenseGrid.addColumn(Expense::getValue);
-    valueColumn.setCaption(Msg.get("findPage.value"));
-    expenseGrid.addColumn(Expense::getComment).setCaption(Msg.get("findPage.comment"));
+    dateColumn = expenseGrid.addColumn(Expense::getDate).setCaption(Msg.get("findPage.date")).setId("date");
+    categoryColumn = expenseGrid.addColumn(item -> item.getCategory().getName()).setCaption(Msg.get("findPage.category")).setId("category");
+    expenseGrid.addColumn(item -> item.getUser().getName()).setCaption(Msg.get("findPage.user")).setId("user");
+    formulaColumn = expenseGrid.addColumn(Expense::getFormula).setCaption(Msg.get("findPage.formula")).setId("formula");
+    valueColumn = expenseGrid.addColumn(Expense::getValue).setCaption(Msg.get("findPage.value")).setId("value");
+    expenseGrid.addColumn(Expense::getComment).setCaption(Msg.get("findPage.comment")).setId("comment");
     footer.getCell(dateColumn).setText(Msg.get("findPage.rows"));
     footer.getCell(formulaColumn).setText(Msg.get("findPage.sum"));
+    exportButton.setCaption(Msg.get("findPage.export"));
   }
   
   public void refreshExpenses() {

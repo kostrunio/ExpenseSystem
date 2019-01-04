@@ -37,6 +37,7 @@ public class TableDesign extends VerticalLayout {
   protected HorizontalLayout workingLayout;
   protected Grid<pl.kostro.expensesystem.model.Expense> expenseGrid;
   protected ExpenseForm expenseForm;
+  protected Button exportButton;
 
   public TableDesign() {
     Design.read(this);
