@@ -60,7 +60,7 @@ public class UserLimitService {
     expenseSheet.getUserLimitList().remove(userLimit);
     ulr.delete(userLimit);
     if (!(userLimit.getUser() instanceof RealUser))
-      rur.delete(userLimit.getUser().getId());
+      rur.delete((RealUser)userLimit.getUser());
     logger.info("removeUserLimit for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 

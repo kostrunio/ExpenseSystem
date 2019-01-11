@@ -58,7 +58,7 @@ public class RealUserService {
   }
 
   public RealUser refresh(RealUser realUser) {
-    return rur.findOne(realUser.getId());
+    return rur.findById(realUser.getId()).get();
   }
 
   public void setDefaultExpenseSheet(RealUser realUser, ExpenseSheet expenseSheet) {

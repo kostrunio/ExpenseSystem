@@ -10,7 +10,7 @@
 	<name>ExpenseSystem</name>
 
 	<properties>
-		<vaadin.version>8.1.7</vaadin.version>
+		<vaadin.version>8.6.4</vaadin.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -38,7 +38,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>1.5.9.RELEASE</version>
+		<version>2.1.1.RELEASE</version>
 	</parent>
 
 	<dependencyManagement>
@@ -124,7 +124,7 @@
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
-			<version>23.0</version>
+			<version>27.0.1-jre</version>
 		</dependency>
 		<dependency>
 			<groupId>bouncycastle</groupId>
