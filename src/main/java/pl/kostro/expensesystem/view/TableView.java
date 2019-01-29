@@ -174,7 +174,11 @@ public class TableView extends TableDesign {
   private BigDecimal calcualteSum(List<Expense> expensesList) {
     BigDecimal result = new BigDecimal(0);
     for(Expense exp : expensesList) {
-      result = result.add(exp.getValue());
+      try {
+        result = result.add(exp.getValue());
+      } catch (Exception e) {
+        logger.error("calcualteSum: Problem "+ e.getMessage() + " with " + exp.getId());
+      }
     }
     return result;
   }
