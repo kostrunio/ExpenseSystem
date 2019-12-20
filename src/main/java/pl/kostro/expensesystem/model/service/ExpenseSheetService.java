@@ -250,11 +250,16 @@ public class ExpenseSheetService {
     LocalDateTime stopper = LocalDateTime.now();
     List<String> yearList = new ArrayList<String>();
     int year = LocalDate.now().getYear();
+    int limitYear = year;
+    OptionalInt maxYear = expenseSheet.getExpenseList().parallelStream()
+            .mapToInt(e -> e.getDate().getYear())
+            .max();
     OptionalInt expYear = expenseSheet.getExpenseList().parallelStream()
       .mapToInt(e -> e.getDate().getYear())
       .min();
     if (expYear.isPresent()) year = expYear.getAsInt();
-    for (int i = year; i <= LocalDate.now().getYear(); i++)
+    if (maxYear.isPresent()) limitYear = maxYear.getAsInt();
+    for (int i = year; i <= limitYear; i++)
       yearList.add(Integer.toString(i));
     logger.info("getYearList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return yearList;
