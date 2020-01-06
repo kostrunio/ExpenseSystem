@@ -179,12 +179,15 @@ public class ExpenseView extends ExpenseDesign implements View {
   private void prepareSearchLayout() {
     categoryCombo.setItemCaptionGenerator(item -> item.getName());
     categoryCombo.setItems(expenseSheet.getCategoryList());
+    categoryCombo.clear();
     userCombo.setItemCaptionGenerator(item -> item.getUser().getName());
     userCombo.setItems(expenseSheet.getUserLimitList());
+    userCombo.clear();
     formulaField.clear();
     commentCombo.setNewItemHandler(addComment);
     commentCombo.setEmptySelectionAllowed(true);
     commentCombo.setItems(eshs.getAllComments(expenseSheet));
+    commentCombo.clear();
   }
 
   private void prepareView() {
