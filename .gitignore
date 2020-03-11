@@ -1,3 +1,5 @@
 /target/
 /webapps/
 /deployments/
+/.idea/
+/ExpenseSystem.iml
