@@ -3,6 +3,7 @@ package pl.kostro.expensesystem;
 import java.util.Locale;
 import java.util.TimeZone;
 
+import com.vaadin.flow.router.Route;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -27,6 +28,7 @@ import pl.kostro.expensesystem.view.MainView;
 /**
  *
  */
+@Route("")
 @Title("Expense System Application")
 @Theme("expensesystem")
 @Widgetset("pl.kostro.expensesystem.ExpenseSystemWidgetset")
