@@ -15,7 +15,6 @@ import com.vaadin.server.Page.BrowserWindowResizeListener;
 import com.vaadin.server.Responsive;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.UI;
 
@@ -28,8 +27,6 @@ import pl.kostro.expensesystem.view.MainView;
 /**
  *
  */
-@SpringUI
-@SuppressWarnings("serial")
 @Title("Expense System Application")
 @Theme("expensesystem")
 @Widgetset("pl.kostro.expensesystem.ExpenseSystemWidgetset")
@@ -42,8 +39,6 @@ public class ExpenseSystemUI extends UI {
   @Override
   protected void init(VaadinRequest vaadinRequest) {
     logger.info("New session start: {}", vaadinRequest.getLocale());
-    Locale.setDefault(vaadinRequest.getLocale());
-    TimeZone.setDefault(TimeZone.getTimeZone("Europe/Warsaw"));
     Responsive.makeResponsive(this);
     updateContent();
     

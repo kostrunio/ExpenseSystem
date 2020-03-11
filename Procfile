@@ -1,1 +1,1 @@
-web: java -jar target/expensesystem-2.0.war
+web: java -jar target/expensesystem-3.0.war
