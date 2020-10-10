@@ -4,9 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import pl.kostro.expensesystem.business.Category;
-import pl.kostro.expensesystem.business.Expense;
-import pl.kostro.expensesystem.business.User;
+import pl.kostro.expensesystem.dto.model.Category;
+import pl.kostro.expensesystem.dto.model.Expense;
+import pl.kostro.expensesystem.dto.model.User;
 
 public class Filter {
   private LocalDate dateFrom;

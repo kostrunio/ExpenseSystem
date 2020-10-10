@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.views.settingsPage;
 
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.dto.model.ExpenseSheet;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
 import org.apache.logging.log4j.LogManager;

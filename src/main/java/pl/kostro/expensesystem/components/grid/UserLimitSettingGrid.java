@@ -17,10 +17,10 @@ import com.vaadin.ui.UI;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.business.ExpenseSheet;
-import pl.kostro.expensesystem.business.UserLimit;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.model.service.UserLimitService;
+import pl.kostro.expensesystem.dto.model.ExpenseSheet;
+import pl.kostro.expensesystem.dto.model.UserLimit;
+import pl.kostro.expensesystem.db.service.ExpenseSheetService;
+import pl.kostro.expensesystem.db.service.UserLimitService;
 import pl.kostro.expensesystem.views.settingsPage.AddUserWindow;
 import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 

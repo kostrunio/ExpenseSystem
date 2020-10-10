@@ -13,7 +13,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import pl.kostro.expensesystem.business.UserLimit;
+import pl.kostro.expensesystem.dto.model.UserLimit;
 
 public class DayDesign extends VerticalLayout {
   protected HorizontalLayout navigationLayout = new HorizontalLayout();

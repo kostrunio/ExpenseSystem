@@ -2,7 +2,7 @@ package pl.kostro.expensesystem.utils;
 
 import java.math.BigDecimal;
 
-import pl.kostro.expensesystem.business.UserLimit;
+import pl.kostro.expensesystem.dto.model.UserLimit;
 
 public class UserLimitSumLeft {
   private UserLimit userLimit;

@@ -18,10 +18,10 @@ import com.vaadin.ui.components.grid.EditorSaveListener;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.business.Category;
-import pl.kostro.expensesystem.business.ExpenseSheet;
-import pl.kostro.expensesystem.model.service.CategoryService;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.dto.model.Category;
+import pl.kostro.expensesystem.dto.model.ExpenseSheet;
+import pl.kostro.expensesystem.db.service.CategoryService;
+import pl.kostro.expensesystem.db.service.ExpenseSheetService;
 import pl.kostro.expensesystem.views.settingsPage.AddCategoryWindow;
 import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 

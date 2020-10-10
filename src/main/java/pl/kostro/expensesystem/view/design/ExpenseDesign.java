@@ -14,8 +14,8 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.business.Category;
-import pl.kostro.expensesystem.business.UserLimit;
+import pl.kostro.expensesystem.dto.model.Category;
+import pl.kostro.expensesystem.dto.model.UserLimit;
 
 @SuppressWarnings("serial")
 public class ExpenseDesign extends Panel {

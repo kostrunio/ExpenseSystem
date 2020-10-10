@@ -11,9 +11,9 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import pl.kostro.expensesystem.components.form.ExpenseForm;
-import pl.kostro.expensesystem.business.Category;
-import pl.kostro.expensesystem.business.Expense;
-import pl.kostro.expensesystem.business.UserLimit;
+import pl.kostro.expensesystem.dto.model.Category;
+import pl.kostro.expensesystem.dto.model.Expense;
+import pl.kostro.expensesystem.dto.model.UserLimit;
 
 public class TableDesign extends VerticalLayout {
   protected Panel actionPanel = new Panel();

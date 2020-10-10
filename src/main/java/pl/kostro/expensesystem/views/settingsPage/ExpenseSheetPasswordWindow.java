@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.dto.model.ExpenseSheet;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
 import com.vaadin.event.ShortcutAction.KeyCode;

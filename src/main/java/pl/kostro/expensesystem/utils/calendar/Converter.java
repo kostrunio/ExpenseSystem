@@ -10,9 +10,9 @@ import java.util.Set;
 import org.vaadin.addon.calendar.item.BasicItem;
 
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.business.ExpenseSheet;
-import pl.kostro.expensesystem.business.UserLimit;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.dto.model.ExpenseSheet;
+import pl.kostro.expensesystem.dto.model.UserLimit;
+import pl.kostro.expensesystem.db.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
 import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
 

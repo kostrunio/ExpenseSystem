@@ -5,8 +5,8 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
-import pl.kostro.expensesystem.business.Category;
-import pl.kostro.expensesystem.business.UserLimit;
+import pl.kostro.expensesystem.dto.model.Category;
+import pl.kostro.expensesystem.dto.model.UserLimit;
 
 public class ChartDesign extends VerticalLayout {
   protected VerticalLayout chartLayout = new VerticalLayout();

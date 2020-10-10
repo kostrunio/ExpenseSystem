@@ -2,7 +2,7 @@ package pl.kostro.expensesystem.utils;
 
 import java.math.BigDecimal;
 
-import pl.kostro.expensesystem.business.Category;
+import pl.kostro.expensesystem.dto.model.Category;
 
 public class CategorySum {
   private Category category;

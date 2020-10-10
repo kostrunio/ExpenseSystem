@@ -5,8 +5,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.kostro.expensesystem.business.Expense;
-import pl.kostro.expensesystem.business.UserLimit;
+import pl.kostro.expensesystem.dto.model.Expense;
+import pl.kostro.expensesystem.dto.model.UserLimit;
 
 public class UserLimitExpense {
 	private UserLimit userLimit;

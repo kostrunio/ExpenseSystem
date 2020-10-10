@@ -9,9 +9,9 @@ import com.vaadin.ui.Grid;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.business.Category;
-import pl.kostro.expensesystem.business.ExpenseSheet;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.dto.model.Category;
+import pl.kostro.expensesystem.dto.model.ExpenseSheet;
+import pl.kostro.expensesystem.db.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.CategorySum;
 import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 

@@ -10,10 +10,10 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import pl.kostro.expensesystem.dto.service.ExpenseSheetNotifyService;
-import pl.kostro.expensesystem.business.Expense;
-import pl.kostro.expensesystem.business.ExpenseSheet;
-import pl.kostro.expensesystem.business.RealUser;
-import pl.kostro.expensesystem.model.service.ExpenseService;
+import pl.kostro.expensesystem.dto.model.Expense;
+import pl.kostro.expensesystem.dto.model.ExpenseSheet;
+import pl.kostro.expensesystem.dto.model.RealUser;
+import pl.kostro.expensesystem.db.service.ExpenseService;
 
 @Component
 public class SendNotification {

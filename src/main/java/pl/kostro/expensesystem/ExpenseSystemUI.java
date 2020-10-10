@@ -21,7 +21,7 @@ import com.vaadin.ui.UI;
 
 import pl.kostro.expensesystem.event.ExpenseSystemEvent.BrowserResizeEvent;
 import pl.kostro.expensesystem.event.ExpenseSystemEventBus;
-import pl.kostro.expensesystem.business.RealUser;
+import pl.kostro.expensesystem.dto.model.RealUser;
 import pl.kostro.expensesystem.view.LoginView;
 import pl.kostro.expensesystem.view.MainView;
 

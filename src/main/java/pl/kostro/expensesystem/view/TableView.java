@@ -24,12 +24,12 @@ import com.vaadin.ui.components.grid.FooterRow;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.business.Category;
-import pl.kostro.expensesystem.business.Expense;
-import pl.kostro.expensesystem.business.ExpenseSheet;
-import pl.kostro.expensesystem.business.User;
-import pl.kostro.expensesystem.business.UserLimit;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.dto.model.Category;
+import pl.kostro.expensesystem.dto.model.Expense;
+import pl.kostro.expensesystem.dto.model.ExpenseSheet;
+import pl.kostro.expensesystem.dto.model.User;
+import pl.kostro.expensesystem.dto.model.UserLimit;
+import pl.kostro.expensesystem.db.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.view.design.TableDesign;
 

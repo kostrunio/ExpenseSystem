@@ -19,9 +19,9 @@ import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.business.ExpenseSheet;
-import pl.kostro.expensesystem.business.RealUser;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.dto.model.ExpenseSheet;
+import pl.kostro.expensesystem.dto.model.RealUser;
+import pl.kostro.expensesystem.db.service.ExpenseSheetService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
 @SuppressWarnings("serial")

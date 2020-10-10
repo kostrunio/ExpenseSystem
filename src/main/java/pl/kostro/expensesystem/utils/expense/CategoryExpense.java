@@ -6,8 +6,8 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.kostro.expensesystem.business.Category;
-import pl.kostro.expensesystem.business.Expense;
+import pl.kostro.expensesystem.dto.model.Category;
+import pl.kostro.expensesystem.dto.model.Expense;
 
 @SuppressWarnings("serial")
 public class CategoryExpense implements Serializable {

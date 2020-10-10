@@ -9,8 +9,8 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
-import pl.kostro.expensesystem.business.Category;
-import pl.kostro.expensesystem.business.UserLimit;
+import pl.kostro.expensesystem.dto.model.Category;
+import pl.kostro.expensesystem.dto.model.UserLimit;
 
 public class ExpenseFormDesign extends FormLayout {
   protected HorizontalLayout actionsLayout = new HorizontalLayout();

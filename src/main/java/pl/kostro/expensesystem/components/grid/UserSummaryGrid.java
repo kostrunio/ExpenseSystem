@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.components.grid;
 
 import com.vaadin.ui.Grid;
-import pl.kostro.expensesystem.business.UserSummary;
+import pl.kostro.expensesystem.dto.model.UserSummary;
 
 public class UserSummaryGrid extends Grid<UserSummary> {
 
