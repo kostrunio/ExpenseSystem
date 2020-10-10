@@ -1,6 +1,5 @@
 package pl.kostro.expensesystem.model;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +13,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-
-import pl.kostro.expensesystem.utils.Encryption;
-
-import com.vaadin.server.VaadinSession;
 
 @SuppressWarnings("serial")
 @Entity
@@ -34,8 +28,6 @@ public class UserLimitEntity extends AbstractEntity {
   @OneToOne
   @JoinColumn(name = "ul_u_id")
   private UserEntity user;
-  @Transient
-  private BigDecimal limit;
   @Column(name = "ul_limit_byte")
   private byte[] limit_byte;
   @Column(name = "ul_order")
@@ -51,9 +43,9 @@ public class UserLimitEntity extends AbstractEntity {
     super();
   }
 
-  public UserLimitEntity(UserEntity user, int order) {
+  public UserLimitEntity(UserEntity user, byte[] limit_byte, int order) {
     this.user = user;
-    setLimit(new BigDecimal(0));
+    this.limit_byte = limit_byte;
     this.order = order;
   }
 
@@ -77,28 +69,12 @@ public class UserLimitEntity extends AbstractEntity {
     this.user.setName(name);
   }
 
-  public BigDecimal getLimit() {
-    return getLimit(false);
+  public byte[] getLimitByte() {
+    return limit_byte;
   }
 
-  public BigDecimal getLimit(boolean encrypt) {
-    if (limit == null && limit_byte != null && !encrypt) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
-      limit = new BigDecimal(enc.decryption(limit_byte));
-    }
-    return limit;
-  }
-
-  public void setLimit(BigDecimal limit) {
-    setLimit(limit, false);
-  }
-
-  public void setLimit(BigDecimal limit, boolean encrypt) {
-    if (limit_byte != null && limit.equals(this.limit) && !encrypt)
-      return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
-    this.limit_byte = enc.encryption(limit.toString());
-    this.limit = limit;
+  public void setLimitByte(byte[] limit_byte) {
+    this.limit_byte = limit_byte;
   }
 
   public int getOrder() {

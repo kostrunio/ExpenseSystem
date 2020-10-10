@@ -13,7 +13,6 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
-import javax.persistence.Transient;
 
 import pl.kostro.expensesystem.utils.LocalDateTimePersistenceConverter;
 
@@ -42,8 +41,6 @@ public class RealUserEntity extends UserEntity {
   @OneToOne
   @JoinColumn(name = "u_default_es_id")
   private ExpenseSheetEntity defaultExpenseSheet;
-  @Transient
-  String clearPassword;
 
   public RealUserEntity() {
     super();
@@ -101,14 +98,6 @@ public class RealUserEntity extends UserEntity {
 
   public void setDefaultExpenseSheet(ExpenseSheetEntity defaultExpenseSheet) {
     this.defaultExpenseSheet = defaultExpenseSheet;
-  }
-
-  public String getClearPassword() {
-    return clearPassword;
-  }
-
-  public void setClearPassword(String clearPassword) {
-    this.clearPassword = clearPassword;
   }
 
   @Override

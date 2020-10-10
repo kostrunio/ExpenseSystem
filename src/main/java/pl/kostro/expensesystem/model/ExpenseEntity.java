@@ -1,6 +1,5 @@
 package pl.kostro.expensesystem.model;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 import javax.persistence.Column;
@@ -12,14 +11,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.vaadin.server.VaadinSession;
-
-import pl.kostro.expensesystem.utils.Calculator;
-import pl.kostro.expensesystem.utils.Encryption;
 import pl.kostro.expensesystem.utils.LocalDatePersistenceConverter;
 
 @SuppressWarnings("serial")
@@ -34,20 +28,14 @@ public class ExpenseEntity extends AbstractEntity {
   @Column(name = "e_date")
   @Convert(converter = LocalDatePersistenceConverter.class)
   private LocalDate date;
-  @Transient
-  private String formula;
   @Column(name = "e_formula_byte")
   private byte[] formula_byte;
-  @Transient
-  private BigDecimal value;
   @OneToOne
   @JoinColumn(name = "e_c_id")
   private CategoryEntity category;
   @OneToOne
   @JoinColumn(name = "e_u_id")
   private UserEntity user;
-  @Transient
-  private String comment;
   @Column(name = "e_comment_byte")
   private byte[] comment_byte;
   @Column(name = "e_notify")
@@ -55,20 +43,18 @@ public class ExpenseEntity extends AbstractEntity {
   @ManyToOne
   @JoinColumn(name = "e_es_id")
   private ExpenseSheetEntity expenseSheet;
-  @Transient
-  private boolean encoded = true;
 
   public ExpenseEntity() {
     super();
   }
 
-  public ExpenseEntity(LocalDate date, String formula, CategoryEntity category, UserEntity user, String comment, boolean notify,
+  public ExpenseEntity(LocalDate date, byte[] formula_byte, CategoryEntity category, UserEntity user, byte[] comment_byte, boolean notify,
                        ExpenseSheetEntity expenseSheet) {
     this.date = date;
-    setFormula(formula);
+    this.formula_byte = formula_byte;
     this.category = category;
     this.user = user;
-    setComment(comment);
+    this.comment_byte = comment_byte;
     this.notify = notify;
     this.expenseSheet = expenseSheet;
   }
@@ -89,34 +75,12 @@ public class ExpenseEntity extends AbstractEntity {
     this.date = date;
   }
 
-  public String getFormula() {
-    if (encoded) decode();
-    return formula;
+  public byte[] getFormulaByte() {
+    return formula_byte;
   }
 
-  private void decode() {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
-    if (formula_byte != null)
-      formula = enc.decryption(formula_byte);
-    if (comment_byte != null)
-      comment = enc.decryption(comment_byte);
-    encoded = false;
-  }
-
-  public void setFormula(String formula) {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
-    this.formula_byte = enc.encryption(formula);
-    this.formula = formula;
-  }
-
-  public BigDecimal getValue() {
-    try {
-    if (getFormula() != null && !formula.isEmpty())
-      value = Calculator.getOperationResult(formula);
-    return value;
-    } catch (NumberFormatException e) {
-      return new BigDecimal(-1);
-    }
+  public void setFormulaByte(byte[] formula_byte) {
+    this.formula_byte = formula_byte;
   }
 
   public CategoryEntity getCategory() {
@@ -135,15 +99,12 @@ public class ExpenseEntity extends AbstractEntity {
     this.user = user;
   }
 
-  public String getComment() {
-    if (encoded) decode();
-    return comment;
+  public byte[] getCommentByte() {
+    return comment_byte;
   }
 
-  public void setComment(String comment) {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
-    this.comment_byte = enc.encryption(comment);
-    this.comment = comment;
+  public void setCommentByte(byte[] comment_byte) {
+    this.comment_byte = comment_byte;
   }
 
   public boolean isNotify() {
@@ -164,7 +125,7 @@ public class ExpenseEntity extends AbstractEntity {
 
   @Override
   public String toString() {
-    return getClass().getSimpleName()+"[" + getDate() + ";" + getCategory() + ";" + getValue() + "]";
+    return getClass().getSimpleName()+"[" + getDate() + ";" + getCategory() + "]";
   }
 
 }

@@ -7,13 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
-
-import com.vaadin.server.VaadinSession;
-
-import pl.kostro.expensesystem.utils.Encryption;
 
 @SuppressWarnings("serial")
 @Entity
@@ -24,8 +19,6 @@ public class CategoryEntity extends AbstractEntity {
   @GenericGenerator(name = "increment", strategy = "increment")
   @Column(name = "c_id")
   private Long id;
-  @Transient
-  private String name;
   @Column(name = "c_name_byte")
   private byte[] name_byte;
   @Column(name = "c_multiplier")
@@ -37,9 +30,9 @@ public class CategoryEntity extends AbstractEntity {
     super();
   }
 
-  public CategoryEntity(String name, int order) {
+  public CategoryEntity(byte[] name_byte, int order) {
     super();
-    setName(name);
+    this.name_byte = name_byte;
     this.multiplier = new BigDecimal(1);
     this.order = order;
   }
@@ -52,27 +45,12 @@ public class CategoryEntity extends AbstractEntity {
     this.id = id;
   }
   
-  public String getName() {
-    return getName(false);
+  public byte[] getNameByte() {
+    return name_byte;
   }
 
-  public String getName(boolean encrypt) {
-    if ((name == null || name.isEmpty()) && name_byte != null && !encrypt) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
-      name = enc.decryption(name_byte);
-    }
-    return name;
-  }
-  
-  public void setName(String name) {
-    setName(name, false);
-  }
-
-  public void setName(String name, boolean encrypt) {
-    if (name_byte != null && name.equals(this.name) && !encrypt) return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
-    this.name_byte = enc.encryption(name);
-    this.name = name;
+  public void setNameByte(byte[] name_byte) {
+    this.name_byte = name_byte;
   }
   
   public BigDecimal getMultiplier() {
@@ -93,7 +71,7 @@ public class CategoryEntity extends AbstractEntity {
 
   @Override
   public String toString() {
-    return getClass().getSimpleName()+"["+getName()+"]";
+    return getClass().getSimpleName()+"["+getNameByte()+"]";
   }
 
 }

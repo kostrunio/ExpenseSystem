@@ -9,7 +9,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -30,12 +29,8 @@ public class UserSummaryEntity extends AbstractEntity {
   @Column(name = "us_date")
   @Convert(converter = LocalDatePersistenceConverter.class)
   private LocalDate date;
-  @Transient
-  private BigDecimal limit;
   @Column(name = "us_limit_byte")
   private byte[] limit_byte;
-  @Transient
-  private BigDecimal sum;
   @Column(name = "us_sum_byte")
   private byte[] sum_byte;
 
@@ -43,10 +38,10 @@ public class UserSummaryEntity extends AbstractEntity {
     super();
   }
 
-  public UserSummaryEntity(LocalDate date, BigDecimal limit) {
+  public UserSummaryEntity(LocalDate date, byte[] limit_byte, byte[] sum_byte) {
     this.date = date;
-    setLimit(limit);
-    setSum(new BigDecimal(0));
+    this.limit_byte = limit_byte;
+    this.sum_byte = sum_byte;
   }
 
   public Long getId() {
@@ -65,56 +60,24 @@ public class UserSummaryEntity extends AbstractEntity {
     this.date = date;
   }
 
-  public BigDecimal getLimit() {
-    return getLimit(false);
+  public byte[] getLimitByte() {
+    return limit_byte;
   }
 
-  public BigDecimal getLimit(boolean encrypt) {
-    if (limit == null && limit_byte != null && !encrypt) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
-      limit = new BigDecimal(enc.decryption(limit_byte));
-    }
-    return limit;
+  public void setLimitByte(byte[] limit_byte) {
+    this.limit_byte = limit_byte;
   }
 
-  public void setLimit(BigDecimal limit) {
-    setLimit(limit, false);
+  public byte[] getSumByte() {
+    return sum_byte;
   }
 
-  public void setLimit(BigDecimal limit, boolean encrypt) {
-    if (limit_byte != null && limit.equals(this.limit) && !encrypt)
-      return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
-    this.limit_byte = enc.encryption(limit.toString());
-    this.limit = limit;
-  }
-
-  public BigDecimal getSum() {
-    return getSum(false);
-  }
-
-  public BigDecimal getSum(boolean encrypt) {
-    if (sum == null && sum_byte != null && !encrypt) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
-      sum = new BigDecimal(enc.decryption(sum_byte));
-    }
-    return sum;
-  }
-
-  public void setSum(BigDecimal sum) {
-    setSum(sum, false);
-  }
-
-  public void setSum(BigDecimal sum, boolean encrypt) {
-    if (sum_byte != null && sum.equals(this.sum) && !encrypt)
-      return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
-    this.sum_byte = enc.encryption(sum.toString());
-    this.sum = sum;
+  public void setSumByte(byte[] sum_byte) {
+    this.sum_byte = sum_byte;
   }
 
   @Override
   public String toString() {
-    return getClass().getSimpleName()+"["+getDate()+"; "+getLimit()+"; "+getSum()+"]";
+    return getClass().getSimpleName()+"["+getDate()+"; "+getLimitByte()+"; "+getSumByte()+"]";
   }
 }
