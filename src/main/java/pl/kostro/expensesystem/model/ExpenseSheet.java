@@ -39,7 +39,7 @@ public class ExpenseSheet extends AbstractEntity {
   private RealUser owner;
   @Column(name = "es_name")
   private String name;
-  @OneToMany(cascade = CascadeType.REMOVE)
+  @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
   @JoinColumn(name = "c_es_id")
   @OrderBy("order")
   private List<Category> categoryList;
