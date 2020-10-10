@@ -11,19 +11,22 @@ import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import pl.kostro.expensesystem.components.form.ExpenseForm;
+import pl.kostro.expensesystem.model.CategoryEntity;
+import pl.kostro.expensesystem.model.ExpenseEntity;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 
 public class TableDesign extends VerticalLayout {
   protected Panel actionPanel = new Panel();
   protected HorizontalLayout actionsLayout = new HorizontalLayout();
   protected DateField fromDateField = new DateField();
   protected DateField toDateField = new DateField();
-  protected ComboBox<pl.kostro.expensesystem.model.Category> categoryBox = new ComboBox<>();
-  protected ComboBox<pl.kostro.expensesystem.model.UserLimit> userBox = new ComboBox<>();
+  protected ComboBox<CategoryEntity> categoryBox = new ComboBox<>();
+  protected ComboBox<UserLimitEntity> userBox = new ComboBox<>();
   protected TextField formulaField = new TextField();
   protected ComboBox<java.lang.String> commentBox = new ComboBox<>();
   protected Button newExpenseButton = new Button();
   protected HorizontalLayout workingLayout = new HorizontalLayout();
-  protected Grid<pl.kostro.expensesystem.model.Expense> expenseGrid = new Grid<>();
+  protected Grid<ExpenseEntity> expenseGrid = new Grid<>();
   protected ExpenseForm expenseForm = new ExpenseForm();
   protected Button exportButton = new Button();
 

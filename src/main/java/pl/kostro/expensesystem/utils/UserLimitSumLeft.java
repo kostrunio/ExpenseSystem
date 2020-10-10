@@ -2,21 +2,21 @@ package pl.kostro.expensesystem.utils;
 
 import java.math.BigDecimal;
 
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 
 public class UserLimitSumLeft {
-  private UserLimit userLimit;
+  private UserLimitEntity userLimit;
   private BigDecimal sum;
   private BigDecimal left;
   
-  public UserLimitSumLeft(UserLimit userLimit, BigDecimal sum, BigDecimal left) {
+  public UserLimitSumLeft(UserLimitEntity userLimit, BigDecimal sum, BigDecimal left) {
     super();
     this.userLimit = userLimit;
     this.sum = sum;
     this.left = left;
   }
 
-  public UserLimit getUserLimit() {
+  public UserLimitEntity getUserLimit() {
     return userLimit;
   }
 

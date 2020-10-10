@@ -20,7 +20,7 @@ import pl.kostro.expensesystem.utils.LocalDateTimePersistenceConverter;
 @SuppressWarnings("serial")
 @Entity
 @DiscriminatorValue(value="2")
-public class RealUser extends User {
+public class RealUserEntity extends UserEntity {
   @Column(name = "u_password")
   private String password;
   @Column(name = "u_password_byte")
@@ -38,18 +38,18 @@ public class RealUser extends User {
       @JoinColumn(name="ues_es_id", referencedColumnName="es_id")
   )
   @OrderBy
-  private List<ExpenseSheet> expenseSheetList;
+  private List<ExpenseSheetEntity> expenseSheetList;
   @OneToOne
   @JoinColumn(name = "u_default_es_id")
-  private ExpenseSheet defaultExpenseSheet;
+  private ExpenseSheetEntity defaultExpenseSheet;
   @Transient
   String clearPassword;
 
-  public RealUser() {
+  public RealUserEntity() {
     super();
   }
 
-  public RealUser(String name) {
+  public RealUserEntity(String name) {
     super(name);
   }
 
@@ -85,21 +85,21 @@ public class RealUser extends User {
     this.logDate = logDate;
   }
 
-  public List<ExpenseSheet> getExpenseSheetList() {
+  public List<ExpenseSheetEntity> getExpenseSheetList() {
     if (expenseSheetList == null)
-      expenseSheetList = new ArrayList<ExpenseSheet>();
+      expenseSheetList = new ArrayList<ExpenseSheetEntity>();
     return expenseSheetList;
   }
 
-  public void setExpenseSheetList(List<ExpenseSheet> expenseSheetList) {
+  public void setExpenseSheetList(List<ExpenseSheetEntity> expenseSheetList) {
     this.expenseSheetList = expenseSheetList;
   }
 
-  public ExpenseSheet getDefaultExpenseSheet() {
+  public ExpenseSheetEntity getDefaultExpenseSheet() {
     return defaultExpenseSheet;
   }
 
-  public void setDefaultExpenseSheet(ExpenseSheet defaultExpenseSheet) {
+  public void setDefaultExpenseSheet(ExpenseSheetEntity defaultExpenseSheet) {
     this.defaultExpenseSheet = defaultExpenseSheet;
   }
 

@@ -12,11 +12,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.model.Category;
-import pl.kostro.expensesystem.model.Expense;
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.User;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.CategoryEntity;
+import pl.kostro.expensesystem.model.ExpenseEntity;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.model.UserEntity;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.repository.ExpenseRepository;
 
 @Service
@@ -30,7 +30,7 @@ public class ExpenseService {
 
   static Logger logger = LogManager.getLogger();
 
-  public void createExpense(ExpenseSheet expenseSheet, Expense expense) {
+  public void createExpense(ExpenseSheetEntity expenseSheet, ExpenseEntity expense) {
     LocalDateTime stopper = LocalDateTime.now();
     expense.setExpenseSheet(expenseSheet);
     expense = er.save(expense);
@@ -38,14 +38,14 @@ public class ExpenseService {
     logger.info("createExpense for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public Expense merge(Expense expense) {
+  public ExpenseEntity merge(ExpenseEntity expense) {
     LocalDateTime stopper = LocalDateTime.now();
     expense = er.save(expense);
     logger.info("merge for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expense;
   }
 
-  public void removeExpense(ExpenseSheet expenseSheet, Expense expense) {
+  public void removeExpense(ExpenseSheetEntity expenseSheet, ExpenseEntity expense) {
     LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.getExpenseList().remove(expense);
     eshs.removeExpenseFromMap(expenseSheet, expense);
@@ -54,12 +54,12 @@ public class ExpenseService {
   }
 
 
-  public static void decrypt(Expense expense) {
+  public static void decrypt(ExpenseEntity expense) {
     expense.getFormula();
     expense.getComment();
   }
 
-  public void encrypt(Expense expense) {
+  public void encrypt(ExpenseEntity expense) {
     LocalDateTime stopper = LocalDateTime.now();
     expense.setFormula(expense.getFormula());
     expense.setComment(expense.getComment());
@@ -67,16 +67,16 @@ public class ExpenseService {
     logger.info("encrypt for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public String getValueString(Expense expense) {
+  public String getValueString(ExpenseEntity expense) {
     return expense.getValue().toString();
   }
 
-  public Expense prepareNewExpense(ExpenseSheet expenseSheet, LocalDate date, Category category, User user) {
-    return new Expense(date, "", category, user, "", date.isAfter(LocalDate.now()) ? true : false, expenseSheet);
+  public ExpenseEntity prepareNewExpense(ExpenseSheetEntity expenseSheet, LocalDate date, CategoryEntity category, UserEntity user) {
+    return new ExpenseEntity(date, "", category, user, "", date.isAfter(LocalDate.now()) ? true : false, expenseSheet);
   }
 
-  public void saveExpense(ExpenseSheet expenseSheet, Expense expense, UserLimit userLimit, String formula,
-      Object comment, Boolean notify, Boolean modify) {
+  public void saveExpense(ExpenseSheetEntity expenseSheet, ExpenseEntity expense, UserLimitEntity userLimit, String formula,
+                          Object comment, Boolean notify, Boolean modify) {
     LocalDateTime stopper = LocalDateTime.now();
     if (modify)
       removeExpense(expenseSheet, expense);
@@ -89,9 +89,9 @@ public class ExpenseService {
     logger.info("saveExpense for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public List<Expense> findExpensesToNotify() {
+  public List<ExpenseEntity> findExpensesToNotify() {
     LocalDateTime stopper = LocalDateTime.now();
-    List<Expense> expenseList = null;
+    List<ExpenseEntity> expenseList = null;
     try {
       expenseList = er.findExpensesToNotify(LocalDate.now());
     } catch (NoResultException e) {

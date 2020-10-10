@@ -24,11 +24,11 @@ import com.vaadin.ui.components.grid.FooterRow;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.Category;
-import pl.kostro.expensesystem.model.Expense;
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.User;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.CategoryEntity;
+import pl.kostro.expensesystem.model.ExpenseEntity;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.model.UserEntity;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.view.design.TableDesign;
@@ -40,12 +40,12 @@ public class TableView extends TableDesign {
 
   private Logger logger = LogManager.getLogger();
   private LocalDate date;
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
   private FooterRow footer = expenseGrid.prependFooterRow();
-  private Column<Expense, LocalDate> dateColumn;
-  private Column<Expense, String> categoryColumn;
-  private Column<Expense, String> formulaColumn;
-  private Column<Expense, BigDecimal> valueColumn;
+  private Column<ExpenseEntity, LocalDate> dateColumn;
+  private Column<ExpenseEntity, String> categoryColumn;
+  private Column<ExpenseEntity, String> formulaColumn;
+  private Column<ExpenseEntity, BigDecimal> valueColumn;
   
   private StreamResource exportData = new StreamResource(new StreamResource.StreamSource() {
     @Override
@@ -57,14 +57,14 @@ public class TableView extends TableDesign {
   
   @SuppressWarnings("rawtypes")
   private HasValue.ValueChangeListener filterChanged = event -> {
-    User filterUser = null;
-    if (userBox.getValue() instanceof UserLimit) {
-      filterUser = ((UserLimit) userBox.getValue()).getUser();
+    UserEntity filterUser = null;
+    if (userBox.getValue() instanceof UserLimitEntity) {
+      filterUser = ((UserLimitEntity) userBox.getValue()).getUser();
     }
-    List<Category> categories = new ArrayList<Category>();
-    categories.add((Category) categoryBox.getValue());
-    List<User> users = new ArrayList<User>();
-    users.add((User) filterUser);
+    List<CategoryEntity> categories = new ArrayList<CategoryEntity>();
+    categories.add((CategoryEntity) categoryBox.getValue());
+    List<UserEntity> users = new ArrayList<UserEntity>();
+    users.add((UserEntity) filterUser);
     expenseSheet.setFilter(new Filter(
         fromDateField.getValue(),
         toDateField.getValue(),
@@ -74,8 +74,8 @@ public class TableView extends TableDesign {
         (String)commentBox.getValue()));
     refreshExpenses();
   };
-  private ClickListener newClicked = event -> expenseForm.edit(new Expense());
-  private SelectionListener<Expense> itemClicked = event -> {
+  private ClickListener newClicked = event -> expenseForm.edit(new ExpenseEntity());
+  private SelectionListener<ExpenseEntity> itemClicked = event -> {
     if (expenseGrid.getSelectedItems().size() != 0)
       expenseForm.edit(expenseGrid.getSelectedItems().iterator().next());
     else
@@ -87,7 +87,7 @@ public class TableView extends TableDesign {
   public TableView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("create");
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
     
     excelFileDownloader.extend(exportButton);
@@ -151,19 +151,19 @@ public class TableView extends TableDesign {
     formulaField.setCaption(Msg.get("findPage.formula"));
     commentBox.setCaption(Msg.get("findPage.comment"));
     newExpenseButton.setCaption(Msg.get("findPage.add"));
-    dateColumn = expenseGrid.addColumn(Expense::getDate).setCaption(Msg.get("findPage.date")).setId("date");
+    dateColumn = expenseGrid.addColumn(ExpenseEntity::getDate).setCaption(Msg.get("findPage.date")).setId("date");
     categoryColumn = expenseGrid.addColumn(item -> item.getCategory().getName()).setCaption(Msg.get("findPage.category")).setId("category");
     expenseGrid.addColumn(item -> item.getUser().getName()).setCaption(Msg.get("findPage.user")).setId("user");
-    formulaColumn = expenseGrid.addColumn(Expense::getFormula).setCaption(Msg.get("findPage.formula")).setId("formula");
-    valueColumn = expenseGrid.addColumn(Expense::getValue).setCaption(Msg.get("findPage.value")).setId("value");
-    expenseGrid.addColumn(Expense::getComment).setCaption(Msg.get("findPage.comment")).setId("comment");
+    formulaColumn = expenseGrid.addColumn(ExpenseEntity::getFormula).setCaption(Msg.get("findPage.formula")).setId("formula");
+    valueColumn = expenseGrid.addColumn(ExpenseEntity::getValue).setCaption(Msg.get("findPage.value")).setId("value");
+    expenseGrid.addColumn(ExpenseEntity::getComment).setCaption(Msg.get("findPage.comment")).setId("comment");
     footer.getCell(dateColumn).setText(Msg.get("findPage.rows"));
     footer.getCell(formulaColumn).setText(Msg.get("findPage.sum"));
     exportButton.setCaption(Msg.get("findPage.export"));
   }
   
   public void refreshExpenses() {
-    List<Expense> expensesList = eshs.findAllExpense(expenseSheet);
+    List<ExpenseEntity> expensesList = eshs.findAllExpense(expenseSheet);
     expenseGrid.setItems(expensesList);
     footer.getCell(categoryColumn).setText(""+expensesList.size());
     footer.getCell(valueColumn).setHtml("<b>" + calcualteSum(expensesList) + "</b>");
@@ -171,9 +171,9 @@ public class TableView extends TableDesign {
     expenseForm.setVisible(false);
   }
 
-  private BigDecimal calcualteSum(List<Expense> expensesList) {
+  private BigDecimal calcualteSum(List<ExpenseEntity> expensesList) {
     BigDecimal result = new BigDecimal(0);
-    for(Expense exp : expensesList) {
+    for(ExpenseEntity exp : expensesList) {
       try {
         result = result.add(exp.getValue());
       } catch (Exception e) {

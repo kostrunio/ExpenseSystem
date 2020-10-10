@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.views.settingsPage;
 
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +38,7 @@ public class ExpenseSheetEditWindow extends Window {
     close();
   };
 
-  public ExpenseSheetEditWindow(ExpenseSheetEditListener listener, ExpenseSheet expenseSheet) {
+  public ExpenseSheetEditWindow(ExpenseSheetEditListener listener, ExpenseSheetEntity expenseSheet) {
     logger.info("show");
     this.listener = listener;
     setCaption(Msg.get("expenseSheet.edit"));

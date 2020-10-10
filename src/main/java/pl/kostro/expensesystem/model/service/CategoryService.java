@@ -8,8 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.model.Category;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.CategoryEntity;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.repository.CategoryRepository;
 import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
 
@@ -23,26 +23,26 @@ public class CategoryService {
 
   private static Logger logger = LogManager.getLogger();
   
-  public void createCategory(ExpenseSheet expenseSheet, String name) {
+  public void createCategory(ExpenseSheetEntity expenseSheet, String name) {
     LocalDateTime stopper = LocalDateTime.now();
-    Category category = new Category(name, expenseSheet.getCategoryList().size());
+    CategoryEntity category = new CategoryEntity(name, expenseSheet.getCategoryList().size());
     cr.save(category);
     expenseSheet.getCategoryList().add(category);
     expenseSheet = eshr.save(expenseSheet);
     logger.info("createCategory for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public void merge(Category category) {
+  public void merge(CategoryEntity category) {
     LocalDateTime stopper = LocalDateTime.now();
     cr.save(category);
     logger.info("merge for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public ExpenseSheet removeCategory(ExpenseSheet expenseSheet, Category category) {
+  public ExpenseSheetEntity removeCategory(ExpenseSheetEntity expenseSheet, CategoryEntity category) {
     LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.getCategoryList().remove(category);
     int i = 0;
-    for (Category cat : expenseSheet.getCategoryList())
+    for (CategoryEntity cat : expenseSheet.getCategoryList())
       cat.setOrder(i++);
     expenseSheet = eshr.save(expenseSheet);
     cr.delete(category);
@@ -50,11 +50,11 @@ public class CategoryService {
     return expenseSheet;
   }
 
-  public void decrypt(Category category) {
+  public void decrypt(CategoryEntity category) {
     category.getName();
   }
 
-  public void encrypt(Category category) {
+  public void encrypt(CategoryEntity category) {
     LocalDateTime stopper = LocalDateTime.now();
     category.setName(category.getName(true), true);
     cr.save(category);

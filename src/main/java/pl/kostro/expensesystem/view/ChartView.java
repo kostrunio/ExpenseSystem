@@ -22,10 +22,10 @@ import com.vaadin.server.VaadinSession;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.grid.ChartGrid;
-import pl.kostro.expensesystem.model.Category;
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.User;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.CategoryEntity;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.model.UserEntity;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.YearValue;
@@ -38,14 +38,14 @@ public class ChartView extends ChartDesign {
 
   private Logger logger = LogManager.getLogger();
   private ExpenseSheetService eshs;
-  private ExpenseSheet expenseSheet;
-  private ValueChangeListener<Set<Category>> categoryChanged = event -> refreshFilter();
-  private ValueChangeListener<Set<UserLimit>> userChanged = event -> refreshFilter();
+  private ExpenseSheetEntity expenseSheet;
+  private ValueChangeListener<Set<CategoryEntity>> categoryChanged = event -> refreshFilter();
+  private ValueChangeListener<Set<UserLimitEntity>> userChanged = event -> refreshFilter();
 
   public ChartView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("create");
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     expenseSheet.setFilter(new Filter(null, null, null, null));
     setCaption();
     categoryCombo.addValueChangeListener(categoryChanged);
@@ -65,14 +65,14 @@ public class ChartView extends ChartDesign {
   private void refreshFilter() {
     String filterFormula = null;
     String filterComment = null;
-    List<User> users = new ArrayList<User>();
-    Set<UserLimit> setUserLimit = (Set<UserLimit>) userCombo.getValue();
-    for (Iterator<UserLimit> iter = setUserLimit.iterator(); iter.hasNext();)
+    List<UserEntity> users = new ArrayList<UserEntity>();
+    Set<UserLimitEntity> setUserLimit = (Set<UserLimitEntity>) userCombo.getValue();
+    for (Iterator<UserLimitEntity> iter = setUserLimit.iterator(); iter.hasNext();)
       users.add(iter.next().getUser());
 
-    List<Category> categories = new ArrayList<Category>();
-    Set<Category> setCategory = (Set<Category>) categoryCombo.getValue();
-    for (Iterator<Category> iter = setCategory.iterator(); iter.hasNext();)
+    List<CategoryEntity> categories = new ArrayList<CategoryEntity>();
+    Set<CategoryEntity> setCategory = (Set<CategoryEntity>) categoryCombo.getValue();
+    for (Iterator<CategoryEntity> iter = setCategory.iterator(); iter.hasNext();)
       categories.add(iter.next());
 
     expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));

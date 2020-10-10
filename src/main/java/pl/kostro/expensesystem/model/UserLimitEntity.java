@@ -25,7 +25,7 @@ import com.vaadin.server.VaadinSession;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "users_limits")
-public class UserLimit extends AbstractEntity {
+public class UserLimitEntity extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
@@ -33,7 +33,7 @@ public class UserLimit extends AbstractEntity {
   private Long id;
   @OneToOne
   @JoinColumn(name = "ul_u_id")
-  private User user;
+  private UserEntity user;
   @Transient
   private BigDecimal limit;
   @Column(name = "ul_limit_byte")
@@ -43,15 +43,15 @@ public class UserLimit extends AbstractEntity {
   @OneToMany(cascade = CascadeType.REMOVE)
   @JoinColumn(name = "us_ul_id")
   @OrderBy(value = "date")
-  private List<UserSummary> userSummaryList;
+  private List<UserSummaryEntity> userSummaryList;
   @Column(name = "ul_cont_summary")
   private boolean continuousSummary;
 
-  public UserLimit() {
+  public UserLimitEntity() {
     super();
   }
 
-  public UserLimit(User user, int order) {
+  public UserLimitEntity(UserEntity user, int order) {
     this.user = user;
     setLimit(new BigDecimal(0));
     this.order = order;
@@ -65,11 +65,11 @@ public class UserLimit extends AbstractEntity {
     this.id = id;
   }
 
-  public User getUser() {
+  public UserEntity getUser() {
     return user;
   }
 
-  public void setUser(User user) {
+  public void setUser(UserEntity user) {
     this.user = user;
   }
   
@@ -83,7 +83,7 @@ public class UserLimit extends AbstractEntity {
 
   public BigDecimal getLimit(boolean encrypt) {
     if (limit == null && limit_byte != null && !encrypt) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
       limit = new BigDecimal(enc.decryption(limit_byte));
     }
     return limit;
@@ -96,7 +96,7 @@ public class UserLimit extends AbstractEntity {
   public void setLimit(BigDecimal limit, boolean encrypt) {
     if (limit_byte != null && limit.equals(this.limit) && !encrypt)
       return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
     this.limit_byte = enc.encryption(limit.toString());
     this.limit = limit;
   }
@@ -109,13 +109,13 @@ public class UserLimit extends AbstractEntity {
     this.order = order;
   }
 
-  public List<UserSummary> getUserSummaryList() {
+  public List<UserSummaryEntity> getUserSummaryList() {
     if (userSummaryList == null)
-      userSummaryList = new ArrayList<UserSummary>();
+      userSummaryList = new ArrayList<UserSummaryEntity>();
     return userSummaryList;
   }
 
-  public void setUserSummaryList(List<UserSummary> userSummaryList) {
+  public void setUserSummaryList(List<UserSummaryEntity> userSummaryList) {
     this.userSummaryList = userSummaryList;
   }
 

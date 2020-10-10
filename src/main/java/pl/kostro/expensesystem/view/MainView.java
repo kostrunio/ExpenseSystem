@@ -21,8 +21,8 @@ import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.view.design.MainDesign;
 import pl.kostro.expensesystem.views.settingsPage.AddSheetWindow;
@@ -103,9 +103,9 @@ public class MainView extends MainDesign {
   private void buildMenuItems() {
     sheetLayout.removeAllComponents();
     viewButtons.clear();
-    RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
+    RealUserEntity loggedUser = VaadinSession.getCurrent().getAttribute(RealUserEntity.class);
     rus.fetchExpenseSheetList(loggedUser);
-    for (final ExpenseSheet esh : loggedUser.getExpenseSheetList())
+    for (final ExpenseSheetEntity esh : loggedUser.getExpenseSheetList())
       createButton("expenseSheet/" + esh.getId(), esh.getName(), esh.equals(loggedUser.getDefaultExpenseSheet()));
   }
 

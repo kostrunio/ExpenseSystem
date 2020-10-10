@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.model.User;
+import pl.kostro.expensesystem.model.UserEntity;
 import pl.kostro.expensesystem.model.repository.UserRepository;
 
 @Service
@@ -19,9 +19,9 @@ public class UserService {
   
   private static Logger logger = LogManager.getLogger();
 
-  public User createUser(String name) {
+  public UserEntity createUser(String name) {
     LocalDateTime stopper = LocalDateTime.now();
-    User user = new User();
+    UserEntity user = new UserEntity();
     user.setName(name);
     ur.save(user);
     logger.info("createUser for {} finish: {} ms", user, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));

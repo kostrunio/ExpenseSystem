@@ -1,7 +1,6 @@
 package pl.kostro.expensesystem.view.design;
 
 import com.vaadin.icons.VaadinIcons;
-import com.vaadin.shared.ui.MarginInfo;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
@@ -14,6 +13,7 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 
 public class DayDesign extends VerticalLayout {
   protected HorizontalLayout navigationLayout = new HorizontalLayout();
@@ -29,7 +29,7 @@ public class DayDesign extends VerticalLayout {
   protected Label categoryLabel = new Label();
   protected GridLayout expenseGrid = new GridLayout();
   protected HorizontalLayout addExpense = new HorizontalLayout();
-  protected ComboBox<pl.kostro.expensesystem.model.UserLimit> userBox = new ComboBox<>();
+  protected ComboBox<UserLimitEntity> userBox = new ComboBox<>();
   protected TextField formulaField = new TextField();
   protected ComboBox<java.lang.String> commentBox = new ComboBox<>();
   protected CheckBox notifyBox = new CheckBox("notify me");

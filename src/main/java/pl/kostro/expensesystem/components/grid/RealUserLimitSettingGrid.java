@@ -17,8 +17,8 @@ import com.vaadin.ui.UI;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.notification.ShowNotification;
@@ -26,20 +26,20 @@ import pl.kostro.expensesystem.views.settingsPage.AddRealUserWindow;
 import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 
 @SuppressWarnings("serial")
-public class RealUserLimitSettingGrid extends Grid<UserLimit> implements SettingsChangeListener {
+public class RealUserLimitSettingGrid extends Grid<UserLimitEntity> implements SettingsChangeListener {
   
   private ExpenseSheetService eshs;
   private UserLimitService uls;
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
 
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
   
-  private Binder<UserLimit> binder = new Binder<>();
+  private Binder<UserLimitEntity> binder = new Binder<>();
 
-  private SelectionListener<UserLimit> itemSelected = event -> deleteUserLimitButton.setEnabled(event.getAllSelectedItems().size() != 0);
-  private EditorOpenListener<UserLimit> editorOpen = event -> binder.setBean(event.getBean());
-  private EditorSaveListener<UserLimit> saveRealUserLimit = event -> {
+  private SelectionListener<UserLimitEntity> itemSelected = event -> deleteUserLimitButton.setEnabled(event.getAllSelectedItems().size() != 0);
+  private EditorOpenListener<UserLimitEntity> editorOpen = event -> binder.setBean(event.getBean());
+  private EditorSaveListener<UserLimitEntity> saveRealUserLimit = event -> {
     uls.merge(event.getBean());
     refreshValues();
   };
@@ -63,27 +63,27 @@ public class RealUserLimitSettingGrid extends Grid<UserLimit> implements Setting
   public RealUserLimitSettingGrid() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     uls = AppCtxProvider.getBean(UserLimitService.class);
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
 
     TextField limitField = new TextField();
     TextField orderField = new TextField();
     TextField continuousField = new TextField();
     
-    Binder.Binding<UserLimit, String> limitBinder = binder.forField(limitField)
+    Binder.Binding<UserLimitEntity, String> limitBinder = binder.forField(limitField)
         .bind(userLimit -> userLimit.getLimit().toString(), (userLimit, value) -> userLimit.setLimit(new BigDecimal(value.replaceAll(",", "."))));
-    Binder.Binding<UserLimit, String> orderBinder = binder.forField(orderField)
+    Binder.Binding<UserLimitEntity, String> orderBinder = binder.forField(orderField)
         .bind(userLimit -> userLimit.getOrder()+"", (userLimit, value) -> userLimit.setOrder(Integer.parseInt(value)));
     Binder.Binding<UserLimit, String> continuousBinder = binder.forField(continuousField)
             .bind(userLimit -> userLimit.isContinuousSummary()+"", (userLimit, value) -> userLimit.setContinuousSummary(Boolean.parseBoolean(value)));
     
     addColumn(item -> item.getUser().getName())
       .setCaption(Msg.get("settingsPage.realUserName"))
-      .setEditorComponent(new TextField(), UserLimit::setUser)
+      .setEditorComponent(new TextField(), UserLimitEntity::setUser)
       .setEditable(false);
-    addColumn(UserLimit::getLimit)
+    addColumn(UserLimitEntity::getLimit)
       .setCaption(Msg.get("settingsPage.realUserLimit"))
       .setEditorBinding(limitBinder);
-    addColumn(UserLimit::getOrder)
+    addColumn(UserLimitEntity::getOrder)
       .setCaption(Msg.get("settingsPage.realUserOrder"))
       .setEditorBinding(orderBinder);
     addColumn(UserLimit::isContinuousSummary)
@@ -113,7 +113,7 @@ public class RealUserLimitSettingGrid extends Grid<UserLimit> implements Setting
 	  setItems(eshs.getUserLimitListRealUser(expenseSheet));
   }
 
-  private UserLimit getItem() {
+  private UserLimitEntity getItem() {
     return getSelectedItems().iterator().next();
   }
 }

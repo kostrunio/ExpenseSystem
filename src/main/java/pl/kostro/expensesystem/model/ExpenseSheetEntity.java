@@ -28,7 +28,7 @@ import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "expense_sheets")
-public class ExpenseSheet extends AbstractEntity {
+public class ExpenseSheetEntity extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
@@ -36,20 +36,20 @@ public class ExpenseSheet extends AbstractEntity {
   private Long id;
   @OneToOne
   @JoinColumn(name = "es_u_id")
-  private RealUser owner;
+  private RealUserEntity owner;
   @Column(name = "es_name")
   private String name;
   @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
   @JoinColumn(name = "c_es_id")
   @OrderBy("order")
-  private List<Category> categoryList;
+  private List<CategoryEntity> categoryList;
   @OneToMany(cascade = CascadeType.REMOVE)
   @JoinColumn(name = "ul_es_id")
   @OrderBy("order")
-  private List<UserLimit> userLimitList;
+  private List<UserLimitEntity> userLimitList;
   @OneToMany(mappedBy = "expenseSheet", cascade = CascadeType.REMOVE)
   @OrderBy
-  private List<Expense> expenseList;
+  private List<ExpenseEntity> expenseList;
   @Column(name = "es_reload_day")
   private int reloadDay;
   @Column(name = "es_encrypted")
@@ -59,9 +59,9 @@ public class ExpenseSheet extends AbstractEntity {
   @Transient
   private Map<LocalDate, DateExpense> dateExpenseMap;
   @Transient
-  private Map<Category, CategoryExpense> categoryExpenseMap;
+  private Map<CategoryEntity, CategoryExpense> categoryExpenseMap;
   @Transient
-  private Map<UserLimit, UserLimitExpense> userLimitExpenseMap;
+  private Map<UserLimitEntity, UserLimitExpense> userLimitExpenseMap;
   @Transient
   private Filter filter;
   @Transient
@@ -77,11 +77,11 @@ public class ExpenseSheet extends AbstractEntity {
     this.id = id;
   }
 
-  public RealUser getOwner() {
+  public RealUserEntity getOwner() {
     return owner;
   }
 
-  public void setOwner(RealUser owner) {
+  public void setOwner(RealUserEntity owner) {
     this.owner = owner;
   }
 
@@ -93,33 +93,33 @@ public class ExpenseSheet extends AbstractEntity {
     this.name = name;
   }
 
-  public List<Category> getCategoryList() {
+  public List<CategoryEntity> getCategoryList() {
     if (categoryList == null)
-      categoryList = new ArrayList<Category>();
+      categoryList = new ArrayList<CategoryEntity>();
     return categoryList;
   }
 
-  public void setCategoryList(List<Category> categoryList) {
+  public void setCategoryList(List<CategoryEntity> categoryList) {
     this.categoryList = categoryList;
   }
 
-  public List<UserLimit> getUserLimitList() {
+  public List<UserLimitEntity> getUserLimitList() {
     if (userLimitList == null)
-      userLimitList = new ArrayList<UserLimit>();
+      userLimitList = new ArrayList<UserLimitEntity>();
     return userLimitList;
   }
 
-  public void setUserLimitList(List<UserLimit> userLimitList) {
+  public void setUserLimitList(List<UserLimitEntity> userLimitList) {
     this.userLimitList = userLimitList;
   }
 
-  public List<Expense> getExpenseList() {
+  public List<ExpenseEntity> getExpenseList() {
     if (expenseList == null)
-      expenseList = new ArrayList<Expense>();
+      expenseList = new ArrayList<ExpenseEntity>();
     return expenseList;
   }
 
-  public void setExpenseList(List<Expense> expenseList) {
+  public void setExpenseList(List<ExpenseEntity> expenseList) {
     this.expenseList = expenseList;
   }
 
@@ -157,23 +157,23 @@ public class ExpenseSheet extends AbstractEntity {
     this.dateExpenseMap = dateExpenseMap;
   }
 
-  public Map<Category, CategoryExpense> getCategoryExpenseMap() {
+  public Map<CategoryEntity, CategoryExpense> getCategoryExpenseMap() {
     if (categoryExpenseMap == null)
-      categoryExpenseMap = new HashMap<Category, CategoryExpense>();
+      categoryExpenseMap = new HashMap<CategoryEntity, CategoryExpense>();
     return categoryExpenseMap;
   }
 
-  public void setCategoryExpenseMap(Map<Category, CategoryExpense> categoryExpenseMap) {
+  public void setCategoryExpenseMap(Map<CategoryEntity, CategoryExpense> categoryExpenseMap) {
     this.categoryExpenseMap = categoryExpenseMap;
   }
 
-  public Map<UserLimit, UserLimitExpense> getUserLimitExpenseMap() {
+  public Map<UserLimitEntity, UserLimitExpense> getUserLimitExpenseMap() {
     if (userLimitExpenseMap == null)
-      userLimitExpenseMap = new HashMap<UserLimit, UserLimitExpense>();
+      userLimitExpenseMap = new HashMap<UserLimitEntity, UserLimitExpense>();
     return userLimitExpenseMap;
   }
 
-  public void setUserLimitExpenseMap(Map<UserLimit, UserLimitExpense> userLimitExpenseMap) {
+  public void setUserLimitExpenseMap(Map<UserLimitEntity, UserLimitExpense> userLimitExpenseMap) {
     this.userLimitExpenseMap = userLimitExpenseMap;
   }
 

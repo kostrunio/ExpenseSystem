@@ -5,7 +5,7 @@ import com.vaadin.ui.Button.ClickListener;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.utils.SendEmail;
@@ -24,7 +24,7 @@ public class RegisterForm extends RegisterFormDesign {
       }
     if (!nameField.getValue().isEmpty() && !passwordField.getValue().isEmpty()
         && passwordField.getValue().equals(rePasswordField.getValue())) {
-      RealUser realUser = rus.createRealUser(nameField.getValue(), passwordField.getValue(), emailField.getValue());
+      RealUserEntity realUser = rus.createRealUser(nameField.getValue(), passwordField.getValue(), emailField.getValue());
       new Thread(() -> SendEmail.welcome(realUser)).start();
       ShowNotification.registerOK();
       ((ExpenseSystemUI) getUI()).updateContent();

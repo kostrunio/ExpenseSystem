@@ -2,16 +2,16 @@ package pl.kostro.expensesystem.view.design;
 
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.Component;
-import com.vaadin.ui.Grid;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import pl.kostro.expensesystem.components.grid.UserSummaryGrid;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 
 public class UserSummaryDesign extends VerticalLayout {
   protected Panel actionPanel = new Panel();
   protected HorizontalLayout actionsLayout = new HorizontalLayout();
-  protected ComboBox<pl.kostro.expensesystem.model.UserLimit> userBox = new ComboBox<>();
+  protected ComboBox<UserLimitEntity> userBox = new ComboBox<>();
   protected HorizontalLayout workingLayout = new HorizontalLayout();
   protected UserSummaryGrid userSummaryGrid = new UserSummaryGrid();
 

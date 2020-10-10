@@ -4,19 +4,19 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.CategoryEntity;
 
 public class YearCategory {
   
   int year;
   List<List<CategoryExpense>> categoryExpenseList;
   
-  public YearCategory(int year, List<Category> categoryList) {
+  public YearCategory(int year, List<CategoryEntity> categoryList) {
     this.year = year;
     categoryExpenseList = new ArrayList<List<CategoryExpense>>();
     for (int m=0; m<=11; m++) {
       List<CategoryExpense> monthCategoryList = new ArrayList<CategoryExpense>();
-      for (Category category : categoryList) {
+      for (CategoryEntity category : categoryList) {
         CategoryExpense categoryExpense = new CategoryExpense(category);
         monthCategoryList.add(categoryExpense);
       }
@@ -28,14 +28,14 @@ public class YearCategory {
     return year;
   }
   
-  public CategoryExpense getCategory(int m, Category category) {
+  public CategoryExpense getCategory(int m, CategoryEntity category) {
     for (CategoryExpense categoryEx : categoryExpenseList.get(m))
       if (categoryEx.getCategory().equals(category))
         return categoryEx;
     return null;
   }
 
-  public List<CategoryExpense> getCategory(Category category) {
+  public List<CategoryExpense> getCategory(CategoryEntity category) {
     List<CategoryExpense> categoryList = new ArrayList<CategoryExpense>();
     for (List<CategoryExpense> monthCategoryList : categoryExpenseList)
       for (CategoryExpense categoryExpense : monthCategoryList)

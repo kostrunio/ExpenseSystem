@@ -25,7 +25,7 @@ import pl.kostro.expensesystem.utils.LocalDatePersistenceConverter;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "expenses")
-public class Expense extends AbstractEntity {
+public class ExpenseEntity extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
@@ -42,10 +42,10 @@ public class Expense extends AbstractEntity {
   private BigDecimal value;
   @OneToOne
   @JoinColumn(name = "e_c_id")
-  private Category category;
+  private CategoryEntity category;
   @OneToOne
   @JoinColumn(name = "e_u_id")
-  private User user;
+  private UserEntity user;
   @Transient
   private String comment;
   @Column(name = "e_comment_byte")
@@ -54,16 +54,16 @@ public class Expense extends AbstractEntity {
   private boolean notify;
   @ManyToOne
   @JoinColumn(name = "e_es_id")
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
   @Transient
   private boolean encoded = true;
 
-  public Expense() {
+  public ExpenseEntity() {
     super();
   }
 
-  public Expense(LocalDate date, String formula, Category category, User user, String comment, boolean notify,
-      ExpenseSheet expenseSheet) {
+  public ExpenseEntity(LocalDate date, String formula, CategoryEntity category, UserEntity user, String comment, boolean notify,
+                       ExpenseSheetEntity expenseSheet) {
     this.date = date;
     setFormula(formula);
     this.category = category;
@@ -95,7 +95,7 @@ public class Expense extends AbstractEntity {
   }
 
   private void decode() {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
     if (formula_byte != null)
       formula = enc.decryption(formula_byte);
     if (comment_byte != null)
@@ -104,7 +104,7 @@ public class Expense extends AbstractEntity {
   }
 
   public void setFormula(String formula) {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
     this.formula_byte = enc.encryption(formula);
     this.formula = formula;
   }
@@ -119,19 +119,19 @@ public class Expense extends AbstractEntity {
     }
   }
 
-  public Category getCategory() {
+  public CategoryEntity getCategory() {
     return category;
   }
 
-  public void setCategory(Category category) {
+  public void setCategory(CategoryEntity category) {
     this.category = category;
   }
 
-  public User getUser() {
+  public UserEntity getUser() {
     return user;
   }
 
-  public void setUser(User user) {
+  public void setUser(UserEntity user) {
     this.user = user;
   }
 
@@ -141,7 +141,7 @@ public class Expense extends AbstractEntity {
   }
 
   public void setComment(String comment) {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
     this.comment_byte = enc.encryption(comment);
     this.comment = comment;
   }
@@ -154,11 +154,11 @@ public class Expense extends AbstractEntity {
     this.notify = notify;
   }
 
-  public ExpenseSheet getExpenseSheet() {
+  public ExpenseSheetEntity getExpenseSheet() {
     return expenseSheet;
   }
 
-  public void setExpenseSheet(ExpenseSheet expenseSheet) {
+  public void setExpenseSheet(ExpenseSheetEntity expenseSheet) {
     this.expenseSheet = expenseSheet;
   }
 

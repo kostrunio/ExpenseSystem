@@ -2,19 +2,19 @@ package pl.kostro.expensesystem.utils;
 
 import java.math.BigDecimal;
 
-import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.CategoryEntity;
 
 public class CategorySum {
-  private Category category;
+  private CategoryEntity category;
   private BigDecimal sum;
   
-  public CategorySum(Category category, BigDecimal sum) {
+  public CategorySum(CategoryEntity category, BigDecimal sum) {
     super();
     this.category = category;
     this.sum = sum;
   }
 
-  public Category getCategory() {
+  public CategoryEntity getCategory() {
     return category;
   }
 

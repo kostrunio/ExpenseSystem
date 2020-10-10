@@ -17,7 +17,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.model.service.UserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
@@ -38,7 +38,7 @@ public class AddUserWindow extends Window {
       ShowNotification.fieldEmpty(nameField.getCaption());
       return;
     }
-    ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    ExpenseSheetEntity expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     uls.createUserLimit(expenseSheet, us.createUser(nameField.getValue()));
     listener.refreshValues();
     close();

@@ -9,8 +9,8 @@ import com.vaadin.ui.Grid;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.Category;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.CategoryEntity;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.CategorySum;
 import pl.kostro.expensesystem.utils.expense.CategoryExpense;
@@ -20,11 +20,11 @@ public class CategorySumGrid extends Grid<CategorySum> {
   
   private ExpenseSheetService eshs;
   
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
 
   public CategorySumGrid() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
-    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     if (expenseSheet.getCategoryList().size() > 0)
       setHeightByRows(expenseSheet.getCategoryList().size());
     setSelectionMode(SelectionMode.NONE);
@@ -34,7 +34,7 @@ public class CategorySumGrid extends Grid<CategorySum> {
   
   public void fulfill() {
     List<CategorySum> values = new ArrayList<>();
-    for (Category category : expenseSheet.getCategoryList()) {
+    for (CategoryEntity category : expenseSheet.getCategoryList()) {
       CategoryExpense categoryExpense = eshs.getCategoryExpenseMap(expenseSheet, category);
       values.add(new CategorySum(category, categoryExpense != null ? categoryExpense.getSum() : new BigDecimal(0)));
     }

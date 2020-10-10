@@ -10,8 +10,8 @@ import java.util.Set;
 import org.vaadin.addon.calendar.item.BasicItem;
 
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
 import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
@@ -24,8 +24,8 @@ public class Converter {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
   }
 
-  public List<BasicItem> transformExpensesToEvents(ExpenseSheet expenseSheet,
-      Map<LocalDate, DateExpense> dateExpenseMap) {
+  public List<BasicItem> transformExpensesToEvents(ExpenseSheetEntity expenseSheet,
+                                                   Map<LocalDate, DateExpense> dateExpenseMap) {
     Set<LocalDate> dateSet = dateExpenseMap.keySet();
     List<BasicItem> calendarEvents = new ArrayList<>();
     BasicItem event;
@@ -33,7 +33,7 @@ public class Converter {
       DateExpense dateExpense = dateExpenseMap.get(date);
 
       // userLimit events
-      for (UserLimit userLimit : eshs.getUserLimitListDesc(expenseSheet)) {
+      for (UserLimitEntity userLimit : eshs.getUserLimitListDesc(expenseSheet)) {
         UserLimitExpense userLimitExpenseMap = dateExpense.getUserLimitExpenseMap().get(userLimit);
         if (userLimitExpenseMap == null)
           continue;

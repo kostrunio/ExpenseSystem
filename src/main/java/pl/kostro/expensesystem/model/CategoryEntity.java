@@ -18,7 +18,7 @@ import pl.kostro.expensesystem.utils.Encryption;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "categories")
-public class Category extends AbstractEntity {
+public class CategoryEntity extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
@@ -33,11 +33,11 @@ public class Category extends AbstractEntity {
   @Column(name = "c_order")
   private int order;
 
-  public Category() {
+  public CategoryEntity() {
     super();
   }
 
-  public Category(String name, int order) {
+  public CategoryEntity(String name, int order) {
     super();
     setName(name);
     this.multiplier = new BigDecimal(1);
@@ -58,7 +58,7 @@ public class Category extends AbstractEntity {
 
   public String getName(boolean encrypt) {
     if ((name == null || name.isEmpty()) && name_byte != null && !encrypt) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
       name = enc.decryption(name_byte);
     }
     return name;
@@ -70,7 +70,7 @@ public class Category extends AbstractEntity {
 
   public void setName(String name, boolean encrypt) {
     if (name_byte != null && name.equals(this.name) && !encrypt) return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
+    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getKey());
     this.name_byte = enc.encryption(name);
     this.name = name;
   }
