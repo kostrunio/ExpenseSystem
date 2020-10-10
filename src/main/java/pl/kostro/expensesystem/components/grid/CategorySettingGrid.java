@@ -18,42 +18,42 @@ import com.vaadin.ui.components.grid.EditorSaveListener;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.business.Category;
+import pl.kostro.expensesystem.business.ExpenseSheet;
 import pl.kostro.expensesystem.model.service.CategoryService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.views.settingsPage.AddCategoryWindow;
 import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 
 @SuppressWarnings("serial")
-public class CategorySettingGrid extends Grid<CategoryEntity> implements SettingsChangeListener {
+public class CategorySettingGrid extends Grid<Category> implements SettingsChangeListener {
 
   private CategoryService cs;
   private ExpenseSheetService eshs;
-  private ExpenseSheetEntity expenseSheet;
+  private ExpenseSheet expenseSheet;
   
-  private Binder<CategoryEntity> binder = new Binder<>();
+  private Binder<Category> binder = new Binder<>();
 
   private Button addCategoryButton;
   private Button moveUpCategoryButton;
   private Button moveDownCategoryButton;
   private Button deleteCategoryButton;
   
-  private SelectionListener<CategoryEntity> itemSelected = event -> {
+  private SelectionListener<Category> itemSelected = event -> {
     moveUpCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
     moveDownCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
     deleteCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
   };
-  private EditorOpenListener<CategoryEntity> editorOpen = event -> binder.setBean(event.getBean());
-  private EditorSaveListener<CategoryEntity> saveCategory = event -> cs.merge(event.getBean());
+  private EditorOpenListener<Category> editorOpen = event -> binder.setBean(event.getBean());
+  private EditorSaveListener<Category> saveCategory = event -> cs.merge(event.getBean());
   private ClickListener addCategoryClicked = event -> UI.getCurrent().addWindow(new AddCategoryWindow(CategorySettingGrid.this));
   private ClickListener moveUpClicked = event -> {
-    CategoryEntity category = getItem();
+    Category category = getItem();
     expenseSheet = eshs.moveCategoryUp(expenseSheet, category);
     refreshValues();
   };
   private ClickListener moveDownClick = event -> {
-    CategoryEntity category = getItem();
+    Category category = getItem();
     expenseSheet = eshs.moveCategoryDown(expenseSheet, category);
     refreshValues();
   };
@@ -71,18 +71,18 @@ public class CategorySettingGrid extends Grid<CategoryEntity> implements Setting
   public CategorySettingGrid() {
     cs = AppCtxProvider.getBean(CategoryService.class);
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     
     ComboBox<BigDecimal> multiplierField = new ComboBox<>();
     multiplierField.setEmptySelectionAllowed(false);
     multiplierField.setItems(new BigDecimal("-1"), new BigDecimal("1"));
     
-    Binder.Binding<CategoryEntity, BigDecimal> multiplierBinder = binder.bind(multiplierField, CategoryEntity::getMultiplier, CategoryEntity::setMultiplier);
+    Binder.Binding<Category, BigDecimal> multiplierBinder = binder.bind(multiplierField, Category::getMultiplier, Category::setMultiplier);
     
-    addColumn(CategoryEntity::getName)
+    addColumn(Category::getName)
       .setCaption(Msg.get("settingsPage.categoryName"))
-      .setEditorComponent(new TextField(), CategoryEntity::setName);
-    addColumn(CategoryEntity::getMultiplier)
+      .setEditorComponent(new TextField(), Category::setName);
+    addColumn(Category::getMultiplier)
       .setCaption(Msg.get("settingsPage.categoryMultiplier"))
       .setEditorBinding(multiplierBinder);
 
@@ -119,7 +119,7 @@ public class CategorySettingGrid extends Grid<CategoryEntity> implements Setting
 	  setItems(expenseSheet.getCategoryList());
   }
 
-  private CategoryEntity getItem() {
+  private Category getItem() {
     return getSelectedItems().iterator().next();
   }
 }

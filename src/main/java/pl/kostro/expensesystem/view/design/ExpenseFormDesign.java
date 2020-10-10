@@ -9,8 +9,8 @@ import com.vaadin.ui.DateField;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.TextField;
-import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.UserLimitEntity;
+import pl.kostro.expensesystem.business.Category;
+import pl.kostro.expensesystem.business.UserLimit;
 
 public class ExpenseFormDesign extends FormLayout {
   protected HorizontalLayout actionsLayout = new HorizontalLayout();
@@ -18,8 +18,8 @@ public class ExpenseFormDesign extends FormLayout {
   protected Button duplicateButton = new Button();
   protected Button removeButton = new Button();
   protected DateField dateField = new DateField();
-  protected ComboBox<CategoryEntity> categoryBox = new ComboBox<>();
-  protected ComboBox<UserLimitEntity> userBox = new ComboBox<>();
+  protected ComboBox<Category> categoryBox = new ComboBox<>();
+  protected ComboBox<UserLimit> userBox = new ComboBox<>();
   protected TextField formulaField = new TextField();
   protected ComboBox<java.lang.String> commentBox = new ComboBox<>();
   protected CheckBox notifyBox = new CheckBox();

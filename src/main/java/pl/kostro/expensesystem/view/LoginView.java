@@ -11,7 +11,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.RealUserEntity;
+import pl.kostro.expensesystem.business.RealUser;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.view.design.LoginDesign;
@@ -34,14 +34,14 @@ public class LoginView extends LoginDesign {
     registerForm.setVisible(true);
   };
   private LoginForm.LoginListener loginEvent = event -> {
-    RealUserEntity loggedUser = null;
+    RealUser loggedUser = null;
     try {
       loggedUser = rus.getUserData(event.getLoginParameter("username"), event.getLoginParameter("password"));
       if (loggedUser == null) {
         ShowNotification.logonProblem();
         loginForm.getLoginButton().setEnabled(true);
       } else {
-        VaadinSession.getCurrent().setAttribute(RealUserEntity.class, loggedUser);
+        VaadinSession.getCurrent().setAttribute(RealUser.class, loggedUser);
         ((ExpenseSystemUI) getUI()).updateContent();
       }
     } catch (Exception e) {

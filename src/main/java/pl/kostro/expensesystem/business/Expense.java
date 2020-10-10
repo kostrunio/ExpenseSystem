@@ -16,6 +16,9 @@ public class Expense {
   private boolean notify;
   private ExpenseSheet expenseSheet;
 
+  public Expense() {
+  }
+
   public Expense(LocalDate date, String formula, Category category, User user, String comment, boolean notify,
                  ExpenseSheet expenseSheet) {
     this.date = date;

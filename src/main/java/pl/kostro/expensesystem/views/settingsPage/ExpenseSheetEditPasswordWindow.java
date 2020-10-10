@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.views.settingsPage;
 
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.business.ExpenseSheet;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
 import org.apache.logging.log4j.LogManager;
@@ -33,7 +33,7 @@ public class ExpenseSheetEditPasswordWindow extends Window {
 
   private ClickListener cancelClicked = event -> close();
   private ClickListener saveClicked = event -> {
-    ExpenseSheetEntity expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
+    ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     if (oldPasswordField.getValue().isEmpty()) {
       ShowNotification.fieldEmpty(oldPasswordField.getCaption());
       return;

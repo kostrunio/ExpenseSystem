@@ -21,7 +21,7 @@ import com.vaadin.ui.UI;
 
 import pl.kostro.expensesystem.event.ExpenseSystemEvent.BrowserResizeEvent;
 import pl.kostro.expensesystem.event.ExpenseSystemEventBus;
-import pl.kostro.expensesystem.model.RealUserEntity;
+import pl.kostro.expensesystem.business.RealUser;
 import pl.kostro.expensesystem.view.LoginView;
 import pl.kostro.expensesystem.view.MainView;
 
@@ -58,7 +58,7 @@ public class ExpenseSystemUI extends UI {
   }
 
   public void updateContent() {
-    RealUserEntity user = VaadinSession.getCurrent().getAttribute(RealUserEntity.class);
+    RealUser user = VaadinSession.getCurrent().getAttribute(RealUser.class);
     if (user != null) {
       setContent(new MainView(this));
       getNavigator().navigateTo(getNavigator().getState());

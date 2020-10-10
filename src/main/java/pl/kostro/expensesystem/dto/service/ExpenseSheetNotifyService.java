@@ -5,25 +5,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import pl.kostro.expensesystem.model.ExpenseEntity;
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.RealUserEntity;
+import pl.kostro.expensesystem.business.Expense;
+import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.business.RealUser;
 
 public class ExpenseSheetNotifyService {
 
-  public Map<RealUserEntity, Map<ExpenseSheetEntity, List<ExpenseEntity>>> prepareExpenseSheetNotify(List<ExpenseEntity> expenseList) {
-    Map<RealUserEntity, Map<ExpenseSheetEntity, List<ExpenseEntity>>> rUMap = new HashMap<RealUserEntity, Map<ExpenseSheetEntity, List<ExpenseEntity>>>();
-    Map<ExpenseSheetEntity, List<ExpenseEntity>> eSMap;
-    List<ExpenseEntity> eList;
-    for (ExpenseEntity expense : expenseList) {
+  public Map<RealUser, Map<ExpenseSheet, List<Expense>>> prepareExpenseSheetNotify(List<Expense> expenseList) {
+    Map<RealUser, Map<ExpenseSheet, List<Expense>>> rUMap = new HashMap<RealUser, Map<ExpenseSheet, List<Expense>>>();
+    Map<ExpenseSheet, List<Expense>> eSMap;
+    List<Expense> eList;
+    for (Expense expense : expenseList) {
       if (!rUMap.containsKey(expense.getExpenseSheet().getOwner())) {
-        eSMap = new HashMap<ExpenseSheetEntity, List<ExpenseEntity>>();
+        eSMap = new HashMap<ExpenseSheet, List<Expense>>();
         rUMap.put(expense.getExpenseSheet().getOwner(), eSMap);
       } else
         eSMap = rUMap.get(expense.getExpenseSheet().getOwner());
 
       if (!eSMap.containsKey(expense.getExpenseSheet())) {
-        eList = new ArrayList<ExpenseEntity>();
+        eList = new ArrayList<Expense>();
         eSMap.put(expense.getExpenseSheet(), eList);
       } else
         eList = eSMap.get(expense.getExpenseSheet());

@@ -5,14 +5,14 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
-import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.UserLimitEntity;
+import pl.kostro.expensesystem.business.Category;
+import pl.kostro.expensesystem.business.UserLimit;
 
 public class ChartDesign extends VerticalLayout {
   protected VerticalLayout chartLayout = new VerticalLayout();
   protected VerticalLayout chartLayout2 = new VerticalLayout();
-  protected CheckBoxGroup<CategoryEntity> categoryCombo = new CheckBoxGroup<>();
-  protected CheckBoxGroup<UserLimitEntity> userCombo = new CheckBoxGroup<>();
+  protected CheckBoxGroup<Category> categoryCombo = new CheckBoxGroup<>();
+  protected CheckBoxGroup<UserLimit> userCombo = new CheckBoxGroup<>();
 
   public ChartDesign() {
     HorizontalLayout layout = new HorizontalLayout();

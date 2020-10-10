@@ -14,8 +14,8 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.RealUserEntity;
+import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.business.RealUser;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.view.design.SettingsDesign;
@@ -30,7 +30,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
   private Logger logger = LogManager.getLogger();
   private ExpenseSheetService eshs;
   private RealUserService rus;
-  private ExpenseSheetEntity expenseSheet;
+  private ExpenseSheet expenseSheet;
   private ClickListener editClick = event -> UI.getCurrent().addWindow(new ExpenseSheetEditWindow(SettingsView.this, expenseSheet));
   private ClickListener passwordClick = event -> UI.getCurrent().addWindow(new ExpenseSheetEditPasswordWindow(SettingsView.this));
   private ClickListener removeClick = event -> {
@@ -42,11 +42,11 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
         dialog -> {
           if (dialog.isConfirmed()) {
             eshs.removeExpenseSheet(expenseSheet);
-            RealUserEntity loggedUser = VaadinSession.getCurrent().getAttribute(RealUserEntity.class);
+            RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
             loggedUser = rus.refresh(loggedUser);
             if (loggedUser.getDefaultExpenseSheet() == null && loggedUser.getExpenseSheetList().size() != 0)
               rus.setDefaultExpenseSheet(loggedUser, loggedUser.getExpenseSheetList().get(0));
-            VaadinSession.getCurrent().setAttribute(ExpenseSheetEntity.class, null);
+            VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, null);
             ((ExpenseSystemUI)getUI()).getMainView().refresh();
             UI.getCurrent().getNavigator().navigateTo("");
           }
@@ -58,7 +58,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     rus = AppCtxProvider.getBean(RealUserService.class);
     logger.info("create");
-    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
+    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     setCaption();
     editButton.addClickListener(editClick);
     passwordButton.addClickListener(passwordClick);

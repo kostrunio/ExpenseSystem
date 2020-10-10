@@ -6,12 +6,12 @@ import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import pl.kostro.expensesystem.components.grid.UserSummaryGrid;
-import pl.kostro.expensesystem.model.UserLimitEntity;
+import pl.kostro.expensesystem.business.UserLimit;
 
 public class UserSummaryDesign extends VerticalLayout {
   protected Panel actionPanel = new Panel();
   protected HorizontalLayout actionsLayout = new HorizontalLayout();
-  protected ComboBox<UserLimitEntity> userBox = new ComboBox<>();
+  protected ComboBox<UserLimit> userBox = new ComboBox<>();
   protected HorizontalLayout workingLayout = new HorizontalLayout();
   protected UserSummaryGrid userSummaryGrid = new UserSummaryGrid();
 

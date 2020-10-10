@@ -14,9 +14,9 @@ import com.vaadin.ui.components.grid.EditorSaveListener;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.UserLimitEntity;
-import pl.kostro.expensesystem.model.UserSummaryEntity;
+import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.business.UserLimit;
+import pl.kostro.expensesystem.business.UserSummary;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.view.design.UserSummaryDesign;
 
@@ -25,13 +25,13 @@ public class UserSummaryView extends UserSummaryDesign {
 
   private Logger logger = LogManager.getLogger();
   private UserSummaryService uss;
-  private ExpenseSheetEntity expenseSheet;
+  private ExpenseSheet expenseSheet;
 
-  private Binder<UserSummaryEntity> binder = new Binder<>();
+  private Binder<UserSummary> binder = new Binder<>();
   private TextField limitField = new TextField();
   private TextField sumField = new TextField();
 
-  private SingleSelectionListener<UserLimitEntity> userChanged = event -> {
+  private SingleSelectionListener<UserLimit> userChanged = event -> {
     if (event.getSelectedItem().isPresent()) {
       userSummaryGrid.setItems(expenseSheet.getUserLimitList().stream()
           .filter(userLimit -> userLimit.equals(event.getSelectedItem().get()))
@@ -41,8 +41,8 @@ public class UserSummaryView extends UserSummaryDesign {
           .flatMap(userLimit -> userLimit.getUserSummaryList().stream()));
     }
   };
-  private EditorOpenListener<UserSummaryEntity> editorOpen = event -> binder.setBean(event.getBean());
-  private EditorSaveListener<UserSummaryEntity> saveUserLimit = event -> {
+  private EditorOpenListener<UserSummary> editorOpen = event -> binder.setBean(event.getBean());
+  private EditorSaveListener<UserSummary> saveUserLimit = event -> {
     uss.merge(event.getBean());
   };
 
@@ -50,13 +50,13 @@ public class UserSummaryView extends UserSummaryDesign {
     uss = AppCtxProvider.getBean(UserSummaryService.class);
     logger.info("create");
     setCaption();
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     userBox.setItems(expenseSheet.getUserLimitList());
     userBox.addSelectionListener(userChanged);
 
-    Binder.Binding<UserSummaryEntity, String> limitBinder = binder.forField(limitField)
+    Binder.Binding<UserSummary, String> limitBinder = binder.forField(limitField)
         .bind(userSummary -> userSummary.getLimit().toString(), (userSummary, value) -> userSummary.setLimit(new BigDecimal(value.replaceAll(",", "."))));
-    Binder.Binding<UserSummaryEntity, String> sumBinder = binder.forField(sumField)
+    Binder.Binding<UserSummary, String> sumBinder = binder.forField(sumField)
         .bind(userSummary -> userSummary.getSum()+"", (userLimit, value) -> userLimit.setSum(new BigDecimal(value.replaceAll(",", "."))));
 
     userSummaryGrid.getColumn("limit").setEditorBinding(limitBinder);

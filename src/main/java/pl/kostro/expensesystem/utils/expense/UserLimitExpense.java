@@ -5,30 +5,30 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.kostro.expensesystem.model.ExpenseEntity;
-import pl.kostro.expensesystem.model.UserLimitEntity;
+import pl.kostro.expensesystem.business.Expense;
+import pl.kostro.expensesystem.business.UserLimit;
 
 public class UserLimitExpense {
-	private UserLimitEntity userLimit;
-	private List<ExpenseEntity> expenseList;
+	private UserLimit userLimit;
+	private List<Expense> expenseList;
 	private BigDecimal sum = new BigDecimal(0);
 	
-	public UserLimitExpense(UserLimitEntity userLimit) {
+	public UserLimitExpense(UserLimit userLimit) {
 		this.userLimit = userLimit;
 	}
-	public UserLimitEntity getUserLimit() {
+	public UserLimit getUserLimit() {
 		return userLimit;
 	}
-	public void setUserLimit(UserLimitEntity userLimit) {
+	public void setUserLimit(UserLimit userLimit) {
 		this.userLimit = userLimit;
 	}
 	
-	public List<ExpenseEntity> getExpenseList() {
+	public List<Expense> getExpenseList() {
 		if (expenseList == null)
-			expenseList = new ArrayList<ExpenseEntity>();
+			expenseList = new ArrayList<Expense>();
 		return expenseList;
 	}
-	public void setExpenseList(List<ExpenseEntity> expenseList) {
+	public void setExpenseList(List<Expense> expenseList) {
 		this.expenseList = expenseList;
 	}
 	
@@ -43,11 +43,11 @@ public class UserLimitExpense {
 		return sum.toString();
 	}
 	
-	public void addExpense(ExpenseEntity expense) {
+	public void addExpense(Expense expense) {
 		setSum(getSum().add(expense.getValue().multiply(expense.getCategory().getMultiplier()).setScale(2, RoundingMode.HALF_UP)));
 		getExpenseList().add(expense);
 	}
-	public void removeExpense(ExpenseEntity expense) {
+	public void removeExpense(Expense expense) {
 		setSum(getSum().subtract(expense.getValue()));
 		getExpenseList().remove(expense);
 	}

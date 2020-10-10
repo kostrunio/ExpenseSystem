@@ -14,7 +14,8 @@ import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.business.RealUser;
 import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.repository.RealUserRepository;
 
@@ -35,74 +36,81 @@ public class RealUserService {
     }
   }
 
-  public RealUserEntity createRealUser(String name, String password, String email) {
+  public RealUser createRealUser(String name, String password, String email) {
     LocalDateTime stopper = LocalDateTime.now();
-    RealUserEntity realUser = new RealUserEntity();
-    realUser.setName(name);
+    RealUser realUser = new RealUser(name);
     messageDigest.update(password.getBytes());
     realUser.setPassword(new String(messageDigest.digest()));
     realUser.setEmail(email);
-    rur.save(realUser);
+    RealUserEntity realUserEntity = new RealUserEntity();
+    rur.save(realUserEntity);
     logger.info("createRealUser for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return realUser;
   }
 
-  public void merge(RealUserEntity realUser, boolean passwordChange) {
+  public void merge(RealUser realUser, boolean passwordChange) {
     LocalDateTime stopper = LocalDateTime.now();
     if (passwordChange) {
       messageDigest.update(realUser.getClearPassword().getBytes());
       realUser.setPassword(new String(messageDigest.digest()));
     }
-    rur.save(realUser);
+    RealUserEntity realUserEntity = new RealUserEntity();
+    rur.save(realUserEntity);
     logger.info("merge for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public RealUserEntity refresh(RealUserEntity realUser) {
-    return rur.findOne(realUser.getId());
+  public RealUser refresh(RealUser realUser) {
+    RealUserEntity realUserEntity = new RealUserEntity();
+    realUserEntity = rur.findOne(realUserEntity.getId());
+    return realUser;
   }
 
-  public void setDefaultExpenseSheet(RealUserEntity realUser, ExpenseSheetEntity expenseSheet) {
+  public void setDefaultExpenseSheet(RealUser realUser, ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
     realUser.setDefaultExpenseSheet(expenseSheet);
-    rur.save(realUser);
+    RealUserEntity realUserEntity = new RealUserEntity();
+    rur.save(realUserEntity);
     logger.info("setDefaultExpenseSheet for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public RealUserEntity getUserData(String userName, String password) {
+  public RealUser getUserData(String userName, String password) {
     LocalDateTime stopper = LocalDateTime.now();
     messageDigest.update(password.getBytes());
-    RealUserEntity realUser = rur.findByNameAndPassword(userName, new String(messageDigest.digest()));
+    RealUserEntity realUserEntity = rur.findByNameAndPassword(userName, new String(messageDigest.digest()));
+    RealUser realUser = new RealUser(realUserEntity.getName());
     if (realUser == null) return null; 
     realUser.setClearPassword(password);
     realUser.setLogDate(LocalDateTime.now());
     if (realUser.getPasswordByte() == null)
       realUser.setPasswordByte(messageDigest.digest());
-    rur.save(realUser);
+    rur.save(realUserEntity);
     logger.info("getUserData for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return realUser;
   }
 
-  public RealUserEntity findRealUser(String userName) {
+  public RealUser findRealUser(String userName) {
     LocalDateTime stopper = LocalDateTime.now();
-    RealUserEntity realUser = null;
+    RealUser realUser = null;
+    RealUserEntity realUserEntity = null;
     try {
-      realUser = rur.findByName(userName);
+      realUserEntity = rur.findByName(userName);
     } catch (NoResultException e) {
-
+      return null;
+    } finally {
+      logger.info("findRealUser for {} finish: {} ms", userName, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
-    logger.info("findRealUser for {} finish: {} ms", userName, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return realUser;
   }
 
   @Transactional
-  public void fetchExpenseSheetList(RealUserEntity realUser) {
+  public void fetchExpenseSheetList(RealUser realUser) {
     try {
       realUser.getExpenseSheetList().size();
     } catch (LazyInitializationException e) {
       LocalDateTime stopper = LocalDateTime.now();
       RealUserEntity attached = rur.getOne(realUser.getId());
       attached.getExpenseSheetList().size();
-      realUser.setExpenseSheetList(attached.getExpenseSheetList());
+//      realUser.setExpenseSheetList(attached.getExpenseSheetList());
       logger.info("fetchExpenseSheetList for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
   }

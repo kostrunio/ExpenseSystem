@@ -4,19 +4,19 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.ExpenseEntity;
-import pl.kostro.expensesystem.model.UserEntity;
+import pl.kostro.expensesystem.business.Category;
+import pl.kostro.expensesystem.business.Expense;
+import pl.kostro.expensesystem.business.User;
 
 public class Filter {
   private LocalDate dateFrom;
   private LocalDate dateTo;
-	private List<CategoryEntity> categories;
-	private List<UserEntity> users;
+	private List<Category> categories;
+	private List<User> users;
 	private String formula;
 	private String comment;
 	
-	public Filter(List<CategoryEntity> categories, List<UserEntity> users, String formula, String comment) {
+	public Filter(List<Category> categories, List<User> users, String formula, String comment) {
 		super();
 		this.categories = categories;
 		this.users = users;
@@ -24,7 +24,7 @@ public class Filter {
 		this.comment = comment;
 	}
 	
-	public Filter(LocalDate dateFrom, LocalDate dateTo, List<CategoryEntity> categories, List<UserEntity> users, String formula, String comment) {
+	public Filter(LocalDate dateFrom, LocalDate dateTo, List<Category> categories, List<User> users, String formula, String comment) {
     super();
     this.dateFrom = dateFrom;
     this.dateTo = dateTo;
@@ -50,17 +50,17 @@ public class Filter {
     this.dateTo = dateTo;
   }
 
-  public List<CategoryEntity> getCategories() {
+  public List<Category> getCategories() {
 		return categories;
 	}
-	public void setCategory(List<CategoryEntity> categories) {
+	public void setCategory(List<Category> categories) {
 		this.categories = categories;
 	}
 
-	public List<UserEntity> getUsers() {
+	public List<User> getUsers() {
 		return users;
 	}
-	public void setUser(List<UserEntity> users) {
+	public void setUser(List<User> users) {
 		this.users = users;
 	}
 
@@ -78,7 +78,7 @@ public class Filter {
 		this.comment = comment;
 	}
 	
-  public static boolean matchFilter(ExpenseEntity expense, Filter filter) {
+  public static boolean matchFilter(Expense expense, Filter filter) {
     if (filter == null)
       return true;
     else {
@@ -107,19 +107,19 @@ public class Filter {
     }
   }
   
-  private static boolean matchCategory(ExpenseEntity expense, List<CategoryEntity> categories) {
+  private static boolean matchCategory(Expense expense, List<Category> categories) {
     if (categories.size() == 0 || categories.get(0) == null)
       return true;
-    for (CategoryEntity category : categories)
+    for (Category category : categories)
       if (expense.getCategory().equals(category))
         return true;
     return false;
   }
   
-  private static boolean matchUser(ExpenseEntity expense, List<UserEntity> users) {
+  private static boolean matchUser(Expense expense, List<User> users) {
     if (users.size() == 0 || users.get(0) == null)
       return true;
-    for (UserEntity user : users)
+    for (User user : users)
       if (expense.getUser().equals(user))
         return true;
     return false;

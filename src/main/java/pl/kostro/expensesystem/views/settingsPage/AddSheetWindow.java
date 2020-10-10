@@ -19,8 +19,8 @@ import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.RealUserEntity;
+import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.business.RealUser;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
@@ -46,9 +46,9 @@ public class AddSheetWindow extends Window {
       ShowNotification.passwordProblem();
       return;
     }
-    RealUserEntity loggedUser = VaadinSession.getCurrent().getAttribute(RealUserEntity.class);
-    ExpenseSheetEntity expenseSheet = eshs.createExpenseSheet(loggedUser, nameField.getValue(), passwordField.getValue());
-    VaadinSession.getCurrent().setAttribute(ExpenseSheetEntity.class, expenseSheet);
+    RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
+    ExpenseSheet expenseSheet = eshs.createExpenseSheet(loggedUser, nameField.getValue(), passwordField.getValue());
+    VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
     ((ExpenseSystemUI)getUI()).getMainView().refresh();
     close();
   };

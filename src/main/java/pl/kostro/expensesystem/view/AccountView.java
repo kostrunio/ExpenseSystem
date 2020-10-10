@@ -12,7 +12,7 @@ import com.vaadin.ui.Button.ClickListener;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.RealUserEntity;
+import pl.kostro.expensesystem.business.RealUser;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.view.design.AccountDesign;
@@ -22,7 +22,7 @@ public class AccountView extends AccountDesign implements View {
 
   private Logger logger = LogManager.getLogger();
   private RealUserService rus;
-  private RealUserEntity loggedUser;
+  private RealUser loggedUser;
 
   private ClickListener saveEmailClick = event -> {
     if (emailField.getValue().trim().equals(emailField2.getValue().trim())) {
@@ -85,7 +85,7 @@ public class AccountView extends AccountDesign implements View {
   @Override
   public void enter(ViewChangeEvent event) {
     logger.info("Enter");
-    loggedUser = VaadinSession.getCurrent().getAttribute(RealUserEntity.class);
+    loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
     MainView menuView = ((ExpenseSystemUI) getUI()).getMainView();
     menuView.setActiveView("account");
     usernameField.setReadOnly(false);

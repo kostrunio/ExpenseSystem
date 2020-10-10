@@ -11,7 +11,11 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.business.UserLimit;
+import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.business.UserLimit;
+import pl.kostro.expensesystem.business.UserSummary;
 import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.UserSummaryEntity;
 import pl.kostro.expensesystem.model.repository.UserLimitRepository;
@@ -31,40 +35,30 @@ public class UserSummaryService {
 
   private static Logger logger = LogManager.getLogger();
   
-  public UserSummaryEntity createUserSummary(UserLimitEntity userLimit, LocalDate date) {
+  public UserSummary createUserSummary(UserLimit userLimit, LocalDate date) {
     LocalDateTime stopper = LocalDateTime.now();
-    UserSummaryEntity userSummary = new UserSummaryEntity(date, userLimit.getLimit());
-    usr.save(userSummary);
+    UserSummary userSummary = new UserSummary(date, userLimit.getLimit());
+    UserSummaryEntity userSummaryEntity = new UserSummaryEntity();
+    usr.save(userSummaryEntity);
     userLimit.getUserSummaryList().add(userSummary);
-    ulr.save(userLimit);
+    UserLimitEntity userLimitEntity = new UserLimitEntity();
+    ulr.save(userLimitEntity);
     logger.info("createUserSummary for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return userSummary;
   }
 
-  public UserSummaryEntity merge(UserSummaryEntity userSummary) {
+  public UserSummary merge(UserSummary userSummary) {
     LocalDateTime stopper = LocalDateTime.now();
-    usr.save(userSummary);
+    UserSummaryEntity userSummaryEntity = new UserSummaryEntity();
+    usr.save(userSummaryEntity);
     logger.info("merge for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return userSummary;
   }
 
-  public void decrypt(UserSummaryEntity userSummary) {
-    userSummary.getLimit();
-    userSummary.getSum();
-  }
-
-  public void encrypt(UserSummaryEntity userSummary) {
-    LocalDateTime stopper = LocalDateTime.now();
-    userSummary.setLimit(userSummary.getLimit(true), true);
-    userSummary.setSum(userSummary.getSum(true), true);
-    usr.save(userSummary);
-    logger.info("encrypt for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-  }
-
-  public BigDecimal calculateSum(UserLimitEntity userLimit, LocalDate date) {
+  public BigDecimal calculateSum(UserLimit userLimit, LocalDate date) {
     BigDecimal sum = new BigDecimal(0);
     uls.fetchUserSummaryList(userLimit);
-    for (UserSummaryEntity userSummary : userLimit.getUserSummaryList()) {
+    for (UserSummary userSummary : userLimit.getUserSummaryList()) {
       if (!userSummary.getDate().isAfter(date)) {
         sum = sum.add(userSummary.getLimit());
         sum = sum.subtract(userSummary.getSum());
@@ -73,8 +67,8 @@ public class UserSummaryService {
     return sum;
   }
 
-  public UserSummaryEntity findUserSummary(UserLimitEntity userLimit, LocalDate date) {
-    Optional<UserSummaryEntity> result = userLimit.getUserSummaryList().stream()
+  public UserSummary findUserSummary(UserLimit userLimit, LocalDate date) {
+    Optional<UserSummary> result = userLimit.getUserSummaryList().stream()
         .filter(us -> us.getDate().isEqual(date))
         .findFirst();
     if (result.isPresent())
@@ -82,14 +76,14 @@ public class UserSummaryService {
     return createUserSummary(userLimit, date);
   }
 
-  public void checkSummary(ExpenseSheetEntity expenseSheet, LocalDate date) {
+  public void checkSummary(ExpenseSheet expenseSheet, LocalDate date) {
     LocalDateTime stopper = LocalDateTime.now();
     if (expenseSheet.getFilter() != null)
       return;
-    for (UserLimitEntity userLimit : expenseSheet.getUserLimitList()) {
+    for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
       uls.fetchUserSummaryList(userLimit);
       logger.debug("checkSummary for: {} at {}", userLimit, date);
-      UserSummaryEntity userSummary = findUserSummary(userLimit, date);
+      UserSummary userSummary = findUserSummary(userLimit, date);
       BigDecimal exSummary = new BigDecimal(0);
       if (expenseSheet.getUserLimitExpenseMap().get(userLimit) != null)
         exSummary = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();

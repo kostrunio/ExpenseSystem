@@ -21,10 +21,10 @@ import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.ExpenseEntity;
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.UserLimitEntity;
+import pl.kostro.expensesystem.business.Category;
+import pl.kostro.expensesystem.business.Expense;
+import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.business.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Calculator;
@@ -39,10 +39,10 @@ public class DayView extends DayDesign {
   private ExpenseSheetService eshs;
 
   private Logger logger = LogManager.getLogger();
-  private ExpenseSheetEntity expenseSheet;
+  private ExpenseSheet expenseSheet;
   private LocalDate date;
-  private CategoryEntity category;
-  private ExpenseEntity expense;
+  private Category category;
+  private Expense expense;
   private boolean modify;
 
   private Button.ClickListener prevClick = event -> {
@@ -60,19 +60,19 @@ public class DayView extends DayDesign {
     addComponent(new MonthView());
   };
   private Button.ClickListener categoryClick = event -> {
-    if (event.getButton().getData() instanceof CategoryEntity) {
-      category = (CategoryEntity) event.getButton().getData();
+    if (event.getButton().getData() instanceof Category) {
+      category = (Category) event.getButton().getData();
       prepareExpenseListLayout();
     }
   };
   private Button.ClickListener valueClick = event -> {
-    if (event.getButton().getData() instanceof ExpenseEntity) {
-      buildAddNewExpense((ExpenseEntity) event.getButton().getData(), true);
+    if (event.getButton().getData() instanceof Expense) {
+      buildAddNewExpense((Expense) event.getButton().getData(), true);
     }
   };
   private Button.ClickListener removeClick = event -> {
-    if (event.getButton().getData() instanceof ExpenseEntity) {
-      final ExpenseEntity expense = (ExpenseEntity) event.getButton().getData();
+    if (event.getButton().getData() instanceof Expense) {
+      final Expense expense = (Expense) event.getButton().getData();
       ConfirmDialog.show(getUI(), Msg.get("category.removeLabel"), Msg.get("category.removeQuestion"),
           Msg.get("category.removeYes"), Msg.get("category.removeNo"), dialog -> {
             if (dialog.isConfirmed()) {
@@ -84,7 +84,7 @@ public class DayView extends DayDesign {
     }
   };
   private Button.ClickListener saveClick = event -> {
-    if (userBox.getValue() instanceof UserLimitEntity) {
+    if (userBox.getValue() instanceof UserLimit) {
       es.saveExpense(expenseSheet, expense, userBox.getValue(), formulaField.getValue(),
           commentBox.getValue(), notifyBox.getValue(), modify);
       prepareCategoryListLayout();
@@ -105,7 +105,7 @@ public class DayView extends DayDesign {
     es = AppCtxProvider.getBean(ExpenseService.class);
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("create");
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     category = expenseSheet.getCategoryList().get(0);
     date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
 
@@ -144,7 +144,7 @@ public class DayView extends DayDesign {
 
   private void prepareCategoryListLayout() {
     categoryGrid.removeAllComponents();
-    List<CategoryEntity> categoryList = expenseSheet.getCategoryList();
+    List<Category> categoryList = expenseSheet.getCategoryList();
 
     for (int i = 0; i < categoryList.size(); i++) {
       VerticalLayout vertLay = new VerticalLayout();
@@ -153,7 +153,7 @@ public class DayView extends DayDesign {
       vertLay.addStyleName("category-button");
       categoryGrid.addComponent(vertLay);
 
-      CategoryEntity category = categoryList.get(i);
+      Category category = categoryList.get(i);
       Label catLabel = new Label();
       catLabel.setValue(category.getName());
       vertLay.addComponent(catLabel);
@@ -177,10 +177,10 @@ public class DayView extends DayDesign {
   private void prepareExpenseListLayout() {
     expenseGrid.removeAllComponents();
     categoryLabel.setValue(category.getName());
-    List<ExpenseEntity> expenseList;
+    List<Expense> expenseList;
     DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, date);
     if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
-      expenseList = new ArrayList<ExpenseEntity>();
+      expenseList = new ArrayList<Expense>();
     else {
       expenseList = dateExpenseMap.getCategoryExpenseMap().get(category).getExpenseList();
     }
@@ -188,7 +188,7 @@ public class DayView extends DayDesign {
     expenseGrid.setRows(expenseList.size() == 0 ? 1 : expenseList.size());
 
     for (int i = 0; i < expenseList.size(); i++) {
-      ExpenseEntity expense = expenseList.get(i);
+      Expense expense = expenseList.get(i);
       Label user = new Label();
       user.setEnabled(false);
       user.setValue(expense.getUser().getName());
@@ -232,7 +232,7 @@ public class DayView extends DayDesign {
       saveButton.setEnabled(false);
   }
 
-  public void buildAddNewExpense(ExpenseEntity expense, Boolean modify) {
+  public void buildAddNewExpense(Expense expense, Boolean modify) {
     this.expense = expense;
     this.modify = modify;
     

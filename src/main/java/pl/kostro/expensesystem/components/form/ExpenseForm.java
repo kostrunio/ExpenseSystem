@@ -10,10 +10,10 @@ import com.vaadin.ui.ComboBox.NewItemHandler;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.ExpenseEntity;
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.UserLimitEntity;
+import pl.kostro.expensesystem.business.Category;
+import pl.kostro.expensesystem.business.Expense;
+import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.business.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Calculator;
@@ -26,14 +26,14 @@ public class ExpenseForm extends ExpenseFormDesign {
   private ExpenseService es;
   private ExpenseSheetService eshs;
   
-  private ExpenseSheetEntity expenseSheet;
-  private ExpenseEntity expense;
+  private ExpenseSheet expenseSheet;
+  private Expense expense;
   private TableView view;
 
   private Button.ClickListener saveClick = event -> {
     expense.setDate(dateField.getValue());
-    expense.setCategory((CategoryEntity) categoryBox.getValue());
-    expense.setUser(((UserLimitEntity) userBox.getValue()).getUser());
+    expense.setCategory((Category) categoryBox.getValue());
+    expense.setUser(((UserLimit) userBox.getValue()).getUser());
     expense.setFormula(formulaField.getValue());
     if (commentBox.getValue() != null && !commentBox.getValue().toString().isEmpty())
       expense.setComment(commentBox.getValue().toString());
@@ -45,7 +45,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     view.refreshExpenses();
   };
   private Button.ClickListener duplicateClick = event -> {
-    ExpenseEntity newExpense = new ExpenseEntity(expense.getDate(), expense.getFormula(), expense.getCategory(),
+    Expense newExpense = new Expense(expense.getDate(), expense.getFormula(), expense.getCategory(),
         expense.getUser(), expense.getComment(), expense.isNotify(), expense.getExpenseSheet());
     edit(newExpense);
     saveButton.setEnabled(false);
@@ -113,7 +113,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     setVisible(false);
   }
 
-  public void prepare(ExpenseSheetEntity expenseSheet, TableView view) {
+  public void prepare(ExpenseSheet expenseSheet, TableView view) {
     this.expenseSheet = expenseSheet;
     this.view = view;
     categoryBox.setItems(expenseSheet.getCategoryList());
@@ -128,7 +128,7 @@ public class ExpenseForm extends ExpenseFormDesign {
       saveButton.setEnabled(false);
   }
 
-  public void edit(ExpenseEntity expense) {
+  public void edit(Expense expense) {
     this.expense = expense;
     if (expense.getDate() != null)
       dateField.setValue(expense.getDate());

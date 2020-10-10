@@ -17,7 +17,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.business.ExpenseSheet;
 import pl.kostro.expensesystem.model.service.CategoryService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
@@ -36,7 +36,7 @@ public class AddCategoryWindow extends Window {
       ShowNotification.fieldEmpty(nameField.getCaption());
       return;
     }
-    ExpenseSheetEntity expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
+    ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
     cs.createCategory(expenseSheet, nameField.getValue());
     listener.refreshValues();
     close();

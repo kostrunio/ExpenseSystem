@@ -21,11 +21,11 @@ import com.vaadin.ui.UI;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
-import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.RealUserEntity;
-import pl.kostro.expensesystem.model.UserEntity;
-import pl.kostro.expensesystem.model.UserLimitEntity;
+import pl.kostro.expensesystem.business.Category;
+import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.business.RealUser;
+import pl.kostro.expensesystem.business.User;
+import pl.kostro.expensesystem.business.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
@@ -39,7 +39,7 @@ public class ExpenseView extends ExpenseDesign implements View {
 
   private Logger logger = LogManager.getLogger();
   private LocalDate date = LocalDate.now();
-  private ExpenseSheetEntity expenseSheet;
+  private ExpenseSheet expenseSheet;
   private Button.ClickListener editClick = event -> {
     root.removeAllComponents();
     root.addComponent(new SettingsView());
@@ -130,20 +130,20 @@ public class ExpenseView extends ExpenseDesign implements View {
   };
   private NewItemHandler addComment = event -> commentCombo.setValue(event);
 
-  private ValueChangeListener<CategoryEntity> categoryChanged = event -> refreshFilter();
+  private ValueChangeListener<Category> categoryChanged = event -> refreshFilter();
 
-  private ValueChangeListener<UserLimitEntity> userChanged = event -> refreshFilter();
+  private ValueChangeListener<UserLimit> userChanged = event -> refreshFilter();
 
   private ValueChangeListener<String> formulaChanged = event -> refreshFilter();
 
   private ValueChangeListener<String> commentChanged = event -> refreshFilter();
 
   private void refreshFilter() {
-    UserEntity filterUser = null;
+    User filterUser = null;
     String filterFormula = null;
     String filterComment = null;
-    if (userCombo.getValue() instanceof UserLimitEntity) {
-      filterUser = ((UserLimitEntity) userCombo.getValue()).getUser();
+    if (userCombo.getValue() instanceof UserLimit) {
+      filterUser = ((UserLimit) userCombo.getValue()).getUser();
     }
     if (formulaField.getValue() != null) {
       filterFormula = formulaField.getValue().toString().replaceAll(",", ".");
@@ -151,10 +151,10 @@ public class ExpenseView extends ExpenseDesign implements View {
     if (commentCombo.getValue() != null) {
       filterComment = commentCombo.getValue().toString();
     }
-    List<CategoryEntity> categories = new ArrayList<CategoryEntity>();
-    categories.add((CategoryEntity) categoryCombo.getValue());
-    List<UserEntity> users = new ArrayList<UserEntity>();
-    users.add((UserEntity) filterUser);
+    List<Category> categories = new ArrayList<Category>();
+    categories.add((Category) categoryCombo.getValue());
+    List<User> users = new ArrayList<User>();
+    users.add((User) filterUser);
     expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));
     mainView.removeAllComponents();
     mainView.addComponent(new MonthView());
@@ -217,7 +217,7 @@ public class ExpenseView extends ExpenseDesign implements View {
   @Override
   public void enter(ViewChangeEvent event) {
     logger.info("Enter");
-    RealUserEntity loggedUser = VaadinSession.getCurrent().getAttribute(RealUserEntity.class);
+    RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
     if (event.getParameters().isEmpty()) {
       expenseSheet = loggedUser.getDefaultExpenseSheet();
     } else {
@@ -230,7 +230,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     eshs.fetchCategoryList(expenseSheet);
     eshs.fetchExpenseList(expenseSheet);
     eshs.fetchUserLimitList(expenseSheet);
-    VaadinSession.getCurrent().setAttribute(ExpenseSheetEntity.class, expenseSheet);
+    VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
     MainView menuView = ((ExpenseSystemUI) getUI()).getMainView();
     menuView.setActiveView("expenseSheet/" + expenseSheet.getId());
     if (expenseSheet.getKey() == null) {

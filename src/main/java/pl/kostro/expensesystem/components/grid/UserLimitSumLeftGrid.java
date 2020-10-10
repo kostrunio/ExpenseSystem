@@ -11,8 +11,8 @@ import com.vaadin.ui.StyleGenerator;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.UserLimitEntity;
+import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.business.UserLimit;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.UserLimitSumLeft;
 
@@ -20,11 +20,11 @@ import pl.kostro.expensesystem.utils.UserLimitSumLeft;
 public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
   
   private UserSummaryService uss;
-  private ExpenseSheetEntity expenseSheet;
+  private ExpenseSheet expenseSheet;
 
   public UserLimitSumLeftGrid() {
     uss = AppCtxProvider.getBean(UserSummaryService.class);
-    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);;
+    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
     setHeightByRows(expenseSheet.getUserLimitList().size());
     setSelectionMode(SelectionMode.NONE);
     addColumn(item -> item.getUserLimit().getUser().getName()).setCaption(Msg.get("userLimitTable.user"));
@@ -42,7 +42,7 @@ public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
   
   public void fulfill(LocalDate date) {
     List<UserLimitSumLeft> values = new ArrayList<>();
-    for (UserLimitEntity userLimit : expenseSheet.getUserLimitList()) {
+    for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
       BigDecimal actSum;
       if (expenseSheet.getUserLimitExpenseMap().get(userLimit) != null)
         actSum = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();

@@ -11,11 +11,17 @@ import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.business.User;
+import pl.kostro.expensesystem.business.ExpenseSheet;
+import pl.kostro.expensesystem.business.RealUser;
+import pl.kostro.expensesystem.business.User;
+import pl.kostro.expensesystem.business.UserLimit;
+import pl.kostro.expensesystem.business.UserSummary;
 import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.UserEntity;
 import pl.kostro.expensesystem.model.UserLimitEntity;
-import pl.kostro.expensesystem.model.UserSummaryEntity;
 import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
 import pl.kostro.expensesystem.model.repository.RealUserRepository;
 import pl.kostro.expensesystem.model.repository.UserLimitRepository;
@@ -35,58 +41,50 @@ public class UserLimitService {
 
   private static Logger logger = LogManager.getLogger();
   
-  public void createUserLimit(ExpenseSheetEntity expenseSheet, UserEntity user) {
+  public void createUserLimit(ExpenseSheet expenseSheet, User user) {
     LocalDateTime stopper = LocalDateTime.now();
-    UserLimitEntity userLimit = ulr.save(new UserLimitEntity(user, expenseSheet.getUserLimitList().size()));
+    UserEntity userEntity = new UserEntity();
+    ExpenseSheetEntity expenseSheetEntity = new ExpenseSheetEntity();
+//    UserLimitEntity userLimitEntity = ulr.save(new UserLimitEntity(userEntity, expenseSheetEntity.getUserLimitList().size()));
+    UserLimit userLimit = new UserLimit(user, expenseSheet.getUserLimitList().size());
     expenseSheet.getUserLimitList().add(userLimit);
-    expenseSheet = eshr.save(expenseSheet);
+    expenseSheetEntity = eshr.save(expenseSheetEntity);
 
-    if (user instanceof RealUserEntity) {
-      RealUserEntity realUser = (RealUserEntity) user;
+    if (user instanceof RealUser) {
+      RealUser realUser = (RealUser) user;
       realUser.getExpenseSheetList().add(expenseSheet);
-      rur.save(realUser);
+      RealUserEntity realUserEntity = new RealUserEntity();
+      rur.save(realUserEntity);
       logger.info("createUserLimit for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
   }
 
-  public void merge(UserLimitEntity userLimit) {
+  public void merge(UserLimit userLimit) {
     LocalDateTime stopper = LocalDateTime.now();
-    ulr.save(userLimit);
+    UserLimitEntity userLimitEntity = new UserLimitEntity();
+    ulr.save(userLimitEntity);
     logger.info("merge for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public void removeUserLimit(ExpenseSheetEntity expenseSheet, UserLimitEntity userLimit) {
+  public void removeUserLimit(ExpenseSheet expenseSheet, UserLimit userLimit) {
     LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.getUserLimitList().remove(userLimit);
-    ulr.delete(userLimit);
-    if (!(userLimit.getUser() instanceof RealUserEntity))
+    UserLimitEntity userLimitEntity = new UserLimitEntity();
+    ulr.delete(userLimitEntity);
+    if (!(userLimit.getUser() instanceof RealUser))
       rur.delete(userLimit.getUser().getId());
     logger.info("removeUserLimit for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public void decrypt(UserLimitEntity userLimit) {
-    for (UserSummaryEntity userSummary : userLimit.getUserSummaryList())
-      uss.decrypt(userSummary);
-  }
-
-  public void encrypt(UserLimitEntity userLimit) {
-    LocalDateTime stopper = LocalDateTime.now();
-    userLimit.setLimit(userLimit.getLimit(true), true);
-    for (UserSummaryEntity userSummary : userLimit.getUserSummaryList())
-      uss.encrypt(userSummary);
-    ulr.save(userLimit);
-    logger.info("encrypt for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-  }
-
   @Transactional
-  public void fetchUserSummaryList(UserLimitEntity userLimit) {
+  public void fetchUserSummaryList(UserLimit userLimit) {
     try {
       userLimit.getUserSummaryList().size();
     } catch (LazyInitializationException e) {
       LocalDateTime stopper = LocalDateTime.now();
       UserLimitEntity attached = ulr.getOne(userLimit.getId());
       attached.getUserSummaryList().size();
-      userLimit.setUserSummaryList(attached.getUserSummaryList());
+//      userLimit.setUserSummaryList(attached.getUserSummaryList());
       logger.info("fetchUserSummaryList for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
   }

@@ -16,7 +16,7 @@ import org.vaadin.addon.calendar.ui.CalendarComponentEvents.ItemClickHandler;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents.WeekClickHandler;
 
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.business.ExpenseSheet;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.calendar.Converter;
@@ -32,7 +32,7 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
   private ExpenseSheetService eshs;
   private UserSummaryService uss;
   private MonthView monthView;
-  private ExpenseSheetEntity expenseSheet;
+  private ExpenseSheet expenseSheet;
   private LocalDate date;
   private CalendarItemProvider<BasicItem> eventProvider = (startDate, endDate) -> {
     date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
@@ -72,7 +72,7 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
   public ExpenseCalendar() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     uss = AppCtxProvider.getBean(UserSummaryService.class);
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
 
     setDataProvider(eventProvider);
 

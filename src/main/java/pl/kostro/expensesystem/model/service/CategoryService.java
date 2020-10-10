@@ -8,6 +8,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pl.kostro.expensesystem.business.Category;
+import pl.kostro.expensesystem.business.ExpenseSheet;
 import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.repository.CategoryRepository;
@@ -23,42 +25,36 @@ public class CategoryService {
 
   private static Logger logger = LogManager.getLogger();
   
-  public void createCategory(ExpenseSheetEntity expenseSheet, String name) {
+  public void createCategory(ExpenseSheet expenseSheet, String name) {
     LocalDateTime stopper = LocalDateTime.now();
-    CategoryEntity category = new CategoryEntity(name, expenseSheet.getCategoryList().size());
-    cr.save(category);
+    Category category = new Category(name, expenseSheet.getCategoryList().size());
+    CategoryEntity categoryEntity = new CategoryEntity();
+    cr.save(categoryEntity);
     expenseSheet.getCategoryList().add(category);
-    expenseSheet = eshr.save(expenseSheet);
+    ExpenseSheetEntity expenseSheetEntity = new ExpenseSheetEntity();
+    expenseSheetEntity = eshr.save(expenseSheetEntity);
     logger.info("createCategory for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public void merge(CategoryEntity category) {
+  public void merge(Category category) {
     LocalDateTime stopper = LocalDateTime.now();
-    cr.save(category);
+    CategoryEntity categoryEntity = new CategoryEntity();
+    cr.save(categoryEntity);
     logger.info("merge for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public ExpenseSheetEntity removeCategory(ExpenseSheetEntity expenseSheet, CategoryEntity category) {
+  public ExpenseSheet removeCategory(ExpenseSheet expenseSheet, Category category) {
     LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.getCategoryList().remove(category);
     int i = 0;
-    for (CategoryEntity cat : expenseSheet.getCategoryList())
+    for (Category cat : expenseSheet.getCategoryList())
       cat.setOrder(i++);
-    expenseSheet = eshr.save(expenseSheet);
-    cr.delete(category);
+    ExpenseSheetEntity expenseSheetEntity = new ExpenseSheetEntity();
+    expenseSheetEntity = eshr.save(expenseSheetEntity);
+    CategoryEntity categoryEntity = new CategoryEntity();
+    cr.delete(categoryEntity);
     logger.info("removeCategory for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseSheet;
-  }
-
-  public void decrypt(CategoryEntity category) {
-    category.getName();
-  }
-
-  public void encrypt(CategoryEntity category) {
-    LocalDateTime stopper = LocalDateTime.now();
-    category.setName(category.getName(true), true);
-    cr.save(category);
-    logger.info("encrypt for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
 }
