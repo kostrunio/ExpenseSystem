@@ -17,7 +17,7 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
 import pl.kostro.expensesystem.dto.model.UserLimit;
 import pl.kostro.expensesystem.dto.model.UserSummary;
-import pl.kostro.expensesystem.db.service.UserSummaryService;
+import pl.kostro.expensesystem.dto.service.UserSummaryService;
 import pl.kostro.expensesystem.view.design.UserSummaryDesign;
 
 @SuppressWarnings("serial")

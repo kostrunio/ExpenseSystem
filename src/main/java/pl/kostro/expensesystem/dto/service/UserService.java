@@ -1,10 +1,11 @@
-package pl.kostro.expensesystem.db.service;
+package pl.kostro.expensesystem.dto.service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,8 +28,7 @@ public class UserService {
     ur.save(userEntity);
     logger.info("createUser for {} finish: {} ms", userEntity, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     User user = new User(userEntity.getName());
-    user.setId(userEntity.getId());
-    user.setCreationDate(userEntity.getCreationDate());
+    BeanUtils.copyProperties(userEntity, user);
     return user;
   }
 

@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.db.service;
+package pl.kostro.expensesystem.dto.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -353,7 +353,7 @@ public class ExpenseSheetService {
       LocalDateTime stopper = LocalDateTime.now();
       ExpenseSheetEntity attached = eshr.getOne(expenseSheet.getId());
       attached.getCategoryList().size();
-//      expenseSheet.setCategoryList(attached.getCategoryList());
+      expenseSheet.setCategoryList(attached.getCategoryList());
       logger.info("fetchCategoryList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
   }
@@ -366,7 +366,7 @@ public class ExpenseSheetService {
       LocalDateTime stopper = LocalDateTime.now();
       ExpenseSheetEntity attached = eshr.getOne(expenseSheet.getId());
       attached.getExpenseList().size();
-//      expenseSheet.setExpenseList(attached.getExpenseList());
+      expenseSheet.setExpenseList(attached.getExpenseList());
       logger.info("fetchExpenseList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
   }
@@ -379,8 +379,34 @@ public class ExpenseSheetService {
       LocalDateTime stopper = LocalDateTime.now();
       ExpenseSheetEntity attached = eshr.getOne(expenseSheet.getId());
       attached.getUserLimitList().size();
-//      expenseSheet.setUserLimitList(attached.getUserLimitList());
+      expenseSheet.setUserLimitList(attached.getUserLimitList());
       logger.info("fetchUserLimitList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
+  }
+
+  public static void decrypt(ExpenseSheet expenseSheet) {
+    logger.info("decrypt: category");
+    for (Category category : expenseSheet.getCategoryList())
+      CategoryService.decrypt(category);
+    logger.info("decrypt: expense");
+    for (Expense expense : expenseSheet.getExpenseList())
+      ExpenseService.decrypt(expense);
+    logger.info("decrypt: userLimit");
+    for (UserLimit userLimit : expenseSheet.getUserLimitList())
+      UserLimitService.decrypt(userLimit);
+  }
+
+  public void encrypt(ExpenseSheet expenseSheet) {
+    LocalDateTime stopper = LocalDateTime.now();
+    logger.info("encrypt: category");
+    for (Category category : expenseSheet.getCategoryList())
+      cs.encrypt(category);
+    logger.info("encrypt: expense");
+    for (Expense expense : expenseSheet.getExpenseList())
+      es.encrypt(expense);
+    logger.info("encrypt: userLimit");
+    for (UserLimit userLimit : expenseSheet.getUserLimitList())
+      uls.encrypt(userLimit);
+    logger.info("encrypt for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }

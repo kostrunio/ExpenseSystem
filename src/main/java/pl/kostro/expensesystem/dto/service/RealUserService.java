@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.db.service;
+package pl.kostro.expensesystem.dto.service;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

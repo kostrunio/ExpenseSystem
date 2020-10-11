@@ -19,8 +19,8 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
 import pl.kostro.expensesystem.dto.model.RealUser;
-import pl.kostro.expensesystem.db.service.RealUserService;
-import pl.kostro.expensesystem.db.service.UserLimitService;
+import pl.kostro.expensesystem.dto.service.RealUserService;
+import pl.kostro.expensesystem.dto.service.UserLimitService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
 @SuppressWarnings("serial")

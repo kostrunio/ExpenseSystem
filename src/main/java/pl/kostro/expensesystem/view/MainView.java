@@ -23,7 +23,7 @@ import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
 import pl.kostro.expensesystem.dto.model.RealUser;
-import pl.kostro.expensesystem.db.service.RealUserService;
+import pl.kostro.expensesystem.dto.service.RealUserService;
 import pl.kostro.expensesystem.view.design.MainDesign;
 import pl.kostro.expensesystem.views.settingsPage.AddSheetWindow;
 

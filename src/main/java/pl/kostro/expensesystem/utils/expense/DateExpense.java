@@ -11,7 +11,7 @@ import pl.kostro.expensesystem.dto.model.Category;
 import pl.kostro.expensesystem.dto.model.Expense;
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
 import pl.kostro.expensesystem.dto.model.UserLimit;
-import pl.kostro.expensesystem.db.service.ExpenseSheetService;
+import pl.kostro.expensesystem.dto.service.ExpenseSheetService;
 
 public class DateExpense {
   

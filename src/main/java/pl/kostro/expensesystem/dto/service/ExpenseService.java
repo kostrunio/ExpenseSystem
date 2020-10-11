@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.db.service;
+package pl.kostro.expensesystem.dto.service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -90,5 +90,18 @@ public class ExpenseService {
     logger.info("Found {} expenses to notify", expenseList.size());
     logger.info("findExpensesToNotify finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseList;
+  }
+
+  public static void decrypt(Expense expense) {
+    expense.getFormula();
+    expense.getComment();
+  }
+
+  public void encrypt(Expense expense) {
+    LocalDateTime stopper = LocalDateTime.now();
+    expense.setFormula(expense.getFormula());
+    expense.setComment(expense.getComment());
+    expense = er.save(expense);
+    logger.info("encrypt for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }

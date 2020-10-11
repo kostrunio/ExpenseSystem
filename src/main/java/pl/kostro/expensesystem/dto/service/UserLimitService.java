@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.db.service;
+package pl.kostro.expensesystem.dto.service;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -11,10 +11,7 @@ import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.dto.model.ExpenseSheet;
-import pl.kostro.expensesystem.dto.model.User;
-import pl.kostro.expensesystem.dto.model.RealUser;
-import pl.kostro.expensesystem.dto.model.UserLimit;
+import pl.kostro.expensesystem.dto.model.*;
 import pl.kostro.expensesystem.db.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.db.model.RealUserEntity;
 import pl.kostro.expensesystem.db.model.UserEntity;
@@ -86,4 +83,17 @@ public class UserLimitService {
     }
   }
 
+  public static void decrypt(UserLimit userLimit) {
+    for (UserSummary userSummary : userLimit.getUserSummaryList())
+      uss.decrypt(userSummary);
+  }
+
+  public void encrypt(UserLimit userLimit) {
+    LocalDateTime stopper = LocalDateTime.now();
+    userLimit.setLimit(userLimit.getLimit(true), true);
+    for (UserSummary userSummary : userLimit.getUserSummaryList())
+      uss.encrypt(userSummary);
+    ulr.save(userLimit);
+    logger.info("encrypt for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+  }
 }

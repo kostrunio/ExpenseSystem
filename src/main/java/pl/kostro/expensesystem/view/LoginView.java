@@ -12,7 +12,7 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.dto.model.RealUser;
-import pl.kostro.expensesystem.db.service.RealUserService;
+import pl.kostro.expensesystem.dto.service.RealUserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.view.design.LoginDesign;
 

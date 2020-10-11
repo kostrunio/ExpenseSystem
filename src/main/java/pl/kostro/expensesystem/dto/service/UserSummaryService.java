@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.db.service;
+package pl.kostro.expensesystem.dto.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -95,4 +95,16 @@ public class UserSummaryService {
     logger.info("checkSummary for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
+  public static void decrypt(UserSummary userSummary) {
+    userSummary.getLimit();
+    userSummary.getSum();
+  }
+
+  public void encrypt(UserSummary userSummary) {
+    LocalDateTime stopper = LocalDateTime.now();
+    userSummary.setLimit(userSummary.getLimit(true), true);
+    userSummary.setSum(userSummary.getSum(true), true);
+    usr.save(userSummary);
+    logger.info("encrypt for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+  }
 }

@@ -13,7 +13,7 @@ import pl.kostro.expensesystem.dto.service.ExpenseSheetNotifyService;
 import pl.kostro.expensesystem.dto.model.Expense;
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
 import pl.kostro.expensesystem.dto.model.RealUser;
-import pl.kostro.expensesystem.db.service.ExpenseService;
+import pl.kostro.expensesystem.dto.service.ExpenseService;
 
 @Component
 public class SendNotification {
