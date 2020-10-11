@@ -16,8 +16,8 @@ import org.springframework.stereotype.Service;
 
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
 import pl.kostro.expensesystem.dto.model.RealUser;
-import pl.kostro.expensesystem.db.model.RealUserEntity;
-import pl.kostro.expensesystem.db.repository.RealUserRepository;
+import pl.kostro.expensesystem.dao.model.RealUserEntity;
+import pl.kostro.expensesystem.dao.repository.RealUserRepository;
 
 @Service
 public class RealUserService {

@@ -11,10 +11,10 @@ import org.springframework.stereotype.Service;
 
 import pl.kostro.expensesystem.dto.model.Category;
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
-import pl.kostro.expensesystem.db.model.CategoryEntity;
-import pl.kostro.expensesystem.db.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.db.repository.CategoryRepository;
-import pl.kostro.expensesystem.db.repository.ExpenseSheetRepository;
+import pl.kostro.expensesystem.dao.model.CategoryEntity;
+import pl.kostro.expensesystem.dao.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.dao.repository.CategoryRepository;
+import pl.kostro.expensesystem.dao.repository.ExpenseSheetRepository;
 
 @Service
 public class CategoryService {

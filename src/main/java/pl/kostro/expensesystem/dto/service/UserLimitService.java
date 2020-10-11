@@ -12,13 +12,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pl.kostro.expensesystem.dto.model.*;
-import pl.kostro.expensesystem.db.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.db.model.RealUserEntity;
-import pl.kostro.expensesystem.db.model.UserEntity;
-import pl.kostro.expensesystem.db.model.UserLimitEntity;
-import pl.kostro.expensesystem.db.repository.ExpenseSheetRepository;
-import pl.kostro.expensesystem.db.repository.RealUserRepository;
-import pl.kostro.expensesystem.db.repository.UserLimitRepository;
+import pl.kostro.expensesystem.dao.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.dao.model.RealUserEntity;
+import pl.kostro.expensesystem.dao.model.UserEntity;
+import pl.kostro.expensesystem.dao.model.UserLimitEntity;
+import pl.kostro.expensesystem.dao.repository.ExpenseSheetRepository;
+import pl.kostro.expensesystem.dao.repository.RealUserRepository;
+import pl.kostro.expensesystem.dao.repository.UserLimitRepository;
 
 @Service
 public class UserLimitService {

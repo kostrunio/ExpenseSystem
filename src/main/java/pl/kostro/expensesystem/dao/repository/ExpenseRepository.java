@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.db.repository;
+package pl.kostro.expensesystem.dao.repository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import pl.kostro.expensesystem.db.model.ExpenseEntity;
+import pl.kostro.expensesystem.dao.model.ExpenseEntity;
 
 public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
 	

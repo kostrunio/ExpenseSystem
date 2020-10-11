@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pl.kostro.expensesystem.dto.model.User;
-import pl.kostro.expensesystem.db.model.UserEntity;
-import pl.kostro.expensesystem.db.repository.UserRepository;
+import pl.kostro.expensesystem.dao.model.UserEntity;
+import pl.kostro.expensesystem.dao.repository.UserRepository;
 
 @Service
 public class UserService {

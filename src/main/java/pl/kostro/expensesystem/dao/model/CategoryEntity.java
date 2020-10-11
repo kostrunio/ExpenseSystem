@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.db.model;
+package pl.kostro.expensesystem.dao.model;
 
 import java.math.BigDecimal;
 

@@ -1,8 +1,8 @@
-package pl.kostro.expensesystem.db.repository;
+package pl.kostro.expensesystem.dao.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import pl.kostro.expensesystem.db.model.UserEntity;
+import pl.kostro.expensesystem.dao.model.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Long> {
 

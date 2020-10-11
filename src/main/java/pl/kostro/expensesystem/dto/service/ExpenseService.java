@@ -17,8 +17,8 @@ import pl.kostro.expensesystem.dto.model.Expense;
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
 import pl.kostro.expensesystem.dto.model.User;
 import pl.kostro.expensesystem.dto.model.UserLimit;
-import pl.kostro.expensesystem.db.model.ExpenseEntity;
-import pl.kostro.expensesystem.db.repository.ExpenseRepository;
+import pl.kostro.expensesystem.dao.model.ExpenseEntity;
+import pl.kostro.expensesystem.dao.repository.ExpenseRepository;
 
 @Service
 public class ExpenseService {

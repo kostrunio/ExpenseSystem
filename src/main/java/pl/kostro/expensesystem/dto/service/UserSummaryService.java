@@ -14,10 +14,10 @@ import org.springframework.stereotype.Service;
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
 import pl.kostro.expensesystem.dto.model.UserLimit;
 import pl.kostro.expensesystem.dto.model.UserSummary;
-import pl.kostro.expensesystem.db.model.UserLimitEntity;
-import pl.kostro.expensesystem.db.model.UserSummaryEntity;
-import pl.kostro.expensesystem.db.repository.UserLimitRepository;
-import pl.kostro.expensesystem.db.repository.UserSummaryRepository;
+import pl.kostro.expensesystem.dao.model.UserLimitEntity;
+import pl.kostro.expensesystem.dao.model.UserSummaryEntity;
+import pl.kostro.expensesystem.dao.repository.UserLimitRepository;
+import pl.kostro.expensesystem.dao.repository.UserSummaryRepository;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
 @Service
