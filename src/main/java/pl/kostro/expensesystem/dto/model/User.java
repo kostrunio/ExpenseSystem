@@ -7,6 +7,9 @@ public class User {
   private String name;
   private LocalDateTime creationDate = LocalDateTime.now();
 
+  public User() {
+  }
+
   public User(String name) {
     this.name = name;
   }

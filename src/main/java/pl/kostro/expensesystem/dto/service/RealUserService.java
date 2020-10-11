@@ -11,9 +11,11 @@ import javax.transaction.Transactional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.LazyInitializationException;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pl.kostro.expensesystem.dao.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
 import pl.kostro.expensesystem.dto.model.RealUser;
 import pl.kostro.expensesystem.dao.model.RealUserEntity;
@@ -43,6 +45,7 @@ public class RealUserService {
     realUser.setPassword(new String(messageDigest.digest()));
     realUser.setEmail(email);
     RealUserEntity realUserEntity = new RealUserEntity();
+    BeanUtils.copyProperties(realUser, realUserEntity);
     rur.save(realUserEntity);
     logger.info("createRealUser for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return realUser;
@@ -55,6 +58,7 @@ public class RealUserService {
       realUser.setPassword(new String(messageDigest.digest()));
     }
     RealUserEntity realUserEntity = new RealUserEntity();
+    BeanUtils.copyProperties(realUser, realUserEntity);
     rur.save(realUserEntity);
     logger.info("merge for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
@@ -69,6 +73,7 @@ public class RealUserService {
     LocalDateTime stopper = LocalDateTime.now();
     realUser.setDefaultExpenseSheet(expenseSheet);
     RealUserEntity realUserEntity = new RealUserEntity();
+    BeanUtils.copyProperties(realUser, realUserEntity);
     rur.save(realUserEntity);
     logger.info("setDefaultExpenseSheet for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
@@ -83,6 +88,7 @@ public class RealUserService {
     realUser.setLogDate(LocalDateTime.now());
     if (realUser.getPasswordByte() == null)
       realUser.setPasswordByte(messageDigest.digest());
+    BeanUtils.copyProperties(realUser, realUserEntity);
     rur.save(realUserEntity);
     logger.info("getUserData for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return realUser;
@@ -94,6 +100,7 @@ public class RealUserService {
     RealUserEntity realUserEntity = null;
     try {
       realUserEntity = rur.findByName(userName);
+      BeanUtils.copyProperties(realUserEntity, realUser);
     } catch (NoResultException e) {
       return null;
     } finally {
@@ -110,7 +117,12 @@ public class RealUserService {
       LocalDateTime stopper = LocalDateTime.now();
       RealUserEntity attached = rur.getOne(realUser.getId());
       attached.getExpenseSheetList().size();
-//      realUser.setExpenseSheetList(attached.getExpenseSheetList());
+      realUser.getExpenseSheetList().clear();
+      for (ExpenseSheetEntity expenseSheetEntity : attached.getExpenseSheetList()) {
+        ExpenseSheet expenseSheet = new ExpenseSheet();
+        BeanUtils.copyProperties(expenseSheetEntity, expenseSheet);
+        realUser.getExpenseSheetList().add(expenseSheet);
+      }
       logger.info("fetchExpenseSheetList for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
   }

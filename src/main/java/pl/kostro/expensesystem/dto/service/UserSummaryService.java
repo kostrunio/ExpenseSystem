@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,9 +38,11 @@ public class UserSummaryService {
     LocalDateTime stopper = LocalDateTime.now();
     UserSummary userSummary = new UserSummary(date, userLimit.getLimit());
     UserSummaryEntity userSummaryEntity = new UserSummaryEntity();
+    BeanUtils.copyProperties(userSummary, userSummaryEntity);
     usr.save(userSummaryEntity);
     userLimit.getUserSummaryList().add(userSummary);
     UserLimitEntity userLimitEntity = new UserLimitEntity();
+    BeanUtils.copyProperties(userLimit, userLimitEntity);
     ulr.save(userLimitEntity);
     logger.info("createUserSummary for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return userSummary;
@@ -48,6 +51,7 @@ public class UserSummaryService {
   public UserSummary merge(UserSummary userSummary) {
     LocalDateTime stopper = LocalDateTime.now();
     UserSummaryEntity userSummaryEntity = new UserSummaryEntity();
+    BeanUtils.copyProperties(userSummary, userSummaryEntity);
     usr.save(userSummaryEntity);
     logger.info("merge for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return userSummary;

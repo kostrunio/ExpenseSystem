@@ -12,6 +12,9 @@ public class UserLimit {
   private List<UserSummary> userSummaryList;
   private boolean continuousSummary;
 
+  public UserLimit() {
+  }
+
   public UserLimit(User user, int order) {
     this.user = user;
     this.limit = new BigDecimal(0);

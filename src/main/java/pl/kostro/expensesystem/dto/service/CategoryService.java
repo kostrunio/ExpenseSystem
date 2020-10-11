@@ -36,6 +36,7 @@ public class CategoryService {
     ExpenseSheetEntity expenseSheetEntity = new ExpenseSheetEntity();
     BeanUtils.copyProperties(expenseSheet, expenseSheetEntity);
     expenseSheetEntity = eshr.save(expenseSheetEntity);
+    BeanUtils.copyProperties(expenseSheetEntity, expenseSheet);
     logger.info("createCategory for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
@@ -69,8 +70,9 @@ public class CategoryService {
 
   public void encrypt(Category category) {
     LocalDateTime stopper = LocalDateTime.now();
-    category.setName(category.getName(true), true);
-    cr.save(category);
+    CategoryEntity categoryEntity = new CategoryEntity();
+    BeanUtils.copyProperties(category, categoryEntity);
+    cr.save(categoryEntity);
     logger.info("encrypt for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 

@@ -15,6 +15,9 @@ public class UserSummary {
   private BigDecimal limit;
   private BigDecimal sum;
 
+  public UserSummary() {
+  }
+
   public UserSummary(LocalDate date, BigDecimal limit) {
     this.date = date;
     this.limit = limit;

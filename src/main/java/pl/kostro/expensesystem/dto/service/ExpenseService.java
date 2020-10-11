@@ -9,6 +9,7 @@ import javax.persistence.NoResultException;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,7 +36,9 @@ public class ExpenseService {
     LocalDateTime stopper = LocalDateTime.now();
     expense.setExpenseSheet(expenseSheet);
     ExpenseEntity expenseEntity = new ExpenseEntity();
+    BeanUtils.copyProperties(expense, expenseEntity);
     expenseEntity = er.save(expenseEntity);
+    BeanUtils.copyProperties(expenseEntity, expense);
     eshs.addExpense(expenseSheet, expense);
     logger.info("createExpense for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
@@ -43,7 +46,9 @@ public class ExpenseService {
   public Expense merge(Expense expense) {
     LocalDateTime stopper = LocalDateTime.now();
     ExpenseEntity expenseEntity = new ExpenseEntity();
+    BeanUtils.copyProperties(expense, expenseEntity);
     expenseEntity = er.save(expenseEntity);
+    BeanUtils.copyProperties(expenseEntity, expense);
     logger.info("merge for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expense;
   }
@@ -53,6 +58,7 @@ public class ExpenseService {
     expenseSheet.getExpenseList().remove(expense);
     eshs.removeExpenseFromMap(expenseSheet, expense);
     ExpenseEntity expenseEntity = new ExpenseEntity();
+    BeanUtils.copyProperties(expense, expenseEntity);
     er.delete(expenseEntity);
     logger.info("removeExpense for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
@@ -85,6 +91,7 @@ public class ExpenseService {
     List<ExpenseEntity> expenseEntitiesList = null;
     try {
       expenseEntitiesList = er.findExpensesToNotify(LocalDate.now());
+      BeanUtils.copyProperties(expenseEntitiesList, expenseList);
     } catch (NoResultException e) {
     }
     logger.info("Found {} expenses to notify", expenseList.size());
@@ -101,7 +108,10 @@ public class ExpenseService {
     LocalDateTime stopper = LocalDateTime.now();
     expense.setFormula(expense.getFormula());
     expense.setComment(expense.getComment());
-    expense = er.save(expense);
+    ExpenseEntity expenseEntity = new ExpenseEntity();
+    BeanUtils.copyProperties(expense, expenseEntity);
+    expenseEntity = er.save(expenseEntity);
+    BeanUtils.copyProperties(expenseEntity, expense);
     logger.info("encrypt for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }

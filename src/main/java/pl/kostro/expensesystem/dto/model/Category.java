@@ -8,6 +8,9 @@ public class Category {
   private BigDecimal multiplier;
   private int order;
 
+  public Category() {
+  }
+
   public Category(String name, int order) {
     this.name = name;
     this.multiplier = new BigDecimal(1);

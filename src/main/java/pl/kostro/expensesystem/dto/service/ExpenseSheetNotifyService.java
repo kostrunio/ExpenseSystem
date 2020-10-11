@@ -12,18 +12,18 @@ import pl.kostro.expensesystem.dto.model.RealUser;
 public class ExpenseSheetNotifyService {
 
   public Map<RealUser, Map<ExpenseSheet, List<Expense>>> prepareExpenseSheetNotify(List<Expense> expenseList) {
-    Map<RealUser, Map<ExpenseSheet, List<Expense>>> rUMap = new HashMap<RealUser, Map<ExpenseSheet, List<Expense>>>();
+    Map<RealUser, Map<ExpenseSheet, List<Expense>>> rUMap = new HashMap<>();
     Map<ExpenseSheet, List<Expense>> eSMap;
     List<Expense> eList;
     for (Expense expense : expenseList) {
       if (!rUMap.containsKey(expense.getExpenseSheet().getOwner())) {
-        eSMap = new HashMap<ExpenseSheet, List<Expense>>();
+        eSMap = new HashMap<>();
         rUMap.put(expense.getExpenseSheet().getOwner(), eSMap);
       } else
         eSMap = rUMap.get(expense.getExpenseSheet().getOwner());
 
       if (!eSMap.containsKey(expense.getExpenseSheet())) {
-        eList = new ArrayList<Expense>();
+        eList = new ArrayList<>();
         eSMap.put(expense.getExpenseSheet(), eList);
       } else
         eList = eSMap.get(expense.getExpenseSheet());
