@@ -16,23 +16,20 @@ import javax.transaction.Transactional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.hibernate.LazyInitializationException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vaadin.server.VaadinSession;
 
-import pl.kostro.expensesystem.dao.model.*;
+import pl.kostro.expensesystem.dao.service.ExpenseSheetDao;
+import pl.kostro.expensesystem.dao.service.RealUserDao;
+import pl.kostro.expensesystem.dao.service.UserLimitDao;
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
 import pl.kostro.expensesystem.dto.model.Category;
 import pl.kostro.expensesystem.dto.model.Expense;
 import pl.kostro.expensesystem.dto.model.RealUser;
 import pl.kostro.expensesystem.dto.model.User;
 import pl.kostro.expensesystem.dto.model.UserLimit;
-import pl.kostro.expensesystem.dao.repository.ExpenseSheetRepository;
-import pl.kostro.expensesystem.dao.repository.RealUserRepository;
-import pl.kostro.expensesystem.dao.repository.UserLimitRepository;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
@@ -43,11 +40,11 @@ import pl.kostro.expensesystem.utils.expense.YearCategory;
 public class ExpenseSheetService {
   
   @Autowired
-  private ExpenseSheetRepository eshr;
+  private ExpenseSheetDao eshs;
   @Autowired
-  private UserLimitRepository ulr;
+  private UserLimitDao uld;
   @Autowired
-  private RealUserRepository rur;
+  private RealUserDao rud;
   
   @Autowired
   private CategoryService cs;
@@ -65,20 +62,14 @@ public class ExpenseSheetService {
     ExpenseSheet expenseSheet = new ExpenseSheet();
     expenseSheet.setEncrypted(true);
     expenseSheet.setKey(key);
-    VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
-    UserLimit userLimit = new UserLimit(owner, 0);
-    UserLimitEntity userLimitEntity = new UserLimitEntity();
-    ulr.save(userLimitEntity);
     expenseSheet.setOwner(owner);
     expenseSheet.setName(name);
+    VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
+    UserLimit userLimit = new UserLimit(owner, 0);
     expenseSheet.getUserLimitList().add(userLimit);
-    ExpenseSheetEntity expenseSheetEntity = new ExpenseSheetEntity();
-    BeanUtils.copyProperties(expenseSheet, expenseSheetEntity);
-    eshr.save(expenseSheetEntity);
+    uld.save(userLimit);
     owner.getExpenseSheetList().add(expenseSheet);
-    RealUserEntity realUserEntity = new RealUserEntity();
-    BeanUtils.copyProperties(owner, realUserEntity);
-    rur.save(realUserEntity);
+    eshs.save(expenseSheet);
     if (owner.getDefaultExpenseSheet() == null)
       rus.setDefaultExpenseSheet(owner, expenseSheet);
     logger.info("createExpenseSheet for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
@@ -87,25 +78,20 @@ public class ExpenseSheetService {
 
   public void merge(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    ExpenseSheetEntity expenseSheetEntity = new ExpenseSheetEntity();
-    BeanUtils.copyProperties(expenseSheet, expenseSheetEntity);
-    eshr.save(expenseSheetEntity);
+    eshs.merge(expenseSheet);
     logger.info("merge for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void removeExpenseSheet(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    List<RealUserEntity> realUsersEntity = null;
-    ExpenseSheetEntity expenseSheetEntity = new ExpenseSheetEntity();
-    realUsersEntity = rur.findUsersWithExpenseSheet(expenseSheetEntity);
-    if (realUsersEntity != null)
-      for (RealUserEntity realUserEntity : realUsersEntity) {
-        if (realUserEntity.getDefaultExpenseSheet() != null && realUserEntity.getDefaultExpenseSheet().equals(expenseSheet))
-          realUserEntity.setDefaultExpenseSheet(null);
-        realUserEntity.getExpenseSheetList().remove(expenseSheet);
+    List<RealUser> realUsers = rud.findUsersWithExpenseSheet(expenseSheet);
+    if (realUsers != null)
+      for (RealUser realUser : realUsers) {
+        if (realUser.getDefaultExpenseSheet() != null && realUser.getDefaultExpenseSheet().equals(expenseSheet))
+          realUser.setDefaultExpenseSheet(null);
+        realUser.getExpenseSheetList().remove(expenseSheet);
       }
-    BeanUtils.copyProperties(expenseSheet, expenseSheetEntity);
-    eshr.delete(expenseSheetEntity);
+    eshs.delete(expenseSheet);
     logger.info("removeExpenseSheet for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
@@ -349,56 +335,23 @@ public class ExpenseSheetService {
 
   @Transactional
   public void fetchCategoryList(ExpenseSheet expenseSheet) {
-    try {
-      expenseSheet.getCategoryList().size();
-    } catch (LazyInitializationException e) {
-      LocalDateTime stopper = LocalDateTime.now();
-      ExpenseSheetEntity attached = eshr.getOne(expenseSheet.getId());
-      attached.getCategoryList().size();
-      expenseSheet.getCategoryList().clear();
-      for (CategoryEntity categoryEntity : attached.getCategoryList()) {
-        Category category = new Category();
-        BeanUtils.copyProperties(categoryEntity, category);
-        expenseSheet.getCategoryList().add(category);
-      }
-      logger.info("fetchCategoryList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    }
+    LocalDateTime stopper = LocalDateTime.now();
+    eshs.fetchCategoryList(expenseSheet);
+    logger.info("fetchCategoryList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   @Transactional
   public void fetchExpenseList(ExpenseSheet expenseSheet) {
-    try {
-      expenseSheet.getExpenseList().size();
-    } catch (LazyInitializationException e) {
-      LocalDateTime stopper = LocalDateTime.now();
-      ExpenseSheetEntity attached = eshr.getOne(expenseSheet.getId());
-      attached.getExpenseList().size();
-      expenseSheet.getExpenseList().clear();
-      for (ExpenseEntity expenseEntity : attached.getExpenseList()) {
-        Expense expense = new Expense();
-        BeanUtils.copyProperties(expenseEntity, expense);
-        expenseSheet.getExpenseList().add(expense);
-      }
-      logger.info("fetchExpenseList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    }
+    LocalDateTime stopper = LocalDateTime.now();
+    eshs.fetchExpenseList(expenseSheet);
+    logger.info("fetchExpenseList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   @Transactional
   public void fetchUserLimitList(ExpenseSheet expenseSheet) {
-    try {
-      expenseSheet.getUserLimitList().size();
-    } catch (LazyInitializationException e) {
-      LocalDateTime stopper = LocalDateTime.now();
-      ExpenseSheetEntity attached = eshr.getOne(expenseSheet.getId());
-      attached.getUserLimitList().size();
-      expenseSheet.getUserLimitList().clear();
-      for (UserLimitEntity userLimitEntity : attached.getUserLimitList()) {
-        UserLimit userLimit = new UserLimit();
-        BeanUtils.copyProperties(userLimitEntity, userLimit);
-        expenseSheet.getUserLimitList().add(userLimit);
-      }
-      logger.info("fetchUserLimitList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    }
+    LocalDateTime stopper = LocalDateTime.now();
+    eshs.fetchUserLimitList(expenseSheet);
+    logger.info("fetchUserLimitList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public static void decrypt(ExpenseSheet expenseSheet) {

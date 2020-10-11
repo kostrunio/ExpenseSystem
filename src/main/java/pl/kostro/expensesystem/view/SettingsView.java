@@ -43,7 +43,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
           if (dialog.isConfirmed()) {
             eshs.removeExpenseSheet(expenseSheet);
             RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
-            loggedUser = rus.refresh(loggedUser);
+            rus.refresh(loggedUser);
             if (loggedUser.getDefaultExpenseSheet() == null && loggedUser.getExpenseSheetList().size() != 0)
               rus.setDefaultExpenseSheet(loggedUser, loggedUser.getExpenseSheetList().get(0));
             VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, null);

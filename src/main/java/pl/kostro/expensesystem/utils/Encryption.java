@@ -1,5 +1,8 @@
 package pl.kostro.expensesystem.utils;
 
+import com.vaadin.server.VaadinSession;
+import pl.kostro.expensesystem.dto.model.ExpenseSheet;
+
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
@@ -15,18 +18,14 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class Encryption {
   
-  SecretKeySpec key;
-  
-  public Encryption(String keyString) {
-    Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-    key = new SecretKeySpec(getkey(keyString), "AES");
-  }
-  
   private static byte[] getkey(String key) {
     return Arrays.copyOf(key.getBytes(), 16);
   }
 
-  public byte[] encryption(String input) {
+  public static byte[] encryption(String input) {
+    Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+    SecretKeySpec key = new SecretKeySpec(getkey(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey()), "AES");
+
     if (input == null) return null;
     try {
       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
@@ -42,7 +41,10 @@ public class Encryption {
     return null;
   }
   
-  public String decryption(byte[] cipherText) {
+  public static String decryption(byte[] cipherText) {
+    Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+    SecretKeySpec key = new SecretKeySpec(getkey(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey()), "AES");
+
     try {
       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
       cipher.init(Cipher.DECRYPT_MODE, key);

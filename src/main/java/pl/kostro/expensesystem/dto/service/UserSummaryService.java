@@ -8,26 +8,23 @@ import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pl.kostro.expensesystem.dao.service.UserLimitDao;
+import pl.kostro.expensesystem.dao.service.UserSummaryDao;
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
 import pl.kostro.expensesystem.dto.model.UserLimit;
 import pl.kostro.expensesystem.dto.model.UserSummary;
-import pl.kostro.expensesystem.dao.model.UserLimitEntity;
-import pl.kostro.expensesystem.dao.model.UserSummaryEntity;
-import pl.kostro.expensesystem.dao.repository.UserLimitRepository;
-import pl.kostro.expensesystem.dao.repository.UserSummaryRepository;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
 @Service
 public class UserSummaryService {
   
   @Autowired
-  private UserLimitRepository ulr;
+  private UserLimitDao uld;
   @Autowired
-  private UserSummaryRepository usr;
+  private UserSummaryDao uss;
   
   @Autowired
   private UserLimitService uls;
@@ -37,22 +34,15 @@ public class UserSummaryService {
   public UserSummary createUserSummary(UserLimit userLimit, LocalDate date) {
     LocalDateTime stopper = LocalDateTime.now();
     UserSummary userSummary = new UserSummary(date, userLimit.getLimit());
-    UserSummaryEntity userSummaryEntity = new UserSummaryEntity();
-    BeanUtils.copyProperties(userSummary, userSummaryEntity);
-    usr.save(userSummaryEntity);
     userLimit.getUserSummaryList().add(userSummary);
-    UserLimitEntity userLimitEntity = new UserLimitEntity();
-    BeanUtils.copyProperties(userLimit, userLimitEntity);
-    ulr.save(userLimitEntity);
+    uss.save(userSummary);
     logger.info("createUserSummary for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return userSummary;
   }
 
   public UserSummary merge(UserSummary userSummary) {
     LocalDateTime stopper = LocalDateTime.now();
-    UserSummaryEntity userSummaryEntity = new UserSummaryEntity();
-    BeanUtils.copyProperties(userSummary, userSummaryEntity);
-    usr.save(userSummaryEntity);
+    uss.merge(userSummary);
     logger.info("merge for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return userSummary;
   }
@@ -106,9 +96,7 @@ public class UserSummaryService {
 
   public void encrypt(UserSummary userSummary) {
     LocalDateTime stopper = LocalDateTime.now();
-    userSummary.setLimit(userSummary.getLimit(true), true);
-    userSummary.setSum(userSummary.getSum(true), true);
-    usr.save(userSummary);
+    uss.merge(userSummary);
     logger.info("encrypt for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }

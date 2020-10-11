@@ -13,6 +13,9 @@ public class RealUser extends User {
   private ExpenseSheet defaultExpenseSheet;
   String clearPassword;
 
+  public RealUser() {
+  }
+
   public RealUser(String name) {
     super(name);
   }

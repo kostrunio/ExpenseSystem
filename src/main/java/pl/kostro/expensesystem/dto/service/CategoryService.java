@@ -5,46 +5,35 @@ import java.time.temporal.ChronoUnit;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import pl.kostro.expensesystem.dao.service.CategoryDao;
+import pl.kostro.expensesystem.dao.service.ExpenseSheetDao;
 import pl.kostro.expensesystem.dto.model.Category;
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
-import pl.kostro.expensesystem.dao.model.CategoryEntity;
-import pl.kostro.expensesystem.dao.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.dao.repository.CategoryRepository;
-import pl.kostro.expensesystem.dao.repository.ExpenseSheetRepository;
 
 @Service
 public class CategoryService {
   
   @Autowired
-  private CategoryRepository cr;
+  private CategoryDao cs;
   @Autowired
-  private ExpenseSheetRepository eshr;
+  private ExpenseSheetDao eshs;
 
   private static Logger logger = LogManager.getLogger();
   
   public void createCategory(ExpenseSheet expenseSheet, String name) {
     LocalDateTime stopper = LocalDateTime.now();
     Category category = new Category(name, expenseSheet.getCategoryList().size());
-    CategoryEntity categoryEntity = new CategoryEntity();
-    BeanUtils.copyProperties(category, categoryEntity);
-    cr.save(categoryEntity);
     expenseSheet.getCategoryList().add(category);
-    ExpenseSheetEntity expenseSheetEntity = new ExpenseSheetEntity();
-    BeanUtils.copyProperties(expenseSheet, expenseSheetEntity);
-    expenseSheetEntity = eshr.save(expenseSheetEntity);
-    BeanUtils.copyProperties(expenseSheetEntity, expenseSheet);
+    cs.save(category);
     logger.info("createCategory for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void merge(Category category) {
     LocalDateTime stopper = LocalDateTime.now();
-    CategoryEntity categoryEntity = new CategoryEntity();
-    BeanUtils.copyProperties(category, categoryEntity);
-    cr.save(categoryEntity);
+    cs.merge(category);
     logger.info("merge for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
@@ -54,12 +43,7 @@ public class CategoryService {
     int i = 0;
     for (Category cat : expenseSheet.getCategoryList())
       cat.setOrder(i++);
-    ExpenseSheetEntity expenseSheetEntity = new ExpenseSheetEntity();
-    BeanUtils.copyProperties(expenseSheet, expenseSheetEntity);
-    expenseSheetEntity = eshr.save(expenseSheetEntity);
-    CategoryEntity categoryEntity = new CategoryEntity();
-    BeanUtils.copyProperties(category, categoryEntity);
-    cr.delete(categoryEntity);
+    cs.delete(category);
     logger.info("removeCategory for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseSheet;
   }
@@ -70,9 +54,7 @@ public class CategoryService {
 
   public void encrypt(Category category) {
     LocalDateTime stopper = LocalDateTime.now();
-    CategoryEntity categoryEntity = new CategoryEntity();
-    BeanUtils.copyProperties(category, categoryEntity);
-    cr.save(categoryEntity);
+    cs.merge(category);
     logger.info("encrypt for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
