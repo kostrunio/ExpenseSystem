@@ -27,7 +27,11 @@ public class Converter {
 
     public static Expense toExpense(ExpenseEntity expenseEntity) {
         Expense expense = new Expense();
-        BeanUtils.copyProperties(expenseEntity, expense);
+        BeanUtils.copyProperties(expenseEntity, expense, "category", "user", "expenseSheet");
+        expense.setCategory(toCategory(expenseEntity.getCategory()));
+        expense.setUser(toUser(expenseEntity.getUser()));
+        expense.setExpenseSheet(toExpenseSheet(expenseEntity.getExpenseSheet(), false));
+
         expense.setFormula(Encryption.decryption(expenseEntity.getFormulaByte()));
         expense.setComment(Encryption.decryption(expenseEntity.getCommentByte()));
         return expense;
@@ -40,19 +44,32 @@ public class Converter {
     }
 
     public static void toExpenseEntity(Expense expense, ExpenseEntity expenseEntity) {
-        BeanUtils.copyProperties(expense, expenseEntity);
+        BeanUtils.copyProperties(expense, expenseEntity, "category", "user", "expenseSheet");
+        expenseEntity.setCategory(toCategoryEntity(expense.getCategory()));
+        expenseEntity.setUser(toUserEntity(expense.getUser()));
+        expenseEntity.setExpenseSheet(toExpenseSheetEntity(expense.getExpenseSheet()));
+
         expenseEntity.setFormulaByte(Encryption.encryption(expense.getFormula()));
         expenseEntity.setCommentByte(Encryption.encryption(expense.getComment()));
     }
 
-    public static ExpenseSheet toExpenseSheet(ExpenseSheetEntity expenseSheetEntity) {
+    public static ExpenseSheet toExpenseSheet(ExpenseSheetEntity expenseSheetEntity, boolean all) {
         ExpenseSheet expenseSheet = new ExpenseSheet();
-        toExpenseSheet(expenseSheetEntity, expenseSheet);
+        toExpenseSheet(expenseSheetEntity, expenseSheet, all);
         return expenseSheet;
     }
 
-    public static void toExpenseSheet(ExpenseSheetEntity expenseSheetEntity, ExpenseSheet expenseSheet) {
-        BeanUtils.copyProperties(expenseSheetEntity, expenseSheet);
+    public static void toExpenseSheet(ExpenseSheetEntity expenseSheetEntity, ExpenseSheet expenseSheet, boolean all) {
+        BeanUtils.copyProperties(expenseSheetEntity, expenseSheet, "owner", "categoryList", "userLimitList", "expenseList");
+        if (all) {
+            expenseSheet.setOwner(toRealUser(expenseSheetEntity.getOwner(), false));
+            for (CategoryEntity categoryEntity : expenseSheetEntity.getCategoryList())
+                expenseSheet.getCategoryList().add(toCategory(categoryEntity));
+            for (UserLimitEntity userLimitEntity : expenseSheetEntity.getUserLimitList())
+                expenseSheet.getUserLimitList().add(toUserLimit(userLimitEntity));
+            for (ExpenseEntity expenseEntity : expenseSheetEntity.getExpenseList())
+                expenseSheet.getExpenseList().add(toExpense(expenseEntity));
+        }
     }
 
     public static ExpenseSheetEntity toExpenseSheetEntity(ExpenseSheet expenseSheet) {
@@ -62,17 +79,29 @@ public class Converter {
     }
 
     public static void toExpenseSheetEntity(ExpenseSheet expenseSheet, ExpenseSheetEntity expenseSheetEntity) {
-        BeanUtils.copyProperties(expenseSheet, expenseSheetEntity);
+        BeanUtils.copyProperties(expenseSheet, expenseSheetEntity, "owner", "categoryList", "userLimitList", "expenseList");
+        expenseSheetEntity.setOwner(toRealUserEntity(expenseSheet.getOwner()));
+        for (Category category : expenseSheet.getCategoryList())
+            expenseSheetEntity.getCategoryList().add(toCategoryEntity(category));
+        for (UserLimit userLimit : expenseSheet.getUserLimitList())
+            expenseSheetEntity.getUserLimitList().add(toUserLimitEntity(userLimit));
+        for (Expense expense : expenseSheet.getExpenseList())
+            expenseSheetEntity.getExpenseList().add(toExpenseEntity(expense));
     }
 
-    public static RealUser toRealUser(RealUserEntity realUserEntity) {
+    public static RealUser toRealUser(RealUserEntity realUserEntity, boolean all) {
         RealUser realUser = new RealUser();
-        toRealUser(realUserEntity, realUser);
+        toRealUser(realUserEntity, realUser, all);
         return realUser;
     }
 
-    public static void toRealUser(RealUserEntity realUserEntity, RealUser realUser) {
-        BeanUtils.copyProperties(realUserEntity, realUser);
+    public static void toRealUser(RealUserEntity realUserEntity, RealUser realUser, boolean all) {
+        BeanUtils.copyProperties(realUserEntity, realUser, "expenseSheetList", "defaultExpenseSheet");
+        if (all) {
+            for (ExpenseSheetEntity expenseSheetEntity : realUserEntity.getExpenseSheetList())
+                realUser.getExpenseSheetList().add(toExpenseSheet(expenseSheetEntity, false));
+            realUser.setDefaultExpenseSheet(toExpenseSheet(realUserEntity.getDefaultExpenseSheet(), false));
+        }
     }
 
     public static RealUserEntity toRealUserEntity(RealUser realUser) {
@@ -82,7 +111,10 @@ public class Converter {
     }
 
     public static RealUserEntity toRealUserEntity(RealUser realUser, RealUserEntity realUserEntity) {
-        BeanUtils.copyProperties(realUser, realUserEntity);
+        BeanUtils.copyProperties(realUser, realUserEntity, "expenseSheetList", "defaultExpenseSheet");
+        for (ExpenseSheet expenseSheet : realUser.getExpenseSheetList())
+            realUserEntity.getExpenseSheetList().add(toExpenseSheetEntity(expenseSheet));
+        realUserEntity.setDefaultExpenseSheet(toExpenseSheetEntity(realUser.getDefaultExpenseSheet()));
         return realUserEntity;
     }
 
@@ -100,7 +132,9 @@ public class Converter {
 
     public static UserLimit toUserLimit(UserLimitEntity userLimitEntity) {
         UserLimit userLimit = new UserLimit();
-        BeanUtils.copyProperties(userLimitEntity, userLimit);
+        BeanUtils.copyProperties(userLimitEntity, userLimit, "user");
+        userLimit.setUser(toUser(userLimitEntity.getUser()));
+
         userLimit.setLimit(new BigDecimal(Encryption.decryption(userLimitEntity.getLimitByte())));
         return userLimit;
     }
@@ -112,7 +146,9 @@ public class Converter {
     }
 
     public static void toUserLimitEntity(UserLimit userLimit, UserLimitEntity userLimitEntity) {
-        BeanUtils.copyProperties(userLimit, userLimitEntity);
+        BeanUtils.copyProperties(userLimit, userLimitEntity, "user");
+        userLimitEntity.setUser(toUserEntity(userLimit.getUser()));
+
         userLimitEntity.setLimitByte(Encryption.encryption(userLimit.getLimit().toString()));
     }
 

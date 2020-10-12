@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.utils;
 
 import com.vaadin.server.VaadinSession;
 import pl.kostro.expensesystem.dto.model.ExpenseSheet;
+import pl.kostro.expensesystem.dto.model.RealUser;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -42,8 +43,14 @@ public class Encryption {
   }
   
   public static String decryption(byte[] cipherText) {
+    String secret = null;
+    if (VaadinSession.getCurrent().getAttribute(ExpenseSheet.class) != null)
+      secret = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey();
+    else
+      secret = VaadinSession.getCurrent().getAttribute(RealUser.class).getClearPassword();
+
     Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-    SecretKeySpec key = new SecretKeySpec(getkey(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey()), "AES");
+    SecretKeySpec key = new SecretKeySpec(getkey(secret), "AES");
 
     try {
       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");

@@ -54,20 +54,20 @@ public class ExpenseSheetDao {
   public void fetchCategoryList(ExpenseSheet expenseSheet) {
     ExpenseSheetEntity expenseSheetEntity = eshr.getOne(expenseSheet.getId());
     expenseSheetEntity.getCategoryList().size();
-    Converter.toExpenseSheet(expenseSheetEntity, expenseSheet);
+    Converter.toExpenseSheet(expenseSheetEntity, expenseSheet, true);
   }
 
   @Transactional
   public void fetchExpenseList(ExpenseSheet expenseSheet) {
     ExpenseSheetEntity expenseSheetEntity = eshr.getOne(expenseSheet.getId());
     expenseSheetEntity.getExpenseList().size();
-    Converter.toExpenseSheet(expenseSheetEntity, expenseSheet);
+    Converter.toExpenseSheet(expenseSheetEntity, expenseSheet, true);
   }
 
   @Transactional
   public void fetchUserLimitList(ExpenseSheet expenseSheet) {
     ExpenseSheetEntity expenseSheetEntity = eshr.getOne(expenseSheet.getId());
     expenseSheetEntity.getUserLimitList().size();
-    Converter.toExpenseSheet(expenseSheetEntity, expenseSheet);
+    Converter.toExpenseSheet(expenseSheetEntity, expenseSheet, true);
   }
 }

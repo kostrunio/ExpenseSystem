@@ -110,17 +110,17 @@
 			<artifactId>calendar-component</artifactId>
 			<version>2.0-BETA4</version>
 		</dependency>
-    <dependency>
-      <groupId>org.vaadin.haijian</groupId>
-      <artifactId>exporter</artifactId>
-      <version>2.0.0</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.slf4j</groupId>
-          <artifactId>slf4j-simple</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
+		<dependency>
+		  <groupId>org.vaadin.haijian</groupId>
+		  <artifactId>exporter</artifactId>
+		  <version>2.0.0</version>
+		  <exclusions>
+			<exclusion>
+			  <groupId>org.slf4j</groupId>
+			  <artifactId>slf4j-simple</artifactId>
+			</exclusion>
+		  </exclusions>
+		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>
 			<artifactId>guava</artifactId>
@@ -149,6 +149,11 @@
 		<dependency>
 			<groupId>org.jboss.logging</groupId>
 			<artifactId>jboss-logging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
 		</dependency>
 	</dependencies>
 

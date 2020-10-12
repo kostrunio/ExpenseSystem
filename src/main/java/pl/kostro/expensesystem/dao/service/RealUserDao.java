@@ -39,9 +39,10 @@ public class RealUserDao {
   }
 
   public void refresh(RealUser realUser) {
-    Converter.toRealUser(rur.findOne(realUser.getId()), realUser);
+    Converter.toRealUser(rur.findOne(realUser.getId()), realUser, true);
   }
 
+  @Transactional
   public RealUser findByNameAndPassword(String userName, byte[] bytePassword) {
     RealUserEntity realUserEntity = rur.findByNameAndPassword(userName, new String(bytePassword));
     if (realUserEntity == null) return null;
@@ -49,14 +50,14 @@ public class RealUserDao {
     if (realUserEntity.getPasswordByte() == null)
       realUserEntity.setPasswordByte(bytePassword);
     rur.save(realUserEntity);
-    return Converter.toRealUser(realUserEntity);
+    return Converter.toRealUser(realUserEntity, false);
   }
 
   public RealUser findByName(String userName) {
     RealUser realUser = new RealUser();
     try {
       RealUserEntity realUserEntity = rur.findByName(userName);
-      Converter.toRealUser(realUserEntity, realUser);
+      Converter.toRealUser(realUserEntity, realUser, false);
     } catch (NoResultException e) {
       return null;
     }
@@ -67,7 +68,7 @@ public class RealUserDao {
   public void fetchExpenseSheetList(RealUser realUser) {
     RealUserEntity realUserEntity = rur.getOne(realUser.getId());
     realUserEntity.getExpenseSheetList().size();
-    Converter.toRealUser(realUserEntity, realUser);
+    Converter.toRealUser(realUserEntity, realUser, true);
   }
 
   public List<RealUser> findUsersWithExpenseSheet(ExpenseSheet expenseSheet) {
@@ -78,7 +79,7 @@ public class RealUserDao {
     } catch (NoResultException e) {
     }
     for (RealUserEntity realUserEntity : realUserEntityList) {
-      RealUser realUser = Converter.toRealUser(realUserEntity);
+      RealUser realUser = Converter.toRealUser(realUserEntity, false);
       realUserList.add(realUser);
     }
     return realUserList;
