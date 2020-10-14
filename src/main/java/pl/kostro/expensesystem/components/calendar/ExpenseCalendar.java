@@ -40,8 +40,8 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
         startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
         endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), date.withDayOfMonth(1),
         date.withDayOfMonth(date.lengthOfMonth()));
-    monthView.fulfillTables();
     uss.checkSummary(expenseSheet, date);
+    monthView.fulfillTables();
     return converter.transformExpensesToEvents(expenseSheet, eventToShow);
   };
 
