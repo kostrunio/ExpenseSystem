@@ -67,11 +67,14 @@ public class RealUserLimitSettingGrid extends Grid<UserLimit> implements Setting
 
     TextField limitField = new TextField();
     TextField orderField = new TextField();
+    TextField continuousField = new TextField();
     
     Binder.Binding<UserLimit, String> limitBinder = binder.forField(limitField)
         .bind(userLimit -> userLimit.getLimit().toString(), (userLimit, value) -> userLimit.setLimit(new BigDecimal(value.replaceAll(",", "."))));
     Binder.Binding<UserLimit, String> orderBinder = binder.forField(orderField)
         .bind(userLimit -> userLimit.getOrder()+"", (userLimit, value) -> userLimit.setOrder(Integer.parseInt(value)));
+    Binder.Binding<UserLimit, String> continuousBinder = binder.forField(continuousField)
+            .bind(userLimit -> userLimit.isContinuousSummary()+"", (userLimit, value) -> userLimit.setContinuousSummary(Boolean.parseBoolean(value)));
     
     addColumn(item -> item.getUser().getName())
       .setCaption(Msg.get("settingsPage.realUserName"))
@@ -83,6 +86,9 @@ public class RealUserLimitSettingGrid extends Grid<UserLimit> implements Setting
     addColumn(UserLimit::getOrder)
       .setCaption(Msg.get("settingsPage.realUserOrder"))
       .setEditorBinding(orderBinder);
+    addColumn(UserLimit::isContinuousSummary)
+      .setCaption(Msg.get("settingsPage.realUserContinuous"))
+      .setEditorBinding(continuousBinder);
 
     addSelectionListener(itemSelected);
 

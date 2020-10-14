@@ -34,6 +34,7 @@ public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsCha
 
   private TextField limitField = new TextField();
   private TextField orderField = new TextField();
+  private TextField continuousField = new TextField();
 
   private ExpenseSheet expenseSheet;
   
@@ -68,6 +69,8 @@ public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsCha
         .bind(userLimit -> userLimit.getLimit().toString(), (userLimit, value) -> userLimit.setLimit(new BigDecimal(value.replaceAll(",", "."))));
     Binder.Binding<UserLimit, String> orderBinder = binder.forField(orderField)
         .bind(userLimit -> userLimit.getOrder()+"", (userLimit, value) -> userLimit.setOrder(Integer.parseInt(value)));
+    Binder.Binding<UserLimit, String> continuousBinder = binder.forField(continuousField)
+        .bind(userLimit -> userLimit.isContinuousSummary()+"", (userLimit, value) -> userLimit.setContinuousSummary(Boolean.parseBoolean(value)));
     
     addColumn(item -> item.getUser().getName())
       .setCaption(Msg.get("settingsPage.userName"))
@@ -78,6 +81,9 @@ public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsCha
     addColumn(UserLimit::getOrder)
       .setCaption(Msg.get("settingsPage.userOrder"))
       .setEditorBinding(orderBinder);
+    addColumn(UserLimit::isContinuousSummary)
+      .setCaption(Msg.get("settingsPage.userContinuous"))
+      .setEditorBinding(continuousBinder);
 
     addSelectionListener(itemSelected);
 
