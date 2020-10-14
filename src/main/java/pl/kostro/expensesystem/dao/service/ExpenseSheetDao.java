@@ -54,20 +54,26 @@ public class ExpenseSheetDao {
   public void fetchCategoryList(ExpenseSheet expenseSheet) {
     ExpenseSheetEntity expenseSheetEntity = eshr.getOne(expenseSheet.getId());
     expenseSheetEntity.getCategoryList().size();
-    Converter.toExpenseSheet(expenseSheetEntity, expenseSheet, true);
+    expenseSheet.getCategoryList().clear();
+    for (CategoryEntity categoryEntity : expenseSheetEntity.getCategoryList())
+      expenseSheet.getCategoryList().add(Converter.toCategory(categoryEntity));
   }
 
   @Transactional
   public void fetchExpenseList(ExpenseSheet expenseSheet) {
     ExpenseSheetEntity expenseSheetEntity = eshr.getOne(expenseSheet.getId());
     expenseSheetEntity.getExpenseList().size();
-    Converter.toExpenseSheet(expenseSheetEntity, expenseSheet, true);
+    expenseSheet.getExpenseList().clear();
+    for (ExpenseEntity expenseEntity : expenseSheetEntity.getExpenseList())
+      expenseSheet.getExpenseList().add(Converter.toExpense(expenseEntity));
   }
 
   @Transactional
   public void fetchUserLimitList(ExpenseSheet expenseSheet) {
     ExpenseSheetEntity expenseSheetEntity = eshr.getOne(expenseSheet.getId());
     expenseSheetEntity.getUserLimitList().size();
-    Converter.toExpenseSheet(expenseSheetEntity, expenseSheet, true);
+    expenseSheet.getUserLimitList().clear();
+    for (UserLimitEntity userLimitEntity : expenseSheetEntity.getUserLimitList())
+      expenseSheet.getUserLimitList().add(Converter.toUserLimit(userLimitEntity));
   }
 }

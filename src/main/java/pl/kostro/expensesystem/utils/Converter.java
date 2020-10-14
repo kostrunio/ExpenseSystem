@@ -132,8 +132,10 @@ public class Converter {
 
     public static UserLimit toUserLimit(UserLimitEntity userLimitEntity) {
         UserLimit userLimit = new UserLimit();
-        BeanUtils.copyProperties(userLimitEntity, userLimit, "user");
+        BeanUtils.copyProperties(userLimitEntity, userLimit, "user", "userSummaryList");
         userLimit.setUser(toUser(userLimitEntity.getUser()));
+        for (UserSummaryEntity userSummaryEntity : userLimitEntity.getUserSummaryList())
+            userLimit.getUserSummaryList().add(toUserSummary(userSummaryEntity));
 
         userLimit.setLimit(new BigDecimal(Encryption.decryption(userLimitEntity.getLimitByte())));
         return userLimit;
@@ -142,12 +144,15 @@ public class Converter {
     public static UserLimitEntity toUserLimitEntity(UserLimit userLimit) {
         UserLimitEntity userLimitEntity = new UserLimitEntity();
         toUserLimitEntity(userLimit, userLimitEntity);
+
         return userLimitEntity;
     }
 
     public static void toUserLimitEntity(UserLimit userLimit, UserLimitEntity userLimitEntity) {
         BeanUtils.copyProperties(userLimit, userLimitEntity, "user");
         userLimitEntity.setUser(toUserEntity(userLimit.getUser()));
+        for (UserSummary userSummary : userLimit.getUserSummaryList())
+            userLimitEntity.getUserSummaryList().add(toUserSummaryEntity(userSummary));
 
         userLimitEntity.setLimitByte(Encryption.encryption(userLimit.getLimit().toString()));
     }

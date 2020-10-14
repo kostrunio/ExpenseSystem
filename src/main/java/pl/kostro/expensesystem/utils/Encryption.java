@@ -43,6 +43,8 @@ public class Encryption {
   }
   
   public static String decryption(byte[] cipherText) {
+    if (cipherText == null) return null;
+
     String secret = null;
     if (VaadinSession.getCurrent().getAttribute(ExpenseSheet.class) != null)
       secret = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey();
