@@ -71,8 +71,7 @@ public class UserSummary extends AbstractEntity {
 
   public BigDecimal getLimit(boolean encrypt) {
     if (limit == null && limit_byte != null && !encrypt) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
-      limit = new BigDecimal(enc.decryption(limit_byte));
+      limit = new BigDecimal(Encryption.decryption(limit_byte));
     }
     return limit;
   }
@@ -84,8 +83,7 @@ public class UserSummary extends AbstractEntity {
   public void setLimit(BigDecimal limit, boolean encrypt) {
     if (limit_byte != null && limit.equals(this.limit) && !encrypt)
       return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
-    this.limit_byte = enc.encryption(limit.toString());
+    this.limit_byte = Encryption.encryption(limit.toString());
     this.limit = limit;
   }
 
@@ -95,8 +93,7 @@ public class UserSummary extends AbstractEntity {
 
   public BigDecimal getSum(boolean encrypt) {
     if (sum == null && sum_byte != null && !encrypt) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
-      sum = new BigDecimal(enc.decryption(sum_byte));
+      sum = new BigDecimal(Encryption.decryption(sum_byte));
     }
     return sum;
   }
@@ -108,8 +105,7 @@ public class UserSummary extends AbstractEntity {
   public void setSum(BigDecimal sum, boolean encrypt) {
     if (sum_byte != null && sum.equals(this.sum) && !encrypt)
       return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
-    this.sum_byte = enc.encryption(sum.toString());
+    this.sum_byte = Encryption.encryption(sum.toString());
     this.sum = sum;
   }
 

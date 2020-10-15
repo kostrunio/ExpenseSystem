@@ -83,8 +83,7 @@ public class UserLimit extends AbstractEntity {
 
   public BigDecimal getLimit(boolean encrypt) {
     if (limit == null && limit_byte != null && !encrypt) {
-      Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
-      limit = new BigDecimal(enc.decryption(limit_byte));
+      limit = new BigDecimal(Encryption.decryption(limit_byte));
     }
     return limit;
   }
@@ -96,8 +95,7 @@ public class UserLimit extends AbstractEntity {
   public void setLimit(BigDecimal limit, boolean encrypt) {
     if (limit_byte != null && limit.equals(this.limit) && !encrypt)
       return;
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
-    this.limit_byte = enc.encryption(limit.toString());
+    this.limit_byte = Encryption.encryption(limit.toString());
     this.limit = limit;
   }
 

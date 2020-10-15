@@ -95,17 +95,15 @@ public class Expense extends AbstractEntity {
   }
 
   private void decode() {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
     if (formula_byte != null)
-      formula = enc.decryption(formula_byte);
+      formula = Encryption.decryption(formula_byte);
     if (comment_byte != null)
-      comment = enc.decryption(comment_byte);
+      comment = Encryption.decryption(comment_byte);
     encoded = false;
   }
 
   public void setFormula(String formula) {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
-    this.formula_byte = enc.encryption(formula);
+    this.formula_byte = Encryption.encryption(formula);
     this.formula = formula;
   }
 
@@ -141,8 +139,7 @@ public class Expense extends AbstractEntity {
   }
 
   public void setComment(String comment) {
-    Encryption enc = new Encryption(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey());
-    this.comment_byte = enc.encryption(comment);
+    this.comment_byte = Encryption.encryption(comment);
     this.comment = comment;
   }
 
