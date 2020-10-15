@@ -33,11 +33,11 @@ public class UserSummaryView extends UserSummaryDesign {
 
   private SingleSelectionListener<UserLimit> userChanged = event -> {
     if (event.getSelectedItem().isPresent()) {
-      userSummaryGrid.setItems(expenseSheet.getUserLimitList().stream()
+      userSummaryGrid.setItems(expenseSheet.getUserLimitList().parallelStream()
           .filter(userLimit -> userLimit.equals(event.getSelectedItem().get()))
           .flatMap(userLimit -> userLimit.getUserSummaryList().stream()));
     } else {
-      userSummaryGrid.setItems(expenseSheet.getUserLimitList().stream()
+      userSummaryGrid.setItems(expenseSheet.getUserLimitList().parallelStream()
           .flatMap(userLimit -> userLimit.getUserSummaryList().stream()));
     }
   };

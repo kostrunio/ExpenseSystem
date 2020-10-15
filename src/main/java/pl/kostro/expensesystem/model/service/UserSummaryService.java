@@ -74,7 +74,7 @@ public class UserSummaryService {
   }
 
   public UserSummary findUserSummary(UserLimit userLimit, LocalDate date) {
-    Optional<UserSummary> result = userLimit.getUserSummaryList().stream()
+    Optional<UserSummary> result = userLimit.getUserSummaryList().parallelStream()
         .filter(us -> us.getDate().isEqual(date))
         .findFirst();
     if (result.isPresent())

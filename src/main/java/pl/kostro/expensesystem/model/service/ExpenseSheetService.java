@@ -126,7 +126,7 @@ public class ExpenseSheetService {
   }
 
   public ExpenseSheet findExpenseSheet(RealUser realUser, int id) {
-    Optional<ExpenseSheet> result = realUser.getExpenseSheetList().stream()
+    Optional<ExpenseSheet> result = realUser.getExpenseSheetList().parallelStream()
       .filter(esh -> esh.getId() == id)
       .findFirst();
     if (result.isPresent())
@@ -136,7 +136,7 @@ public class ExpenseSheetService {
 
   public List<Expense> findAllExpense(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    List<Expense> expenseListToReturn = expenseSheet.getExpenseList().stream()
+    List<Expense> expenseListToReturn = expenseSheet.getExpenseList().parallelStream()
         .filter(e -> Filter.matchFilter(e, expenseSheet.getFilter()))
         .collect(Collectors.toList());
     ExpenseService.logger.info("findAllExpense for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
@@ -145,7 +145,7 @@ public class ExpenseSheetService {
 
   private List<Expense> getExpenseList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    List<Expense> expenseListToReturn = expenseSheet.getExpenseList().stream()
+    List<Expense> expenseListToReturn = expenseSheet.getExpenseList().parallelStream()
     .filter(e -> !e.getDate().isBefore(expenseSheet.getFirstDate()))
     .filter(e -> !e.getDate().isAfter(expenseSheet.getLastDate()))
     .filter(e -> Filter.matchFilter(e, expenseSheet.getFilter()))
@@ -215,7 +215,7 @@ public class ExpenseSheetService {
   }
 
   public UserLimit getUserLimitForUser(ExpenseSheet expenseSheet, User user) {
-    Optional<UserLimit> result = expenseSheet.getUserLimitList().stream()
+    Optional<UserLimit> result = expenseSheet.getUserLimitList().parallelStream()
       .filter(ul -> ul.getUser().equals(user))
       .findFirst();
     if (result.isPresent())
@@ -237,7 +237,7 @@ public class ExpenseSheetService {
 
   public Set<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
     LocalDateTime stopper = LocalDateTime.now();
-    Set<String> commentsList = expenseSheet.getExpenseList().stream()
+    Set<String> commentsList = expenseSheet.getExpenseList().parallelStream()
         .filter(e -> e.getCategory().equals(category))
         .filter(e -> e.getComment() != null && !e.getComment().isEmpty())
         .map(e -> e.getComment())
@@ -349,7 +349,7 @@ public class ExpenseSheetService {
   }
 
   public List<UserLimit> getUserLimitListRealUser(ExpenseSheet expenseSheet) {
-    List<UserLimit> userLimitList = expenseSheet.getUserLimitList().stream()
+    List<UserLimit> userLimitList = expenseSheet.getUserLimitList().parallelStream()
         .filter(uL -> uL.getUser() instanceof RealUser)
         .collect(Collectors.toList());
     return userLimitList;
