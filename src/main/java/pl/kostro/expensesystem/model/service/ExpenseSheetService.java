@@ -237,7 +237,7 @@ public class ExpenseSheetService {
 
   public Set<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
     LocalDateTime stopper = LocalDateTime.now();
-    Set<String> commentsList = expenseSheet.getExpenseList().parallelStream()
+    Set<String> commentsList = expenseSheet.getExpenseList().stream()
         .filter(e -> e.getCategory().equals(category))
         .filter(e -> e.getComment() != null && !e.getComment().isEmpty())
         .map(e -> e.getComment())
