@@ -27,6 +27,7 @@ import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.utils.Encryption;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.ExpenseDesign;
@@ -233,13 +234,13 @@ public class ExpenseView extends ExpenseDesign implements View {
     VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
     MainView menuView = ((ExpenseSystemUI) getUI()).getMainView();
     menuView.setActiveView("expenseSheet/" + expenseSheet.getId());
-    if (expenseSheet.getKey() == null) {
-      expenseSheet.setKey(loggedUser.getClearPassword());
+    if (expenseSheet.getSecretKey() == null) {
+      expenseSheet.setSecretKey(loggedUser.getClearPassword());
       if (expenseSheet.getUserLimitList().size() > 0) {
         try {
           expenseSheet.getUserLimitList().get(0).getLimit();
         } catch (NullPointerException e) {
-          expenseSheet.setKey(null);
+          expenseSheet.setSecretKey(null);
           UI.getCurrent().addWindow(new ExpenseSheetPasswordWindow());
           return;
         }

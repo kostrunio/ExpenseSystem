@@ -20,6 +20,7 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+import pl.kostro.expensesystem.utils.Encryption;
 
 /**
  * Simple name editor Window.
@@ -28,18 +29,18 @@ import com.vaadin.ui.themes.ValoTheme;
 public class ExpenseSheetPasswordWindow extends Window {
 
   private Logger logger = LogManager.getLogger();
-  private final PasswordField nameField = new PasswordField();
+  private final PasswordField passwordField = new PasswordField();
 
   private ClickListener cancelClicked = event -> close();
   private ClickListener saveClicked = event -> {
     ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    expenseSheet.setKey(nameField.getValue());
+    expenseSheet.setSecretKey(passwordField.getValue());
     if (expenseSheet.getUserLimitList().size() > 0) {
       try {
         expenseSheet.getUserLimitList().get(0).getLimit();
       } catch (NullPointerException e) {
         ShowNotification.badSheetPassword();
-        expenseSheet.setKey(null);
+        expenseSheet.setSecretKey(null);
         return;
       }
     }
@@ -59,10 +60,10 @@ public class ExpenseSheetPasswordWindow extends Window {
   private Component buildContent() {
     VerticalLayout result = new VerticalLayout();
 
-    nameField.setCaption(MessageFormat.format(Msg.get("expenseSheetPassord.label"), VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getName()));
-    nameField.focus();
+    passwordField.setCaption(MessageFormat.format(Msg.get("expenseSheetPassord.label"), VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getName()));
+    passwordField.focus();
 
-    result.addComponent(nameField);
+    result.addComponent(passwordField);
     result.addComponent(buildFooter());
 
     return result;

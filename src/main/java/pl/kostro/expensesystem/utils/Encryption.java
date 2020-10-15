@@ -17,14 +17,17 @@ import javax.crypto.ShortBufferException;
 import javax.crypto.spec.SecretKeySpec;
 
 public class Encryption {
-  
+
+  public static SecretKeySpec getSecretKey(String key) {
+    Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
+    return new SecretKeySpec(Arrays.copyOf(key.getBytes(), 16), "AES");
+  }
+
   public static byte[] encryption(String input) {
     if (input == null) return null;
-    Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-    SecretKeySpec key = new SecretKeySpec(Arrays.copyOf(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey().getBytes(), 16), "AES");
     try {
       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
-      cipher.init(Cipher.ENCRYPT_MODE, key);
+      cipher.init(Cipher.ENCRYPT_MODE, VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getSecretKey());
       byte[] cipherText = new byte[cipher.getOutputSize(input.getBytes().length)];
       int ctLength = cipher.update(input.getBytes(), 0, input.getBytes().length, cipherText, 0);
       ctLength += cipher.doFinal(cipherText, ctLength);
@@ -37,11 +40,9 @@ public class Encryption {
   }
   
   public static String decryption(byte[] cipherText) {
-    Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
-    SecretKeySpec key = new SecretKeySpec(Arrays.copyOf(VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getKey().getBytes(), 16), "AES");
     try {
       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
-      cipher.init(Cipher.DECRYPT_MODE, key);
+      cipher.init(Cipher.DECRYPT_MODE, VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getSecretKey());
       byte[] plainText = new byte[cipher.getOutputSize(cipherText.length)];
       int ptLength = cipher.update(cipherText, 0, cipherText.length, plainText, 0);
       ptLength += cipher.doFinal(plainText, ptLength);

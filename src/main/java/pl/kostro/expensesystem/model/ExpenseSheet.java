@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.crypto.spec.SecretKeySpec;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +21,7 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import pl.kostro.expensesystem.utils.Encryption;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
@@ -55,7 +57,9 @@ public class ExpenseSheet extends AbstractEntity {
   @Column(name = "es_encrypted")
   private boolean encrypted;
   @Transient
-  private String key;
+  private SecretKeySpec secretKey;
+  @Transient
+  String key;
   @Transient
   private Map<LocalDate, DateExpense> dateExpenseMap;
   @Transient
@@ -139,12 +143,18 @@ public class ExpenseSheet extends AbstractEntity {
     this.encrypted = encrypted;
   }
 
-  public String getKey() {
-    return key;
+  public SecretKeySpec getSecretKey() {
+    return secretKey;
   }
 
-  public void setKey(String key) {
+  public void setSecretKey(String key) {
     this.key = key;
+    if (key == null) secretKey = null;
+    this.secretKey = Encryption.getSecretKey(key);
+  }
+
+  public String getKey() {
+    return key;
   }
 
   public Map<LocalDate, DateExpense> getDateExpenseMap() {
@@ -205,4 +215,5 @@ public class ExpenseSheet extends AbstractEntity {
   public String toString() {
     return getClass().getSimpleName()+"["+getName()+"]";
   }
+
 }

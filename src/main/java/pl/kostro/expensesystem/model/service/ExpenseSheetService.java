@@ -31,6 +31,7 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
 import pl.kostro.expensesystem.model.repository.RealUserRepository;
 import pl.kostro.expensesystem.model.repository.UserLimitRepository;
+import pl.kostro.expensesystem.utils.Encryption;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
@@ -62,7 +63,7 @@ public class ExpenseSheetService {
     LocalDateTime stopper = LocalDateTime.now();
     ExpenseSheet expenseSheet = new ExpenseSheet();
     expenseSheet.setEncrypted(true);
-    expenseSheet.setKey(key);
+    expenseSheet.setSecretKey(key);
     VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
     UserLimit userLimit = new UserLimit(owner, 0);
     ulr.save(userLimit);

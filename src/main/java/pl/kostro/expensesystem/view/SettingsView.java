@@ -113,7 +113,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
   @Override
   public void expenseSheetPasswordChanged(String newPassword) {
     eshs.decrypt(expenseSheet);
-    expenseSheet.setKey(newPassword);
+    expenseSheet.setSecretKey(newPassword);
     eshs.encrypt(expenseSheet);
   }
 
