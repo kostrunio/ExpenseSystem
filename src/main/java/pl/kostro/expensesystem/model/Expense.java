@@ -161,7 +161,10 @@ public class Expense extends AbstractEntity {
 
   @Override
   public String toString() {
-    return getClass().getSimpleName()+"[" + getDate() + ";" + getCategory() + ";" + getValue() + "]";
+    if (encoded)
+      return getClass().getSimpleName()+"[" + getDate() + "]";
+    else
+      return getClass().getSimpleName()+"[" + getDate() + ";" + getCategory() + ";" + getValue() + "]";
   }
 
 }

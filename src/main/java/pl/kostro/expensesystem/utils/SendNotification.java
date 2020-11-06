@@ -23,7 +23,7 @@ public class SendNotification {
   private ExpenseService es;
   private ExpenseSheetNotifyService esns = new ExpenseSheetNotifyService();
 
-  @Scheduled(cron = "0 0 0/2 * * *")
+  @Scheduled(cron = "0 0/5 * * * *")
   public void process() {
     logger.info("SendNotification - started");
     List<Expense> expList = es.findExpensesToNotify();
