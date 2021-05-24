@@ -20,9 +20,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import pl.kostro.expensesystem.utils.Encryption;
 
-import com.vaadin.server.VaadinSession;
-
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "users_limits")
 public class UserLimit extends AbstractEntity {

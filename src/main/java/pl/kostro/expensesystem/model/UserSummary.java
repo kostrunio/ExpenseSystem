@@ -16,9 +16,6 @@ import org.hibernate.annotations.GenericGenerator;
 import pl.kostro.expensesystem.utils.Encryption;
 import pl.kostro.expensesystem.utils.LocalDatePersistenceConverter;
 
-import com.vaadin.server.VaadinSession;
-
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "users_summaries")
 public class UserSummary extends AbstractEntity {

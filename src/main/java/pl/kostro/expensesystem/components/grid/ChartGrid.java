@@ -26,6 +26,5 @@ public class ChartGrid extends Grid<YearValue> {
     addColumn(YearValue::getOctober).setCaption(CalendarUtils.getMonthsName()[9]);
     addColumn(YearValue::getNovember).setCaption(CalendarUtils.getMonthsName()[10]);
     addColumn(YearValue::getDecember).setCaption(CalendarUtils.getMonthsName()[11]);
-    
   }
 }

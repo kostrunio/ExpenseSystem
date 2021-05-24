@@ -16,13 +16,10 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.vaadin.server.VaadinSession;
-
 import pl.kostro.expensesystem.utils.Calculator;
 import pl.kostro.expensesystem.utils.Encryption;
 import pl.kostro.expensesystem.utils.LocalDatePersistenceConverter;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "expenses")
 public class Expense extends AbstractEntity {

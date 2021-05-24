@@ -11,11 +11,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import com.vaadin.server.VaadinSession;
-
 import pl.kostro.expensesystem.utils.Encryption;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "categories")
 public class Category extends AbstractEntity {

@@ -18,7 +18,6 @@ import org.hibernate.annotations.GenericGenerator;
 
 import pl.kostro.expensesystem.utils.LocalDateTimePersistenceConverter;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

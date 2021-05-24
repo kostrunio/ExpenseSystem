@@ -17,7 +17,6 @@ import javax.persistence.Transient;
 
 import pl.kostro.expensesystem.utils.LocalDateTimePersistenceConverter;
 
-@SuppressWarnings("serial")
 @Entity
 @DiscriminatorValue(value="2")
 public class RealUser extends User {

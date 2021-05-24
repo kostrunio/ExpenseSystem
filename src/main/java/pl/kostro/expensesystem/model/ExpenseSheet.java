@@ -27,7 +27,6 @@ import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
 import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "expense_sheets")
 public class ExpenseSheet extends AbstractEntity {

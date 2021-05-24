@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Objects;
 import javax.persistence.MappedSuperclass;
 
-@SuppressWarnings("serial")
 @MappedSuperclass
 public abstract class AbstractEntity implements Serializable, Cloneable {
 
