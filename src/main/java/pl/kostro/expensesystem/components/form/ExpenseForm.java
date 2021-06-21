@@ -1,11 +1,12 @@
 package pl.kostro.expensesystem.components.form;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import com.vaadin.data.HasValue;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox.NewItemHandler;
+import com.vaadin.ui.ComboBox.NewItemProvider;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
@@ -20,7 +21,6 @@ import pl.kostro.expensesystem.utils.Calculator;
 import pl.kostro.expensesystem.view.TableView;
 import pl.kostro.expensesystem.view.design.ExpenseFormDesign;
 
-@SuppressWarnings("serial")
 public class ExpenseForm extends ExpenseFormDesign {
   
   private ExpenseService es;
@@ -32,11 +32,11 @@ public class ExpenseForm extends ExpenseFormDesign {
 
   private Button.ClickListener saveClick = event -> {
     expense.setDate(dateField.getValue());
-    expense.setCategory((CategoryEntity) categoryBox.getValue());
-    expense.setUser(((UserLimit) userBox.getValue()).getUser());
+    expense.setCategory(categoryBox.getValue());
+    expense.setUser(userBox.getValue().getUser());
     expense.setFormula(formulaField.getValue());
-    if (commentBox.getValue() != null && !commentBox.getValue().toString().isEmpty())
-      expense.setComment(commentBox.getValue().toString());
+    if (commentBox.getValue() != null && !commentBox.getValue().isEmpty())
+      expense.setComment(commentBox.getValue());
     expense.setNotify(notifyBox.getValue());
     expense.setExpenseSheet(expenseSheet);
     expense = es.merge(expense);
@@ -59,9 +59,8 @@ public class ExpenseForm extends ExpenseFormDesign {
           }
     });
   };
-  @SuppressWarnings("rawtypes")
   private HasValue.ValueChangeListener verifyFormula = event -> verifyFormula(formulaField.getValue());
-  private NewItemHandler addComment = event -> commentBox.setValue(event);
+  private NewItemProvider<String> addComment = event -> Optional.of(event);
 
   public ExpenseForm() {
     es = AppCtxProvider.getBean(ExpenseService.class);
@@ -81,7 +80,6 @@ public class ExpenseForm extends ExpenseFormDesign {
     notifyBox.setCaption(Msg.get("expensForm.notify"));
   }
 
-  @SuppressWarnings("unchecked")
   private void configureComponents() {
     dateField.setDateFormat("yyyy-MM-dd");
     dateField.addValueChangeListener(verifyFormula);
@@ -97,7 +95,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     formulaField.focus();
     formulaField.addValueChangeListener(verifyFormula);
 
-    commentBox.setNewItemHandler(addComment);
+    commentBox.setNewItemProvider(addComment);
     commentBox.setEmptySelectionAllowed(true);
     commentBox.addValueChangeListener(verifyFormula);
 

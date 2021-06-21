@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,7 +18,7 @@ import com.vaadin.server.StreamResource;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.data.sort.SortDirection;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.ComboBox.NewItemHandler;
+import com.vaadin.ui.ComboBox.NewItemProvider;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.components.grid.FooterRow;
@@ -33,7 +34,6 @@ import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.view.design.TableDesign;
 
-@SuppressWarnings("serial")
 public class TableView extends TableDesign {
   
   private ExpenseSheetService eshs;
@@ -47,24 +47,18 @@ public class TableView extends TableDesign {
   private Column<Expense, String> formulaColumn;
   private Column<Expense, BigDecimal> valueColumn;
   
-  private StreamResource exportData = new StreamResource(new StreamResource.StreamSource() {
-    @Override
-    public InputStream getStream() {
-      return Exporter.exportAsExcel(expenseGrid);
-    }
-  }, "export.xls");
+  private StreamResource exportData = new StreamResource((StreamResource.StreamSource) () -> Exporter.exportAsExcel(expenseGrid), "export.xls");
   private FileDownloader excelFileDownloader = new FileDownloader(exportData);
   
-  @SuppressWarnings("rawtypes")
   private HasValue.ValueChangeListener filterChanged = event -> {
     User filterUser = null;
     if (userBox.getValue() instanceof UserLimit) {
-      filterUser = ((UserLimit) userBox.getValue()).getUser();
+      filterUser = userBox.getValue().getUser();
     }
-    List<CategoryEntity> categories = new ArrayList<CategoryEntity>();
-    categories.add((CategoryEntity) categoryBox.getValue());
-    List<User> users = new ArrayList<User>();
-    users.add((User) filterUser);
+    List<CategoryEntity> categories = new ArrayList<>();
+    categories.add(categoryBox.getValue());
+    List<User> users = new ArrayList<>();
+    users.add(filterUser);
     expenseSheet.setFilter(new Filter(
         fromDateField.getValue(),
         toDateField.getValue(),
@@ -81,9 +75,8 @@ public class TableView extends TableDesign {
     else
       expenseForm.setVisible(false);
   };
-  private NewItemHandler addComment = event -> commentBox.setValue(event);
+  private NewItemProvider addComment = event -> Optional.of(event);
   
-  @SuppressWarnings("unchecked")
   public TableView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("create");
@@ -110,7 +103,7 @@ public class TableView extends TableDesign {
     userBox.setItems(expenseSheet.getUserLimitList());
     userBox.addValueChangeListener(filterChanged);
     formulaField.addValueChangeListener(filterChanged);
-    commentBox.setNewItemHandler(addComment);
+    commentBox.setNewItemProvider(addComment);
     commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshs.getAllComments(expenseSheet));
     commentBox.addValueChangeListener(filterChanged);
     newExpenseButton.addClickListener(newClicked);

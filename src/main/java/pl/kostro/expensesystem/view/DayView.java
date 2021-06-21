@@ -3,6 +3,7 @@ package pl.kostro.expensesystem.view;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +14,7 @@ import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox.NewItemHandler;
+import com.vaadin.ui.ComboBox.NewItemProvider;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
@@ -32,7 +33,6 @@ import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
 import pl.kostro.expensesystem.view.design.DayDesign;
 
-@SuppressWarnings("serial")
 public class DayView extends DayDesign {
   
   private ExpenseService es;
@@ -96,11 +96,9 @@ public class DayView extends DayDesign {
     removeAllComponents();
     addComponent(new DayView());
   };
-  @SuppressWarnings("rawtypes")
   private ValueChangeListener verifyFormula = event -> verifyFormula(formulaField.getValue());
-  private NewItemHandler addComment = event -> commentBox.setValue(event);
+  private NewItemProvider addComment = event -> Optional.of(event);
 
-  @SuppressWarnings("unchecked")
   public DayView() {
     es = AppCtxProvider.getBean(ExpenseService.class);
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
@@ -124,7 +122,7 @@ public class DayView extends DayDesign {
     userBox.setItems(expenseSheet.getUserLimitList());
     userBox.addValueChangeListener(verifyFormula);
     formulaField.addValueChangeListener(verifyFormula);
-    commentBox.setNewItemHandler(addComment);
+    commentBox.setNewItemProvider(addComment);
     commentBox.setEmptySelectionAllowed(true);
     commentBox.addValueChangeListener(verifyFormula);
     saveButton.setClickShortcut(ShortcutAction.KeyCode.ENTER);
@@ -203,7 +201,6 @@ public class DayView extends DayDesign {
 
       Label comment = new Label();
       comment.setEnabled(false);
-//      comment.setNullRepresentation("");
       comment.setValue(expense.getComment());
       expenseGrid.addComponent(comment, 2, i);
 

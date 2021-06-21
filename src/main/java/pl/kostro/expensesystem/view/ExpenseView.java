@@ -3,6 +3,7 @@ package pl.kostro.expensesystem.view;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +14,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.ComboBox.NewItemHandler;
+import com.vaadin.ui.ComboBox.NewItemProvider;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.MenuItem;
@@ -32,7 +33,6 @@ import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.ExpenseDesign;
 import pl.kostro.expensesystem.views.settingsPage.ExpenseSheetPasswordWindow;
 
-@SuppressWarnings("serial")
 public class ExpenseView extends ExpenseDesign implements View {
   
   private ExpenseSheetService eshs;
@@ -128,7 +128,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     mainView.addComponent(new MonthView());
     checkedMonth(selectedItem.getText());
   };
-  private NewItemHandler addComment = event -> commentCombo.setValue(event);
+  private NewItemProvider addComment = event -> Optional.of(event);
 
   private ValueChangeListener<CategoryEntity> categoryChanged = event -> refreshFilter();
 
@@ -143,18 +143,18 @@ public class ExpenseView extends ExpenseDesign implements View {
     String filterFormula = null;
     String filterComment = null;
     if (userCombo.getValue() instanceof UserLimit) {
-      filterUser = ((UserLimit) userCombo.getValue()).getUser();
+      filterUser = userCombo.getValue().getUser();
     }
     if (formulaField.getValue() != null) {
-      filterFormula = formulaField.getValue().toString().replaceAll(",", ".");
+      filterFormula = formulaField.getValue().replaceAll(",", ".");
     }
     if (commentCombo.getValue() != null) {
-      filterComment = commentCombo.getValue().toString();
+      filterComment = commentCombo.getValue();
     }
-    List<CategoryEntity> categories = new ArrayList<CategoryEntity>();
-    categories.add((CategoryEntity) categoryCombo.getValue());
-    List<User> users = new ArrayList<User>();
-    users.add((User) filterUser);
+    List<CategoryEntity> categories = new ArrayList<>();
+    categories.add(categoryCombo.getValue());
+    List<User> users = new ArrayList<>();
+    users.add(filterUser);
     expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));
     mainView.removeAllComponents();
     mainView.addComponent(new MonthView());
@@ -185,7 +185,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     categoryCombo.setItems(expenseSheet.getCategoryList());
     userCombo.setItemCaptionGenerator(item -> item.getUser().getName());
     userCombo.setItems(expenseSheet.getUserLimitList());
-    commentCombo.setNewItemHandler(addComment);
+    commentCombo.setNewItemProvider(addComment);
     commentCombo.setEmptySelectionAllowed(true);
     commentCombo.setItems(eshs.getAllComments(expenseSheet));
   }
