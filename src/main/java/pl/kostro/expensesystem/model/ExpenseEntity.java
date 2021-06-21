@@ -42,7 +42,7 @@ public class ExpenseEntity extends AbstractEntity {
   private CategoryEntity category;
   @OneToOne
   @JoinColumn(name = "e_u_id")
-  private User user;
+  private UserEntity user;
   @Transient
   private String comment;
   @Column(name = "e_comment_byte")
@@ -59,7 +59,7 @@ public class ExpenseEntity extends AbstractEntity {
     super();
   }
 
-  public ExpenseEntity(LocalDate date, String formula, CategoryEntity category, User user, String comment, boolean notify,
+  public ExpenseEntity(LocalDate date, String formula, CategoryEntity category, UserEntity user, String comment, boolean notify,
                        ExpenseSheet expenseSheet) {
     this.date = date;
     setFormula(formula);
@@ -122,11 +122,11 @@ public class ExpenseEntity extends AbstractEntity {
     this.category = category;
   }
 
-  public User getUser() {
+  public UserEntity getUser() {
     return user;
   }
 
-  public void setUser(User user) {
+  public void setUser(UserEntity user) {
     this.user = user;
   }
 

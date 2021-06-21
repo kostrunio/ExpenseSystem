@@ -20,7 +20,7 @@ public class ExpenseServiceImpl implements ExpenseService {
   
   private ExpenseRepository repository;
   
-  static Logger logger = LogManager.getLogger();
+  private Logger logger = LogManager.getLogger();
 
   @Autowired
   public ExpenseServiceImpl(ExpenseRepository repository) {

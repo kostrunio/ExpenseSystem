@@ -29,7 +29,7 @@ public class UserSummaryService {
   @Autowired
   private UserLimitService uls;
 
-  private static Logger logger = LogManager.getLogger();
+  private Logger logger = LogManager.getLogger();
   
   public UserSummary createUserSummary(UserLimit userLimit, LocalDate date) {
     LocalDateTime stopper = LocalDateTime.now();

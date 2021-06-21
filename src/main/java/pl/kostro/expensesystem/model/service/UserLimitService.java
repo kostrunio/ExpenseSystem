@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
-import pl.kostro.expensesystem.model.User;
+import pl.kostro.expensesystem.model.UserEntity;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.UserSummary;
 import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
@@ -33,9 +33,9 @@ public class UserLimitService {
   @Autowired
   private UserSummaryService uss;
 
-  private static Logger logger = LogManager.getLogger();
+  private Logger logger = LogManager.getLogger();
   
-  public void createUserLimit(ExpenseSheet expenseSheet, User user) {
+  public void createUserLimit(ExpenseSheet expenseSheet, UserEntity user) {
     LocalDateTime stopper = LocalDateTime.now();
     UserLimit userLimit = ulr.save(new UserLimit(user, expenseSheet.getUserLimitList().size()));
     expenseSheet.getUserLimitList().add(userLimit);

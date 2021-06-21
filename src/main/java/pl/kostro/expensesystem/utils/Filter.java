@@ -6,17 +6,17 @@ import java.util.List;
 
 import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseEntity;
-import pl.kostro.expensesystem.model.User;
+import pl.kostro.expensesystem.model.UserEntity;
 
 public class Filter {
   private LocalDate dateFrom;
   private LocalDate dateTo;
 	private List<CategoryEntity> categories;
-	private List<User> users;
+	private List<UserEntity> users;
 	private String formula;
 	private String comment;
 	
-	public Filter(List<CategoryEntity> categories, List<User> users, String formula, String comment) {
+	public Filter(List<CategoryEntity> categories, List<UserEntity> users, String formula, String comment) {
 		super();
 		this.categories = categories;
 		this.users = users;
@@ -24,7 +24,7 @@ public class Filter {
 		this.comment = comment;
 	}
 	
-	public Filter(LocalDate dateFrom, LocalDate dateTo, List<CategoryEntity> categories, List<User> users, String formula, String comment) {
+	public Filter(LocalDate dateFrom, LocalDate dateTo, List<CategoryEntity> categories, List<UserEntity> users, String formula, String comment) {
     super();
     this.dateFrom = dateFrom;
     this.dateTo = dateTo;
@@ -57,10 +57,10 @@ public class Filter {
 		this.categories = categories;
 	}
 
-	public List<User> getUsers() {
+	public List<UserEntity> getUsers() {
 		return users;
 	}
-	public void setUser(List<User> users) {
+	public void setUser(List<UserEntity> users) {
 		this.users = users;
 	}
 
@@ -116,10 +116,10 @@ public class Filter {
     return false;
   }
   
-  private static boolean matchUser(ExpenseEntity expense, List<User> users) {
+  private static boolean matchUser(ExpenseEntity expense, List<UserEntity> users) {
     if (users.size() == 0 || users.get(0) == null)
       return true;
-    for (User user : users)
+    for (UserEntity user : users)
       if (expense.getUser().equals(user))
         return true;
     return false;

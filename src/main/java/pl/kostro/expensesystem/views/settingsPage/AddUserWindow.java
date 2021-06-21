@@ -19,15 +19,14 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.service.UserLimitService;
-import pl.kostro.expensesystem.model.service.UserServiceImpl;
+import pl.kostro.expensesystem.model.service.UserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
-@SuppressWarnings("serial")
 public class AddUserWindow extends Window {
 
   private Logger logger = LogManager.getLogger();
   private UserLimitService uls;
-  private UserServiceImpl us;
+  private UserService us;
 
   private final TextField nameField = new TextField(Msg.get("newUser.label"));
   private SettingsChangeListener listener;
@@ -39,14 +38,14 @@ public class AddUserWindow extends Window {
       return;
     }
     ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    uls.createUserLimit(expenseSheet, us.createUser(nameField.getValue()));
+    uls.createUserLimit(expenseSheet, us.createAndSave(nameField.getValue()));
     listener.refreshValues();
     close();
   };
 
   public AddUserWindow(SettingsChangeListener listener) {
     uls = AppCtxProvider.getBean(UserLimitService.class);
-    us = AppCtxProvider.getBean(UserServiceImpl.class);
+    us = AppCtxProvider.getBean(UserService.class);
     logger.info("show");
     this.listener = listener;
     setModal(true);

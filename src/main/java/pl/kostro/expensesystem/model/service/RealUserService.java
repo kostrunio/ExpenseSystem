@@ -24,7 +24,7 @@ public class RealUserService {
   @Autowired
   private RealUserRepository rur;
 
-  private static Logger logger = LogManager.getLogger();
+  private Logger logger = LogManager.getLogger();
   
   static MessageDigest messageDigest;
 

@@ -16,7 +16,7 @@ public class CategoryServiceImpl implements CategoryService {
 
   private CategoryRepository repository;
 
-  private static Logger logger = LogManager.getLogger();
+  private Logger logger = LogManager.getLogger();
 
   @Autowired
   public CategoryServiceImpl(CategoryRepository repository) {

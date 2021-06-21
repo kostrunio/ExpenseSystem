@@ -30,7 +30,7 @@ public class UserLimit extends AbstractEntity {
   private Long id;
   @OneToOne
   @JoinColumn(name = "ul_u_id")
-  private User user;
+  private UserEntity user;
   @Transient
   private BigDecimal limit;
   @Column(name = "ul_limit_byte")
@@ -48,7 +48,7 @@ public class UserLimit extends AbstractEntity {
     super();
   }
 
-  public UserLimit(User user, int order) {
+  public UserLimit(UserEntity user, int order) {
     this.user = user;
     setLimit(new BigDecimal(0));
     this.order = order;
@@ -62,11 +62,11 @@ public class UserLimit extends AbstractEntity {
     this.id = id;
   }
 
-  public User getUser() {
+  public UserEntity getUser() {
     return user;
   }
 
-  public void setUser(User user) {
+  public void setUser(UserEntity user) {
     this.user = user;
   }
   

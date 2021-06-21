@@ -25,7 +25,7 @@ import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
-import pl.kostro.expensesystem.model.User;
+import pl.kostro.expensesystem.model.UserEntity;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Filter;
@@ -139,7 +139,7 @@ public class ExpenseView extends ExpenseDesign implements View {
   private ValueChangeListener<String> commentChanged = event -> refreshFilter();
 
   private void refreshFilter() {
-    User filterUser = null;
+    UserEntity filterUser = null;
     String filterFormula = null;
     String filterComment = null;
     if (userCombo.getValue() instanceof UserLimit) {
@@ -153,7 +153,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     }
     List<CategoryEntity> categories = new ArrayList<>();
     categories.add(categoryCombo.getValue());
-    List<User> users = new ArrayList<>();
+    List<UserEntity> users = new ArrayList<>();
     users.add(filterUser);
     expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));
     mainView.removeAllComponents();

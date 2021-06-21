@@ -23,7 +23,7 @@ import pl.kostro.expensesystem.utils.LocalDateTimePersistenceConverter;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "u_type", discriminatorType = DiscriminatorType.INTEGER)
 @DiscriminatorValue(value = "1")
-public class User extends AbstractEntity {
+public class UserEntity extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
@@ -35,11 +35,11 @@ public class User extends AbstractEntity {
   @Convert(converter = LocalDateTimePersistenceConverter.class)
   private LocalDateTime creationDate = LocalDateTime.now();
 
-  public User() {
+  public UserEntity() {
     super();
   }
 
-  public User(String name) {
+  public UserEntity(String name) {
     setName(name);
   }
 

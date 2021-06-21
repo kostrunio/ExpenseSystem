@@ -24,7 +24,7 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.grid.ChartGrid;
 import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.User;
+import pl.kostro.expensesystem.model.UserEntity;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Filter;
@@ -65,7 +65,7 @@ public class ChartView extends ChartDesign {
   private void refreshFilter() {
     String filterFormula = null;
     String filterComment = null;
-    List<User> users = new ArrayList<User>();
+    List<UserEntity> users = new ArrayList<UserEntity>();
     Set<UserLimit> setUserLimit = (Set<UserLimit>) userCombo.getValue();
     for (Iterator<UserLimit> iter = setUserLimit.iterator(); iter.hasNext();)
       users.add(iter.next().getUser());

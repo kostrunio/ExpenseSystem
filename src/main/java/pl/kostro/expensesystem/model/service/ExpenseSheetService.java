@@ -26,7 +26,7 @@ import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
-import pl.kostro.expensesystem.model.User;
+import pl.kostro.expensesystem.model.UserEntity;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
 import pl.kostro.expensesystem.model.repository.RealUserRepository;
@@ -56,7 +56,7 @@ public class ExpenseSheetService {
   @Autowired
   private UserLimitService uls;
 
-  private static Logger logger = LogManager.getLogger();
+  private Logger logger = LogManager.getLogger();
 
   public ExpenseSheet createExpenseSheet(RealUser owner, String name, String key) {
     LocalDateTime stopper = LocalDateTime.now();
@@ -213,7 +213,7 @@ public class ExpenseSheetService {
       dateExpense.removeExpense(expense);
   }
 
-  public UserLimit getUserLimitForUser(ExpenseSheet expenseSheet, User user) {
+  public UserLimit getUserLimitForUser(ExpenseSheet expenseSheet, UserEntity user) {
     Optional<UserLimit> result = expenseSheet.getUserLimitList().parallelStream()
       .filter(ul -> ul.getUser().equals(user))
       .findFirst();
