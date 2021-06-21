@@ -11,7 +11,7 @@ import com.vaadin.ui.StyleGenerator;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
@@ -21,12 +21,12 @@ public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
   
   private UserSummaryService uss;
   private UserLimitService uls;
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
 
   public UserLimitSumLeftGrid() {
     uss = AppCtxProvider.getBean(UserSummaryService.class);
     uls = AppCtxProvider.getBean(UserLimitService.class);
-    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
+    this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);;
     setHeightByRows(expenseSheet.getUserLimitList().size());
     setSelectionMode(SelectionMode.NONE);
     addColumn(item -> item.getUserLimit().getUser().getName()).setCaption(Msg.get("userLimitTable.user"));

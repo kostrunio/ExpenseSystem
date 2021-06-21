@@ -14,7 +14,7 @@ import com.vaadin.ui.components.grid.EditorSaveListener;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.UserSummaryEntity;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
@@ -24,7 +24,7 @@ public class UserSummaryView extends UserSummaryDesign {
 
   private Logger logger = LogManager.getLogger();
   private UserSummaryService uss;
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
 
   private Binder<UserSummaryEntity> binder = new Binder<>();
   private TextField limitField = new TextField();
@@ -49,7 +49,7 @@ public class UserSummaryView extends UserSummaryDesign {
     uss = AppCtxProvider.getBean(UserSummaryService.class);
     logger.info("create");
     setCaption();
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     userBox.setItems(expenseSheet.getUserLimitList());
     userBox.addSelectionListener(userChanged);
 

@@ -19,7 +19,7 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.service.CategoryService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.views.settingsPage.AddCategoryWindow;
@@ -29,7 +29,7 @@ public class CategorySettingGrid extends Grid<CategoryEntity> implements Setting
 
   private CategoryService cs;
   private ExpenseSheetService eshs;
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
   
   private Binder<CategoryEntity> binder = new Binder<>();
 
@@ -59,7 +59,9 @@ public class CategorySettingGrid extends Grid<CategoryEntity> implements Setting
         MessageFormat.format(Msg.get("settingsPage.removeCategoryQuestion"), new Object[] { getItem().getName() }),
         Msg.get("settingsPage.removeCategoryYes"), Msg.get("settingsPage.removeCategoryNo"), dialog -> {
           if (dialog.isConfirmed()) {
-            eshs.removeCategory(getItem(), expenseSheet);
+            CategoryEntity category = getItem();
+            eshs.removeCategory(category, expenseSheet);
+            cs.remove(category);
             refreshValues();
           }
         });
@@ -68,7 +70,7 @@ public class CategorySettingGrid extends Grid<CategoryEntity> implements Setting
   public CategorySettingGrid() {
     cs = AppCtxProvider.getBean(CategoryService.class);
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     
     ComboBox<BigDecimal> multiplierField = new ComboBox<>();
     multiplierField.setEmptySelectionAllowed(false);

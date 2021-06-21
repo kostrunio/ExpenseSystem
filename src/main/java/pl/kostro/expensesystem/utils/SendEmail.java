@@ -21,7 +21,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.RealUserEntity;
 
 public class SendEmail {
@@ -57,7 +57,7 @@ public class SendEmail {
     }
   }
   
-  public static void expenses(RealUserEntity user, ExpenseSheet expenseSheet, int expenses) {
+  public static void expenses(RealUserEntity user, ExpenseSheetEntity expenseSheet, int expenses) {
     if (user.getEmail().isEmpty()) return;
     try {
       Message message = new MimeMessage(prepareSession());

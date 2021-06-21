@@ -4,6 +4,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 import javax.persistence.NoResultException;
 import javax.transaction.Transactional;
@@ -14,7 +15,7 @@ import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.repository.RealUserRepository;
 
@@ -65,7 +66,7 @@ public class RealUserServiceImpl implements RealUserService {
     return repository.findOne(realUser.getId());
   }
 
-  public void setDefaultExpenseSheet(RealUserEntity realUser, ExpenseSheet expenseSheet) {
+  public void setDefaultExpenseSheet(RealUserEntity realUser, ExpenseSheetEntity expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
     realUser.setDefaultExpenseSheet(expenseSheet);
     repository.save(realUser);
@@ -108,6 +109,17 @@ public class RealUserServiceImpl implements RealUserService {
       attached.getExpenseSheetList().size();
       realUser.setExpenseSheetList(attached.getExpenseSheetList());
       logger.info("fetchExpenseSheetList for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    }
+  }
+
+  public void removeExpenseSheetFromUsers(ExpenseSheetEntity expenseSheet) {
+    List<RealUserEntity> realUsers = repository.findUsersWithExpenseSheet(expenseSheet);
+    if (realUsers != null) {
+      for (RealUserEntity realUser : realUsers) {
+        if (realUser.getDefaultExpenseSheet() != null && realUser.getDefaultExpenseSheet().equals(expenseSheet))
+          realUser.setDefaultExpenseSheet(null);
+        realUser.getExpenseSheetList().remove(expenseSheet);
+      }
     }
   }
 }

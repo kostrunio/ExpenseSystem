@@ -17,11 +17,9 @@ import com.vaadin.ui.UI;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.RealUserEntity;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.views.settingsPage.AddRealUserWindow;
@@ -34,7 +32,7 @@ public class RealUserLimitSettingGrid extends Grid<UserLimitEntity> implements S
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
 
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
   
   private Binder<UserLimitEntity> binder = new Binder<>();
 
@@ -66,7 +64,7 @@ public class RealUserLimitSettingGrid extends Grid<UserLimitEntity> implements S
   public RealUserLimitSettingGrid() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     uls = AppCtxProvider.getBean(UserLimitService.class);
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
 
     TextField limitField = new TextField();
     TextField orderField = new TextField();

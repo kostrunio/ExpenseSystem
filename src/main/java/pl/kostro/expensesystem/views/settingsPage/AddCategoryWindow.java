@@ -17,7 +17,9 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.CategoryEntity;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
+import pl.kostro.expensesystem.model.service.CategoryService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
@@ -25,6 +27,7 @@ public class AddCategoryWindow extends Window {
 
   private Logger logger = LogManager.getLogger();
   private ExpenseSheetService echs;
+  private CategoryService cs;
 
   private final TextField nameField = new TextField(Msg.get("newCategory.label"));
   private SettingsChangeListener listener;
@@ -35,14 +38,17 @@ public class AddCategoryWindow extends Window {
       ShowNotification.fieldEmpty(nameField.getCaption());
       return;
     }
-    ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-	echs.addCategory(nameField.getValue(), expenseSheet);
+    ExpenseSheetEntity expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
+    CategoryEntity category = new CategoryEntity(nameField.getValue(), expenseSheet.getCategoryList().size());
+    cs.save(category);
+	echs.addCategory(category, expenseSheet);
     listener.refreshValues();
     close();
   };
 
   public AddCategoryWindow(SettingsChangeListener listener) {
     echs = AppCtxProvider.getBean(ExpenseSheetService.class);
+    cs = AppCtxProvider.getBean(CategoryService.class);
     logger.info("show");
     this.listener = listener;
     setModal(true);

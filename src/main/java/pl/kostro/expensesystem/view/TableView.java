@@ -26,7 +26,7 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseEntity;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.UserEntity;
 import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
@@ -39,7 +39,7 @@ public class TableView extends TableDesign {
 
   private Logger logger = LogManager.getLogger();
   private LocalDate date;
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
   private FooterRow footer = expenseGrid.prependFooterRow();
   private Column<ExpenseEntity, LocalDate> dateColumn;
   private Column<ExpenseEntity, String> categoryColumn;
@@ -79,7 +79,7 @@ public class TableView extends TableDesign {
   public TableView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("create");
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
     
     excelFileDownloader.extend(exportButton);

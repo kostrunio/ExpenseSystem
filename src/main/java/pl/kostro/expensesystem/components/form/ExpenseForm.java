@@ -12,7 +12,7 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.ExpenseEntity;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Calculator;
@@ -24,7 +24,7 @@ public class ExpenseForm extends ExpenseFormDesign {
   private ExpenseService es;
   private ExpenseSheetService eshs;
   
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
   private ExpenseEntity expense;
   private TableView view;
 
@@ -53,6 +53,7 @@ public class ExpenseForm extends ExpenseFormDesign {
         Msg.get("expensForm.removeYes"), Msg.get("expensForm.removeNo"), dialog -> {
           if (dialog.isConfirmed()) {
             eshs.removeExpense(expense, expenseSheet);
+            es.remove(expense);
             view.refreshExpenses();
           }
     });
@@ -109,7 +110,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     setVisible(false);
   }
 
-  public void prepare(ExpenseSheet expenseSheet, TableView view) {
+  public void prepare(ExpenseSheetEntity expenseSheet, TableView view) {
     this.expenseSheet = expenseSheet;
     this.view = view;
     categoryBox.setItems(expenseSheet.getCategoryList());

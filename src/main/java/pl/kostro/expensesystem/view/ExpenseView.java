@@ -23,7 +23,7 @@ import com.vaadin.ui.UI;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.UserEntity;
 import pl.kostro.expensesystem.model.UserLimitEntity;
@@ -39,7 +39,7 @@ public class ExpenseView extends ExpenseDesign implements View {
 
   private Logger logger = LogManager.getLogger();
   private LocalDate date = LocalDate.now();
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
   private Button.ClickListener editClick = event -> {
     root.removeAllComponents();
     root.addComponent(new SettingsView());
@@ -230,7 +230,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     eshs.fetchCategoryList(expenseSheet);
     eshs.fetchExpenseList(expenseSheet);
     eshs.fetchUserLimitList(expenseSheet);
-    VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
+    VaadinSession.getCurrent().setAttribute(ExpenseSheetEntity.class, expenseSheet);
     MainView menuView = ((ExpenseSystemUI) getUI()).getMainView();
     menuView.setActiveView("expenseSheet/" + expenseSheet.getId());
     if (expenseSheet.getSecretKey() == null) {

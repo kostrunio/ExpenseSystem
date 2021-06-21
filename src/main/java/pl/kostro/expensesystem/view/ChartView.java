@@ -23,7 +23,7 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.grid.ChartGrid;
 import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.UserEntity;
 import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
@@ -33,19 +33,18 @@ import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.utils.expense.YearCategory;
 import pl.kostro.expensesystem.view.design.ChartDesign;
 
-@SuppressWarnings("serial")
 public class ChartView extends ChartDesign {
 
   private Logger logger = LogManager.getLogger();
   private ExpenseSheetService eshs;
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
   private ValueChangeListener<Set<CategoryEntity>> categoryChanged = event -> refreshFilter();
   private ValueChangeListener<Set<UserLimitEntity>> userChanged = event -> refreshFilter();
 
   public ChartView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("create");
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     expenseSheet.setFilter(new Filter(null, null, null, null));
     setCaption();
     categoryCombo.addValueChangeListener(categoryChanged);

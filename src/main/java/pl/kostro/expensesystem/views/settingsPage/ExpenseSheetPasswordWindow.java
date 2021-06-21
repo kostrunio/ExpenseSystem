@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
 import com.vaadin.event.ShortcutAction.KeyCode;
@@ -20,7 +20,6 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
-import pl.kostro.expensesystem.utils.Encryption;
 
 /**
  * Simple name editor Window.
@@ -33,7 +32,7 @@ public class ExpenseSheetPasswordWindow extends Window {
 
   private ClickListener cancelClicked = event -> close();
   private ClickListener saveClicked = event -> {
-    ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    ExpenseSheetEntity expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     expenseSheet.setSecretKey(passwordField.getValue());
     if (expenseSheet.getUserLimitList().size() > 0) {
       try {
@@ -60,7 +59,7 @@ public class ExpenseSheetPasswordWindow extends Window {
   private Component buildContent() {
     VerticalLayout result = new VerticalLayout();
 
-    passwordField.setCaption(MessageFormat.format(Msg.get("expenseSheetPassord.label"), VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getName()));
+    passwordField.setCaption(MessageFormat.format(Msg.get("expenseSheetPassord.label"), VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getName()));
     passwordField.focus();
 
     result.addComponent(passwordField);

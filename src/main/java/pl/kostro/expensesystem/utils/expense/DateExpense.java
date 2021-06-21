@@ -9,7 +9,7 @@ import java.util.Map;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseEntity;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 
@@ -66,7 +66,7 @@ public class DateExpense {
 		return "DateExpense: " + date + ";" + sum;
 	}
 	
-	public void addExpense(ExpenseSheet expenseSheet, ExpenseEntity expense) {
+	public void addExpense(ExpenseSheetEntity expenseSheet, ExpenseEntity expense) {
 		setSum(getSum().add(expense.getValue().multiply(expense.getCategory().getMultiplier()).setScale(2, RoundingMode.HALF_UP)));
 		CategoryExpense categoryExpense = getCategoryExpenseMap().get(expense.getCategory());
 		if (categoryExpense == null) {

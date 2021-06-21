@@ -51,7 +51,7 @@ public class ExpenseEntity extends AbstractEntity {
   private boolean notify;
   @ManyToOne
   @JoinColumn(name = "e_es_id")
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
   @Transient
   private boolean encoded = true;
 
@@ -60,7 +60,7 @@ public class ExpenseEntity extends AbstractEntity {
   }
 
   public ExpenseEntity(LocalDate date, String formula, CategoryEntity category, UserEntity user, String comment, boolean notify,
-                       ExpenseSheet expenseSheet) {
+                       ExpenseSheetEntity expenseSheet) {
     this.date = date;
     setFormula(formula);
     this.category = category;
@@ -148,11 +148,11 @@ public class ExpenseEntity extends AbstractEntity {
     this.notify = notify;
   }
 
-  public ExpenseSheet getExpenseSheet() {
+  public ExpenseSheetEntity getExpenseSheet() {
     return expenseSheet;
   }
 
-  public void setExpenseSheet(ExpenseSheet expenseSheet) {
+  public void setExpenseSheet(ExpenseSheetEntity expenseSheet) {
     this.expenseSheet = expenseSheet;
   }
 

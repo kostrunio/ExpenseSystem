@@ -1,7 +1,6 @@
 package pl.kostro.expensesystem.model.service;
 
 import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.ExpenseSheet;
 
 public interface CategoryService {
     void save(CategoryEntity category);

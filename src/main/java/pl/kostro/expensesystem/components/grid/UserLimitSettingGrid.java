@@ -17,7 +17,7 @@ import com.vaadin.ui.UI;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
@@ -35,7 +35,7 @@ public class UserLimitSettingGrid extends Grid<UserLimitEntity> implements Setti
   private TextField orderField = new TextField();
   private TextField continuousField = new TextField();
 
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
   
   private Binder<UserLimitEntity> binder = new Binder<>();
 
@@ -52,7 +52,7 @@ public class UserLimitSettingGrid extends Grid<UserLimitEntity> implements Setti
             new Object[] { getItem().getUser().getName() }),
         Msg.get("settingsPage.removeUserYes"), Msg.get("settingsPage.removeUserNo"), dialog -> {
           if (dialog.isConfirmed()) {
-            ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+            ExpenseSheetEntity expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
             UserLimitEntity userLimit = getItem();
             expenseSheet.getUserLimitList().remove(userLimit);
             uls.remove(userLimit);
@@ -64,7 +64,7 @@ public class UserLimitSettingGrid extends Grid<UserLimitEntity> implements Setti
   public UserLimitSettingGrid() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     uls = AppCtxProvider.getBean(UserLimitService.class);
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
 
     Binder.Binding<UserLimitEntity, String> limitBinder = binder.forField(limitField)
         .bind(userLimit -> userLimit.getLimit().toString(), (userLimit, value) -> userLimit.setLimit(new BigDecimal(value.replaceAll(",", "."))));

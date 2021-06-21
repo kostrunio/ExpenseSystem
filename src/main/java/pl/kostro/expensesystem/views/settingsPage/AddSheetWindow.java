@@ -19,16 +19,20 @@ import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.RealUserEntity;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.model.service.RealUserService;
+import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
-@SuppressWarnings("serial")
 public class AddSheetWindow extends Window {
 
   private Logger logger = LogManager.getLogger();
   private ExpenseSheetService eshs;
+  private UserLimitService uls;
+  private RealUserService rus;
 
   private final TextField nameField = new TextField(Msg.get("newSheet.label"));
   private final PasswordField passwordField = new PasswordField(Msg.get("newSheet.password"));
@@ -47,14 +51,21 @@ public class AddSheetWindow extends Window {
       return;
     }
     RealUserEntity loggedUser = VaadinSession.getCurrent().getAttribute(RealUserEntity.class);
-    ExpenseSheet expenseSheet = eshs.createExpenseSheet(loggedUser, nameField.getValue(), passwordField.getValue());
-    VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
+    UserLimitEntity userLimit = uls.create(loggedUser, 0);
+    ExpenseSheetEntity expenseSheet = eshs.create(nameField.getValue(), passwordField.getValue(), loggedUser, userLimit);
+    loggedUser.getExpenseSheetList().add(expenseSheet);
+    rus.merge(loggedUser, false);
+    if (loggedUser.getDefaultExpenseSheet() == null)
+      rus.setDefaultExpenseSheet(loggedUser, expenseSheet);
+    VaadinSession.getCurrent().setAttribute(ExpenseSheetEntity.class, expenseSheet);
     ((ExpenseSystemUI)getUI()).getMainView().refresh();
     close();
   };
 
   public AddSheetWindow() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
+    uls = AppCtxProvider.getBean(UserLimitService.class);
+    rus = AppCtxProvider.getBean(RealUserService.class);
     logger.info("show");
     setModal(true);
     setClosable(false);

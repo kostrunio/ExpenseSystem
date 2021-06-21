@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.utils;
 
 import com.vaadin.server.VaadinSession;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -27,7 +27,7 @@ public class Encryption {
     if (input == null) return null;
     try {
       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
-      cipher.init(Cipher.ENCRYPT_MODE, VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getSecretKey());
+      cipher.init(Cipher.ENCRYPT_MODE, VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getSecretKey());
       byte[] cipherText = new byte[cipher.getOutputSize(input.getBytes().length)];
       int ctLength = cipher.update(input.getBytes(), 0, input.getBytes().length, cipherText, 0);
       ctLength += cipher.doFinal(cipherText, ctLength);
@@ -42,7 +42,7 @@ public class Encryption {
   public static String decryption(byte[] cipherText) {
     try {
       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS7Padding", "BC");
-      cipher.init(Cipher.DECRYPT_MODE, VaadinSession.getCurrent().getAttribute(ExpenseSheet.class).getSecretKey());
+      cipher.init(Cipher.DECRYPT_MODE, VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getSecretKey());
       byte[] plainText = new byte[cipher.getOutputSize(cipherText.length)];
       int ptLength = cipher.update(cipherText, 0, cipherText.length, plainText, 0);
       ptLength += cipher.doFinal(plainText, ptLength);

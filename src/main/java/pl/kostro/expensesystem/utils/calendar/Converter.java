@@ -10,7 +10,7 @@ import java.util.Set;
 import org.vaadin.addon.calendar.item.BasicItem;
 
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
@@ -24,8 +24,8 @@ public class Converter {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
   }
 
-  public List<BasicItem> transformExpensesToEvents(ExpenseSheet expenseSheet,
-      Map<LocalDate, DateExpense> dateExpenseMap) {
+  public List<BasicItem> transformExpensesToEvents(ExpenseSheetEntity expenseSheet,
+                                                   Map<LocalDate, DateExpense> dateExpenseMap) {
     Set<LocalDate> dateSet = dateExpenseMap.keySet();
     List<BasicItem> calendarEvents = new ArrayList<>();
     BasicItem event;

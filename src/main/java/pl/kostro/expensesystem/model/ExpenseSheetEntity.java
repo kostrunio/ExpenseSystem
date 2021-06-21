@@ -29,7 +29,7 @@ import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
 
 @Entity
 @Table(name = "expense_sheets")
-public class ExpenseSheet extends AbstractEntity {
+public class ExpenseSheetEntity extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")

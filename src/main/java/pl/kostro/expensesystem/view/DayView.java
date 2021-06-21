@@ -24,7 +24,7 @@ import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseEntity;
-import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
@@ -39,7 +39,7 @@ public class DayView extends DayDesign {
   private ExpenseSheetService eshs;
 
   private Logger logger = LogManager.getLogger();
-  private ExpenseSheet expenseSheet;
+  private ExpenseSheetEntity expenseSheet;
   private LocalDate date;
   private CategoryEntity category;
   private ExpenseEntity expense;
@@ -77,6 +77,7 @@ public class DayView extends DayDesign {
           Msg.get("category.removeYes"), Msg.get("category.removeNo"), dialog -> {
             if (dialog.isConfirmed()) {
               eshs.removeExpense(expense, expenseSheet);
+              es.remove(expense);
               prepareCategoryListLayout();
               prepareExpenseListLayout();
             }
@@ -85,14 +86,17 @@ public class DayView extends DayDesign {
   };
   private Button.ClickListener saveClick = event -> {
     if (userBox.getValue() instanceof UserLimitEntity) {
-      if (modify)
+      if (modify) {
         eshs.removeExpense(expense, expenseSheet);
+        es.remove(expense);
+      }
       expense.setUser(userBox.getValue().getUser());
       expense.setFormula(formulaField.getValue().startsWith("=") ? formulaField.getValue().substring(1) : formulaField.getValue());
       if (commentBox.getValue() != null)
         expense.setComment(commentBox.getValue().toString());
       expense.setNotify(notifyBox.getValue());
       expense.setExpenseSheet(expenseSheet);
+      es.save(expense);
       eshs.addExpense(expense, expenseSheet);
       prepareCategoryListLayout();
       prepareExpenseListLayout();
@@ -110,7 +114,7 @@ public class DayView extends DayDesign {
     es = AppCtxProvider.getBean(ExpenseService.class);
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("create");
-    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
+    expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     category = expenseSheet.getCategoryList().get(0);
     date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
 
