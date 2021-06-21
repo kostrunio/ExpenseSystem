@@ -22,7 +22,7 @@ import pl.kostro.expensesystem.utils.Encryption;
 
 @Entity
 @Table(name = "users_limits")
-public class UserLimit extends AbstractEntity {
+public class UserLimitEntity extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
@@ -44,11 +44,11 @@ public class UserLimit extends AbstractEntity {
   @Column(name = "ul_cont_summary")
   private boolean continuousSummary;
 
-  public UserLimit() {
+  public UserLimitEntity() {
     super();
   }
 
-  public UserLimit(UserEntity user, int order) {
+  public UserLimitEntity(UserEntity user, int order) {
     this.user = user;
     setLimit(new BigDecimal(0));
     this.order = order;
@@ -106,7 +106,7 @@ public class UserLimit extends AbstractEntity {
 
   public List<UserSummaryEntity> getUserSummaryList() {
     if (userSummaryList == null)
-      userSummaryList = new ArrayList<UserSummaryEntity>();
+      userSummaryList = new ArrayList<>();
     return userSummaryList;
   }
 

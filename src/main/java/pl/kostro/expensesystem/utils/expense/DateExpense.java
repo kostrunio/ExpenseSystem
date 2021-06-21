@@ -10,7 +10,7 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 
 public class DateExpense {
@@ -19,7 +19,7 @@ public class DateExpense {
   
 	private LocalDate date;
 	private Map<CategoryEntity, CategoryExpense> categoryExpenseMap;
-	private Map<UserLimit, UserLimitExpense> userLimitExpenseMap;
+	private Map<UserLimitEntity, UserLimitExpense> userLimitExpenseMap;
 	private BigDecimal sum = new BigDecimal(0);
 	
 	public DateExpense(LocalDate date) {
@@ -42,12 +42,12 @@ public class DateExpense {
 		this.categoryExpenseMap = categoryExpenseMap;
 	}
 	
-	public Map<UserLimit, UserLimitExpense> getUserLimitExpenseMap() {
+	public Map<UserLimitEntity, UserLimitExpense> getUserLimitExpenseMap() {
 		if (userLimitExpenseMap == null)
-			userLimitExpenseMap = new HashMap<UserLimit, UserLimitExpense>();
+			userLimitExpenseMap = new HashMap<UserLimitEntity, UserLimitExpense>();
 		return userLimitExpenseMap;
 	}
-	public void setUserLimitExpenseMap(Map<UserLimit, UserLimitExpense> userLimitExpenseMap) {
+	public void setUserLimitExpenseMap(Map<UserLimitEntity, UserLimitExpense> userLimitExpenseMap) {
 		this.userLimitExpenseMap = userLimitExpenseMap;
 	}
 
@@ -74,7 +74,7 @@ public class DateExpense {
 			getCategoryExpenseMap().put(expense.getCategory(), categoryExpense);
 		}
 		categoryExpense.addExpense(expense);
-		UserLimit userLimit = eshs.getUserLimitForUser(expenseSheet, expense.getUser());
+		UserLimitEntity userLimit = eshs.getUserLimitForUser(expenseSheet, expense.getUser());
 		UserLimitExpense userLimitExpense = getUserLimitExpenseMap().get(userLimit);
 		if (userLimitExpense == null) {
 			userLimitExpense = new UserLimitExpense(userLimit);

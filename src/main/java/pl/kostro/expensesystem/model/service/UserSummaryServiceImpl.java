@@ -11,12 +11,10 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.UserSummaryEntity;
 import pl.kostro.expensesystem.model.repository.UserLimitRepository;
 import pl.kostro.expensesystem.model.repository.UserSummaryRepository;
-import pl.kostro.expensesystem.notification.ShowNotification;
 
 @Service
 public class UserSummaryServiceImpl implements UserSummaryService {
@@ -32,7 +30,7 @@ public class UserSummaryServiceImpl implements UserSummaryService {
     this.repository = repository;
   }
 
-  public UserSummaryEntity createUserSummary(UserLimit userLimit, LocalDate date) {
+  public UserSummaryEntity createUserSummary(UserLimitEntity userLimit, LocalDate date) {
     LocalDateTime stopper = LocalDateTime.now();
     UserSummaryEntity userSummary = new UserSummaryEntity(date, userLimit.getLimit());
     repository.save(userSummary);
@@ -62,7 +60,7 @@ public class UserSummaryServiceImpl implements UserSummaryService {
     logger.info("encrypt for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public BigDecimal calculateSum(UserLimit userLimit, LocalDate date) {
+  public BigDecimal calculateSum(UserLimitEntity userLimit, LocalDate date) {
     BigDecimal sum = new BigDecimal(0);
     for (UserSummaryEntity userSummary : userLimit.getUserSummaryList()) {
       if (!userSummary.getDate().isAfter(date)) {
@@ -73,7 +71,7 @@ public class UserSummaryServiceImpl implements UserSummaryService {
     return sum;
   }
 
-  public UserSummaryEntity findUserSummary(UserLimit userLimit, LocalDate date) {
+  public UserSummaryEntity findUserSummary(UserLimitEntity userLimit, LocalDate date) {
     Optional<UserSummaryEntity> result = userLimit.getUserSummaryList().parallelStream()
         .filter(us -> us.getDate().isEqual(date))
         .findFirst();

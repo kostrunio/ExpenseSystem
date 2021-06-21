@@ -26,7 +26,7 @@ import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.UserEntity;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
@@ -132,7 +132,7 @@ public class ExpenseView extends ExpenseDesign implements View {
 
   private ValueChangeListener<CategoryEntity> categoryChanged = event -> refreshFilter();
 
-  private ValueChangeListener<UserLimit> userChanged = event -> refreshFilter();
+  private ValueChangeListener<UserLimitEntity> userChanged = event -> refreshFilter();
 
   private ValueChangeListener<String> formulaChanged = event -> refreshFilter();
 
@@ -142,7 +142,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     UserEntity filterUser = null;
     String filterFormula = null;
     String filterComment = null;
-    if (userCombo.getValue() instanceof UserLimit) {
+    if (userCombo.getValue() instanceof UserLimitEntity) {
       filterUser = userCombo.getValue().getUser();
     }
     if (formulaField.getValue() != null) {

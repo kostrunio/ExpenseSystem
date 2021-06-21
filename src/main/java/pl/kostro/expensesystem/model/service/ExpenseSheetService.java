@@ -63,7 +63,7 @@ public class ExpenseSheetService {
     expenseSheet.setEncrypted(true);
     expenseSheet.setSecretKey(key);
     VaadinSession.getCurrent().setAttribute(ExpenseSheet.class, expenseSheet);
-    UserLimit userLimit = new UserLimit(owner, 0);
+    UserLimitEntity userLimit = new UserLimitEntity(owner, 0);
     ulr.save(userLimit);
     expenseSheet.setOwner(owner);
     expenseSheet.setName(name);
@@ -105,7 +105,7 @@ public class ExpenseSheetService {
     for (ExpenseEntity expense : expenseSheet.getExpenseList())
       es.decrypt(expense);
     logger.info("decrypt: userLimit");
-    for (UserLimit userLimit : expenseSheet.getUserLimitList())
+    for (UserLimitEntity userLimit : expenseSheet.getUserLimitList())
       uls.decrypt(userLimit);
   }
 
@@ -118,7 +118,7 @@ public class ExpenseSheetService {
     for (ExpenseEntity expense : expenseSheet.getExpenseList())
       es.encrypt(expense);
     logger.info("encrypt: userLimit");
-    for (UserLimit userLimit : expenseSheet.getUserLimitList())
+    for (UserLimitEntity userLimit : expenseSheet.getUserLimitList())
       uls.encrypt(userLimit);
     logger.info("encrypt for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
@@ -192,7 +192,7 @@ public class ExpenseSheetService {
   }
 
   private void addExpenseToUserLimitMap(ExpenseSheet expenseSheet, ExpenseEntity expense) {
-    UserLimit userLimit = getUserLimitForUser(expenseSheet, expense.getUser());
+    UserLimitEntity userLimit = getUserLimitForUser(expenseSheet, expense.getUser());
     UserLimitExpense userLimitExpense = expenseSheet.getUserLimitExpenseMap().get(userLimit);
     if (userLimitExpense == null) {
       userLimitExpense = new UserLimitExpense(userLimit);
@@ -220,8 +220,8 @@ public class ExpenseSheetService {
       dateExpense.removeExpense(expense);
   }
 
-  public UserLimit getUserLimitForUser(ExpenseSheet expenseSheet, UserEntity user) {
-    Optional<UserLimit> result = expenseSheet.getUserLimitList().parallelStream()
+  public UserLimitEntity getUserLimitForUser(ExpenseSheet expenseSheet, UserEntity user) {
+    Optional<UserLimitEntity> result = expenseSheet.getUserLimitList().parallelStream()
       .filter(ul -> ul.getUser().equals(user))
       .findFirst();
     if (result.isPresent())
@@ -283,7 +283,7 @@ public class ExpenseSheetService {
     return expenseSheet.getCategoryExpenseMap().get(category);
   }
 
-  public UserLimitExpense getUserLimitExpenseMap(ExpenseSheet expenseSheet, UserLimit userLimit) {
+  public UserLimitExpense getUserLimitExpenseMap(ExpenseSheet expenseSheet, UserLimitEntity userLimit) {
     return expenseSheet.getUserLimitExpenseMap().get(userLimit);
   }
 
@@ -348,22 +348,22 @@ public class ExpenseSheetService {
   }
 
 
-  public List<UserLimit> getUserLimitListDesc(ExpenseSheet expenseSheet) {
-    List<UserLimit> returnList = new ArrayList<UserLimit>(expenseSheet.getUserLimitList());
+  public List<UserLimitEntity> getUserLimitListDesc(ExpenseSheet expenseSheet) {
+    List<UserLimitEntity> returnList = new ArrayList<UserLimitEntity>(expenseSheet.getUserLimitList());
     Collections.reverse(returnList);
     return returnList;
   }
 
-  public List<UserLimit> getUserLimitListRealUser(ExpenseSheet expenseSheet) {
-    List<UserLimit> userLimitList = expenseSheet.getUserLimitList().parallelStream()
+  public List<UserLimitEntity> getUserLimitListRealUser(ExpenseSheet expenseSheet) {
+    List<UserLimitEntity> userLimitList = expenseSheet.getUserLimitList().parallelStream()
         .filter(uL -> uL.getUser() instanceof RealUserEntity)
         .collect(Collectors.toList());
     return userLimitList;
   }
 
-  public List<UserLimit> getUserLimitListNotRealUser(ExpenseSheet expenseSheet) {
-    List<UserLimit> userLimitList = new ArrayList<UserLimit>();
-    for (UserLimit userLimit : expenseSheet.getUserLimitList())
+  public List<UserLimitEntity> getUserLimitListNotRealUser(ExpenseSheet expenseSheet) {
+    List<UserLimitEntity> userLimitList = new ArrayList<UserLimitEntity>();
+    for (UserLimitEntity userLimit : expenseSheet.getUserLimitList())
       if (!(userLimit.getUser() instanceof RealUserEntity))
         userLimitList.add(userLimit);
     return userLimitList;
@@ -430,7 +430,7 @@ public class ExpenseSheetService {
     LocalDateTime stopper = LocalDateTime.now();
     if (expenseSheet.getFilter() != null)
       return;
-    for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
+    for (UserLimitEntity userLimit : expenseSheet.getUserLimitList()) {
       uls.fetchUserSummaryList(userLimit);
       logger.debug("checkSummary for: {} at {}", userLimit, date);
       UserSummaryEntity userSummary = uss.findUserSummary(userLimit, date);

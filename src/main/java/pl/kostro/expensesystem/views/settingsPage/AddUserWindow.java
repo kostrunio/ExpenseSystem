@@ -18,6 +18,8 @@ import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
+import pl.kostro.expensesystem.model.UserLimitEntity;
+import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.model.service.UserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
@@ -27,6 +29,7 @@ public class AddUserWindow extends Window {
   private Logger logger = LogManager.getLogger();
   private UserLimitService uls;
   private UserService us;
+  private ExpenseSheetService eshs;
 
   private final TextField nameField = new TextField(Msg.get("newUser.label"));
   private SettingsChangeListener listener;
@@ -38,7 +41,9 @@ public class AddUserWindow extends Window {
       return;
     }
     ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    uls.createUserLimit(expenseSheet, us.createAndSave(nameField.getValue()));
+    UserLimitEntity userLimit = uls.create(us.createAndSave(nameField.getValue()), expenseSheet.getUserLimitList().size());
+    expenseSheet.getUserLimitList().add(userLimit);
+    eshs.merge(expenseSheet);
     listener.refreshValues();
     close();
   };
@@ -46,6 +51,7 @@ public class AddUserWindow extends Window {
   public AddUserWindow(SettingsChangeListener listener) {
     uls = AppCtxProvider.getBean(UserLimitService.class);
     us = AppCtxProvider.getBean(UserService.class);
+    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("show");
     this.listener = listener;
     setModal(true);

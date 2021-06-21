@@ -25,7 +25,7 @@ import pl.kostro.expensesystem.components.grid.ChartGrid;
 import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserEntity;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.YearValue;
@@ -40,7 +40,7 @@ public class ChartView extends ChartDesign {
   private ExpenseSheetService eshs;
   private ExpenseSheet expenseSheet;
   private ValueChangeListener<Set<CategoryEntity>> categoryChanged = event -> refreshFilter();
-  private ValueChangeListener<Set<UserLimit>> userChanged = event -> refreshFilter();
+  private ValueChangeListener<Set<UserLimitEntity>> userChanged = event -> refreshFilter();
 
   public ChartView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
@@ -66,8 +66,8 @@ public class ChartView extends ChartDesign {
     String filterFormula = null;
     String filterComment = null;
     List<UserEntity> users = new ArrayList<UserEntity>();
-    Set<UserLimit> setUserLimit = (Set<UserLimit>) userCombo.getValue();
-    for (Iterator<UserLimit> iter = setUserLimit.iterator(); iter.hasNext();)
+    Set<UserLimitEntity> setUserLimit = (Set<UserLimitEntity>) userCombo.getValue();
+    for (Iterator<UserLimitEntity> iter = setUserLimit.iterator(); iter.hasNext();)
       users.add(iter.next().getUser());
 
     List<CategoryEntity> categories = new ArrayList<CategoryEntity>();

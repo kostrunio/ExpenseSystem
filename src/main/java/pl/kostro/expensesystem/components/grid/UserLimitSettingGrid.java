@@ -18,14 +18,13 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.views.settingsPage.AddUserWindow;
 import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 
-@SuppressWarnings("serial")
-public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsChangeListener {
+public class UserLimitSettingGrid extends Grid<UserLimitEntity> implements SettingsChangeListener {
   
   private ExpenseSheetService eshs;
   private UserLimitService uls;
@@ -38,11 +37,11 @@ public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsCha
 
   private ExpenseSheet expenseSheet;
   
-  private Binder<UserLimit> binder = new Binder<>();
+  private Binder<UserLimitEntity> binder = new Binder<>();
 
-  private SelectionListener<UserLimit> itemSelected = event -> deleteUserLimitButton.setEnabled(event.getAllSelectedItems().size() != 0);
-  private EditorOpenListener<UserLimit> editorOpen = event -> binder.setBean(event.getBean());
-  private EditorSaveListener<UserLimit> saveUserLimit = event -> {
+  private SelectionListener<UserLimitEntity> itemSelected = event -> deleteUserLimitButton.setEnabled(event.getAllSelectedItems().size() != 0);
+  private EditorOpenListener<UserLimitEntity> editorOpen = event -> binder.setBean(event.getBean());
+  private EditorSaveListener<UserLimitEntity> saveUserLimit = event -> {
     uls.merge(event.getBean());
     refreshValues();
   };
@@ -54,7 +53,9 @@ public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsCha
         Msg.get("settingsPage.removeUserYes"), Msg.get("settingsPage.removeUserNo"), dialog -> {
           if (dialog.isConfirmed()) {
             ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-            uls.removeUserLimit(expenseSheet, getItem());
+            UserLimitEntity userLimit = getItem();
+            expenseSheet.getUserLimitList().remove(userLimit);
+            uls.remove(userLimit);
             refreshValues();
           }
         });
@@ -65,23 +66,23 @@ public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsCha
     uls = AppCtxProvider.getBean(UserLimitService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
 
-    Binder.Binding<UserLimit, String> limitBinder = binder.forField(limitField)
+    Binder.Binding<UserLimitEntity, String> limitBinder = binder.forField(limitField)
         .bind(userLimit -> userLimit.getLimit().toString(), (userLimit, value) -> userLimit.setLimit(new BigDecimal(value.replaceAll(",", "."))));
-    Binder.Binding<UserLimit, String> orderBinder = binder.forField(orderField)
+    Binder.Binding<UserLimitEntity, String> orderBinder = binder.forField(orderField)
         .bind(userLimit -> userLimit.getOrder()+"", (userLimit, value) -> userLimit.setOrder(Integer.parseInt(value)));
-    Binder.Binding<UserLimit, String> continuousBinder = binder.forField(continuousField)
+    Binder.Binding<UserLimitEntity, String> continuousBinder = binder.forField(continuousField)
         .bind(userLimit -> userLimit.isContinuousSummary()+"", (userLimit, value) -> userLimit.setContinuousSummary(Boolean.parseBoolean(value)));
     
     addColumn(item -> item.getUser().getName())
       .setCaption(Msg.get("settingsPage.userName"))
-      .setEditorComponent(new TextField(), UserLimit::setUser);
-    addColumn(UserLimit::getLimit)
+      .setEditorComponent(new TextField(), UserLimitEntity::setUser);
+    addColumn(UserLimitEntity::getLimit)
       .setCaption(Msg.get("settingsPage.userLimit"))
       .setEditorBinding(limitBinder);
-    addColumn(UserLimit::getOrder)
+    addColumn(UserLimitEntity::getOrder)
       .setCaption(Msg.get("settingsPage.userOrder"))
       .setEditorBinding(orderBinder);
-    addColumn(UserLimit::isContinuousSummary)
+    addColumn(UserLimitEntity::isContinuousSummary)
       .setCaption(Msg.get("settingsPage.userContinuous"))
       .setEditorBinding(continuousBinder);
 
@@ -108,7 +109,7 @@ public class UserLimitSettingGrid extends Grid<UserLimit> implements SettingsCha
 	  setItems(eshs.getUserLimitListNotRealUser(expenseSheet));
   }
 
-  private UserLimit getItem() {
+  private UserLimitEntity getItem() {
 	  return getSelectedItems().iterator().next();
   }
 }

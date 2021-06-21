@@ -12,7 +12,7 @@ import com.vaadin.ui.StyleGenerator;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.UserLimitSumLeft;
@@ -32,19 +32,16 @@ public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
     addColumn(item -> item.getUserLimit().getUser().getName()).setCaption(Msg.get("userLimitTable.user"));
     addColumn(UserLimitSumLeft::getSum).setCaption(Msg.get("userLimitTable.sum"));
     addColumn(UserLimitSumLeft::getLeft).setCaption(Msg.get("userLimitTable.left"));
-    setStyleGenerator(new StyleGenerator<UserLimitSumLeft>() {
-      @Override
-      public String apply(UserLimitSumLeft item) {
-        double rows = getHeightByRows();
-        int row = item.getUserLimit().getOrder();
-        return "" + row % rows;
-      }
+    setStyleGenerator((StyleGenerator<UserLimitSumLeft>) item -> {
+      double rows = getHeightByRows();
+      int row = item.getUserLimit().getOrder();
+      return "" + row % rows;
     });
   }
   
   public void fulfill(LocalDate date) {
     List<UserLimitSumLeft> values = new ArrayList<>();
-    for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
+    for (UserLimitEntity userLimit : expenseSheet.getUserLimitList()) {
       BigDecimal actSum;
       if (expenseSheet.getUserLimitExpenseMap().get(userLimit) != null)
         actSum = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();

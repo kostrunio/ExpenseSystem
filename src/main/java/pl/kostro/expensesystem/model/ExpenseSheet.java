@@ -47,7 +47,7 @@ public class ExpenseSheet extends AbstractEntity {
   @OneToMany(cascade = CascadeType.REMOVE)
   @JoinColumn(name = "ul_es_id")
   @OrderBy("order")
-  private List<UserLimit> userLimitList;
+  private List<UserLimitEntity> userLimitList;
   @OneToMany(mappedBy = "expenseSheet", cascade = CascadeType.REMOVE)
   @OrderBy
   private List<ExpenseEntity> expenseList;
@@ -64,7 +64,7 @@ public class ExpenseSheet extends AbstractEntity {
   @Transient
   private Map<CategoryEntity, CategoryExpense> categoryExpenseMap;
   @Transient
-  private Map<UserLimit, UserLimitExpense> userLimitExpenseMap;
+  private Map<UserLimitEntity, UserLimitExpense> userLimitExpenseMap;
   @Transient
   private Filter filter;
   @Transient
@@ -106,13 +106,13 @@ public class ExpenseSheet extends AbstractEntity {
     this.categoryList = categoryList;
   }
 
-  public List<UserLimit> getUserLimitList() {
+  public List<UserLimitEntity> getUserLimitList() {
     if (userLimitList == null)
-      userLimitList = new ArrayList<UserLimit>();
+      userLimitList = new ArrayList<UserLimitEntity>();
     return userLimitList;
   }
 
-  public void setUserLimitList(List<UserLimit> userLimitList) {
+  public void setUserLimitList(List<UserLimitEntity> userLimitList) {
     this.userLimitList = userLimitList;
   }
 
@@ -176,13 +176,13 @@ public class ExpenseSheet extends AbstractEntity {
     this.categoryExpenseMap = categoryExpenseMap;
   }
 
-  public Map<UserLimit, UserLimitExpense> getUserLimitExpenseMap() {
+  public Map<UserLimitEntity, UserLimitExpense> getUserLimitExpenseMap() {
     if (userLimitExpenseMap == null)
-      userLimitExpenseMap = new HashMap<UserLimit, UserLimitExpense>();
+      userLimitExpenseMap = new HashMap<UserLimitEntity, UserLimitExpense>();
     return userLimitExpenseMap;
   }
 
-  public void setUserLimitExpenseMap(Map<UserLimit, UserLimitExpense> userLimitExpenseMap) {
+  public void setUserLimitExpenseMap(Map<UserLimitEntity, UserLimitExpense> userLimitExpenseMap) {
     this.userLimitExpenseMap = userLimitExpenseMap;
   }
 

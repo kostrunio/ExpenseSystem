@@ -25,7 +25,7 @@ import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Calculator;
@@ -84,7 +84,7 @@ public class DayView extends DayDesign {
     }
   };
   private Button.ClickListener saveClick = event -> {
-    if (userBox.getValue() instanceof UserLimit) {
+    if (userBox.getValue() instanceof UserLimitEntity) {
       if (modify)
         eshs.removeExpense(expense, expenseSheet);
       expense.setUser(userBox.getValue().getUser());

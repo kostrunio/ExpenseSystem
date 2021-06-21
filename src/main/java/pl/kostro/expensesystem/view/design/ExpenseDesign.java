@@ -15,7 +15,7 @@ import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 
 @SuppressWarnings("serial")
 public class ExpenseDesign extends Panel {
@@ -40,7 +40,7 @@ public class ExpenseDesign extends Panel {
   protected Panel searchPanel;
   protected HorizontalLayout searchLayout;
   protected ComboBox<CategoryEntity> categoryCombo;
-  protected ComboBox<UserLimit> userCombo;
+  protected ComboBox<UserLimitEntity> userCombo;
   protected TextField formulaField;
   protected ComboBox<String> commentCombo;
 

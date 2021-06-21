@@ -28,7 +28,7 @@ import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserEntity;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.view.design.TableDesign;
@@ -51,7 +51,7 @@ public class TableView extends TableDesign {
   
   private HasValue.ValueChangeListener filterChanged = event -> {
     UserEntity filterUser = null;
-    if (userBox.getValue() instanceof UserLimit) {
+    if (userBox.getValue() instanceof UserLimitEntity) {
       filterUser = userBox.getValue().getUser();
     }
     List<CategoryEntity> categories = new ArrayList<>();

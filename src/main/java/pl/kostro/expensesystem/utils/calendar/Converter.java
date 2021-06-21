@@ -11,7 +11,7 @@ import org.vaadin.addon.calendar.item.BasicItem;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
 import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
@@ -33,7 +33,7 @@ public class Converter {
       DateExpense dateExpense = dateExpenseMap.get(date);
 
       // userLimit events
-      for (UserLimit userLimit : eshs.getUserLimitListDesc(expenseSheet)) {
+      for (UserLimitEntity userLimit : eshs.getUserLimitListDesc(expenseSheet)) {
         UserLimitExpense userLimitExpenseMap = dateExpense.getUserLimitExpenseMap().get(userLimit);
         if (userLimitExpenseMap == null)
           continue;

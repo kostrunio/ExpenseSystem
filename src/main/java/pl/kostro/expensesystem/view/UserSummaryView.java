@@ -15,7 +15,7 @@ import com.vaadin.ui.components.grid.EditorSaveListener;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 import pl.kostro.expensesystem.model.UserSummaryEntity;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.view.design.UserSummaryDesign;
@@ -30,7 +30,7 @@ public class UserSummaryView extends UserSummaryDesign {
   private TextField limitField = new TextField();
   private TextField sumField = new TextField();
 
-  private SingleSelectionListener<UserLimit> userChanged = event -> {
+  private SingleSelectionListener<UserLimitEntity> userChanged = event -> {
     if (event.getSelectedItem().isPresent()) {
       userSummaryGrid.setItems(expenseSheet.getUserLimitList().parallelStream()
           .filter(userLimit -> userLimit.equals(event.getSelectedItem().get()))

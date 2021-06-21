@@ -6,20 +6,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import pl.kostro.expensesystem.model.ExpenseEntity;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.UserLimitEntity;
 
 public class UserLimitExpense {
-	private UserLimit userLimit;
+	private UserLimitEntity userLimit;
 	private List<ExpenseEntity> expenseList;
 	private BigDecimal sum = new BigDecimal(0);
 	
-	public UserLimitExpense(UserLimit userLimit) {
+	public UserLimitExpense(UserLimitEntity userLimit) {
 		this.userLimit = userLimit;
 	}
-	public UserLimit getUserLimit() {
+	public UserLimitEntity getUserLimit() {
 		return userLimit;
 	}
-	public void setUserLimit(UserLimit userLimit) {
+	public void setUserLimit(UserLimitEntity userLimit) {
 		this.userLimit = userLimit;
 	}
 	
