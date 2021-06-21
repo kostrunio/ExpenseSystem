@@ -22,7 +22,7 @@ import com.vaadin.server.VaadinSession;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.grid.ChartGrid;
-import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
@@ -39,7 +39,7 @@ public class ChartView extends ChartDesign {
   private Logger logger = LogManager.getLogger();
   private ExpenseSheetService eshs;
   private ExpenseSheet expenseSheet;
-  private ValueChangeListener<Set<Category>> categoryChanged = event -> refreshFilter();
+  private ValueChangeListener<Set<CategoryEntity>> categoryChanged = event -> refreshFilter();
   private ValueChangeListener<Set<UserLimit>> userChanged = event -> refreshFilter();
 
   public ChartView() {
@@ -70,9 +70,9 @@ public class ChartView extends ChartDesign {
     for (Iterator<UserLimit> iter = setUserLimit.iterator(); iter.hasNext();)
       users.add(iter.next().getUser());
 
-    List<Category> categories = new ArrayList<Category>();
-    Set<Category> setCategory = (Set<Category>) categoryCombo.getValue();
-    for (Iterator<Category> iter = setCategory.iterator(); iter.hasNext();)
+    List<CategoryEntity> categories = new ArrayList<CategoryEntity>();
+    Set<CategoryEntity> setCategory = (Set<CategoryEntity>) categoryCombo.getValue();
+    for (Iterator<CategoryEntity> iter = setCategory.iterator(); iter.hasNext();)
       categories.add(iter.next());
 
     expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));

@@ -43,7 +43,7 @@ public class ExpenseSheet extends AbstractEntity {
   @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
   @JoinColumn(name = "c_es_id")
   @OrderBy("order")
-  private List<Category> categoryList;
+  private List<CategoryEntity> categoryList;
   @OneToMany(cascade = CascadeType.REMOVE)
   @JoinColumn(name = "ul_es_id")
   @OrderBy("order")
@@ -62,7 +62,7 @@ public class ExpenseSheet extends AbstractEntity {
   @Transient
   private Map<LocalDate, DateExpense> dateExpenseMap;
   @Transient
-  private Map<Category, CategoryExpense> categoryExpenseMap;
+  private Map<CategoryEntity, CategoryExpense> categoryExpenseMap;
   @Transient
   private Map<UserLimit, UserLimitExpense> userLimitExpenseMap;
   @Transient
@@ -96,13 +96,13 @@ public class ExpenseSheet extends AbstractEntity {
     this.name = name;
   }
 
-  public List<Category> getCategoryList() {
+  public List<CategoryEntity> getCategoryList() {
     if (categoryList == null)
-      categoryList = new ArrayList<Category>();
+      categoryList = new ArrayList<CategoryEntity>();
     return categoryList;
   }
 
-  public void setCategoryList(List<Category> categoryList) {
+  public void setCategoryList(List<CategoryEntity> categoryList) {
     this.categoryList = categoryList;
   }
 
@@ -166,13 +166,13 @@ public class ExpenseSheet extends AbstractEntity {
     this.dateExpenseMap = dateExpenseMap;
   }
 
-  public Map<Category, CategoryExpense> getCategoryExpenseMap() {
+  public Map<CategoryEntity, CategoryExpense> getCategoryExpenseMap() {
     if (categoryExpenseMap == null)
-      categoryExpenseMap = new HashMap<Category, CategoryExpense>();
+      categoryExpenseMap = new HashMap<CategoryEntity, CategoryExpense>();
     return categoryExpenseMap;
   }
 
-  public void setCategoryExpenseMap(Map<Category, CategoryExpense> categoryExpenseMap) {
+  public void setCategoryExpenseMap(Map<CategoryEntity, CategoryExpense> categoryExpenseMap) {
     this.categoryExpenseMap = categoryExpenseMap;
   }
 

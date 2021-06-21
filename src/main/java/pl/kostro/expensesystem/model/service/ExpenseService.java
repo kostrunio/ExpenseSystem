@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.User;
@@ -71,7 +71,7 @@ public class ExpenseService {
     return expense.getValue().toString();
   }
 
-  public Expense prepareNewExpense(ExpenseSheet expenseSheet, LocalDate date, Category category, User user) {
+  public Expense prepareNewExpense(ExpenseSheet expenseSheet, LocalDate date, CategoryEntity category, User user) {
     return new Expense(date, "", category, user, "", date.isAfter(LocalDate.now()) ? true : false, expenseSheet);
   }
 

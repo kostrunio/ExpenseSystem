@@ -6,24 +6,23 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.Expense;
 
-@SuppressWarnings("serial")
 public class CategoryExpense implements Serializable {
-  private Category category;
+  private CategoryEntity category;
   private List<Expense> expenseList;
   private BigDecimal sum = new BigDecimal(0);
 
-  public CategoryExpense(Category category) {
+  public CategoryExpense(CategoryEntity category) {
     this.category = category;
   }
 
-  public Category getCategory() {
+  public CategoryEntity getCategory() {
     return category;
   }
 
-  public void setCategory(Category category) {
+  public void setCategory(CategoryEntity category) {
     this.category = category;
   }
 

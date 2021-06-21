@@ -18,14 +18,13 @@ import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.service.CategoryService;
+import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 
-@SuppressWarnings("serial")
 public class AddCategoryWindow extends Window {
 
   private Logger logger = LogManager.getLogger();
-  private CategoryService cs;
+  private ExpenseSheetService echs;
 
   private final TextField nameField = new TextField(Msg.get("newCategory.label"));
   private SettingsChangeListener listener;
@@ -37,13 +36,13 @@ public class AddCategoryWindow extends Window {
       return;
     }
     ExpenseSheet expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);
-    cs.createCategory(expenseSheet, nameField.getValue());
+	echs.addCategory(nameField.getValue(), expenseSheet);
     listener.refreshValues();
     close();
   };
 
   public AddCategoryWindow(SettingsChangeListener listener) {
-    cs = AppCtxProvider.getBean(CategoryService.class);
+    echs = AppCtxProvider.getBean(ExpenseSheetService.class);
     logger.info("show");
     this.listener = listener;
     setModal(true);

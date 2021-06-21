@@ -24,7 +24,7 @@ import com.vaadin.ui.components.grid.FooterRow;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.User;
@@ -61,8 +61,8 @@ public class TableView extends TableDesign {
     if (userBox.getValue() instanceof UserLimit) {
       filterUser = ((UserLimit) userBox.getValue()).getUser();
     }
-    List<Category> categories = new ArrayList<Category>();
-    categories.add((Category) categoryBox.getValue());
+    List<CategoryEntity> categories = new ArrayList<CategoryEntity>();
+    categories.add((CategoryEntity) categoryBox.getValue());
     List<User> users = new ArrayList<User>();
     users.add((User) filterUser);
     expenseSheet.setFilter(new Filter(

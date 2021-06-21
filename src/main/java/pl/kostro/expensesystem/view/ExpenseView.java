@@ -21,13 +21,12 @@ import com.vaadin.ui.UI;
 
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
-import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.User;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.utils.Encryption;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.view.design.ExpenseDesign;
@@ -131,7 +130,7 @@ public class ExpenseView extends ExpenseDesign implements View {
   };
   private NewItemHandler addComment = event -> commentCombo.setValue(event);
 
-  private ValueChangeListener<Category> categoryChanged = event -> refreshFilter();
+  private ValueChangeListener<CategoryEntity> categoryChanged = event -> refreshFilter();
 
   private ValueChangeListener<UserLimit> userChanged = event -> refreshFilter();
 
@@ -152,8 +151,8 @@ public class ExpenseView extends ExpenseDesign implements View {
     if (commentCombo.getValue() != null) {
       filterComment = commentCombo.getValue().toString();
     }
-    List<Category> categories = new ArrayList<Category>();
-    categories.add((Category) categoryCombo.getValue());
+    List<CategoryEntity> categories = new ArrayList<CategoryEntity>();
+    categories.add((CategoryEntity) categoryCombo.getValue());
     List<User> users = new ArrayList<User>();
     users.add((User) filterUser);
     expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));

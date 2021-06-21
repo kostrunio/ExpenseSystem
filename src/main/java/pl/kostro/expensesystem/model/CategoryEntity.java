@@ -15,7 +15,7 @@ import pl.kostro.expensesystem.utils.Encryption;
 
 @Entity
 @Table(name = "categories")
-public class Category extends AbstractEntity {
+public class CategoryEntity extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
@@ -30,11 +30,11 @@ public class Category extends AbstractEntity {
   @Column(name = "c_order")
   private int order;
 
-  public Category() {
+  public CategoryEntity() {
     super();
   }
 
-  public Category(String name, int order) {
+  public CategoryEntity(String name, int order) {
     super();
     setName(name);
     this.multiplier = new BigDecimal(1);

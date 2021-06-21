@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 
 import com.vaadin.server.VaadinSession;
 
-import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
@@ -31,7 +31,6 @@ import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
 import pl.kostro.expensesystem.model.repository.RealUserRepository;
 import pl.kostro.expensesystem.model.repository.UserLimitRepository;
-import pl.kostro.expensesystem.utils.Encryption;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
@@ -49,7 +48,7 @@ public class ExpenseSheetService {
   private RealUserRepository rur;
   
   @Autowired
-  private CategoryService cs;
+  private CategoryServiceImpl cs;
   @Autowired
   private ExpenseService es;
   @Autowired
@@ -101,7 +100,7 @@ public class ExpenseSheetService {
 
   public void decrypt(ExpenseSheet expenseSheet) {
     logger.info("decrypt: category");
-    for (Category category : expenseSheet.getCategoryList())
+    for (CategoryEntity category : expenseSheet.getCategoryList())
       cs.decrypt(category);
     logger.info("decrypt: expense");
     for (Expense expense : expenseSheet.getExpenseList())
@@ -114,7 +113,7 @@ public class ExpenseSheetService {
   public void encrypt(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
     logger.info("encrypt: category");
-    for (Category category : expenseSheet.getCategoryList())
+    for (CategoryEntity category : expenseSheet.getCategoryList())
       cs.encrypt(category);
     logger.info("encrypt: expense");
     for (Expense expense : expenseSheet.getExpenseList())
@@ -235,7 +234,7 @@ public class ExpenseSheetService {
     return commentsList;
   }
 
-  public Set<String> getCommentForCategory(ExpenseSheet expenseSheet, Category category) {
+  public Set<String> getCommentForCategory(ExpenseSheet expenseSheet, CategoryEntity category) {
     LocalDateTime stopper = LocalDateTime.now();
     Set<String> commentsList = expenseSheet.getExpenseList().stream()
         .filter(e -> e.getCategory().equals(category))
@@ -273,7 +272,7 @@ public class ExpenseSheetService {
     return expenseSheet.getDateExpenseMap().get(date);
   }
 
-  public CategoryExpense getCategoryExpenseMap(ExpenseSheet expenseSheet, Category category) {
+  public CategoryExpense getCategoryExpenseMap(ExpenseSheet expenseSheet, CategoryEntity category) {
     return expenseSheet.getCategoryExpenseMap().get(category);
   }
 
@@ -281,17 +280,17 @@ public class ExpenseSheetService {
     return expenseSheet.getUserLimitExpenseMap().get(userLimit);
   }
 
-  public ExpenseSheet moveCategoryUp(ExpenseSheet expenseSheet, Category category) {
+  public ExpenseSheet moveCategoryUp(ExpenseSheet expenseSheet, CategoryEntity category) {
     LocalDateTime stopper = LocalDateTime.now();
     if (category.getOrder() == 0)
       return expenseSheet;
     category.setOrder(category.getOrder() - 1);
-    for (Category cat : expenseSheet.getCategoryList()) {
+    for (CategoryEntity cat : expenseSheet.getCategoryList()) {
       if (cat.getOrder() == category.getOrder())
         if (!cat.equals(category))
           cat.setOrder(cat.getOrder() + 1);
     }
-    Category tmp = expenseSheet.getCategoryList().get(category.getOrder());
+    CategoryEntity tmp = expenseSheet.getCategoryList().get(category.getOrder());
     expenseSheet.getCategoryList().set(category.getOrder() + 1, tmp);
     expenseSheet.getCategoryList().set(category.getOrder(), category);
 
@@ -300,17 +299,17 @@ public class ExpenseSheetService {
     return expenseSheet;
   }
 
-  public ExpenseSheet moveCategoryDown(ExpenseSheet expenseSheet, Category category) {
+  public ExpenseSheet moveCategoryDown(ExpenseSheet expenseSheet, CategoryEntity category) {
     LocalDateTime stopper = LocalDateTime.now();
     if (category.getOrder() == expenseSheet.getCategoryList().size())
       return expenseSheet;
     category.setOrder(category.getOrder() + 1);
-    for (Category cat : expenseSheet.getCategoryList()) {
+    for (CategoryEntity cat : expenseSheet.getCategoryList()) {
       if (cat.getOrder() == category.getOrder())
         if (!cat.equals(category))
           cat.setOrder(cat.getOrder() - 1);
     }
-    Category tmp = expenseSheet.getCategoryList().get(category.getOrder());
+    CategoryEntity tmp = expenseSheet.getCategoryList().get(category.getOrder());
     expenseSheet.getCategoryList().set(category.getOrder() - 1, tmp);
     expenseSheet.getCategoryList().set(category.getOrder(), category);
 
@@ -329,7 +328,7 @@ public class ExpenseSheetService {
       for (int m = 1; m <= 12; m++) {
         firstDay = firstDay.withMonth(m);
         prepareExpenseMap(expenseSheet, firstDay, firstDay.withDayOfMonth(firstDay.lengthOfMonth()), firstDay, firstDay.withDayOfMonth(firstDay.lengthOfMonth()));
-        for (Category category : expenseSheet.getCategoryList()) {
+        for (CategoryEntity category : expenseSheet.getCategoryList()) {
           CategoryExpense categoryExpense = getCategoryExpenseMap(expenseSheet, category);
           if (categoryExpense != null)
             yearCategory.getCategory((m-1), categoryExpense.getCategory()).setSum(categoryExpense.getSum());
@@ -400,5 +399,23 @@ public class ExpenseSheetService {
       expenseSheet.setUserLimitList(attached.getUserLimitList());
       logger.info("fetchUserLimitList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
+  }
+  
+  @Transactional
+  public void addCategory(String name, ExpenseSheet expenseSheet) {
+    CategoryEntity category = new CategoryEntity(name, expenseSheet.getCategoryList().size());
+	cs.save(category);
+	expenseSheet.getCategoryList().add(category);
+    expenseSheet = eshr.save(expenseSheet);
+  }
+  
+  @Transactional
+  public void removeCategory(CategoryEntity category, ExpenseSheet expenseSheet) {
+	expenseSheet.getCategoryList().remove(category);
+    int i = 0;
+    for (CategoryEntity cat : expenseSheet.getCategoryList())
+      cat.setOrder(i++);
+    expenseSheet = eshr.save(expenseSheet);
+	cs.remove(category);
   }
 }

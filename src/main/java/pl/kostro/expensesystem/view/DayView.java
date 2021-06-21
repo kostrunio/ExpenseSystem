@@ -21,7 +21,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
@@ -41,7 +41,7 @@ public class DayView extends DayDesign {
   private Logger logger = LogManager.getLogger();
   private ExpenseSheet expenseSheet;
   private LocalDate date;
-  private Category category;
+  private CategoryEntity category;
   private Expense expense;
   private boolean modify;
 
@@ -60,8 +60,8 @@ public class DayView extends DayDesign {
     addComponent(new MonthView());
   };
   private Button.ClickListener categoryClick = event -> {
-    if (event.getButton().getData() instanceof Category) {
-      category = (Category) event.getButton().getData();
+    if (event.getButton().getData() instanceof CategoryEntity) {
+      category = (CategoryEntity) event.getButton().getData();
       prepareExpenseListLayout();
     }
   };
@@ -144,7 +144,7 @@ public class DayView extends DayDesign {
 
   private void prepareCategoryListLayout() {
     categoryGrid.removeAllComponents();
-    List<Category> categoryList = expenseSheet.getCategoryList();
+    List<CategoryEntity> categoryList = expenseSheet.getCategoryList();
 
     for (int i = 0; i < categoryList.size(); i++) {
       VerticalLayout vertLay = new VerticalLayout();
@@ -153,7 +153,7 @@ public class DayView extends DayDesign {
       vertLay.addStyleName("category-button");
       categoryGrid.addComponent(vertLay);
 
-      Category category = categoryList.get(i);
+      CategoryEntity category = categoryList.get(i);
       Label catLabel = new Label();
       catLabel.setValue(category.getName());
       vertLay.addComponent(catLabel);

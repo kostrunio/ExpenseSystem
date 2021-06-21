@@ -18,43 +18,40 @@ import com.vaadin.ui.components.grid.EditorSaveListener;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.service.CategoryService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.views.settingsPage.AddCategoryWindow;
 import pl.kostro.expensesystem.views.settingsPage.SettingsChangeListener;
 
-@SuppressWarnings("serial")
-public class CategorySettingGrid extends Grid<Category> implements SettingsChangeListener {
+public class CategorySettingGrid extends Grid<CategoryEntity> implements SettingsChangeListener {
 
   private CategoryService cs;
   private ExpenseSheetService eshs;
   private ExpenseSheet expenseSheet;
   
-  private Binder<Category> binder = new Binder<>();
+  private Binder<CategoryEntity> binder = new Binder<>();
 
   private Button addCategoryButton;
   private Button moveUpCategoryButton;
   private Button moveDownCategoryButton;
   private Button deleteCategoryButton;
   
-  private SelectionListener<Category> itemSelected = event -> {
+  private SelectionListener<CategoryEntity> itemSelected = event -> {
     moveUpCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
     moveDownCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
     deleteCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
   };
-  private EditorOpenListener<Category> editorOpen = event -> binder.setBean(event.getBean());
-  private EditorSaveListener<Category> saveCategory = event -> cs.merge(event.getBean());
+  private EditorOpenListener<CategoryEntity> editorOpen = event -> binder.setBean(event.getBean());
+  private EditorSaveListener<CategoryEntity> saveCategory = event -> cs.save(event.getBean());
   private ClickListener addCategoryClicked = event -> UI.getCurrent().addWindow(new AddCategoryWindow(CategorySettingGrid.this));
   private ClickListener moveUpClicked = event -> {
-    Category category = getItem();
-    expenseSheet = eshs.moveCategoryUp(expenseSheet, category);
+    expenseSheet = eshs.moveCategoryUp(expenseSheet, getItem());
     refreshValues();
   };
   private ClickListener moveDownClick = event -> {
-    Category category = getItem();
-    expenseSheet = eshs.moveCategoryDown(expenseSheet, category);
+    expenseSheet = eshs.moveCategoryDown(expenseSheet, getItem());
     refreshValues();
   };
   private ClickListener deleteCategoryClick = event -> {
@@ -62,7 +59,7 @@ public class CategorySettingGrid extends Grid<Category> implements SettingsChang
         MessageFormat.format(Msg.get("settingsPage.removeCategoryQuestion"), new Object[] { getItem().getName() }),
         Msg.get("settingsPage.removeCategoryYes"), Msg.get("settingsPage.removeCategoryNo"), dialog -> {
           if (dialog.isConfirmed()) {
-            expenseSheet = cs.removeCategory(expenseSheet, getItem());
+            eshs.removeCategory(getItem(), expenseSheet);
             refreshValues();
           }
         });
@@ -77,12 +74,12 @@ public class CategorySettingGrid extends Grid<Category> implements SettingsChang
     multiplierField.setEmptySelectionAllowed(false);
     multiplierField.setItems(new BigDecimal("-1"), new BigDecimal("1"));
     
-    Binder.Binding<Category, BigDecimal> multiplierBinder = binder.bind(multiplierField, Category::getMultiplier, Category::setMultiplier);
+    Binder.Binding<CategoryEntity, BigDecimal> multiplierBinder = binder.bind(multiplierField, CategoryEntity::getMultiplier, CategoryEntity::setMultiplier);
     
-    addColumn(Category::getName)
+    addColumn(CategoryEntity::getName)
       .setCaption(Msg.get("settingsPage.categoryName"))
-      .setEditorComponent(new TextField(), Category::setName);
-    addColumn(Category::getMultiplier)
+      .setEditorComponent(new TextField(), CategoryEntity::setName);
+    addColumn(CategoryEntity::getMultiplier)
       .setCaption(Msg.get("settingsPage.categoryMultiplier"))
       .setEditorBinding(multiplierBinder);
 
@@ -119,7 +116,7 @@ public class CategorySettingGrid extends Grid<Category> implements SettingsChang
 	  setItems(expenseSheet.getCategoryList());
   }
 
-  private Category getItem() {
+  private CategoryEntity getItem() {
     return getSelectedItems().iterator().next();
   }
 }

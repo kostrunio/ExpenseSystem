@@ -4,19 +4,19 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
-import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.User;
 
 public class Filter {
   private LocalDate dateFrom;
   private LocalDate dateTo;
-	private List<Category> categories;
+	private List<CategoryEntity> categories;
 	private List<User> users;
 	private String formula;
 	private String comment;
 	
-	public Filter(List<Category> categories, List<User> users, String formula, String comment) {
+	public Filter(List<CategoryEntity> categories, List<User> users, String formula, String comment) {
 		super();
 		this.categories = categories;
 		this.users = users;
@@ -24,7 +24,7 @@ public class Filter {
 		this.comment = comment;
 	}
 	
-	public Filter(LocalDate dateFrom, LocalDate dateTo, List<Category> categories, List<User> users, String formula, String comment) {
+	public Filter(LocalDate dateFrom, LocalDate dateTo, List<CategoryEntity> categories, List<User> users, String formula, String comment) {
     super();
     this.dateFrom = dateFrom;
     this.dateTo = dateTo;
@@ -50,10 +50,10 @@ public class Filter {
     this.dateTo = dateTo;
   }
 
-  public List<Category> getCategories() {
+  public List<CategoryEntity> getCategories() {
 		return categories;
 	}
-	public void setCategory(List<Category> categories) {
+	public void setCategory(List<CategoryEntity> categories) {
 		this.categories = categories;
 	}
 
@@ -107,10 +107,10 @@ public class Filter {
     }
   }
   
-  private static boolean matchCategory(Expense expense, List<Category> categories) {
+  private static boolean matchCategory(Expense expense, List<CategoryEntity> categories) {
     if (categories.size() == 0 || categories.get(0) == null)
       return true;
-    for (Category category : categories)
+    for (CategoryEntity category : categories)
       if (expense.getCategory().equals(category))
         return true;
     return false;

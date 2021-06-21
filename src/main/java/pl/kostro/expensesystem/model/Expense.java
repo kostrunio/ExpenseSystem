@@ -39,7 +39,7 @@ public class Expense extends AbstractEntity {
   private BigDecimal value;
   @OneToOne
   @JoinColumn(name = "e_c_id")
-  private Category category;
+  private CategoryEntity category;
   @OneToOne
   @JoinColumn(name = "e_u_id")
   private User user;
@@ -59,8 +59,8 @@ public class Expense extends AbstractEntity {
     super();
   }
 
-  public Expense(LocalDate date, String formula, Category category, User user, String comment, boolean notify,
-      ExpenseSheet expenseSheet) {
+  public Expense(LocalDate date, String formula, CategoryEntity category, User user, String comment, boolean notify,
+                 ExpenseSheet expenseSheet) {
     this.date = date;
     setFormula(formula);
     this.category = category;
@@ -114,11 +114,11 @@ public class Expense extends AbstractEntity {
     }
   }
 
-  public Category getCategory() {
+  public CategoryEntity getCategory() {
     return category;
   }
 
-  public void setCategory(Category category) {
+  public void setCategory(CategoryEntity category) {
     this.category = category;
   }
 

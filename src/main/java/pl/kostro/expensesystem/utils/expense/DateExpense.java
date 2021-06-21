@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.Expense;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
@@ -18,7 +18,7 @@ public class DateExpense {
   private ExpenseSheetService eshs;
   
 	private LocalDate date;
-	private Map<Category, CategoryExpense> categoryExpenseMap;
+	private Map<CategoryEntity, CategoryExpense> categoryExpenseMap;
 	private Map<UserLimit, UserLimitExpense> userLimitExpenseMap;
 	private BigDecimal sum = new BigDecimal(0);
 	
@@ -33,12 +33,12 @@ public class DateExpense {
 		this.date = date;
 	}
 	
-	public Map<Category, CategoryExpense> getCategoryExpenseMap() {
+	public Map<CategoryEntity, CategoryExpense> getCategoryExpenseMap() {
 		if (categoryExpenseMap == null)
-			categoryExpenseMap = new HashMap<Category, CategoryExpense>();
+			categoryExpenseMap = new HashMap<CategoryEntity, CategoryExpense>();
 		return categoryExpenseMap;
 	}
-	public void setCategoryExpenseMap(Map<Category, CategoryExpense> categoryExpenseMap) {
+	public void setCategoryExpenseMap(Map<CategoryEntity, CategoryExpense> categoryExpenseMap) {
 		this.categoryExpenseMap = categoryExpenseMap;
 	}
 	

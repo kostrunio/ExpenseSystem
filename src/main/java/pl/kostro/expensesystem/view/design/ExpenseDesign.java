@@ -14,7 +14,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
 
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.Category;
+import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.UserLimit;
 
 @SuppressWarnings("serial")
@@ -39,7 +39,7 @@ public class ExpenseDesign extends Panel {
 
   protected Panel searchPanel;
   protected HorizontalLayout searchLayout;
-  protected ComboBox<Category> categoryCombo;
+  protected ComboBox<CategoryEntity> categoryCombo;
   protected ComboBox<UserLimit> userCombo;
   protected TextField formulaField;
   protected ComboBox<String> commentCombo;
