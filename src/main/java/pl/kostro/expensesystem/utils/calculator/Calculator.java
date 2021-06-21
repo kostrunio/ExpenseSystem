@@ -44,7 +44,7 @@ public class Calculator {
       return result;
     } else {
       // no +
-      List<String> minusList = new ArrayList<String>();
+      List<String> minusList = new ArrayList<>();
       char mem = ';';
       int index = 0;
       String ex = plus[0];
@@ -61,14 +61,14 @@ public class Calculator {
       }
       if (minusList.size() > 1) {
         // there were some -
-        result = getOperationResult((String) minusList.get(0));
+        result = getOperationResult(minusList.get(0));
         for (int i = 1; i < minusList.size(); i++) {
-          result = result.subtract(getOperationResult((String) minusList.get(i)));
+          result = result.subtract(getOperationResult(minusList.get(i)));
         }
         return result;
       } else {
         // no -
-        String[] mult = ((String) minusList.get(0)).split("\\*");
+        String[] mult = (minusList.get(0)).split("\\*");
         if (mult.length > 1) {
           // there were some *
           result = getOperationResult(mult[0]);

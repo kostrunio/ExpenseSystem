@@ -98,7 +98,7 @@ public class ExpenseSheetEntity extends AbstractEntity {
 
   public List<CategoryEntity> getCategoryList() {
     if (categoryList == null)
-      categoryList = new ArrayList<CategoryEntity>();
+      categoryList = new ArrayList<>();
     return categoryList;
   }
 
@@ -108,7 +108,7 @@ public class ExpenseSheetEntity extends AbstractEntity {
 
   public List<UserLimitEntity> getUserLimitList() {
     if (userLimitList == null)
-      userLimitList = new ArrayList<UserLimitEntity>();
+      userLimitList = new ArrayList<>();
     return userLimitList;
   }
 
@@ -118,7 +118,7 @@ public class ExpenseSheetEntity extends AbstractEntity {
 
   public List<ExpenseEntity> getExpenseList() {
     if (expenseList == null)
-      expenseList = new ArrayList<ExpenseEntity>();
+      expenseList = new ArrayList<>();
     return expenseList;
   }
 
@@ -158,7 +158,7 @@ public class ExpenseSheetEntity extends AbstractEntity {
 
   public Map<LocalDate, DateExpense> getDateExpenseMap() {
     if (dateExpenseMap == null)
-      dateExpenseMap = new HashMap<LocalDate, DateExpense>();
+      dateExpenseMap = new HashMap<>();
     return dateExpenseMap;
   }
 
@@ -168,7 +168,7 @@ public class ExpenseSheetEntity extends AbstractEntity {
 
   public Map<CategoryEntity, CategoryExpense> getCategoryExpenseMap() {
     if (categoryExpenseMap == null)
-      categoryExpenseMap = new HashMap<CategoryEntity, CategoryExpense>();
+      categoryExpenseMap = new HashMap<>();
     return categoryExpenseMap;
   }
 
@@ -178,7 +178,7 @@ public class ExpenseSheetEntity extends AbstractEntity {
 
   public Map<UserLimitEntity, UserLimitExpense> getUserLimitExpenseMap() {
     if (userLimitExpenseMap == null)
-      userLimitExpenseMap = new HashMap<UserLimitEntity, UserLimitExpense>();
+      userLimitExpenseMap = new HashMap<>();
     return userLimitExpenseMap;
   }
 
