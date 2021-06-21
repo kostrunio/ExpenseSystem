@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.utils.transform;
+package pl.kostro.expensesystem.utils.transform.model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;

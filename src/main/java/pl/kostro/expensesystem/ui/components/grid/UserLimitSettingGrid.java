@@ -23,10 +23,12 @@ import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.ui.view.settingsPage.AddUserWindow;
 import pl.kostro.expensesystem.ui.view.settingsPage.SettingsChangeListener;
+import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 
 public class UserLimitSettingGrid extends Grid<UserLimitEntity> implements SettingsChangeListener {
   
   private ExpenseSheetService eshs;
+  private ExpenseSheetTransformService eshts;
   private UserLimitService uls;
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
@@ -63,6 +65,7 @@ public class UserLimitSettingGrid extends Grid<UserLimitEntity> implements Setti
 
   public UserLimitSettingGrid() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
+    eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     uls = AppCtxProvider.getBean(UserLimitService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
 
@@ -106,7 +109,7 @@ public class UserLimitSettingGrid extends Grid<UserLimitEntity> implements Setti
   }
 
   public void refreshValues() {
-	  setItems(eshs.getUserLimitListNotRealUser(expenseSheet));
+	  setItems(eshts.getUserLimitListNotRealUser(expenseSheet));
   }
 
   private UserLimitEntity getItem() {

@@ -1,10 +1,10 @@
-package pl.kostro.expensesystem.utils.transform;
+package pl.kostro.expensesystem.utils.transform.model;
+
+import pl.kostro.expensesystem.model.entity.CategoryEntity;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-
-import pl.kostro.expensesystem.model.entity.CategoryEntity;
 
 public class YearCategory {
   

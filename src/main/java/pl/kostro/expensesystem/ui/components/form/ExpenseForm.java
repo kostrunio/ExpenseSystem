@@ -18,11 +18,13 @@ import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.calculator.Calculator;
 import pl.kostro.expensesystem.ui.view.TableView;
 import pl.kostro.expensesystem.ui.view.design.ExpenseFormDesign;
+import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 
 public class ExpenseForm extends ExpenseFormDesign {
   
   private ExpenseService es;
   private ExpenseSheetService eshs;
+  private ExpenseSheetTransformService eshts;
   
   private ExpenseSheetEntity expenseSheet;
   private ExpenseEntity expense;
@@ -52,7 +54,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     ConfirmDialog.show(getUI(), Msg.get("expensForm.removeLabel"), Msg.get("expensForm.removeQuestion"),
         Msg.get("expensForm.removeYes"), Msg.get("expensForm.removeNo"), dialog -> {
           if (dialog.isConfirmed()) {
-            eshs.removeExpense(expense, expenseSheet);
+            eshts.removeExpense(expense, expenseSheet);
             es.remove(expense);
             view.refreshExpenses();
           }
@@ -64,6 +66,7 @@ public class ExpenseForm extends ExpenseFormDesign {
   public ExpenseForm() {
     es = AppCtxProvider.getBean(ExpenseService.class);
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
+    eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     setCaption();
     configureComponents();
   }
@@ -115,7 +118,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     this.view = view;
     categoryBox.setItems(expenseSheet.getCategoryList());
     userBox.setItems(expenseSheet.getUserLimitList());
-    commentBox.setItems(eshs.getAllComments(expenseSheet));
+    commentBox.setItems(eshts.getAllComments(expenseSheet));
   }
 
   private void verifyFormula(Object formula) {
@@ -136,7 +139,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     else
       categoryBox.setValue(expenseSheet.getCategoryList().get(0));
     if (expense.getUser() != null)
-      userBox.setValue(eshs.getUserLimitForUser(expenseSheet, expense.getUser()));
+      userBox.setValue(eshts.getUserLimitForUser(expenseSheet, expense.getUser()));
     else
       userBox.setValue(expenseSheet.getUserLimitList().get(0));
     formulaField.focus();

@@ -15,7 +15,7 @@ import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
-import pl.kostro.expensesystem.utils.transform.UserLimitSumLeft;
+import pl.kostro.expensesystem.utils.transform.model.UserLimitSumLeft;
 
 public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
   

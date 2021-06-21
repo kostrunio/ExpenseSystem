@@ -32,10 +32,12 @@ import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.filter.Filter;
 import pl.kostro.expensesystem.ui.view.design.TableDesign;
+import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 
 public class TableView extends TableDesign {
   
   private ExpenseSheetService eshs;
+  private ExpenseSheetTransformService eshts;
 
   private Logger logger = LogManager.getLogger();
   private LocalDate date;
@@ -78,6 +80,7 @@ public class TableView extends TableDesign {
   
   public TableView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
+    eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     logger.info("create");
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
@@ -103,7 +106,7 @@ public class TableView extends TableDesign {
     userBox.addValueChangeListener(filterChanged);
     formulaField.addValueChangeListener(filterChanged);
     commentBox.setNewItemProvider(addComment);
-    commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshs.getAllComments(expenseSheet));
+    commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshts.getAllComments(expenseSheet));
     commentBox.addValueChangeListener(filterChanged);
     newExpenseButton.addClickListener(newClicked);
     expenseGrid.addSelectionListener(itemClicked);
@@ -114,7 +117,7 @@ public class TableView extends TableDesign {
         categoryBox.setSelectedItem(expenseSheet.getFilter().getCategories().get(0));
       if (expenseSheet.getFilter().getUsers() != null
           && expenseSheet.getFilter().getUsers().size() > 0)
-        userBox.setSelectedItem(eshs.getUserLimitForUser(expenseSheet, expenseSheet.getFilter().getUsers().get(0)));
+        userBox.setSelectedItem(eshts.getUserLimitForUser(expenseSheet, expenseSheet.getFilter().getUsers().get(0)));
       if (expenseSheet.getFilter().getFormula() != null
           && !expenseSheet.getFilter().getFormula().isEmpty())
         formulaField.setValue(expenseSheet.getFilter().getFormula());
@@ -155,7 +158,7 @@ public class TableView extends TableDesign {
   }
   
   public void refreshExpenses() {
-    List<ExpenseEntity> expensesList = eshs.findAllExpense(expenseSheet);
+    List<ExpenseEntity> expensesList = eshts.findAllExpense(expenseSheet);
     expenseGrid.setItems(expensesList);
     footer.getCell(categoryColumn).setText(""+expensesList.size());
     footer.getCell(valueColumn).setHtml("<b>" + calcualteSum(expensesList) + "</b>");

@@ -32,10 +32,12 @@ import pl.kostro.expensesystem.utils.filter.Filter;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.ui.view.design.ExpenseDesign;
 import pl.kostro.expensesystem.ui.view.settingsPage.ExpenseSheetPasswordWindow;
+import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 
 public class ExpenseView extends ExpenseDesign implements View {
   
   private ExpenseSheetService eshs;
+  private ExpenseSheetTransformService eshts;
 
   private Logger logger = LogManager.getLogger();
   private LocalDate date = LocalDate.now();
@@ -162,6 +164,7 @@ public class ExpenseView extends ExpenseDesign implements View {
 
   public ExpenseView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
+    eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
   }
 
   public void checkedYear(String yearString) {
@@ -187,7 +190,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     userCombo.setItems(expenseSheet.getUserLimitList());
     commentCombo.setNewItemProvider(addComment);
     commentCombo.setEmptySelectionAllowed(true);
-    commentCombo.setItems(eshs.getAllComments(expenseSheet));
+    commentCombo.setItems(eshts.getAllComments(expenseSheet));
   }
 
   private void prepareView() {
@@ -195,7 +198,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     editButton.addClickListener(editClick);
     chartButton.addClickListener(chartClick);
     Component content = buildContent();
-    for (String year : eshs.getYearList(expenseSheet))
+    for (String year : eshts.getYearList(expenseSheet))
       yearMenu.addItem(year, yearCommand).setCheckable(true);
     filterButton.addClickListener(filterClick);
     categoryCombo.addValueChangeListener(categoryChanged);
@@ -221,7 +224,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     if (event.getParameters().isEmpty()) {
       expenseSheet = loggedUser.getDefaultExpenseSheet();
     } else {
-      expenseSheet = eshs.findExpenseSheet(loggedUser, Integer.parseInt(event.getParameters()));
+      expenseSheet = eshts.findExpenseSheet(loggedUser, Integer.parseInt(event.getParameters()));
     }
     if (expenseSheet == null) {
       return;

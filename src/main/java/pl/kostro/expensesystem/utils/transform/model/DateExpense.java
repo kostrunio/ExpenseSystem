@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.utils.transform;
+package pl.kostro.expensesystem.utils.transform.model;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -12,10 +12,12 @@ import pl.kostro.expensesystem.model.entity.ExpenseEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 
 public class DateExpense {
   
   private ExpenseSheetService eshs;
+  private ExpenseSheetTransformService eshts;
   
 	private LocalDate date;
 	private Map<CategoryEntity, CategoryExpense> categoryExpenseMap;
@@ -24,6 +26,7 @@ public class DateExpense {
 	
 	public DateExpense(LocalDate date) {
 		eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
+		eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
 		this.date = date;
 		categoryExpenseMap = new HashMap<>();
 		userLimitExpenseMap = new HashMap<>();
@@ -57,7 +60,7 @@ public class DateExpense {
 			getCategoryExpenseMap().put(expense.getCategory(), categoryExpense);
 		}
 		categoryExpense.addExpense(expense);
-		UserLimitEntity userLimit = eshs.getUserLimitForUser(expenseSheet, expense.getUser());
+		UserLimitEntity userLimit = eshts.getUserLimitForUser(expenseSheet, expense.getUser());
 		UserLimitExpense userLimitExpense = getUserLimitExpenseMap().get(userLimit);
 		if (userLimitExpense == null) {
 			userLimitExpense = new UserLimitExpense(userLimit);

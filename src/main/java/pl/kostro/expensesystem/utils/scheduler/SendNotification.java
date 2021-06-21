@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import pl.kostro.expensesystem.utils.transform.ExpenseSheetNotifyService;
+import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 import pl.kostro.expensesystem.model.entity.ExpenseEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
@@ -22,13 +22,14 @@ public class SendNotification {
   private static Logger logger = LogManager.getLogger();
   @Autowired
   private ExpenseService es;
-  private ExpenseSheetNotifyService esns = new ExpenseSheetNotifyService();
+  @Autowired
+  private ExpenseSheetTransformService eshts;
 
   @Scheduled(cron = "0 0 0/2 * * *")
   public void process() {
     logger.info("SendNotification - started");
     List<ExpenseEntity> expList = es.findExpensesToNotify();
-    Map<RealUserEntity, Map<ExpenseSheetEntity, List<ExpenseEntity>>> notifyMap = esns.prepareExpenseSheetNotify(expList);
+    Map<RealUserEntity, Map<ExpenseSheetEntity, List<ExpenseEntity>>> notifyMap = eshts.prepareExpenseSheetNotify(expList);
     for (RealUserEntity realUser : notifyMap.keySet()) {
       Map<ExpenseSheetEntity, List<ExpenseEntity>> eSMap = notifyMap.get(realUser);
       for (ExpenseSheetEntity eS : eSMap.keySet()) {

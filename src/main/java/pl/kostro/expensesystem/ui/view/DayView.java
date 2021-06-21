@@ -29,14 +29,16 @@ import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.calculator.Calculator;
-import pl.kostro.expensesystem.utils.transform.CategoryExpense;
-import pl.kostro.expensesystem.utils.transform.DateExpense;
+import pl.kostro.expensesystem.utils.transform.model.CategoryExpense;
+import pl.kostro.expensesystem.utils.transform.model.DateExpense;
 import pl.kostro.expensesystem.ui.view.design.DayDesign;
+import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 
 public class DayView extends DayDesign {
   
   private ExpenseService es;
   private ExpenseSheetService eshs;
+  private ExpenseSheetTransformService eshts;
 
   private Logger logger = LogManager.getLogger();
   private ExpenseSheetEntity expenseSheet;
@@ -76,7 +78,7 @@ public class DayView extends DayDesign {
       ConfirmDialog.show(getUI(), Msg.get("category.removeLabel"), Msg.get("category.removeQuestion"),
           Msg.get("category.removeYes"), Msg.get("category.removeNo"), dialog -> {
             if (dialog.isConfirmed()) {
-              eshs.removeExpense(expense, expenseSheet);
+              eshts.removeExpense(expense, expenseSheet);
               es.remove(expense);
               prepareCategoryListLayout();
               prepareExpenseListLayout();
@@ -87,7 +89,7 @@ public class DayView extends DayDesign {
   private Button.ClickListener saveClick = event -> {
     if (userBox.getValue() instanceof UserLimitEntity) {
       if (modify) {
-        eshs.removeExpense(expense, expenseSheet);
+        eshts.removeExpense(expense, expenseSheet);
         es.remove(expense);
       }
       expense.setUser(userBox.getValue().getUser());
@@ -97,7 +99,7 @@ public class DayView extends DayDesign {
       expense.setNotify(notifyBox.getValue());
       expense.setExpenseSheet(expenseSheet);
       es.save(expense);
-      eshs.addExpense(expense, expenseSheet);
+      eshts.addExpense(expense, expenseSheet);
       prepareCategoryListLayout();
       prepareExpenseListLayout();
     }
@@ -113,6 +115,7 @@ public class DayView extends DayDesign {
   public DayView() {
     es = AppCtxProvider.getBean(ExpenseService.class);
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
+    eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     logger.info("create");
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     category = expenseSheet.getCategoryList().get(0);
@@ -171,7 +174,7 @@ public class DayView extends DayDesign {
       Button expButton = new Button();
       vertLay.addComponent(expButton);
       vertLay.setComponentAlignment(expButton, Alignment.TOP_CENTER);
-      DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, date);
+      DateExpense dateExpenseMap = eshts.getDateExpenseMap(expenseSheet, date);
       if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
         expButton.setCaption("0");
       else {
@@ -187,7 +190,7 @@ public class DayView extends DayDesign {
     expenseGrid.removeAllComponents();
     categoryLabel.setValue(category.getName());
     List<ExpenseEntity> expenseList;
-    DateExpense dateExpenseMap = eshs.getDateExpenseMap(expenseSheet, date);
+    DateExpense dateExpenseMap = eshts.getDateExpenseMap(expenseSheet, date);
     if (dateExpenseMap == null || dateExpenseMap.getCategoryExpenseMap().get(category) == null)
       expenseList = new ArrayList<ExpenseEntity>();
     else {
@@ -244,14 +247,14 @@ public class DayView extends DayDesign {
     this.modify = modify;
     
     if (expense.getUser() != null)
-      userBox.setSelectedItem(eshs.getUserLimitForUser(expenseSheet, expense.getUser()));
+      userBox.setSelectedItem(eshts.getUserLimitForUser(expenseSheet, expense.getUser()));
     else
       userBox.setSelectedItem(expenseSheet.getUserLimitList().get(0));
 
     formulaField.focus();
     formulaField.setValue(expense.getFormula());
 
-    commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshs.getCommentForCategory(expenseSheet, expense.getCategory()));
+    commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshts.getCommentForCategory(expenseSheet, expense.getCategory()));
     commentBox.setSelectedItem(expense.getComment());
     
     if (expense.isNotify() || expense.getDate().isAfter(LocalDate.now())) {

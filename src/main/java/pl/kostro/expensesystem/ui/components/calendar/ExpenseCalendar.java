@@ -20,26 +20,26 @@ import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.calendar.Converter;
-import pl.kostro.expensesystem.utils.transform.DateExpense;
+import pl.kostro.expensesystem.utils.transform.model.DateExpense;
 import pl.kostro.expensesystem.ui.view.DayView;
 import pl.kostro.expensesystem.ui.view.MonthView;
+import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 
 public class ExpenseCalendar extends Calendar<BasicItem> {
 
   private Converter converter = new Converter();
 
-  private ExpenseSheetService eshs;
-  private UserSummaryService uss;
+  private ExpenseSheetTransformService eshts;
   private MonthView monthView;
   private ExpenseSheetEntity expenseSheet;
   private LocalDate date;
   private CalendarItemProvider<BasicItem> eventProvider = (startDate, endDate) -> {
     date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
-    Map<LocalDate, DateExpense> eventToShow = eshs.prepareExpenseMap(expenseSheet,
+    Map<LocalDate, DateExpense> eventToShow = eshts.prepareExpenseMap(expenseSheet,
         startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
         endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), date.withDayOfMonth(1),
         date.withDayOfMonth(date.lengthOfMonth()));
-    eshs.checkSummary(expenseSheet, date);
+    eshts.checkSummary(expenseSheet, date);
     monthView.fulfillTables();
     return converter.transformExpensesToEvents(expenseSheet, eventToShow);
   };
@@ -69,8 +69,7 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
   };
 
   public ExpenseCalendar() {
-    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
-    uss = AppCtxProvider.getBean(UserSummaryService.class);
+    eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
 
     setDataProvider(eventProvider);

@@ -28,21 +28,24 @@ import pl.kostro.expensesystem.model.entity.UserEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.filter.Filter;
-import pl.kostro.expensesystem.utils.transform.YearValue;
+import pl.kostro.expensesystem.utils.transform.model.YearValue;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
-import pl.kostro.expensesystem.utils.transform.YearCategory;
+import pl.kostro.expensesystem.utils.transform.model.YearCategory;
 import pl.kostro.expensesystem.ui.view.design.ChartDesign;
+import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 
 public class ChartView extends ChartDesign {
 
   private Logger logger = LogManager.getLogger();
   private ExpenseSheetService eshs;
+  private ExpenseSheetTransformService eshts;
   private ExpenseSheetEntity expenseSheet;
   private ValueChangeListener<Set<CategoryEntity>> categoryChanged = event -> refreshFilter();
   private ValueChangeListener<Set<UserLimitEntity>> userChanged = event -> refreshFilter();
 
   public ChartView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
+    eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     logger.info("create");
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     expenseSheet.setFilter(new Filter(null, null, null, null));
@@ -81,7 +84,7 @@ public class ChartView extends ChartDesign {
   private void showCharts() {
     chartLayout.removeAllComponents();
     chartLayout2.removeAllComponents();
-    List<YearCategory> yearCategoryList = eshs.prepareYearCategoryList(expenseSheet);
+    List<YearCategory> yearCategoryList = eshts.prepareYearCategoryList(expenseSheet);
     ChartGrid lineGrid = new ChartGrid(yearCategoryList);
     ChartGrid columnGrid = new ChartGrid(yearCategoryList);
 
