@@ -29,8 +29,8 @@ import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.calculator.Calculator;
-import pl.kostro.expensesystem.utils.expense.CategoryExpense;
-import pl.kostro.expensesystem.utils.expense.DateExpense;
+import pl.kostro.expensesystem.utils.transform.CategoryExpense;
+import pl.kostro.expensesystem.utils.transform.DateExpense;
 import pl.kostro.expensesystem.ui.view.design.DayDesign;
 
 public class DayView extends DayDesign {

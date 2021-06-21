@@ -5,9 +5,9 @@ import java.util.List;
 import com.vaadin.ui.Grid;
 
 import pl.kostro.expensesystem.utils.msg.Msg;
-import pl.kostro.expensesystem.utils.expense.YearValue;
+import pl.kostro.expensesystem.utils.transform.YearValue;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
-import pl.kostro.expensesystem.utils.expense.YearCategory;
+import pl.kostro.expensesystem.utils.transform.YearCategory;
 
 @SuppressWarnings("serial")
 public class ChartGrid extends Grid<YearValue> {

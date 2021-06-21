@@ -23,9 +23,9 @@ import org.hibernate.annotations.GenericGenerator;
 
 import pl.kostro.expensesystem.utils.encryption.Encryption;
 import pl.kostro.expensesystem.utils.filter.Filter;
-import pl.kostro.expensesystem.utils.expense.CategoryExpense;
-import pl.kostro.expensesystem.utils.expense.DateExpense;
-import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
+import pl.kostro.expensesystem.utils.transform.CategoryExpense;
+import pl.kostro.expensesystem.utils.transform.DateExpense;
+import pl.kostro.expensesystem.utils.transform.UserLimitExpense;
 
 @Entity
 @Table(name = "expense_sheets")

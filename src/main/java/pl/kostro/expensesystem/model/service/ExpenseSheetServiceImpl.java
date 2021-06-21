@@ -26,10 +26,10 @@ import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
 import pl.kostro.expensesystem.model.repository.UserLimitRepository;
 import pl.kostro.expensesystem.ui.notification.ShowNotification;
 import pl.kostro.expensesystem.utils.filter.Filter;
-import pl.kostro.expensesystem.utils.expense.CategoryExpense;
-import pl.kostro.expensesystem.utils.expense.DateExpense;
-import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
-import pl.kostro.expensesystem.utils.expense.YearCategory;
+import pl.kostro.expensesystem.utils.transform.CategoryExpense;
+import pl.kostro.expensesystem.utils.transform.DateExpense;
+import pl.kostro.expensesystem.utils.transform.UserLimitExpense;
+import pl.kostro.expensesystem.utils.transform.YearCategory;
 
 @Service
 public class ExpenseSheetServiceImpl implements ExpenseSheetService {
@@ -324,7 +324,7 @@ public class ExpenseSheetServiceImpl implements ExpenseSheetService {
 
 
   public List<UserLimitEntity> getUserLimitListDesc(ExpenseSheetEntity expenseSheet) {
-    List<UserLimitEntity> returnList = new ArrayList<UserLimitEntity>(expenseSheet.getUserLimitList());
+    List<UserLimitEntity> returnList = new ArrayList<>(expenseSheet.getUserLimitList());
     Collections.reverse(returnList);
     return returnList;
   }
@@ -337,7 +337,7 @@ public class ExpenseSheetServiceImpl implements ExpenseSheetService {
   }
 
   public List<UserLimitEntity> getUserLimitListNotRealUser(ExpenseSheetEntity expenseSheet) {
-    List<UserLimitEntity> userLimitList = new ArrayList<UserLimitEntity>();
+    List<UserLimitEntity> userLimitList = new ArrayList<>();
     for (UserLimitEntity userLimit : expenseSheet.getUserLimitList())
       if (!(userLimit.getUser() instanceof RealUserEntity))
         userLimitList.add(userLimit);

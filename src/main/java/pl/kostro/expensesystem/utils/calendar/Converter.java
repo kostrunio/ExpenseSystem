@@ -13,8 +13,8 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.utils.expense.DateExpense;
-import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
+import pl.kostro.expensesystem.utils.transform.DateExpense;
+import pl.kostro.expensesystem.utils.transform.UserLimitExpense;
 
 public class Converter {
 

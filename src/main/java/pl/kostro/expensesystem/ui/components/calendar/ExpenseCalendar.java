@@ -20,7 +20,7 @@ import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.calendar.Converter;
-import pl.kostro.expensesystem.utils.expense.DateExpense;
+import pl.kostro.expensesystem.utils.transform.DateExpense;
 import pl.kostro.expensesystem.ui.view.DayView;
 import pl.kostro.expensesystem.ui.view.MonthView;
 

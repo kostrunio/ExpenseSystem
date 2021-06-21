@@ -1,10 +1,10 @@
 package pl.kostro.expensesystem.model.service;
 
 import pl.kostro.expensesystem.model.entity.*;
-import pl.kostro.expensesystem.utils.expense.CategoryExpense;
-import pl.kostro.expensesystem.utils.expense.DateExpense;
-import pl.kostro.expensesystem.utils.expense.UserLimitExpense;
-import pl.kostro.expensesystem.utils.expense.YearCategory;
+import pl.kostro.expensesystem.utils.transform.CategoryExpense;
+import pl.kostro.expensesystem.utils.transform.DateExpense;
+import pl.kostro.expensesystem.utils.transform.UserLimitExpense;
+import pl.kostro.expensesystem.utils.transform.YearCategory;
 
 import java.time.LocalDate;
 import java.util.List;

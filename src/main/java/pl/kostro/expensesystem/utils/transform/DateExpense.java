@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.utils.expense;
+package pl.kostro.expensesystem.utils.transform;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -23,8 +23,10 @@ public class DateExpense {
 	private BigDecimal sum = new BigDecimal(0);
 	
 	public DateExpense(LocalDate date) {
-    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
+		eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
 		this.date = date;
+		categoryExpenseMap = new HashMap<>();
+		userLimitExpenseMap = new HashMap<>();
 	}
 	public LocalDate getDate() {
 		return date;
@@ -34,40 +36,21 @@ public class DateExpense {
 	}
 	
 	public Map<CategoryEntity, CategoryExpense> getCategoryExpenseMap() {
-		if (categoryExpenseMap == null)
-			categoryExpenseMap = new HashMap<CategoryEntity, CategoryExpense>();
 		return categoryExpenseMap;
 	}
-	public void setCategoryExpenseMap(Map<CategoryEntity, CategoryExpense> categoryExpenseMap) {
-		this.categoryExpenseMap = categoryExpenseMap;
-	}
-	
 	public Map<UserLimitEntity, UserLimitExpense> getUserLimitExpenseMap() {
-		if (userLimitExpenseMap == null)
-			userLimitExpenseMap = new HashMap<UserLimitEntity, UserLimitExpense>();
 		return userLimitExpenseMap;
 	}
-	public void setUserLimitExpenseMap(Map<UserLimitEntity, UserLimitExpense> userLimitExpenseMap) {
-		this.userLimitExpenseMap = userLimitExpenseMap;
-	}
-
 	public BigDecimal getSum() {
 		return sum;
 	}
-	public void setSum(BigDecimal sum) {
-		this.sum = sum;
-	}
-	
-	public String getSumString() {
-		return sum.toString();
-	}
-	
+
 	public String toString() {
 		return "DateExpense: " + date + ";" + sum;
 	}
 	
 	public void addExpense(ExpenseSheetEntity expenseSheet, ExpenseEntity expense) {
-		setSum(getSum().add(expense.getValue().multiply(expense.getCategory().getMultiplier()).setScale(2, RoundingMode.HALF_UP)));
+		sum = sum.add(expense.getValue().multiply(expense.getCategory().getMultiplier()).setScale(2, RoundingMode.HALF_UP));
 		CategoryExpense categoryExpense = getCategoryExpenseMap().get(expense.getCategory());
 		if (categoryExpense == null) {
 			categoryExpense = new CategoryExpense(expense.getCategory());
@@ -83,7 +66,7 @@ public class DateExpense {
 		userLimitExpense.addExpense(expense);
 	}
 	public void removeExpense(ExpenseEntity expense) {
-		setSum(getSum().subtract(expense.getValue()));
+		sum = sum.subtract(expense.getValue());
 		CategoryExpense categoryExpense = getCategoryExpenseMap().get(expense.getCategory());
 		categoryExpense.removeExpense(expense);
 	}

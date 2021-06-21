@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import pl.kostro.expensesystem.model.dto.service.ExpenseSheetNotifyService;
+import pl.kostro.expensesystem.utils.transform.ExpenseSheetNotifyService;
 import pl.kostro.expensesystem.model.entity.ExpenseEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;

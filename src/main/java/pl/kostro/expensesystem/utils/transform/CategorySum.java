@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.utils.expense;
+package pl.kostro.expensesystem.utils.transform;
 
 import java.math.BigDecimal;
 

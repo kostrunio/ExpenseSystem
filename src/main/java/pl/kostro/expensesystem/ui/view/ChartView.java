@@ -28,9 +28,9 @@ import pl.kostro.expensesystem.model.entity.UserEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.filter.Filter;
-import pl.kostro.expensesystem.utils.expense.YearValue;
+import pl.kostro.expensesystem.utils.transform.YearValue;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
-import pl.kostro.expensesystem.utils.expense.YearCategory;
+import pl.kostro.expensesystem.utils.transform.YearCategory;
 import pl.kostro.expensesystem.ui.view.design.ChartDesign;
 
 public class ChartView extends ChartDesign {

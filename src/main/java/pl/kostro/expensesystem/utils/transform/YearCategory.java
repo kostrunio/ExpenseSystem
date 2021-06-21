@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.utils.expense;
+package pl.kostro.expensesystem.utils.transform;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -13,9 +13,9 @@ public class YearCategory {
   
   public YearCategory(int year, List<CategoryEntity> categoryList) {
     this.year = year;
-    categoryExpenseList = new ArrayList<List<CategoryExpense>>();
+    categoryExpenseList = new ArrayList<>();
     for (int m=0; m<=11; m++) {
-      List<CategoryExpense> monthCategoryList = new ArrayList<CategoryExpense>();
+      List<CategoryExpense> monthCategoryList = new ArrayList<>();
       for (CategoryEntity category : categoryList) {
         CategoryExpense categoryExpense = new CategoryExpense(category);
         monthCategoryList.add(categoryExpense);
@@ -36,7 +36,7 @@ public class YearCategory {
   }
 
   public List<CategoryExpense> getCategory(CategoryEntity category) {
-    List<CategoryExpense> categoryList = new ArrayList<CategoryExpense>();
+    List<CategoryExpense> categoryList = new ArrayList<>();
     for (List<CategoryExpense> monthCategoryList : categoryExpenseList)
       for (CategoryExpense categoryExpense : monthCategoryList)
         if (categoryExpense.getCategory().equals(category))
@@ -51,31 +51,4 @@ public class YearCategory {
     return sum;
   }
 
-  public List<String> getMonthsSum() {
-    List<BigDecimal> sumList = new ArrayList<>();
-    BigDecimal sum = new BigDecimal(0);
-    for (int m = 0; m <= 11; m++) {
-      BigDecimal value = getMonthValue(m);
-      if (value != null)
-        sum.add(value);
-      sumList.add(sum);
-    }
-    List<String> resultList = new ArrayList<>();
-    for (BigDecimal value : sumList)
-      resultList.add(value.toString());
-    return resultList;
-  }
-
-  public List<String> getMonths() {
-    List<BigDecimal> sumList = new ArrayList<>();
-    for (int m = 0; m <= 11; m++) {
-      BigDecimal value = getMonthValue(m);
-      if (value != null)
-        sumList.add(value);
-    }
-    List<String> resultList = new ArrayList<>();
-    for (BigDecimal value : sumList)
-      resultList.add(value.toString());
-    return resultList;
-  }
 }

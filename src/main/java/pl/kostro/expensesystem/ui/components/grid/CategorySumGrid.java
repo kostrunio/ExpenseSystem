@@ -12,8 +12,8 @@ import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.utils.expense.CategorySum;
-import pl.kostro.expensesystem.utils.expense.CategoryExpense;
+import pl.kostro.expensesystem.utils.transform.CategorySum;
+import pl.kostro.expensesystem.utils.transform.CategoryExpense;
 
 public class CategorySumGrid extends Grid<CategorySum> {
   
