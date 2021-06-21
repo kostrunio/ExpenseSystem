@@ -18,8 +18,8 @@ import java.util.Set;
 public interface ExpenseSheetTransformService {
     Map<RealUserEntity, Map<ExpenseSheetEntity, List<ExpenseEntity>>> prepareExpenseSheetNotify(List<ExpenseEntity> expenseList);
     ExpenseSheetEntity findExpenseSheet(RealUserEntity realUser, int id);
-    List<ExpenseEntity> findAllExpense(ExpenseSheetEntity expenseSheet);
-    Map<LocalDate, DateExpense> prepareExpenseMap(ExpenseSheetEntity expenseSheet, LocalDate startDate, LocalDate endDate, LocalDate firstDay, LocalDate lastDay);
+    List<ExpenseEntity> findAllExpenses(ExpenseSheetEntity expenseSheet);
+    void prepareExpenseMap(ExpenseSheetEntity expenseSheet, LocalDate startDate, LocalDate endDate, LocalDate firstDay, LocalDate lastDay);
     void addExpense(ExpenseEntity expense, ExpenseSheetEntity expenseSheet);
     void removeExpense(ExpenseEntity expense, ExpenseSheetEntity expenseSheet);
     UserLimitEntity getUserLimitForUser(ExpenseSheetEntity expenseSheet, UserEntity user);

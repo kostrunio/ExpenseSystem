@@ -1,14 +1,5 @@
 package pl.kostro.expensesystem.ui.view;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.vaadin.addon.charts.Chart;
 import com.vaadin.addon.charts.model.Axis;
 import com.vaadin.addon.charts.model.ChartType;
@@ -18,33 +9,37 @@ import com.vaadin.addon.charts.model.Series;
 import com.vaadin.addon.charts.model.Tooltip;
 import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.server.VaadinSession;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.utils.msg.Msg;
-import pl.kostro.expensesystem.ui.components.grid.ChartGrid;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.utils.filter.Filter;
-import pl.kostro.expensesystem.utils.transform.model.YearValue;
-import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
-import pl.kostro.expensesystem.utils.transform.model.YearCategory;
+import pl.kostro.expensesystem.ui.components.grid.ChartGrid;
 import pl.kostro.expensesystem.ui.view.design.ChartDesign;
+import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
+import pl.kostro.expensesystem.utils.filter.Filter;
+import pl.kostro.expensesystem.utils.msg.Msg;
+import pl.kostro.expensesystem.utils.transform.model.YearCategory;
+import pl.kostro.expensesystem.utils.transform.model.YearValue;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 public class ChartView extends ChartDesign {
 
   private Logger logger = LogManager.getLogger();
-  private ExpenseSheetService eshs;
   private ExpenseSheetTransformService eshts;
   private ExpenseSheetEntity expenseSheet;
   private ValueChangeListener<Set<CategoryEntity>> categoryChanged = event -> refreshFilter();
   private ValueChangeListener<Set<UserLimitEntity>> userChanged = event -> refreshFilter();
 
   public ChartView() {
-    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     logger.info("create");
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
@@ -67,13 +62,13 @@ public class ChartView extends ChartDesign {
   private void refreshFilter() {
     String filterFormula = null;
     String filterComment = null;
-    List<UserEntity> users = new ArrayList<UserEntity>();
-    Set<UserLimitEntity> setUserLimit = (Set<UserLimitEntity>) userCombo.getValue();
+    List<UserEntity> users = new ArrayList<>();
+    Set<UserLimitEntity> setUserLimit = userCombo.getValue();
     for (Iterator<UserLimitEntity> iter = setUserLimit.iterator(); iter.hasNext();)
       users.add(iter.next().getUser());
 
-    List<CategoryEntity> categories = new ArrayList<CategoryEntity>();
-    Set<CategoryEntity> setCategory = (Set<CategoryEntity>) categoryCombo.getValue();
+    List<CategoryEntity> categories = new ArrayList<>();
+    Set<CategoryEntity> setCategory = categoryCombo.getValue();
     for (Iterator<CategoryEntity> iter = setCategory.iterator(); iter.hasNext();)
       categories.add(iter.next());
 
@@ -108,8 +103,8 @@ public class ChartView extends ChartDesign {
     List<YearValue> columnGridData = new ArrayList<>();
     for (YearCategory yearCategory : yearCategoryList) {
       BigDecimal sum = new BigDecimal(0);
-      List<BigDecimal> monthValues1 = new ArrayList<BigDecimal>();
-      List<BigDecimal> monthValues2 = new ArrayList<BigDecimal>();
+      List<BigDecimal> monthValues1 = new ArrayList<>();
+      List<BigDecimal> monthValues2 = new ArrayList<>();
       for (int m = 0; m <= 11; m++) {
         BigDecimal value = yearCategory.getMonthValue(m);
         if (value != null) {

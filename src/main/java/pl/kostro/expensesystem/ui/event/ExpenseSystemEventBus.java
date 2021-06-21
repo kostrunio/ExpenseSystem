@@ -6,10 +6,6 @@ import com.google.common.eventbus.SubscriberExceptionHandler;
 
 import pl.kostro.expensesystem.ui.ExpenseSystemUI;
 
-/**
- * A simple wrapper for Guava event bus. Defines static convenience methods for
- * relevant actions.
- */
 public class ExpenseSystemEventBus implements SubscriberExceptionHandler {
 
     private final EventBus eventBus = new EventBus(this);

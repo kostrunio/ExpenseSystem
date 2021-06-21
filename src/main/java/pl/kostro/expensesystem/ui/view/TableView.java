@@ -1,15 +1,5 @@
 package pl.kostro.expensesystem.ui.view;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.vaadin.haijian.Exporter;
-
 import com.vaadin.data.HasValue;
 import com.vaadin.event.selection.SelectionListener;
 import com.vaadin.server.FileDownloader;
@@ -21,18 +11,26 @@ import com.vaadin.ui.ComboBox.NewItemProvider;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.components.grid.FooterRow;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.vaadin.haijian.Exporter;
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.utils.filter.Filter;
 import pl.kostro.expensesystem.ui.view.design.TableDesign;
+import pl.kostro.expensesystem.utils.filter.Filter;
+import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
+
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class TableView extends TableDesign {
   
@@ -158,7 +156,7 @@ public class TableView extends TableDesign {
   }
   
   public void refreshExpenses() {
-    List<ExpenseEntity> expensesList = eshts.findAllExpense(expenseSheet);
+    List<ExpenseEntity> expensesList = eshts.findAllExpenses(expenseSheet);
     expenseGrid.setItems(expensesList);
     footer.getCell(categoryColumn).setText(""+expensesList.size());
     footer.getCell(valueColumn).setHtml("<b>" + calcualteSum(expensesList) + "</b>");

@@ -1,11 +1,6 @@
 package pl.kostro.expensesystem.ui.components.calendar;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Map;
-
 import com.vaadin.server.VaadinSession;
-
 import org.vaadin.addon.calendar.Calendar;
 import org.vaadin.addon.calendar.item.BasicItem;
 import org.vaadin.addon.calendar.item.CalendarItemProvider;
@@ -14,16 +9,15 @@ import org.vaadin.addon.calendar.ui.CalendarComponentEvents.DateClickHandler;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents.ForwardHandler;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents.ItemClickHandler;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents.WeekClickHandler;
-
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.model.service.UserSummaryService;
-import pl.kostro.expensesystem.utils.calendar.Converter;
-import pl.kostro.expensesystem.utils.transform.model.DateExpense;
 import pl.kostro.expensesystem.ui.view.DayView;
 import pl.kostro.expensesystem.ui.view.MonthView;
+import pl.kostro.expensesystem.utils.calendar.Converter;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
+
+import java.time.LocalDate;
+import java.time.ZoneId;
 
 public class ExpenseCalendar extends Calendar<BasicItem> {
 
@@ -35,13 +29,13 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
   private LocalDate date;
   private CalendarItemProvider<BasicItem> eventProvider = (startDate, endDate) -> {
     date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
-    Map<LocalDate, DateExpense> eventToShow = eshts.prepareExpenseMap(expenseSheet,
+    eshts.prepareExpenseMap(expenseSheet,
         startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
         endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), date.withDayOfMonth(1),
         date.withDayOfMonth(date.lengthOfMonth()));
     eshts.checkSummary(expenseSheet, date);
     monthView.fulfillTables();
-    return converter.transformExpensesToEvents(expenseSheet, eventToShow);
+    return converter.transformExpensesToEvents(expenseSheet);
   };
 
   private DateClickHandler dateClick = event -> {

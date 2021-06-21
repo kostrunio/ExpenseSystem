@@ -30,7 +30,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.OptionalInt;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -50,22 +49,8 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
 
   public Map<RealUserEntity, Map<ExpenseSheetEntity, List<ExpenseEntity>>> prepareExpenseSheetNotify(List<ExpenseEntity> expenseList) {
     Map<RealUserEntity, Map<ExpenseSheetEntity, List<ExpenseEntity>>> rUMap = new HashMap<>();
-    Map<ExpenseSheetEntity, List<ExpenseEntity>> eSMap;
-    List<ExpenseEntity> eList;
     for (ExpenseEntity expense : expenseList) {
-      if (!rUMap.containsKey(expense.getExpenseSheet().getOwner())) {
-        eSMap = new HashMap<>();
-        rUMap.put(expense.getExpenseSheet().getOwner(), eSMap);
-      } else
-        eSMap = rUMap.get(expense.getExpenseSheet().getOwner());
-
-      if (!eSMap.containsKey(expense.getExpenseSheet())) {
-        eList = new ArrayList<>();
-        eSMap.put(expense.getExpenseSheet(), eList);
-      } else
-        eList = eSMap.get(expense.getExpenseSheet());
-
-      eList.add(expense);
+      rUMap.getOrDefault(expense.getExpenseSheet().getOwner(), new HashMap<>()).getOrDefault(expense.getExpenseSheet(), new ArrayList<>()).add(expense);
     }
     return rUMap;
   }
@@ -74,37 +59,27 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
     Optional<ExpenseSheetEntity> result = realUser.getExpenseSheetList().parallelStream()
             .filter(esh -> esh.getId() == id)
             .findFirst();
-    if (result.isPresent())
-      return result.get();
-    return realUser.getDefaultExpenseSheet();
+    return result.orElse(realUser.getDefaultExpenseSheet());
   }
 
-  public List<ExpenseEntity> findAllExpense(ExpenseSheetEntity expenseSheet) {
-    LocalDateTime stopper = LocalDateTime.now();
-    List<ExpenseEntity> expenseListToReturn = expenseSheet.getExpenseList().parallelStream()
+  public List<ExpenseEntity> findAllExpenses(ExpenseSheetEntity expenseSheet) {
+    return expenseSheet.getExpenseList().parallelStream()
             .filter(e -> Filter.matchFilter(e, expenseSheet.getFilter()))
             .collect(Collectors.toList());
-    logger.info("findAllExpense for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    return expenseListToReturn;
   }
 
   private List<ExpenseEntity> getExpenseList(ExpenseSheetEntity expenseSheet) {
-    LocalDateTime stopper = LocalDateTime.now();
-    List<ExpenseEntity> expenseListToReturn = expenseSheet.getExpenseList().parallelStream()
+    return expenseSheet.getExpenseList().parallelStream()
             .filter(e -> !e.getDate().isBefore(expenseSheet.getFirstDate()))
             .filter(e -> !e.getDate().isAfter(expenseSheet.getLastDate()))
             .filter(e -> Filter.matchFilter(e, expenseSheet.getFilter()))
             .collect(Collectors.toList());
-    logger.info("getExpenseList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    return expenseListToReturn;
   }
 
-  public Map<LocalDate, DateExpense> prepareExpenseMap(ExpenseSheetEntity expenseSheet, LocalDate startDate, LocalDate endDate,
+  public void prepareExpenseMap(ExpenseSheetEntity expenseSheet, LocalDate startDate, LocalDate endDate,
                                                        LocalDate firstDay, LocalDate lastDay) {
     LocalDateTime stopper = LocalDateTime.now();
-    expenseSheet.getDateExpenseMap().clear();
-    expenseSheet.getCategoryExpenseMap().clear();
-    expenseSheet.getUserLimitExpenseMap().clear();
+    clearMaps(expenseSheet);
     expenseSheet.setFirstDate(startDate);
     expenseSheet.setLastDate(endDate);
     for (ExpenseEntity expense : getExpenseList(expenseSheet)) {
@@ -117,7 +92,12 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
       }
     }
     logger.info("prepareExpenseMap for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    return expenseSheet.getDateExpenseMap();
+  }
+
+  private void clearMaps(ExpenseSheetEntity expenseSheet) {
+    expenseSheet.getDateExpenseMap().clear();
+    expenseSheet.getCategoryExpenseMap().clear();
+    expenseSheet.getUserLimitExpenseMap().clear();
   }
 
   public void addExpense(ExpenseEntity expense, ExpenseSheetEntity expenseSheet) {
@@ -168,49 +148,38 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
     Optional<UserLimitEntity> result = expenseSheet.getUserLimitList().parallelStream()
             .filter(ul -> ul.getUser().equals(user))
             .findFirst();
-    if (result.isPresent())
-      return result.get();
-    else
-      return null;
+    return result.orElse(null);
   }
 
   public Set<String> getAllComments(ExpenseSheetEntity expenseSheet) {
-    LocalDateTime stopper = LocalDateTime.now();
-    Set<String> commentsList = expenseSheet.getExpenseList().stream()
+    return expenseSheet.getExpenseList().stream()
             .filter(e -> e.getComment() != null && !e.getComment().isEmpty())
             .map(e -> e.getComment())
             .collect(Collectors.toSet());
-    logger.info("getAllComments for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    return commentsList;
   }
 
   public Set<String> getCommentForCategory(ExpenseSheetEntity expenseSheet, CategoryEntity category) {
-    LocalDateTime stopper = LocalDateTime.now();
-    Set<String> commentsList = expenseSheet.getExpenseList().stream()
+    return expenseSheet.getExpenseList().stream()
             .filter(e -> e.getCategory().equals(category))
             .filter(e -> e.getComment() != null && !e.getComment().isEmpty())
             .map(e -> e.getComment())
             .collect(Collectors.toSet());
-    logger.info("getCommentForCategory for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    return commentsList;
   }
 
   public List<String> getYearList(ExpenseSheetEntity expenseSheet) {
-    LocalDateTime stopper = LocalDateTime.now();
     List<String> yearList = new ArrayList<>();
-    int year = LocalDate.now().getYear();
-    int limitYear = year;
-    OptionalInt maxYear = expenseSheet.getExpenseList().parallelStream()
+    int firstYear = expenseSheet.getExpenseList().parallelStream()
             .mapToInt(e -> e.getDate().getYear())
-            .max();
-    OptionalInt expYear = expenseSheet.getExpenseList().parallelStream()
+            .min()
+            .orElse(LocalDate.now().getYear());
+    int lastYear = expenseSheet.getExpenseList().parallelStream()
             .mapToInt(e -> e.getDate().getYear())
-            .min();
-    if (expYear.isPresent()) year = expYear.getAsInt();
-    if (maxYear.isPresent()) limitYear = maxYear.getAsInt();
-    for (int i = year; i <= limitYear; i++)
+            .max()
+            .orElse(firstYear);
+
+    for (int i = firstYear; i <= lastYear; i++) {
       yearList.add(Integer.toString(i));
-    logger.info("getYearList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    }
     return yearList;
   }
 
