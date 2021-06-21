@@ -11,6 +11,6 @@ import pl.kostro.expensesystem.model.entity.RealUserEntity;
 
 public interface ExpenseSheetRepository extends JpaRepository<ExpenseSheetEntity, Long> {
 
-	@Query("select esh from RealUser ru join ru.expenseSheetList esh where ru = :realUser")
+	@Query("select esh from RealUserEntity ru join ru.expenseSheetList esh where ru = :realUser")
 	List<ExpenseSheetEntity> findByRealUser(@Param("realUser") RealUserEntity realUser);
 }

@@ -11,6 +11,6 @@ import pl.kostro.expensesystem.model.entity.ExpenseEntity;
 
 public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
 	
-	@Query("select e from Expense e where e.notify = true and e.date = :date")
+	@Query("select e from ExpenseEntity e where e.notify = true and e.date = :date")
 	List<ExpenseEntity> findExpensesToNotify(@Param("date") LocalDate date);
 }

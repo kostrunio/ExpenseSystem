@@ -15,6 +15,6 @@ public interface RealUserRepository extends JpaRepository<RealUserEntity, Long> 
 	
 	RealUserEntity findByNameAndPassword(String name, String password);
 
-	@Query("select u from RealUser u join u.expenseSheetList es where es = :expenseSheet order by es.id")
+	@Query("select u from RealUserEntity u join u.expenseSheetList es where es = :expenseSheet order by es.id")
 	List<RealUserEntity> findUsersWithExpenseSheet(@Param("expenseSheet") ExpenseSheetEntity expenseSheet);
 }
