@@ -23,7 +23,7 @@ import org.springframework.stereotype.Service;
 import com.vaadin.server.VaadinSession;
 
 import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.Expense;
+import pl.kostro.expensesystem.model.ExpenseEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUser;
 import pl.kostro.expensesystem.model.User;
@@ -103,8 +103,8 @@ public class ExpenseSheetService {
     for (CategoryEntity category : expenseSheet.getCategoryList())
       cs.decrypt(category);
     logger.info("decrypt: expense");
-    for (Expense expense : expenseSheet.getExpenseList())
-      ExpenseService.decrypt(expense);
+    for (ExpenseEntity expense : expenseSheet.getExpenseList())
+      es.decrypt(expense);
     logger.info("decrypt: userLimit");
     for (UserLimit userLimit : expenseSheet.getUserLimitList())
       uls.decrypt(userLimit);
@@ -116,7 +116,7 @@ public class ExpenseSheetService {
     for (CategoryEntity category : expenseSheet.getCategoryList())
       cs.encrypt(category);
     logger.info("encrypt: expense");
-    for (Expense expense : expenseSheet.getExpenseList())
+    for (ExpenseEntity expense : expenseSheet.getExpenseList())
       es.encrypt(expense);
     logger.info("encrypt: userLimit");
     for (UserLimit userLimit : expenseSheet.getUserLimitList())
@@ -133,18 +133,18 @@ public class ExpenseSheetService {
     return realUser.getDefaultExpenseSheet();
   }
 
-  public List<Expense> findAllExpense(ExpenseSheet expenseSheet) {
+  public List<ExpenseEntity> findAllExpense(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    List<Expense> expenseListToReturn = expenseSheet.getExpenseList().parallelStream()
+    List<ExpenseEntity> expenseListToReturn = expenseSheet.getExpenseList().parallelStream()
         .filter(e -> Filter.matchFilter(e, expenseSheet.getFilter()))
         .collect(Collectors.toList());
-    ExpenseService.logger.info("findAllExpense for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    logger.info("findAllExpense for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseListToReturn;
   }
 
-  private List<Expense> getExpenseList(ExpenseSheet expenseSheet) {
+  private List<ExpenseEntity> getExpenseList(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    List<Expense> expenseListToReturn = expenseSheet.getExpenseList().parallelStream()
+    List<ExpenseEntity> expenseListToReturn = expenseSheet.getExpenseList().parallelStream()
     .filter(e -> !e.getDate().isBefore(expenseSheet.getFirstDate()))
     .filter(e -> !e.getDate().isAfter(expenseSheet.getLastDate()))
     .filter(e -> Filter.matchFilter(e, expenseSheet.getFilter()))
@@ -161,7 +161,7 @@ public class ExpenseSheetService {
     expenseSheet.getUserLimitExpenseMap().clear();
     expenseSheet.setFirstDate(startDate);
     expenseSheet.setLastDate(endDate);
-    for (Expense expense : getExpenseList(expenseSheet)) {
+    for (ExpenseEntity expense : getExpenseList(expenseSheet)) {
       if (expense.getValue() == null) continue;
       addExpenseToDateMap(expenseSheet, expense);
       if (firstDay != null && lastDay != null && !expense.getDate().isBefore(firstDay)
@@ -174,7 +174,7 @@ public class ExpenseSheetService {
     return expenseSheet.getDateExpenseMap();
   }
 
-  private void addExpenseToDateMap(ExpenseSheet expenseSheet, Expense expense) {
+  private void addExpenseToDateMap(ExpenseSheet expenseSheet, ExpenseEntity expense) {
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
     if (dateExpense == null) {
       dateExpense = new DateExpense(expense.getDate());
@@ -183,7 +183,7 @@ public class ExpenseSheetService {
     dateExpense.addExpense(expenseSheet, expense);
   }
 
-  private void addExpenseToCategoryMap(ExpenseSheet expenseSheet, Expense expense) {
+  private void addExpenseToCategoryMap(ExpenseSheet expenseSheet, ExpenseEntity expense) {
     CategoryExpense categoryExpense = expenseSheet.getCategoryExpenseMap().get(expense.getCategory());
     if (categoryExpense == null) {
       categoryExpense = new CategoryExpense(expense.getCategory());
@@ -192,7 +192,7 @@ public class ExpenseSheetService {
     categoryExpense.addExpense(expense);
   }
 
-  private void addExpenseToUserLimitMap(ExpenseSheet expenseSheet, Expense expense) {
+  private void addExpenseToUserLimitMap(ExpenseSheet expenseSheet, ExpenseEntity expense) {
     UserLimit userLimit = getUserLimitForUser(expenseSheet, expense.getUser());
     UserLimitExpense userLimitExpense = expenseSheet.getUserLimitExpenseMap().get(userLimit);
     if (userLimitExpense == null) {
@@ -202,12 +202,12 @@ public class ExpenseSheetService {
     userLimitExpense.addExpense(expense);
   }
 
-  public void addExpense(ExpenseSheet expenseSheet, Expense expense) {
+  public void addExpense(ExpenseEntity expense, ExpenseSheet expenseSheet) {
     expenseSheet.getExpenseList().add(expense);
     addExpenseToDateMap(expenseSheet, expense);
   }
 
-  public void removeExpenseFromMap(ExpenseSheet expenseSheet, Expense expense) {
+  public void removeExpenseFromMap(ExpenseSheet expenseSheet, ExpenseEntity expense) {
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
     if (dateExpense != null)
       dateExpense.removeExpense(expense);
@@ -415,7 +415,14 @@ public class ExpenseSheetService {
     int i = 0;
     for (CategoryEntity cat : expenseSheet.getCategoryList())
       cat.setOrder(i++);
-    expenseSheet = eshr.save(expenseSheet);
+    eshr.save(expenseSheet);
 	cs.remove(category);
+  }
+
+  @Transactional
+  public void removeExpense(ExpenseEntity expense, ExpenseSheet expenseSheet) {
+    expenseSheet.getExpenseList().remove(expense);
+    removeExpenseFromMap(expenseSheet, expense);
+    es.remove(expense);
   }
 }

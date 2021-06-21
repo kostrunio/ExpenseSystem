@@ -12,6 +12,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import pl.kostro.expensesystem.components.form.ExpenseForm;
 import pl.kostro.expensesystem.model.CategoryEntity;
+import pl.kostro.expensesystem.model.ExpenseEntity;
 
 public class TableDesign extends VerticalLayout {
   protected Panel actionPanel = new Panel();
@@ -24,7 +25,7 @@ public class TableDesign extends VerticalLayout {
   protected ComboBox<java.lang.String> commentBox = new ComboBox<>();
   protected Button newExpenseButton = new Button();
   protected HorizontalLayout workingLayout = new HorizontalLayout();
-  protected Grid<pl.kostro.expensesystem.model.Expense> expenseGrid = new Grid<>();
+  protected Grid<ExpenseEntity> expenseGrid = new Grid<>();
   protected ExpenseForm expenseForm = new ExpenseForm();
   protected Button exportButton = new Button();
 

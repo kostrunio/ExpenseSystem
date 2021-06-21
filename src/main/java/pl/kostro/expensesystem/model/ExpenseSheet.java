@@ -50,7 +50,7 @@ public class ExpenseSheet extends AbstractEntity {
   private List<UserLimit> userLimitList;
   @OneToMany(mappedBy = "expenseSheet", cascade = CascadeType.REMOVE)
   @OrderBy
-  private List<Expense> expenseList;
+  private List<ExpenseEntity> expenseList;
   @Column(name = "es_reload_day")
   private int reloadDay;
   @Column(name = "es_encrypted")
@@ -116,13 +116,13 @@ public class ExpenseSheet extends AbstractEntity {
     this.userLimitList = userLimitList;
   }
 
-  public List<Expense> getExpenseList() {
+  public List<ExpenseEntity> getExpenseList() {
     if (expenseList == null)
-      expenseList = new ArrayList<Expense>();
+      expenseList = new ArrayList<ExpenseEntity>();
     return expenseList;
   }
 
-  public void setExpenseList(List<Expense> expenseList) {
+  public void setExpenseList(List<ExpenseEntity> expenseList) {
     this.expenseList = expenseList;
   }
 

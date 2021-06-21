@@ -22,7 +22,7 @@ import pl.kostro.expensesystem.utils.LocalDatePersistenceConverter;
 
 @Entity
 @Table(name = "expenses")
-public class Expense extends AbstractEntity {
+public class ExpenseEntity extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
@@ -55,12 +55,12 @@ public class Expense extends AbstractEntity {
   @Transient
   private boolean encoded = true;
 
-  public Expense() {
+  public ExpenseEntity() {
     super();
   }
 
-  public Expense(LocalDate date, String formula, CategoryEntity category, User user, String comment, boolean notify,
-                 ExpenseSheet expenseSheet) {
+  public ExpenseEntity(LocalDate date, String formula, CategoryEntity category, User user, String comment, boolean notify,
+                       ExpenseSheet expenseSheet) {
     this.date = date;
     setFormula(formula);
     this.category = category;

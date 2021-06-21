@@ -11,10 +11,8 @@ import com.vaadin.ui.ComboBox.NewItemProvider;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.Expense;
+import pl.kostro.expensesystem.model.ExpenseEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.utils.Calculator;
@@ -27,7 +25,7 @@ public class ExpenseForm extends ExpenseFormDesign {
   private ExpenseSheetService eshs;
   
   private ExpenseSheet expenseSheet;
-  private Expense expense;
+  private ExpenseEntity expense;
   private TableView view;
 
   private Button.ClickListener saveClick = event -> {
@@ -39,13 +37,13 @@ public class ExpenseForm extends ExpenseFormDesign {
       expense.setComment(commentBox.getValue());
     expense.setNotify(notifyBox.getValue());
     expense.setExpenseSheet(expenseSheet);
-    expense = es.merge(expense);
+    es.save(expense);
     if (!expenseSheet.getExpenseList().contains(expense))
       expenseSheet.getExpenseList().add(expense);
     view.refreshExpenses();
   };
   private Button.ClickListener duplicateClick = event -> {
-    Expense newExpense = new Expense(expense.getDate(), expense.getFormula(), expense.getCategory(),
+    ExpenseEntity newExpense = new ExpenseEntity(expense.getDate(), expense.getFormula(), expense.getCategory(),
         expense.getUser(), expense.getComment(), expense.isNotify(), expense.getExpenseSheet());
     edit(newExpense);
     saveButton.setEnabled(false);
@@ -54,7 +52,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     ConfirmDialog.show(getUI(), Msg.get("expensForm.removeLabel"), Msg.get("expensForm.removeQuestion"),
         Msg.get("expensForm.removeYes"), Msg.get("expensForm.removeNo"), dialog -> {
           if (dialog.isConfirmed()) {
-            es.removeExpense(expenseSheet, expense);
+            eshs.removeExpense(expense, expenseSheet);
             view.refreshExpenses();
           }
     });
@@ -126,7 +124,7 @@ public class ExpenseForm extends ExpenseFormDesign {
       saveButton.setEnabled(false);
   }
 
-  public void edit(Expense expense) {
+  public void edit(ExpenseEntity expense) {
     this.expense = expense;
     if (expense.getDate() != null)
       dateField.setValue(expense.getDate());

@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import pl.kostro.expensesystem.model.Expense;
+import pl.kostro.expensesystem.model.ExpenseEntity;
 
-public interface ExpenseRepository extends JpaRepository<Expense, Long> {
+public interface ExpenseRepository extends JpaRepository<ExpenseEntity, Long> {
 	
 	@Query("select e from Expense e where e.notify = true and e.date = :date")
-	List<Expense> findExpensesToNotify(@Param("date") LocalDate date);
+	List<ExpenseEntity> findExpensesToNotify(@Param("date") LocalDate date);
 }

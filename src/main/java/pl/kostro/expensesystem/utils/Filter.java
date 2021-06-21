@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.Expense;
+import pl.kostro.expensesystem.model.ExpenseEntity;
 import pl.kostro.expensesystem.model.User;
 
 public class Filter {
@@ -78,7 +78,7 @@ public class Filter {
 		this.comment = comment;
 	}
 	
-  public static boolean matchFilter(Expense expense, Filter filter) {
+  public static boolean matchFilter(ExpenseEntity expense, Filter filter) {
     if (filter == null)
       return true;
     else {
@@ -107,7 +107,7 @@ public class Filter {
     }
   }
   
-  private static boolean matchCategory(Expense expense, List<CategoryEntity> categories) {
+  private static boolean matchCategory(ExpenseEntity expense, List<CategoryEntity> categories) {
     if (categories.size() == 0 || categories.get(0) == null)
       return true;
     for (CategoryEntity category : categories)
@@ -116,7 +116,7 @@ public class Filter {
     return false;
   }
   
-  private static boolean matchUser(Expense expense, List<User> users) {
+  private static boolean matchUser(ExpenseEntity expense, List<User> users) {
     if (users.size() == 0 || users.get(0) == null)
       return true;
     for (User user : users)
