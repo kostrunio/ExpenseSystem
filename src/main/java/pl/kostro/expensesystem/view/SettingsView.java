@@ -15,7 +15,7 @@ import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.view.design.SettingsDesign;
@@ -42,7 +42,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
         dialog -> {
           if (dialog.isConfirmed()) {
             eshs.removeExpenseSheet(expenseSheet);
-            RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
+            RealUserEntity loggedUser = VaadinSession.getCurrent().getAttribute(RealUserEntity.class);
             loggedUser = rus.refresh(loggedUser);
             if (loggedUser.getDefaultExpenseSheet() == null && loggedUser.getExpenseSheetList().size() != 0)
               rus.setDefaultExpenseSheet(loggedUser, loggedUser.getExpenseSheetList().get(0));

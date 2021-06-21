@@ -19,7 +19,7 @@ import pl.kostro.expensesystem.utils.LocalDateTimePersistenceConverter;
 
 @Entity
 @DiscriminatorValue(value="2")
-public class RealUser extends UserEntity {
+public class RealUserEntity extends UserEntity {
   @Column(name = "u_password")
   private String password;
   @Column(name = "u_password_byte")
@@ -44,11 +44,11 @@ public class RealUser extends UserEntity {
   @Transient
   String clearPassword;
 
-  public RealUser() {
+  public RealUserEntity() {
     super();
   }
 
-  public RealUser(String name) {
+  public RealUserEntity(String name) {
     super(name);
   }
 

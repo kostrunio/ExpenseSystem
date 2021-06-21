@@ -22,13 +22,13 @@ import org.apache.logging.log4j.Logger;
 
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.RealUserEntity;
 
 public class SendEmail {
 
   private static Logger logger = LogManager.getLogger();
 
-  public static void welcome(RealUser user) {
+  public static void welcome(RealUserEntity user) {
     if (user.getEmail().isEmpty()) return;
     try {
       Message message = new MimeMessage(prepareSession());
@@ -57,7 +57,7 @@ public class SendEmail {
     }
   }
   
-  public static void expenses(RealUser user, ExpenseSheet expenseSheet, int expenses) {
+  public static void expenses(RealUserEntity user, ExpenseSheet expenseSheet, int expenses) {
     if (user.getEmail().isEmpty()) return;
     try {
       Message message = new MimeMessage(prepareSession());

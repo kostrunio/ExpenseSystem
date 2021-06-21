@@ -12,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.UserEntity;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.UserSummary;
@@ -41,8 +41,8 @@ public class UserLimitService {
     expenseSheet.getUserLimitList().add(userLimit);
     expenseSheet = eshr.save(expenseSheet);
 
-    if (user instanceof RealUser) {
-      RealUser realUser = (RealUser) user;
+    if (user instanceof RealUserEntity) {
+      RealUserEntity realUser = (RealUserEntity) user;
       realUser.getExpenseSheetList().add(expenseSheet);
       rur.save(realUser);
       logger.info("createUserLimit for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
@@ -59,7 +59,7 @@ public class UserLimitService {
     LocalDateTime stopper = LocalDateTime.now();
     expenseSheet.getUserLimitList().remove(userLimit);
     ulr.delete(userLimit);
-    if (!(userLimit.getUser() instanceof RealUser))
+    if (!(userLimit.getUser() instanceof RealUserEntity))
       rur.delete(userLimit.getUser().getId());
     logger.info("removeUserLimit for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }

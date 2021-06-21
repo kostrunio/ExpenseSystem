@@ -11,12 +11,11 @@ import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.Msg;
-import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.view.design.LoginDesign;
 
-@SuppressWarnings("serial")
 public class LoginView extends LoginDesign {
   
   private RealUserService rus;
@@ -34,14 +33,14 @@ public class LoginView extends LoginDesign {
     registerForm.setVisible(true);
   };
   private LoginForm.LoginListener loginEvent = event -> {
-    RealUser loggedUser = null;
+    RealUserEntity loggedUser = null;
     try {
       loggedUser = rus.getUserData(event.getLoginParameter("username"), event.getLoginParameter("password"));
       if (loggedUser == null) {
         ShowNotification.logonProblem();
         loginForm.getLoginButton().setEnabled(true);
       } else {
-        VaadinSession.getCurrent().setAttribute(RealUser.class, loggedUser);
+        VaadinSession.getCurrent().setAttribute(RealUserEntity.class, loggedUser);
         ((ExpenseSystemUI) getUI()).updateContent();
       }
     } catch (Exception e) {

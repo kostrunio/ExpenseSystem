@@ -25,7 +25,7 @@ import com.vaadin.server.VaadinSession;
 import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.UserEntity;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
@@ -58,7 +58,7 @@ public class ExpenseSheetService {
 
   private Logger logger = LogManager.getLogger();
 
-  public ExpenseSheet createExpenseSheet(RealUser owner, String name, String key) {
+  public ExpenseSheet createExpenseSheet(RealUserEntity owner, String name, String key) {
     LocalDateTime stopper = LocalDateTime.now();
     ExpenseSheet expenseSheet = new ExpenseSheet();
     expenseSheet.setEncrypted(true);
@@ -86,10 +86,10 @@ public class ExpenseSheetService {
 
   public void removeExpenseSheet(ExpenseSheet expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
-    List<RealUser> realUsers = null;
+    List<RealUserEntity> realUsers = null;
     realUsers = rur.findUsersWithExpenseSheet(expenseSheet);
     if (realUsers != null)
-      for (RealUser realUser : realUsers) {
+      for (RealUserEntity realUser : realUsers) {
         if (realUser.getDefaultExpenseSheet() != null && realUser.getDefaultExpenseSheet().equals(expenseSheet))
           realUser.setDefaultExpenseSheet(null);
         realUser.getExpenseSheetList().remove(expenseSheet);
@@ -124,7 +124,7 @@ public class ExpenseSheetService {
     logger.info("encrypt for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public ExpenseSheet findExpenseSheet(RealUser realUser, int id) {
+  public ExpenseSheet findExpenseSheet(RealUserEntity realUser, int id) {
     Optional<ExpenseSheet> result = realUser.getExpenseSheetList().parallelStream()
       .filter(esh -> esh.getId() == id)
       .findFirst();
@@ -349,7 +349,7 @@ public class ExpenseSheetService {
 
   public List<UserLimit> getUserLimitListRealUser(ExpenseSheet expenseSheet) {
     List<UserLimit> userLimitList = expenseSheet.getUserLimitList().parallelStream()
-        .filter(uL -> uL.getUser() instanceof RealUser)
+        .filter(uL -> uL.getUser() instanceof RealUserEntity)
         .collect(Collectors.toList());
     return userLimitList;
   }
@@ -357,7 +357,7 @@ public class ExpenseSheetService {
   public List<UserLimit> getUserLimitListNotRealUser(ExpenseSheet expenseSheet) {
     List<UserLimit> userLimitList = new ArrayList<UserLimit>();
     for (UserLimit userLimit : expenseSheet.getUserLimitList())
-      if (!(userLimit.getUser() instanceof RealUser))
+      if (!(userLimit.getUser() instanceof RealUserEntity))
         userLimitList.add(userLimit);
     return userLimitList;
   }

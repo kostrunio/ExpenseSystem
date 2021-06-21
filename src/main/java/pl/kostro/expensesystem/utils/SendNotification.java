@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 import pl.kostro.expensesystem.dto.service.ExpenseSheetNotifyService;
 import pl.kostro.expensesystem.model.ExpenseEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 
 @Component
@@ -27,8 +27,8 @@ public class SendNotification {
   public void process() {
     logger.info("SendNotification - started");
     List<ExpenseEntity> expList = es.findExpensesToNotify();
-    Map<RealUser, Map<ExpenseSheet, List<ExpenseEntity>>> notifyMap = esns.prepareExpenseSheetNotify(expList);
-    for (RealUser realUser : notifyMap.keySet()) {
+    Map<RealUserEntity, Map<ExpenseSheet, List<ExpenseEntity>>> notifyMap = esns.prepareExpenseSheetNotify(expList);
+    for (RealUserEntity realUser : notifyMap.keySet()) {
       Map<ExpenseSheet, List<ExpenseEntity>> eSMap = notifyMap.get(realUser);
       for (ExpenseSheet eS : eSMap.keySet()) {
         logger.info("SendNotification: {}; {}; {}", realUser.getName(), eS.getName(), eSMap.get(eS).size());

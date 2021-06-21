@@ -37,7 +37,7 @@ public class ExpenseSheet extends AbstractEntity {
   private Long id;
   @OneToOne
   @JoinColumn(name = "es_u_id")
-  private RealUser owner;
+  private RealUserEntity owner;
   @Column(name = "es_name")
   private String name;
   @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
@@ -80,11 +80,11 @@ public class ExpenseSheet extends AbstractEntity {
     this.id = id;
   }
 
-  public RealUser getOwner() {
+  public RealUserEntity getOwner() {
     return owner;
   }
 
-  public void setOwner(RealUser owner) {
+  public void setOwner(RealUserEntity owner) {
     this.owner = owner;
   }
 

@@ -7,10 +7,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.RealUserEntity;
 
 public interface ExpenseSheetRepository extends JpaRepository<ExpenseSheet, Long> {
 
 	@Query("select esh from RealUser ru join ru.expenseSheetList esh where ru = :realUser")
-	List<ExpenseSheet> findByRealUser(@Param("realUser") RealUser realUser);
+	List<ExpenseSheet> findByRealUser(@Param("realUser") RealUserEntity realUser);
 }

@@ -7,12 +7,12 @@ import java.util.Map;
 
 import pl.kostro.expensesystem.model.ExpenseEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.RealUserEntity;
 
 public class ExpenseSheetNotifyService {
 
-  public Map<RealUser, Map<ExpenseSheet, List<ExpenseEntity>>> prepareExpenseSheetNotify(List<ExpenseEntity> expenseList) {
-    Map<RealUser, Map<ExpenseSheet, List<ExpenseEntity>>> rUMap = new HashMap<RealUser, Map<ExpenseSheet, List<ExpenseEntity>>>();
+  public Map<RealUserEntity, Map<ExpenseSheet, List<ExpenseEntity>>> prepareExpenseSheetNotify(List<ExpenseEntity> expenseList) {
+    Map<RealUserEntity, Map<ExpenseSheet, List<ExpenseEntity>>> rUMap = new HashMap<RealUserEntity, Map<ExpenseSheet, List<ExpenseEntity>>>();
     Map<ExpenseSheet, List<ExpenseEntity>> eSMap;
     List<ExpenseEntity> eList;
     for (ExpenseEntity expense : expenseList) {

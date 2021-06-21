@@ -24,7 +24,7 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.ExpenseSystemUI;
 import pl.kostro.expensesystem.model.CategoryEntity;
 import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.RealUser;
+import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.UserEntity;
 import pl.kostro.expensesystem.model.UserLimit;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
@@ -217,7 +217,7 @@ public class ExpenseView extends ExpenseDesign implements View {
   @Override
   public void enter(ViewChangeEvent event) {
     logger.info("Enter");
-    RealUser loggedUser = VaadinSession.getCurrent().getAttribute(RealUser.class);
+    RealUserEntity loggedUser = VaadinSession.getCurrent().getAttribute(RealUserEntity.class);
     if (event.getParameters().isEmpty()) {
       expenseSheet = loggedUser.getDefaultExpenseSheet();
     } else {
