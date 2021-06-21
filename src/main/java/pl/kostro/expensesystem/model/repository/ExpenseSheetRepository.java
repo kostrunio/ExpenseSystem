@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.RealUserEntity;
+import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
+import pl.kostro.expensesystem.model.entity.RealUserEntity;
 
 public interface ExpenseSheetRepository extends JpaRepository<ExpenseSheetEntity, Long> {
 

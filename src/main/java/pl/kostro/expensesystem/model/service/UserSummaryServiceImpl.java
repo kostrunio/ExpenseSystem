@@ -11,8 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.model.UserLimitEntity;
-import pl.kostro.expensesystem.model.UserSummaryEntity;
+import pl.kostro.expensesystem.model.entity.UserLimitEntity;
+import pl.kostro.expensesystem.model.entity.UserSummaryEntity;
 import pl.kostro.expensesystem.model.repository.UserLimitRepository;
 import pl.kostro.expensesystem.model.repository.UserSummaryRepository;
 

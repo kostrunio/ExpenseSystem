@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.model.service;
 
-import pl.kostro.expensesystem.model.UserEntity;
-import pl.kostro.expensesystem.model.UserLimitEntity;
+import pl.kostro.expensesystem.model.entity.UserEntity;
+import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 
 public interface UserLimitService {
     UserLimitEntity create(UserEntity user, int orderId);

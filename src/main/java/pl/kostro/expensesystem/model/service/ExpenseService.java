@@ -1,6 +1,6 @@
 package pl.kostro.expensesystem.model.service;
 
-import pl.kostro.expensesystem.model.*;
+import pl.kostro.expensesystem.model.entity.ExpenseEntity;
 
 import java.util.List;
 

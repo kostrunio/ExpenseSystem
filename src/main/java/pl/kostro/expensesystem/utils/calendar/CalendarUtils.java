@@ -1,6 +1,6 @@
 package pl.kostro.expensesystem.utils.calendar;
 
-import pl.kostro.expensesystem.Msg;
+import pl.kostro.expensesystem.utils.msg.Msg;
 
 public class CalendarUtils {
 

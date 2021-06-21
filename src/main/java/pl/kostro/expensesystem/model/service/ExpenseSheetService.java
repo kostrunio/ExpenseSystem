@@ -1,6 +1,6 @@
 package pl.kostro.expensesystem.model.service;
 
-import pl.kostro.expensesystem.model.*;
+import pl.kostro.expensesystem.model.entity.*;
 import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
 import pl.kostro.expensesystem.utils.expense.UserLimitExpense;

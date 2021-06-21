@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.ExpenseEntity;
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.UserLimitEntity;
+import pl.kostro.expensesystem.model.entity.CategoryEntity;
+import pl.kostro.expensesystem.model.entity.ExpenseEntity;
+import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
+import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 
 public class DateExpense {

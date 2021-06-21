@@ -21,11 +21,11 @@ import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.model.*;
+import pl.kostro.expensesystem.model.entity.*;
 import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
 import pl.kostro.expensesystem.model.repository.UserLimitRepository;
-import pl.kostro.expensesystem.notification.ShowNotification;
-import pl.kostro.expensesystem.utils.Filter;
+import pl.kostro.expensesystem.ui.notification.ShowNotification;
+import pl.kostro.expensesystem.utils.filter.Filter;
 import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
 import pl.kostro.expensesystem.utils.expense.UserLimitExpense;

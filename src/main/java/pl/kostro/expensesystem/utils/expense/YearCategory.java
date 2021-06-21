@@ -4,7 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.kostro.expensesystem.model.CategoryEntity;
+import pl.kostro.expensesystem.model.entity.CategoryEntity;
 
 public class YearCategory {
   

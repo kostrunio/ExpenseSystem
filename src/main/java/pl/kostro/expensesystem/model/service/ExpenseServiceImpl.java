@@ -12,7 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.model.ExpenseEntity;
+import pl.kostro.expensesystem.model.entity.ExpenseEntity;
 import pl.kostro.expensesystem.model.repository.ExpenseRepository;
 
 @Service

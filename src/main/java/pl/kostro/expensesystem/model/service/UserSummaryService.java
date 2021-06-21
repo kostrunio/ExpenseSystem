@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.model.service;
 
-import pl.kostro.expensesystem.model.UserLimitEntity;
-import pl.kostro.expensesystem.model.UserSummaryEntity;
+import pl.kostro.expensesystem.model.entity.UserLimitEntity;
+import pl.kostro.expensesystem.model.entity.UserSummaryEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -11,9 +11,9 @@ import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.model.UserEntity;
-import pl.kostro.expensesystem.model.UserLimitEntity;
-import pl.kostro.expensesystem.model.UserSummaryEntity;
+import pl.kostro.expensesystem.model.entity.UserEntity;
+import pl.kostro.expensesystem.model.entity.UserLimitEntity;
+import pl.kostro.expensesystem.model.entity.UserSummaryEntity;
 import pl.kostro.expensesystem.model.repository.UserLimitRepository;
 
 @Service

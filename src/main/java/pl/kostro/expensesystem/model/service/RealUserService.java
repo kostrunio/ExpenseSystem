@@ -1,9 +1,7 @@
 package pl.kostro.expensesystem.model.service;
 
-import pl.kostro.expensesystem.model.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.RealUserEntity;
-
-import java.util.List;
+import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
+import pl.kostro.expensesystem.model.entity.RealUserEntity;
 
 public interface RealUserService {
     RealUserEntity createRealUser(String name, String password, String email);

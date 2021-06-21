@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import pl.kostro.expensesystem.model.CategoryEntity;
+import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.repository.CategoryRepository;
 
 @Service

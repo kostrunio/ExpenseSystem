@@ -7,7 +7,7 @@ import org.apache.logging.log4j.core.pattern.LogEventPatternConverter;
 
 import com.vaadin.server.VaadinSession;
 
-import pl.kostro.expensesystem.model.RealUserEntity;
+import pl.kostro.expensesystem.model.entity.RealUserEntity;
 
 @Plugin(name = "UserConverter", category = "Converter")
 @ConverterKeys({ "user" })
