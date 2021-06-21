@@ -93,7 +93,6 @@ public class DayView extends DayDesign {
         expense.setComment(commentBox.getValue().toString());
       expense.setNotify(notifyBox.getValue());
       expense.setExpenseSheet(expenseSheet);
-      es.save(expense);
       eshs.addExpense(expense, expenseSheet);
       prepareCategoryListLayout();
       prepareExpenseListLayout();

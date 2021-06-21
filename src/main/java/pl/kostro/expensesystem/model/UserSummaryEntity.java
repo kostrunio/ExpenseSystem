@@ -18,7 +18,7 @@ import pl.kostro.expensesystem.utils.LocalDatePersistenceConverter;
 
 @Entity
 @Table(name = "users_summaries")
-public class UserSummary extends AbstractEntity {
+public class UserSummaryEntity extends AbstractEntity {
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
@@ -36,11 +36,11 @@ public class UserSummary extends AbstractEntity {
   @Column(name = "us_sum_byte")
   private byte[] sum_byte;
 
-  public UserSummary() {
+  public UserSummaryEntity() {
     super();
   }
 
-  public UserSummary(LocalDate date, BigDecimal limit) {
+  public UserSummaryEntity(LocalDate date, BigDecimal limit) {
     this.date = date;
     setLimit(limit);
     setSum(new BigDecimal(0));

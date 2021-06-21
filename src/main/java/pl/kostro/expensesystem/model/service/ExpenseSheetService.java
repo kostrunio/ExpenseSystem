@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.model.service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -22,15 +23,11 @@ import org.springframework.stereotype.Service;
 
 import com.vaadin.server.VaadinSession;
 
-import pl.kostro.expensesystem.model.CategoryEntity;
-import pl.kostro.expensesystem.model.ExpenseEntity;
-import pl.kostro.expensesystem.model.ExpenseSheet;
-import pl.kostro.expensesystem.model.RealUserEntity;
-import pl.kostro.expensesystem.model.UserEntity;
-import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.*;
 import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
 import pl.kostro.expensesystem.model.repository.RealUserRepository;
 import pl.kostro.expensesystem.model.repository.UserLimitRepository;
+import pl.kostro.expensesystem.notification.ShowNotification;
 import pl.kostro.expensesystem.utils.Filter;
 import pl.kostro.expensesystem.utils.expense.CategoryExpense;
 import pl.kostro.expensesystem.utils.expense.DateExpense;
@@ -55,6 +52,8 @@ public class ExpenseSheetService {
   private RealUserService rus;
   @Autowired
   private UserLimitService uls;
+  @Autowired
+  private UserSummaryService uss;
 
   private Logger logger = LogManager.getLogger();
 
@@ -203,8 +202,16 @@ public class ExpenseSheetService {
   }
 
   public void addExpense(ExpenseEntity expense, ExpenseSheet expenseSheet) {
+    es.save(expense);
     expenseSheet.getExpenseList().add(expense);
     addExpenseToDateMap(expenseSheet, expense);
+  }
+
+  @Transactional
+  public void removeExpense(ExpenseEntity expense, ExpenseSheet expenseSheet) {
+    expenseSheet.getExpenseList().remove(expense);
+    removeExpenseFromMap(expenseSheet, expense);
+    es.remove(expense);
   }
 
   public void removeExpenseFromMap(ExpenseSheet expenseSheet, ExpenseEntity expense) {
@@ -419,10 +426,24 @@ public class ExpenseSheetService {
 	cs.remove(category);
   }
 
-  @Transactional
-  public void removeExpense(ExpenseEntity expense, ExpenseSheet expenseSheet) {
-    expenseSheet.getExpenseList().remove(expense);
-    removeExpenseFromMap(expenseSheet, expense);
-    es.remove(expense);
+  public void checkSummary(ExpenseSheet expenseSheet, LocalDate date) {
+    LocalDateTime stopper = LocalDateTime.now();
+    if (expenseSheet.getFilter() != null)
+      return;
+    for (UserLimit userLimit : expenseSheet.getUserLimitList()) {
+      uls.fetchUserSummaryList(userLimit);
+      logger.debug("checkSummary for: {} at {}", userLimit, date);
+      UserSummaryEntity userSummary = uss.findUserSummary(userLimit, date);
+      BigDecimal exSummary = new BigDecimal(0);
+      if (expenseSheet.getUserLimitExpenseMap().get(userLimit) != null)
+        exSummary = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
+      logger.debug("exSummary: {}; userSummary: {}", exSummary, userSummary.getSum());
+      if (userSummary.getSum().compareTo(exSummary) != 0) {
+        ShowNotification.changeSummary(userLimit.getUser().getName(), userSummary.getSum(), exSummary);
+        userSummary.setSum(exSummary);
+        uss.merge(userSummary);
+      }
+    }
+    logger.info("checkSummary for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }

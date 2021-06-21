@@ -24,7 +24,6 @@ import pl.kostro.expensesystem.utils.expense.DateExpense;
 import pl.kostro.expensesystem.view.DayView;
 import pl.kostro.expensesystem.view.MonthView;
 
-@SuppressWarnings("serial")
 public class ExpenseCalendar extends Calendar<BasicItem> {
 
   private Converter converter = new Converter();
@@ -40,7 +39,7 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
         startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
         endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), date.withDayOfMonth(1),
         date.withDayOfMonth(date.lengthOfMonth()));
-    uss.checkSummary(expenseSheet, date);
+    eshs.checkSummary(expenseSheet, date);
     monthView.fulfillTables();
     return converter.transformExpensesToEvents(expenseSheet, eventToShow);
   };

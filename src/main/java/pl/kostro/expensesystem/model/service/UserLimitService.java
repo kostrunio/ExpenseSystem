@@ -15,7 +15,7 @@ import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.RealUserEntity;
 import pl.kostro.expensesystem.model.UserEntity;
 import pl.kostro.expensesystem.model.UserLimit;
-import pl.kostro.expensesystem.model.UserSummary;
+import pl.kostro.expensesystem.model.UserSummaryEntity;
 import pl.kostro.expensesystem.model.repository.ExpenseSheetRepository;
 import pl.kostro.expensesystem.model.repository.RealUserRepository;
 import pl.kostro.expensesystem.model.repository.UserLimitRepository;
@@ -65,14 +65,14 @@ public class UserLimitService {
   }
 
   public void decrypt(UserLimit userLimit) {
-    for (UserSummary userSummary : userLimit.getUserSummaryList())
+    for (UserSummaryEntity userSummary : userLimit.getUserSummaryList())
       uss.decrypt(userSummary);
   }
 
   public void encrypt(UserLimit userLimit) {
     LocalDateTime stopper = LocalDateTime.now();
     userLimit.setLimit(userLimit.getLimit(true), true);
-    for (UserSummary userSummary : userLimit.getUserSummaryList())
+    for (UserSummaryEntity userSummary : userLimit.getUserSummaryList())
       uss.encrypt(userSummary);
     ulr.save(userLimit);
     logger.info("encrypt for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));

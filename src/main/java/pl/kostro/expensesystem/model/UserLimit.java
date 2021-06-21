@@ -40,7 +40,7 @@ public class UserLimit extends AbstractEntity {
   @OneToMany(cascade = CascadeType.REMOVE)
   @JoinColumn(name = "us_ul_id")
   @OrderBy(value = "date")
-  private List<UserSummary> userSummaryList;
+  private List<UserSummaryEntity> userSummaryList;
   @Column(name = "ul_cont_summary")
   private boolean continuousSummary;
 
@@ -104,13 +104,13 @@ public class UserLimit extends AbstractEntity {
     this.order = order;
   }
 
-  public List<UserSummary> getUserSummaryList() {
+  public List<UserSummaryEntity> getUserSummaryList() {
     if (userSummaryList == null)
-      userSummaryList = new ArrayList<UserSummary>();
+      userSummaryList = new ArrayList<UserSummaryEntity>();
     return userSummaryList;
   }
 
-  public void setUserSummaryList(List<UserSummary> userSummaryList) {
+  public void setUserSummaryList(List<UserSummaryEntity> userSummaryList) {
     this.userSummaryList = userSummaryList;
   }
 

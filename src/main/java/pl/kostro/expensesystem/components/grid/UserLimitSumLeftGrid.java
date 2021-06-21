@@ -13,17 +13,19 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.Msg;
 import pl.kostro.expensesystem.model.ExpenseSheet;
 import pl.kostro.expensesystem.model.UserLimit;
+import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
 import pl.kostro.expensesystem.utils.UserLimitSumLeft;
 
-@SuppressWarnings("serial")
 public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
   
   private UserSummaryService uss;
+  private UserLimitService uls;
   private ExpenseSheet expenseSheet;
 
   public UserLimitSumLeftGrid() {
     uss = AppCtxProvider.getBean(UserSummaryService.class);
+    uls = AppCtxProvider.getBean(UserLimitService.class);
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheet.class);;
     setHeightByRows(expenseSheet.getUserLimitList().size());
     setSelectionMode(SelectionMode.NONE);
@@ -48,7 +50,12 @@ public class UserLimitSumLeftGrid extends Grid<UserLimitSumLeft> {
         actSum = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
       else
         actSum = new BigDecimal(0);
-      values.add(new UserLimitSumLeft(userLimit, actSum, userLimit.isContinuousSummary() ? uss.calculateSum(userLimit, date) : userLimit.getLimit().subtract(actSum)));
+      if (userLimit.isContinuousSummary()) {
+        uls.fetchUserSummaryList(userLimit);
+        values.add(new UserLimitSumLeft(userLimit, actSum, uss.calculateSum(userLimit, date)));
+      } else {
+        values.add(new UserLimitSumLeft(userLimit, actSum, userLimit.getLimit().subtract(actSum)));
+      }
     }
     setItems(values);
   }
