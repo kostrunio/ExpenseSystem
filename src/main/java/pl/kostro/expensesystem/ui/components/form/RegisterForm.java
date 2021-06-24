@@ -23,7 +23,7 @@ public class RegisterForm extends RegisterFormDesign {
       }
     if (!nameField.getValue().isEmpty() && !passwordField.getValue().isEmpty()
         && passwordField.getValue().equals(rePasswordField.getValue())) {
-      RealUserEntity realUser = rus.createRealUser(nameField.getValue(), passwordField.getValue(), emailField.getValue());
+      RealUserEntity realUser = rus.create(nameField.getValue(), passwordField.getValue(), emailField.getValue());
       new Thread(() -> SendEmail.welcome(realUser)).start();
       ShowNotification.registerOK();
       ((ExpenseSystemUI) getUI()).updateContent();

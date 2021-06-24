@@ -1,15 +1,14 @@
 package pl.kostro.expensesystem.model.service;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.repository.CategoryRepository;
+
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class CategoryServiceImpl implements CategoryService {
@@ -35,11 +34,11 @@ public class CategoryServiceImpl implements CategoryService {
     logger.info("removeCategory for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public void decrypt(CategoryEntity category) {
+  void decrypt(CategoryEntity category) {
     category.getName();
   }
 
-  public void encrypt(CategoryEntity category) {
+  void encrypt(CategoryEntity category) {
     LocalDateTime stopper = LocalDateTime.now();
     category.setName(category.getName(true), true);
     repository.save(category);

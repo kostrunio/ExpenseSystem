@@ -7,7 +7,6 @@ public interface UserLimitService {
     UserLimitEntity create(UserEntity user, int orderId);
     void merge(UserLimitEntity userLimit);
     void remove(UserLimitEntity userLimit);
-    void decrypt(UserLimitEntity userLimit);
-    void encrypt(UserLimitEntity userLimit);
+
     void fetchUserSummaryList(UserLimitEntity userLimit);
 }

@@ -25,11 +25,11 @@ public class ExpenseSheetServiceImpl implements ExpenseSheetService {
   @Autowired
   private CategoryServiceImpl cs;
   @Autowired
-  private ExpenseService es;
+  private ExpenseServiceImpl es;
   @Autowired
-  private UserLimitService uls;
+  private UserLimitServiceImpl uls;
   @Autowired
-  private UserSummaryService uss;
+  private UserSummaryServiceImpl uss;
 
   private Logger logger = LogManager.getLogger();
 

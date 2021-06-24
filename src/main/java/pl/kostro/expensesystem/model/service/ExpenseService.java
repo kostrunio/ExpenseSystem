@@ -7,8 +7,6 @@ import java.util.List;
 public interface ExpenseService {
     void save(ExpenseEntity expense);
     void remove(ExpenseEntity expense);
-    void decrypt(ExpenseEntity expense);
-    void encrypt(ExpenseEntity expense);
 
     List<ExpenseEntity> findExpensesToNotify();
 }

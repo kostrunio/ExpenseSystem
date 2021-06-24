@@ -1,23 +1,21 @@
 package pl.kostro.expensesystem.model.service;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-import javax.persistence.NoResultException;
-import javax.transaction.Transactional;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.repository.RealUserRepository;
+
+import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
 
 @Service
 public class RealUserServiceImpl implements RealUserService {
@@ -40,7 +38,7 @@ public class RealUserServiceImpl implements RealUserService {
     this.repository = repository;
   }
 
-  public RealUserEntity createRealUser(String name, String password, String email) {
+  public RealUserEntity create(String name, String password, String email) {
     LocalDateTime stopper = LocalDateTime.now();
     RealUserEntity realUser = new RealUserEntity();
     realUser.setName(name);

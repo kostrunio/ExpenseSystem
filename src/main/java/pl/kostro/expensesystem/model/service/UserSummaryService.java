@@ -8,8 +8,6 @@ import java.time.LocalDate;
 
 public interface UserSummaryService {
     UserSummaryEntity merge(UserSummaryEntity userSummary);
-    void decrypt(UserSummaryEntity userSummary);
-    void encrypt(UserSummaryEntity userSummary);
     BigDecimal calculateSum(UserLimitEntity userLimit, LocalDate date);
     UserSummaryEntity findUserSummary(UserLimitEntity userLimit, LocalDate date);
 }

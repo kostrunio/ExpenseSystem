@@ -4,7 +4,7 @@ import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 
 public interface RealUserService {
-    RealUserEntity createRealUser(String name, String password, String email);
+    RealUserEntity create(String name, String password, String email);
     void merge(RealUserEntity realUser, boolean passwordChange);
     RealUserEntity refresh(RealUserEntity realUser);
     void setDefaultExpenseSheet(RealUserEntity realUser, ExpenseSheetEntity expenseSheet);

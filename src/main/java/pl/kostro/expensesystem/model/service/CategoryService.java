@@ -5,6 +5,4 @@ import pl.kostro.expensesystem.model.entity.CategoryEntity;
 public interface CategoryService {
     void save(CategoryEntity category);
     void remove(CategoryEntity category);
-    void decrypt(CategoryEntity category);
-    void encrypt(CategoryEntity category);
 }

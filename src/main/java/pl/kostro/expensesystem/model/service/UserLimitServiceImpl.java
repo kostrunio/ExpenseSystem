@@ -44,17 +44,6 @@ public class UserLimitServiceImpl implements UserLimitService {
     logger.info("removeUserLimit for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
-  public void decrypt(UserLimitEntity userLimit) {
-    userLimit.getLimit();
-  }
-
-  public void encrypt(UserLimitEntity userLimit) {
-    LocalDateTime stopper = LocalDateTime.now();
-    userLimit.setLimit(userLimit.getLimit(true), true);
-    repository.save(userLimit);
-    logger.info("encrypt for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-  }
-
   @Transactional
   public void fetchUserSummaryList(UserLimitEntity userLimit) {
     try {
@@ -66,6 +55,17 @@ public class UserLimitServiceImpl implements UserLimitService {
       userLimit.setUserSummaryList(attached.getUserSummaryList());
       logger.info("fetchUserSummaryList for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
+  }
+
+  void decrypt(UserLimitEntity userLimit) {
+    userLimit.getLimit();
+  }
+
+  void encrypt(UserLimitEntity userLimit) {
+    LocalDateTime stopper = LocalDateTime.now();
+    userLimit.setLimit(userLimit.getLimit(true), true);
+    repository.save(userLimit);
+    logger.info("encrypt for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
 }
