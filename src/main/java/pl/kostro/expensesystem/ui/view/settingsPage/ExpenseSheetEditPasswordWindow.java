@@ -19,10 +19,6 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
 
-/**
- * Simple name editor Window.
- */
-@SuppressWarnings("serial")
 public class ExpenseSheetEditPasswordWindow extends Window {
 
   private Logger logger = LogManager.getLogger();
@@ -97,10 +93,6 @@ public class ExpenseSheetEditPasswordWindow extends Window {
     footer.setExpandRatio(cancel, 1);
     footer.setComponentAlignment(cancel, Alignment.TOP_RIGHT);
     return footer;
-  }
-  
-  public interface ExpenseSheetPasswordChangeListener {
-    void expenseSheetPasswordChanged(String newPassword);
   }
 
 }

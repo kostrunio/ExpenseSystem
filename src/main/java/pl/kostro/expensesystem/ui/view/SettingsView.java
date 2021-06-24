@@ -1,30 +1,27 @@
 package pl.kostro.expensesystem.ui.view;
 
-import java.text.MessageFormat;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.ui.ExpenseSystemUI;
-import pl.kostro.expensesystem.utils.msg.Msg;
-import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.RealUserService;
+import pl.kostro.expensesystem.ui.ExpenseSystemUI;
+import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.ui.view.design.SettingsDesign;
+import pl.kostro.expensesystem.ui.view.settingsPage.ExpenseSheetEditListener;
 import pl.kostro.expensesystem.ui.view.settingsPage.ExpenseSheetEditPasswordWindow;
-import pl.kostro.expensesystem.ui.view.settingsPage.ExpenseSheetEditPasswordWindow.ExpenseSheetPasswordChangeListener;
 import pl.kostro.expensesystem.ui.view.settingsPage.ExpenseSheetEditWindow;
-import pl.kostro.expensesystem.ui.view.settingsPage.ExpenseSheetEditWindow.ExpenseSheetEditListener;
+import pl.kostro.expensesystem.ui.view.settingsPage.ExpenseSheetPasswordChangeListener;
+import pl.kostro.expensesystem.utils.msg.Msg;
 
-@SuppressWarnings("serial")
+import java.text.MessageFormat;
+
 public class SettingsView extends SettingsDesign implements ExpenseSheetEditListener, ExpenseSheetPasswordChangeListener {
 
   private Logger logger = LogManager.getLogger();
