@@ -1,13 +1,5 @@
 package pl.kostro.expensesystem.ui.view;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.icons.VaadinIcons;
@@ -18,21 +10,27 @@ import com.vaadin.ui.ComboBox.NewItemProvider;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.utils.msg.Msg;
-import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
+import pl.kostro.expensesystem.ui.view.design.DayDesign;
 import pl.kostro.expensesystem.utils.calculator.Calculator;
+import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.utils.transform.model.CategoryExpense;
 import pl.kostro.expensesystem.utils.transform.model.DateExpense;
-import pl.kostro.expensesystem.ui.view.design.DayDesign;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 public class DayView extends DayDesign {
   
@@ -247,7 +245,7 @@ public class DayView extends DayDesign {
     this.modify = modify;
     
     if (expense.getUser() != null)
-      userBox.setSelectedItem(eshts.getUserLimitForUser(expenseSheet, expense.getUser()));
+      userBox.setSelectedItem(eshts.getUserLimitForUser(expense.getUser(), expenseSheet));
     else
       userBox.setSelectedItem(expenseSheet.getUserLimitList().get(0));
 

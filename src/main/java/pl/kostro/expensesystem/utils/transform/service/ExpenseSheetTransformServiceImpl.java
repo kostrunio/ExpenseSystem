@@ -84,11 +84,11 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
     expenseSheet.setLastDate(endDate);
     for (ExpenseEntity expense : getExpenseList(expenseSheet)) {
       if (expense.getValue() == null) continue;
-      addExpenseToDateMap(expenseSheet, expense);
+      addExpenseToDateMap(expense, expenseSheet);
       if (firstDay != null && lastDay != null && !expense.getDate().isBefore(firstDay)
               && !expense.getDate().isAfter(lastDay)) {
-        addExpenseToCategoryMap(expenseSheet, expense);
-        addExpenseToUserLimitMap(expenseSheet, expense);
+        addExpenseToCategoryMap(expense, expenseSheet);
+        addExpenseToUserLimitMap(expense, expenseSheet);
       }
     }
     logger.info("prepareExpenseMap for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
@@ -102,19 +102,19 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
 
   public void addExpense(ExpenseEntity expense, ExpenseSheetEntity expenseSheet) {
     expenseSheet.getExpenseList().add(expense);
-    addExpenseToDateMap(expenseSheet, expense);
+    addExpenseToDateMap(expense, expenseSheet);
   }
 
-  private void addExpenseToDateMap(ExpenseSheetEntity expenseSheet, ExpenseEntity expense) {
+  private void addExpenseToDateMap(ExpenseEntity expense, ExpenseSheetEntity expenseSheet) {
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
     if (dateExpense == null) {
       dateExpense = new DateExpense(expense.getDate());
       expenseSheet.getDateExpenseMap().put(expense.getDate(), dateExpense);
     }
-    dateExpense.addExpense(expenseSheet, expense);
+    dateExpense.addExpense(expense, getUserLimitForUser(expense.getUser(), expenseSheet), expenseSheet);
   }
 
-  private void addExpenseToCategoryMap(ExpenseSheetEntity expenseSheet, ExpenseEntity expense) {
+  private void addExpenseToCategoryMap(ExpenseEntity expense, ExpenseSheetEntity expenseSheet) {
     CategoryExpense categoryExpense = expenseSheet.getCategoryExpenseMap().get(expense.getCategory());
     if (categoryExpense == null) {
       categoryExpense = new CategoryExpense(expense.getCategory());
@@ -123,8 +123,8 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
     categoryExpense.addExpense(expense);
   }
 
-  private void addExpenseToUserLimitMap(ExpenseSheetEntity expenseSheet, ExpenseEntity expense) {
-    UserLimitEntity userLimit = getUserLimitForUser(expenseSheet, expense.getUser());
+  private void addExpenseToUserLimitMap(ExpenseEntity expense, ExpenseSheetEntity expenseSheet) {
+    UserLimitEntity userLimit = getUserLimitForUser(expense.getUser(), expenseSheet);
     UserLimitExpense userLimitExpense = expenseSheet.getUserLimitExpenseMap().get(userLimit);
     if (userLimitExpense == null) {
       userLimitExpense = new UserLimitExpense(userLimit);
@@ -135,16 +135,16 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
 
   public void removeExpense(ExpenseEntity expense, ExpenseSheetEntity expenseSheet) {
     expenseSheet.getExpenseList().remove(expense);
-    removeExpenseFromMap(expenseSheet, expense);
+    removeExpenseFromMap(expense, expenseSheet);
   }
 
-  private void removeExpenseFromMap(ExpenseSheetEntity expenseSheet, ExpenseEntity expense) {
+  private void removeExpenseFromMap(ExpenseEntity expense, ExpenseSheetEntity expenseSheet) {
     DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(expense.getDate());
     if (dateExpense != null)
       dateExpense.removeExpense(expense);
   }
 
-  public UserLimitEntity getUserLimitForUser(ExpenseSheetEntity expenseSheet, UserEntity user) {
+  public UserLimitEntity getUserLimitForUser(UserEntity user, ExpenseSheetEntity expenseSheet) {
     Optional<UserLimitEntity> result = expenseSheet.getUserLimitList().parallelStream()
             .filter(ul -> ul.getUser().equals(user))
             .findFirst();

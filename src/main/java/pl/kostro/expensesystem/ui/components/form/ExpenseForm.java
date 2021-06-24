@@ -1,24 +1,23 @@
 package pl.kostro.expensesystem.ui.components.form;
 
-import java.time.LocalDate;
-import java.util.Optional;
-
 import com.vaadin.data.HasValue;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox.NewItemProvider;
-
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.utils.msg.Msg;
-import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.entity.ExpenseEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.utils.calculator.Calculator;
+import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.ui.view.TableView;
 import pl.kostro.expensesystem.ui.view.design.ExpenseFormDesign;
+import pl.kostro.expensesystem.utils.calculator.Calculator;
+import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
+
+import java.time.LocalDate;
+import java.util.Optional;
 
 public class ExpenseForm extends ExpenseFormDesign {
   
@@ -139,7 +138,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     else
       categoryBox.setValue(expenseSheet.getCategoryList().get(0));
     if (expense.getUser() != null)
-      userBox.setValue(eshts.getUserLimitForUser(expenseSheet, expense.getUser()));
+      userBox.setValue(eshts.getUserLimitForUser(expense.getUser(), expenseSheet));
     else
       userBox.setValue(expenseSheet.getUserLimitList().get(0));
     formulaField.focus();

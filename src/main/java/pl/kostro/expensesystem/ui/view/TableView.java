@@ -115,7 +115,7 @@ public class TableView extends TableDesign {
         categoryBox.setSelectedItem(expenseSheet.getFilter().getCategories().get(0));
       if (expenseSheet.getFilter().getUsers() != null
           && expenseSheet.getFilter().getUsers().size() > 0)
-        userBox.setSelectedItem(eshts.getUserLimitForUser(expenseSheet, expenseSheet.getFilter().getUsers().get(0)));
+        userBox.setSelectedItem(eshts.getUserLimitForUser(expenseSheet.getFilter().getUsers().get(0), expenseSheet));
       if (expenseSheet.getFilter().getFormula() != null
           && !expenseSheet.getFilter().getFormula().isEmpty())
         formulaField.setValue(expenseSheet.getFilter().getFormula());

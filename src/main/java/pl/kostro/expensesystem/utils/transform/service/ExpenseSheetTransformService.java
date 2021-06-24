@@ -22,7 +22,7 @@ public interface ExpenseSheetTransformService {
     void prepareExpenseMap(ExpenseSheetEntity expenseSheet, LocalDate startDate, LocalDate endDate, LocalDate firstDay, LocalDate lastDay);
     void addExpense(ExpenseEntity expense, ExpenseSheetEntity expenseSheet);
     void removeExpense(ExpenseEntity expense, ExpenseSheetEntity expenseSheet);
-    UserLimitEntity getUserLimitForUser(ExpenseSheetEntity expenseSheet, UserEntity user);
+    UserLimitEntity getUserLimitForUser(UserEntity user, ExpenseSheetEntity expenseSheet);
     Set<String> getAllComments(ExpenseSheetEntity expenseSheet);
     Set<String> getCommentForCategory(ExpenseSheetEntity expenseSheet, CategoryEntity category);
     List<String> getYearList(ExpenseSheetEntity expenseSheet);

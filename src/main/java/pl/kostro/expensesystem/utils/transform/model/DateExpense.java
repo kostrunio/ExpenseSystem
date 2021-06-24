@@ -1,23 +1,17 @@
 package pl.kostro.expensesystem.utils.transform.model;
 
+import pl.kostro.expensesystem.model.entity.CategoryEntity;
+import pl.kostro.expensesystem.model.entity.ExpenseEntity;
+import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
+import pl.kostro.expensesystem.model.entity.UserLimitEntity;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
-import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.model.entity.CategoryEntity;
-import pl.kostro.expensesystem.model.entity.ExpenseEntity;
-import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.entity.UserLimitEntity;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
-
 public class DateExpense {
-  
-  private ExpenseSheetService eshs;
-  private ExpenseSheetTransformService eshts;
   
 	private LocalDate date;
 	private Map<CategoryEntity, CategoryExpense> categoryExpenseMap;
@@ -25,8 +19,6 @@ public class DateExpense {
 	private BigDecimal sum = new BigDecimal(0);
 	
 	public DateExpense(LocalDate date) {
-		eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
-		eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
 		this.date = date;
 		categoryExpenseMap = new HashMap<>();
 		userLimitExpenseMap = new HashMap<>();
@@ -52,7 +44,7 @@ public class DateExpense {
 		return "DateExpense: " + date + ";" + sum;
 	}
 	
-	public void addExpense(ExpenseSheetEntity expenseSheet, ExpenseEntity expense) {
+	public void addExpense(ExpenseEntity expense, UserLimitEntity userLimit, ExpenseSheetEntity expenseSheet) {
 		sum = sum.add(expense.getValue().multiply(expense.getCategory().getMultiplier()).setScale(2, RoundingMode.HALF_UP));
 		CategoryExpense categoryExpense = getCategoryExpenseMap().get(expense.getCategory());
 		if (categoryExpense == null) {
@@ -60,7 +52,6 @@ public class DateExpense {
 			getCategoryExpenseMap().put(expense.getCategory(), categoryExpense);
 		}
 		categoryExpense.addExpense(expense);
-		UserLimitEntity userLimit = eshts.getUserLimitForUser(expenseSheet, expense.getUser());
 		UserLimitExpense userLimitExpense = getUserLimitExpenseMap().get(userLimit);
 		if (userLimitExpense == null) {
 			userLimitExpense = new UserLimitExpense(userLimit);

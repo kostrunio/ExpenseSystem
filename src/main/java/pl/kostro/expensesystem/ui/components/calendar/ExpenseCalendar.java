@@ -21,9 +21,9 @@ import java.time.ZoneId;
 
 public class ExpenseCalendar extends Calendar<BasicItem> {
 
-  private Converter converter = new Converter();
-
+  private Converter converter;
   private ExpenseSheetTransformService eshts;
+
   private MonthView monthView;
   private ExpenseSheetEntity expenseSheet;
   private LocalDate date;
@@ -63,6 +63,7 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
   };
 
   public ExpenseCalendar() {
+    converter = AppCtxProvider.getBean(Converter.class);
     eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
 

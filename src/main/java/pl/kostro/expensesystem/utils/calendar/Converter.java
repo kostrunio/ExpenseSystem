@@ -1,7 +1,8 @@
 package pl.kostro.expensesystem.utils.calendar;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.vaadin.addon.calendar.item.BasicItem;
-import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.utils.transform.model.DateExpense;
@@ -14,12 +15,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Component
 public class Converter {
 
   private ExpenseSheetTransformService eshts;
 
-  public Converter() {
-    eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
+  @Autowired
+  public Converter(ExpenseSheetTransformService eshts) {
+    this.eshts = eshts;
   }
 
   public List<BasicItem> transformExpensesToEvents(ExpenseSheetEntity expenseSheet) {
