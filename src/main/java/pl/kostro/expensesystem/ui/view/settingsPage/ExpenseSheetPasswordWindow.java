@@ -1,14 +1,5 @@
 package pl.kostro.expensesystem.ui.view.settingsPage;
 
-import java.text.MessageFormat;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import pl.kostro.expensesystem.utils.msg.Msg;
-import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
-import pl.kostro.expensesystem.ui.notification.ShowNotification;
-
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -20,11 +11,14 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
+import pl.kostro.expensesystem.ui.notification.ShowNotification;
+import pl.kostro.expensesystem.utils.msg.Msg;
 
-/**
- * Simple name editor Window.
- */
-@SuppressWarnings("serial")
+import java.text.MessageFormat;
+
 public class ExpenseSheetPasswordWindow extends Window {
 
   private Logger logger = LogManager.getLogger();

@@ -1,26 +1,22 @@
 package pl.kostro.expensesystem.model.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import pl.kostro.expensesystem.model.entity.UserLimitEntity;
+import pl.kostro.expensesystem.model.entity.UserSummaryEntity;
+import pl.kostro.expensesystem.model.repository.UserSummaryRepository;
+
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import pl.kostro.expensesystem.model.entity.UserLimitEntity;
-import pl.kostro.expensesystem.model.entity.UserSummaryEntity;
-import pl.kostro.expensesystem.model.repository.UserLimitRepository;
-import pl.kostro.expensesystem.model.repository.UserSummaryRepository;
-
 @Service
 public class UserSummaryServiceImpl implements UserSummaryService {
   
-  @Autowired
-  private UserLimitRepository ulr;
   private UserSummaryRepository repository;
   
   private Logger logger = LogManager.getLogger();
@@ -28,16 +24,6 @@ public class UserSummaryServiceImpl implements UserSummaryService {
   @Autowired
   public UserSummaryServiceImpl(UserSummaryRepository repository) {
     this.repository = repository;
-  }
-
-  public UserSummaryEntity createUserSummary(UserLimitEntity userLimit, LocalDate date) {
-    LocalDateTime stopper = LocalDateTime.now();
-    UserSummaryEntity userSummary = new UserSummaryEntity(date, userLimit.getLimit());
-    repository.save(userSummary);
-    userLimit.getUserSummaryList().add(userSummary);
-    ulr.save(userLimit);
-    logger.info("createUserSummary for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    return userSummary;
   }
 
   public UserSummaryEntity merge(UserSummaryEntity userSummary) {
@@ -77,7 +63,15 @@ public class UserSummaryServiceImpl implements UserSummaryService {
         .findFirst();
     if (result.isPresent())
       return result.get();
-    return createUserSummary(userLimit, date);
+    return create(userLimit, date);
+  }
+
+  private UserSummaryEntity create(UserLimitEntity userLimit, LocalDate date) {
+    LocalDateTime stopper = LocalDateTime.now();
+    UserSummaryEntity userSummary = new UserSummaryEntity(date, userLimit.getLimit());
+    repository.save(userSummary);
+    logger.info("createUserSummary for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    return userSummary;
   }
 
 }

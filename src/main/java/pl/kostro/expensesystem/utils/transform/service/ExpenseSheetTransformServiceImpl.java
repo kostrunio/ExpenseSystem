@@ -246,6 +246,8 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
       uls.fetchUserSummaryList(userLimit);
       logger.debug("checkSummary for: {} at {}", userLimit, date);
       UserSummaryEntity userSummary = uss.findUserSummary(userLimit, date);
+      userLimit.getUserSummaryList().add(userSummary);
+      uls.merge(userLimit);
       BigDecimal exSummary = new BigDecimal(0);
       if (expenseSheet.getUserLimitExpenseMap().get(userLimit) != null)
         exSummary = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();

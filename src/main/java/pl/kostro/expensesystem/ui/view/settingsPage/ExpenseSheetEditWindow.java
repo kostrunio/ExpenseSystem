@@ -30,7 +30,7 @@ public class ExpenseSheetEditWindow extends Window {
       ShowNotification.fieldEmpty(nameField.getCaption());
       return;
     }
-    listener.expenseSheetNameEdited(nameField);
+    listener.expenseSheetNameEdited(nameField.getValue());
     close();
   };
 

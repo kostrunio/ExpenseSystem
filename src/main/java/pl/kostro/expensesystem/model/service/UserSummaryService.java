@@ -7,7 +7,6 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public interface UserSummaryService {
-    UserSummaryEntity createUserSummary(UserLimitEntity userLimit, LocalDate date);
     UserSummaryEntity merge(UserSummaryEntity userSummary);
     void decrypt(UserSummaryEntity userSummary);
     void encrypt(UserSummaryEntity userSummary);

@@ -2,7 +2,6 @@ package pl.kostro.expensesystem.ui.view;
 
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -101,11 +100,11 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
   }
 
   @Override
-  public void expenseSheetNameEdited(TextField nameField) {
-    expenseSheet.setName(nameField.getValue());
+  public void expenseSheetNameEdited(String nameName) {
+    expenseSheet.setName(nameName);
     eshs.merge(expenseSheet);
     ((ExpenseSystemUI)getUI()).getMainView().refresh();
-    titleLabel.setValue(nameField.getValue());
+    titleLabel.setValue(nameName);
   }
 
   @Override

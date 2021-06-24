@@ -1,33 +1,28 @@
 package pl.kostro.expensesystem.model.service;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
-import javax.transaction.Transactional;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import pl.kostro.expensesystem.model.entity.UserEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
-import pl.kostro.expensesystem.model.entity.UserSummaryEntity;
 import pl.kostro.expensesystem.model.repository.UserLimitRepository;
+
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Service
 public class UserLimitServiceImpl implements UserLimitService {
   
   private UserLimitRepository repository;
-  private UserSummaryService uss;
 
   private Logger logger = LogManager.getLogger();
 
   @Autowired
-  public UserLimitServiceImpl(UserLimitRepository repository, UserSummaryService uss) {
+  public UserLimitServiceImpl(UserLimitRepository repository) {
     this.repository = repository;
-    this.uss = uss;
   }
   
   public UserLimitEntity create(UserEntity user, int orderId) {
@@ -50,15 +45,12 @@ public class UserLimitServiceImpl implements UserLimitService {
   }
 
   public void decrypt(UserLimitEntity userLimit) {
-    for (UserSummaryEntity userSummary : userLimit.getUserSummaryList())
-      uss.decrypt(userSummary);
+    userLimit.getLimit();
   }
 
   public void encrypt(UserLimitEntity userLimit) {
     LocalDateTime stopper = LocalDateTime.now();
     userLimit.setLimit(userLimit.getLimit(true), true);
-    for (UserSummaryEntity userSummary : userLimit.getUserSummaryList())
-      uss.encrypt(userSummary);
     repository.save(userLimit);
     logger.info("encrypt for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }

@@ -1,8 +1,5 @@
 package pl.kostro.expensesystem.ui.components.grid;
 
-import java.math.BigDecimal;
-import java.text.MessageFormat;
-
 import com.vaadin.data.Binder;
 import com.vaadin.event.selection.SelectionListener;
 import com.vaadin.server.VaadinSession;
@@ -14,16 +11,18 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.components.grid.EditorOpenListener;
 import com.vaadin.ui.components.grid.EditorSaveListener;
-
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.utils.msg.Msg;
-import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.service.CategoryService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.ui.view.settingsPage.AddCategoryWindow;
 import pl.kostro.expensesystem.ui.view.settingsPage.SettingsChangeListener;
+import pl.kostro.expensesystem.utils.msg.Msg;
+
+import java.math.BigDecimal;
+import java.text.MessageFormat;
 
 public class CategorySettingGrid extends Grid<CategoryEntity> implements SettingsChangeListener {
 
@@ -114,6 +113,7 @@ public class CategorySettingGrid extends Grid<CategoryEntity> implements Setting
     deleteCategoryButton.addClickListener(deleteCategoryClick);
   }
 
+  @Override
   public void refreshValues() {
 	  setItems(expenseSheet.getCategoryList());
   }
