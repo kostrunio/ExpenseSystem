@@ -1,24 +1,21 @@
 package pl.kostro.expensesystem.ui.view;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import pl.kostro.expensesystem.ui.event.ExpenseSystemEvent.BrowserResizeEvent;
-import pl.kostro.expensesystem.ui.event.ExpenseSystemEventBus;
-import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
-import pl.kostro.expensesystem.ui.view.design.MonthDesign;
-
 import com.google.common.eventbus.Subscribe;
 import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickListener;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import pl.kostro.expensesystem.ui.event.ExpenseSystemEvent.BrowserResizeEvent;
+import pl.kostro.expensesystem.ui.event.ExpenseSystemEventBus;
+import pl.kostro.expensesystem.ui.view.design.MonthDesign;
+import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 
-@SuppressWarnings("serial")
+import java.time.LocalDate;
+import java.time.ZoneId;
+
 public class MonthView extends MonthDesign {
 
   private Logger logger = LogManager.getLogger();

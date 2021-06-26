@@ -154,7 +154,7 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
   public Set<String> getAllComments(ExpenseSheetEntity expenseSheet) {
     return expenseSheet.getExpenseList().stream()
             .filter(e -> e.getComment() != null && !e.getComment().isEmpty())
-            .map(e -> e.getComment())
+            .map(ExpenseEntity::getComment)
             .collect(Collectors.toSet());
   }
 
@@ -162,7 +162,7 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
     return expenseSheet.getExpenseList().stream()
             .filter(e -> e.getCategory().equals(category))
             .filter(e -> e.getComment() != null && !e.getComment().isEmpty())
-            .map(e -> e.getComment())
+            .map(ExpenseEntity::getComment)
             .collect(Collectors.toSet());
   }
 
@@ -224,10 +224,9 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
   }
 
   public List<UserLimitEntity> getUserLimitListRealUser(ExpenseSheetEntity expenseSheet) {
-    List<UserLimitEntity> userLimitList = expenseSheet.getUserLimitList().parallelStream()
+    return expenseSheet.getUserLimitList().parallelStream()
             .filter(uL -> uL.getUser() instanceof RealUserEntity)
             .collect(Collectors.toList());
-    return userLimitList;
   }
 
   public List<UserLimitEntity> getUserLimitListNotRealUser(ExpenseSheetEntity expenseSheet) {
@@ -246,8 +245,11 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
       uls.fetchUserSummaryList(userLimit);
       logger.debug("checkSummary for: {} at {}", userLimit, date);
       UserSummaryEntity userSummary = uss.findUserSummary(userLimit, date);
-      userLimit.getUserSummaryList().add(userSummary);
-      uls.merge(userLimit);
+      if (userSummary == null) {
+        userSummary = uss.create(userLimit, date);
+        userLimit.getUserSummaryList().add(userSummary);
+        uls.merge(userLimit);
+      }
       BigDecimal exSummary = new BigDecimal(0);
       if (expenseSheet.getUserLimitExpenseMap().get(userLimit) != null)
         exSummary = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();

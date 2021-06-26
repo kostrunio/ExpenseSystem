@@ -1,8 +1,8 @@
 package pl.kostro.expensesystem.utils.transform.model;
 
-import java.math.BigDecimal;
-
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
+
+import java.math.BigDecimal;
 
 public class UserLimitSumLeft {
   private UserLimitEntity userLimit;
@@ -10,7 +10,6 @@ public class UserLimitSumLeft {
   private BigDecimal left;
   
   public UserLimitSumLeft(UserLimitEntity userLimit, BigDecimal sum, BigDecimal left) {
-    super();
     this.userLimit = userLimit;
     this.sum = sum;
     this.left = left;

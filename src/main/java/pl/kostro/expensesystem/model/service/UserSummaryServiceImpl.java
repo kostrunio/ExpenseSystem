@@ -26,6 +26,14 @@ public class UserSummaryServiceImpl implements UserSummaryService {
     this.repository = repository;
   }
 
+  public UserSummaryEntity create(UserLimitEntity userLimit, LocalDate date) {
+    LocalDateTime stopper = LocalDateTime.now();
+    UserSummaryEntity userSummary = new UserSummaryEntity(date, userLimit.getLimit());
+    repository.save(userSummary);
+    logger.info("createUserSummary for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    return userSummary;
+  }
+
   public UserSummaryEntity merge(UserSummaryEntity userSummary) {
     LocalDateTime stopper = LocalDateTime.now();
     repository.save(userSummary);
@@ -61,17 +69,7 @@ public class UserSummaryServiceImpl implements UserSummaryService {
     Optional<UserSummaryEntity> result = userLimit.getUserSummaryList().parallelStream()
         .filter(us -> us.getDate().isEqual(date))
         .findFirst();
-    if (result.isPresent())
-      return result.get();
-    return create(userLimit, date);
-  }
-
-  private UserSummaryEntity create(UserLimitEntity userLimit, LocalDate date) {
-    LocalDateTime stopper = LocalDateTime.now();
-    UserSummaryEntity userSummary = new UserSummaryEntity(date, userLimit.getLimit());
-    repository.save(userSummary);
-    logger.info("createUserSummary for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
-    return userSummary;
+    return result.orElse(null);
   }
 
 }
