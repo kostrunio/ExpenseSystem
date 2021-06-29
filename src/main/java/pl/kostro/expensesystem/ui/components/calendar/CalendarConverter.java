@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.ui.views.converter;
+package pl.kostro.expensesystem.ui.components.calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

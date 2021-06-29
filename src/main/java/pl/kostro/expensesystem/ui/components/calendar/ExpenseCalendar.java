@@ -14,7 +14,6 @@ import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.ui.notification.ShowNotification;
 import pl.kostro.expensesystem.ui.views.day.DayView;
 import pl.kostro.expensesystem.ui.views.month.MonthView;
-import pl.kostro.expensesystem.ui.views.converter.CalendarConverter;
 import pl.kostro.expensesystem.utils.transform.model.UserSumChange;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 
