@@ -63,7 +63,7 @@ public class TableView extends TableDesign {
         categories,
         users,
         formulaField.getValue(),
-        (String)commentBox.getValue()));
+        commentBox.getValue()));
     refreshExpenses();
   };
   private ClickListener newClicked = event -> expenseForm.edit(new ExpenseEntity());

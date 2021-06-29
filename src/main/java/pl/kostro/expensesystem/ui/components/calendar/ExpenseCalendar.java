@@ -11,17 +11,20 @@ import org.vaadin.addon.calendar.ui.CalendarComponentEvents.ItemClickHandler;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents.WeekClickHandler;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
+import pl.kostro.expensesystem.ui.notification.ShowNotification;
 import pl.kostro.expensesystem.ui.views.day.DayView;
 import pl.kostro.expensesystem.ui.views.month.MonthView;
-import pl.kostro.expensesystem.utils.calendar.Converter;
+import pl.kostro.expensesystem.ui.views.converter.CalendarConverter;
+import pl.kostro.expensesystem.utils.transform.model.UserSumChange;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.List;
 
 public class ExpenseCalendar extends Calendar<BasicItem> {
 
-  private Converter converter;
+  private CalendarConverter converter;
   private ExpenseSheetTransformService eshts;
 
   private MonthView monthView;
@@ -33,7 +36,11 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
         startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
         endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), date.withDayOfMonth(1),
         date.withDayOfMonth(date.lengthOfMonth()));
-    eshts.checkSummary(expenseSheet, date);
+    List<UserSumChange> listToNotify = eshts.checkSummary(expenseSheet, date);
+    for (UserSumChange sumChange : listToNotify) {
+      ShowNotification.changeSummary(sumChange.getUserName(), sumChange.getPrevSum(), sumChange.getSum());
+    }
+
     monthView.fulfillTables();
     return converter.transformExpensesToEvents(expenseSheet);
   };
@@ -63,7 +70,7 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
   };
 
   public ExpenseCalendar() {
-    converter = AppCtxProvider.getBean(Converter.class);
+    converter = AppCtxProvider.getBean(CalendarConverter.class);
     eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
 

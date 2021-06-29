@@ -8,6 +8,7 @@ import pl.kostro.expensesystem.model.entity.UserEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.utils.transform.model.CategoryExpense;
 import pl.kostro.expensesystem.utils.transform.model.DateExpense;
+import pl.kostro.expensesystem.utils.transform.model.UserSumChange;
 import pl.kostro.expensesystem.utils.transform.model.YearCategory;
 
 import java.time.LocalDate;
@@ -32,6 +33,6 @@ public interface ExpenseSheetTransformService {
     List<UserLimitEntity> getUserLimitListDesc(ExpenseSheetEntity expenseSheet);
     List<UserLimitEntity> getUserLimitListRealUser(ExpenseSheetEntity expenseSheet);
     List<UserLimitEntity> getUserLimitListNotRealUser(ExpenseSheetEntity expenseSheet);
-    void checkSummary(ExpenseSheetEntity expenseSheet, LocalDate date);
+    List<UserSumChange> checkSummary(ExpenseSheetEntity expenseSheet, LocalDate date);
 
 }

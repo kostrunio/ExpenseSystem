@@ -1,4 +1,4 @@
-package pl.kostro.expensesystem.utils.calendar;
+package pl.kostro.expensesystem.ui.views.converter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,12 +16,12 @@ import java.util.List;
 import java.util.Set;
 
 @Component
-public class Converter {
+public class CalendarConverter {
 
   private ExpenseSheetTransformService eshts;
 
   @Autowired
-  public Converter(ExpenseSheetTransformService eshts) {
+  public CalendarConverter(ExpenseSheetTransformService eshts) {
     this.eshts = eshts;
   }
 

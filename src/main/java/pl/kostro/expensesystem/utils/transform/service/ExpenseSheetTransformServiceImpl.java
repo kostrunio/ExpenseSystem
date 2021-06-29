@@ -13,11 +13,11 @@ import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.entity.UserSummaryEntity;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
-import pl.kostro.expensesystem.ui.notification.ShowNotification;
 import pl.kostro.expensesystem.utils.filter.Filter;
 import pl.kostro.expensesystem.utils.transform.model.CategoryExpense;
 import pl.kostro.expensesystem.utils.transform.model.DateExpense;
 import pl.kostro.expensesystem.utils.transform.model.UserLimitExpense;
+import pl.kostro.expensesystem.utils.transform.model.UserSumChange;
 import pl.kostro.expensesystem.utils.transform.model.YearCategory;
 
 import java.math.BigDecimal;
@@ -237,10 +237,11 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
     return userLimitList;
   }
 
-  public void checkSummary(ExpenseSheetEntity expenseSheet, LocalDate date) {
+  public List<UserSumChange> checkSummary(ExpenseSheetEntity expenseSheet, LocalDate date) {
+    List<UserSumChange> returnList = new ArrayList<>();
     LocalDateTime stopper = LocalDateTime.now();
     if (expenseSheet.getFilter() != null)
-      return;
+      return null;
     for (UserLimitEntity userLimit : expenseSheet.getUserLimitList()) {
       uls.fetchUserSummaryList(userLimit);
       logger.debug("checkSummary for: {} at {}", userLimit, date);
@@ -255,11 +256,12 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
         exSummary = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
       logger.debug("exSummary: {}; userSummary: {}", exSummary, userSummary.getSum());
       if (userSummary.getSum().compareTo(exSummary) != 0) {
-        ShowNotification.changeSummary(userLimit.getUser().getName(), userSummary.getSum(), exSummary);
+        returnList.add(new UserSumChange(userLimit.getUser().getName(), exSummary, userSummary.getSum()));
         userSummary.setSum(exSummary);
         uss.merge(userSummary);
       }
     }
     logger.info("checkSummary for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    return returnList;
   }
 }
