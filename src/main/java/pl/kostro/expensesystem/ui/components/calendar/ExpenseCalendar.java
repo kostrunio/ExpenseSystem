@@ -11,8 +11,8 @@ import org.vaadin.addon.calendar.ui.CalendarComponentEvents.ItemClickHandler;
 import org.vaadin.addon.calendar.ui.CalendarComponentEvents.WeekClickHandler;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
-import pl.kostro.expensesystem.ui.view.DayView;
-import pl.kostro.expensesystem.ui.view.MonthView;
+import pl.kostro.expensesystem.ui.views.day.DayView;
+import pl.kostro.expensesystem.ui.views.month.MonthView;
 import pl.kostro.expensesystem.utils.calendar.Converter;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 

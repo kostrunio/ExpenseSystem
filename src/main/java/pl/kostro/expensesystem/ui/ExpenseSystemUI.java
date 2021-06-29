@@ -15,8 +15,8 @@ import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.ui.event.ExpenseSystemEvent.BrowserResizeEvent;
 import pl.kostro.expensesystem.ui.event.ExpenseSystemEventBus;
-import pl.kostro.expensesystem.ui.view.LoginView;
-import pl.kostro.expensesystem.ui.view.MainView;
+import pl.kostro.expensesystem.ui.views.login.LoginView;
+import pl.kostro.expensesystem.ui.views.main.MainView;
 
 import java.util.Locale;
 import java.util.TimeZone;

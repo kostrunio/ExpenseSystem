@@ -22,8 +22,8 @@ import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.ui.notification.ShowNotification;
-import pl.kostro.expensesystem.ui.view.settingsPage.AddRealUserWindow;
-import pl.kostro.expensesystem.ui.view.settingsPage.SettingsChangeListener;
+import pl.kostro.expensesystem.ui.views.settingsPage.AddRealUserWindow;
+import pl.kostro.expensesystem.ui.views.settingsPage.SettingsChangeListener;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 
 public class RealUserLimitSettingGrid extends Grid<UserLimitEntity> implements SettingsChangeListener {

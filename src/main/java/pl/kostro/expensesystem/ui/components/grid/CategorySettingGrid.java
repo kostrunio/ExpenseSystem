@@ -17,8 +17,8 @@ import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.service.CategoryService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
-import pl.kostro.expensesystem.ui.view.settingsPage.AddCategoryWindow;
-import pl.kostro.expensesystem.ui.view.settingsPage.SettingsChangeListener;
+import pl.kostro.expensesystem.ui.views.settingsPage.AddCategoryWindow;
+import pl.kostro.expensesystem.ui.views.settingsPage.SettingsChangeListener;
 import pl.kostro.expensesystem.utils.msg.Msg;
 
 import java.math.BigDecimal;
