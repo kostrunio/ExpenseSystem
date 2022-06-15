@@ -3,7 +3,7 @@ expensesystem
 
 production address
 ==================
-https://www.expensesystem.pl/
+https://new-expensesystem.herokuapp.com/
 
 requirements
 ============

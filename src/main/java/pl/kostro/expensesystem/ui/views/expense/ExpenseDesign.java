@@ -17,7 +17,6 @@ import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 
-@SuppressWarnings("serial")
 public class ExpenseDesign extends Panel {
   protected VerticalLayout root;
   
