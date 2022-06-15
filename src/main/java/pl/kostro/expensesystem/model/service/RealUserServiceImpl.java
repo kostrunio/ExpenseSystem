@@ -61,7 +61,7 @@ public class RealUserServiceImpl implements RealUserService {
   }
 
   public RealUserEntity refresh(RealUserEntity realUser) {
-    return repository.findOne(realUser.getId());
+    return repository.getById(realUser.getId());
   }
 
   public void setDefaultExpenseSheet(RealUserEntity realUser, ExpenseSheetEntity expenseSheet) {
