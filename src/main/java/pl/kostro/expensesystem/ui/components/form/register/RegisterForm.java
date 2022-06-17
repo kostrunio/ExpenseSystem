@@ -1,14 +1,12 @@
 package pl.kostro.expensesystem.ui.components.form.register;
 
 import com.vaadin.ui.Button.ClickListener;
-
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.ui.ExpenseSystemUI;
-import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.ui.notification.ShowNotification;
 import pl.kostro.expensesystem.utils.mail.SendEmail;
+import pl.kostro.expensesystem.utils.msg.Msg;
 
 public class RegisterForm extends RegisterFormDesign {
   
@@ -25,7 +23,7 @@ public class RegisterForm extends RegisterFormDesign {
       RealUserEntity realUser = rus.create(nameField.getValue(), passwordField.getValue(), emailField.getValue());
       new Thread(() -> SendEmail.welcome(realUser)).start();
       ShowNotification.registerOK();
-      ((ExpenseSystemUI) getUI()).updateContent();
+//      ((ExpenseSystemUI) getUI()).updateContent();
     } else {
       ShowNotification.registerProblem();
       saveButton.setEnabled(true);

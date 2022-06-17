@@ -17,7 +17,6 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.service.RealUserService;
-import pl.kostro.expensesystem.ui.ExpenseSystemUI;
 import pl.kostro.expensesystem.ui.views.account.AccountView;
 import pl.kostro.expensesystem.ui.views.expense.ExpenseView;
 import pl.kostro.expensesystem.ui.views.settingsPage.AddSheetWindow;
@@ -80,7 +79,7 @@ public class MainView extends MainDesign {
     navigator.addView("expenseSheet", new ExpenseView());
     navigator.addView("account", new AccountView());
     navigator.setErrorProvider(errorProvider);
-    ((ExpenseSystemUI) ui).setMainView(this);
+//    ((ExpenseSystemUI) ui).setMainView(this);
   }
 
   private void setCaption() {

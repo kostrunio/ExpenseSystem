@@ -1,11 +1,10 @@
 package pl.kostro.expensesystem.utils.log;
 
+import com.vaadin.flow.server.VaadinSession;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.config.plugins.Plugin;
 import org.apache.logging.log4j.core.pattern.ConverterKeys;
 import org.apache.logging.log4j.core.pattern.LogEventPatternConverter;
-
-import com.vaadin.server.VaadinSession;
 
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 

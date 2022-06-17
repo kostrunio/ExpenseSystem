@@ -14,20 +14,14 @@ import com.vaadin.ui.UI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.model.entity.CategoryEntity;
-import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.entity.RealUserEntity;
-import pl.kostro.expensesystem.model.entity.UserEntity;
-import pl.kostro.expensesystem.model.entity.UserLimitEntity;
+import pl.kostro.expensesystem.model.entity.*;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.ui.ExpenseSystemUI;
-import pl.kostro.expensesystem.ui.views.main.MainView;
+import pl.kostro.expensesystem.ui.views.chart.ChartView;
 import pl.kostro.expensesystem.ui.views.month.MonthView;
 import pl.kostro.expensesystem.ui.views.settings.SettingsView;
+import pl.kostro.expensesystem.ui.views.settingsPage.ExpenseSheetPasswordWindow;
 import pl.kostro.expensesystem.ui.views.table.TableView;
 import pl.kostro.expensesystem.ui.views.userSummary.UserSummaryView;
-import pl.kostro.expensesystem.ui.views.chart.ChartView;
-import pl.kostro.expensesystem.ui.views.settingsPage.ExpenseSheetPasswordWindow;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.utils.filter.Filter;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
@@ -237,8 +231,8 @@ public class ExpenseView extends ExpenseDesign implements View {
     eshs.fetchExpenseList(expenseSheet);
     eshs.fetchUserLimitList(expenseSheet);
     VaadinSession.getCurrent().setAttribute(ExpenseSheetEntity.class, expenseSheet);
-    MainView menuView = ((ExpenseSystemUI) getUI()).getMainView();
-    menuView.setActiveView("expenseSheet/" + expenseSheet.getId());
+//    MainView menuView = ((ExpenseSystemUI) getUI()).getMainView();
+//    menuView.setActiveView("expenseSheet/" + expenseSheet.getId());
     if (expenseSheet.getSecretKey() == null) {
       expenseSheet.setSecretKey(loggedUser.getClearPassword());
       if (expenseSheet.getUserLimitList().size() > 0) {

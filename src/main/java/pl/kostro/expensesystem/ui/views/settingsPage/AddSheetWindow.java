@@ -1,24 +1,13 @@
 package pl.kostro.expensesystem.ui.views.settingsPage;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Button;
+import com.vaadin.ui.*;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.Component;
-import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.PasswordField;
-import com.vaadin.ui.TextField;
-import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
-
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.ui.ExpenseSystemUI;
-import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
@@ -26,6 +15,7 @@ import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
 import pl.kostro.expensesystem.ui.notification.ShowNotification;
+import pl.kostro.expensesystem.utils.msg.Msg;
 
 public class AddSheetWindow extends Window {
 
@@ -58,7 +48,7 @@ public class AddSheetWindow extends Window {
     if (loggedUser.getDefaultExpenseSheet() == null)
       rus.setDefaultExpenseSheet(loggedUser, expenseSheet);
     VaadinSession.getCurrent().setAttribute(ExpenseSheetEntity.class, expenseSheet);
-    ((ExpenseSystemUI)getUI()).getMainView().refresh();
+//    ((ExpenseSystemUI)getUI()).getMainView().refresh();
     close();
   };
 

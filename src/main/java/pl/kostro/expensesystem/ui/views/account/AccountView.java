@@ -10,9 +10,7 @@ import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.service.RealUserService;
-import pl.kostro.expensesystem.ui.ExpenseSystemUI;
 import pl.kostro.expensesystem.ui.notification.ShowNotification;
-import pl.kostro.expensesystem.ui.views.main.MainView;
 import pl.kostro.expensesystem.utils.msg.Msg;
 
 public class AccountView extends AccountDesign implements View {
@@ -83,8 +81,8 @@ public class AccountView extends AccountDesign implements View {
   public void enter(ViewChangeEvent event) {
     logger.info("Enter");
     loggedUser = VaadinSession.getCurrent().getAttribute(RealUserEntity.class);
-    MainView menuView = ((ExpenseSystemUI) getUI()).getMainView();
-    menuView.setActiveView("account");
+//    MainView menuView = ((ExpenseSystemUI) getUI()).getMainView();
+//    menuView.setActiveView("account");
     usernameField.setReadOnly(false);
     usernameField.setValue(loggedUser.getName());
     usernameField.setReadOnly(true);

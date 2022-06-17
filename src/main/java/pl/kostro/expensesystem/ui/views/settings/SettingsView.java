@@ -10,7 +10,6 @@ import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.RealUserService;
-import pl.kostro.expensesystem.ui.ExpenseSystemUI;
 import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.ui.views.settingsPage.ExpenseSheetEditListener;
 import pl.kostro.expensesystem.ui.views.settingsPage.ExpenseSheetEditPasswordWindow;
@@ -43,12 +42,12 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
             if (loggedUser.getDefaultExpenseSheet() == null && loggedUser.getExpenseSheetList().size() != 0)
               rus.setDefaultExpenseSheet(loggedUser, loggedUser.getExpenseSheetList().get(0));
             VaadinSession.getCurrent().setAttribute(ExpenseSheetEntity.class, null);
-            ((ExpenseSystemUI)getUI()).getMainView().refresh();
+//            ((ExpenseSystemUI)getUI()).getMainView().refresh();
             UI.getCurrent().getNavigator().navigateTo("");
           }
         });
   };
-  private ClickListener backClick = event -> ((ExpenseSystemUI) getUI()).updateContent();
+  private ClickListener backClick = event -> {}/*((ExpenseSystemUI) getUI()).updateContent()*/;
 
   public SettingsView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
@@ -102,7 +101,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
   public void expenseSheetNameEdited(String nameName) {
     expenseSheet.setName(nameName);
     eshs.merge(expenseSheet);
-    ((ExpenseSystemUI)getUI()).getMainView().refresh();
+//    ((ExpenseSystemUI)getUI()).getMainView().refresh();
     titleLabel.setValue(nameName);
   }
 
