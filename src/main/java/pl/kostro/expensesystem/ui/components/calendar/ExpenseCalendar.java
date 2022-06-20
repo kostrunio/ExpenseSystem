@@ -36,8 +36,10 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
         endDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(), date.withDayOfMonth(1),
         date.withDayOfMonth(date.lengthOfMonth()));
     List<UserSumChange> listToNotify = eshts.checkSummary(expenseSheet, date);
-    for (UserSumChange sumChange : listToNotify) {
-      ShowNotification.changeSummary(sumChange.getUserName(), sumChange.getPrevSum(), sumChange.getSum());
+    if (listToNotify != null) {
+      for (UserSumChange sumChange : listToNotify) {
+        ShowNotification.changeSummary(sumChange.getUserName(), sumChange.getPrevSum(), sumChange.getSum());
+      }
     }
 
     monthView.fulfillTables();
