@@ -13,6 +13,7 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.*;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.newui.main.MainView;
+import pl.kostro.expensesystem.newui.table.TableView;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.utils.filter.Filter;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
@@ -77,7 +78,7 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
       monthMenu.setVisible(false);
       filterButton.setEnabled(false);
       userSummaryButton.setEnabled(false);
-//      mainView.add(new TableView());
+      mainView.add(new TableView());
     } else {
       expenseSheet.setFilter(null);
       yearMenu.setEnabled(true);
