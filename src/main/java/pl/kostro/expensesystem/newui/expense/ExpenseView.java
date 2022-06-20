@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.*;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.newui.chart.ChartView;
 import pl.kostro.expensesystem.newui.main.MainView;
 import pl.kostro.expensesystem.newui.table.TableView;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
@@ -45,7 +46,7 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
       filterButton.setEnabled(false);
       tableButton.setEnabled(false);
       userSummaryButton.setEnabled(false);
-//      mainView.add(new ChartView());
+      mainView.add(new ChartView());
     } else {
       expenseSheet.setFilter(null);
       yearMenu.setEnabled(true);
