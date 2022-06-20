@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.service.RealUserService;
-import pl.kostro.expensesystem.ui.notification.ShowNotification;
+import pl.kostro.expensesystem.newui.notification.ShowNotification;
 import pl.kostro.expensesystem.utils.msg.Msg;
 
 @Route("login")
