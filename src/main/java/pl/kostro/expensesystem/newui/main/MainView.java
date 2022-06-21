@@ -15,6 +15,7 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.service.RealUserService;
+import pl.kostro.expensesystem.newui.settingsPage.AddSheetWindow;
 import pl.kostro.expensesystem.utils.msg.Msg;
 
 import java.util.HashMap;
@@ -41,7 +42,7 @@ public class MainView extends MainDesign {
     }
   };
   private
-  ComponentEventListener<ClickEvent<Button>> addSheetClick = event -> {/*UI.getCurrent().addWindow(new AddSheetWindow())*/};
+  ComponentEventListener<ClickEvent<Button>> addSheetClick = event -> new AddSheetWindow().open();
   private
   ComponentEventListener<ClickEvent<Button>> accountClick = event -> UI.getCurrent().navigate("account");
   private

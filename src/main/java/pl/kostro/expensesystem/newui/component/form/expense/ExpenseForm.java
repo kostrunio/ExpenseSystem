@@ -13,6 +13,7 @@ import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.newui.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.newui.table.TableView;
 import pl.kostro.expensesystem.utils.calculator.Calculator;
 import pl.kostro.expensesystem.utils.msg.Msg;
@@ -51,14 +52,17 @@ public class ExpenseForm extends ExpenseFormDesign {
     saveButton.setEnabled(false);
   };
   private ComponentEventListener<ClickEvent<Button>> removeClick = event -> {
-/*    ConfirmDialog.show(getUI(), Msg.get("expensForm.removeLabel"), Msg.get("expensForm.removeQuestion"),
-        Msg.get("expensForm.removeYes"), Msg.get("expensForm.removeNo"), dialog -> {
+    ConfirmDialog.show(Msg.get("expensForm.removeLabel"),
+        Msg.get("expensForm.removeQuestion"),
+        Msg.get("expensForm.removeYes"),
+        Msg.get("expensForm.removeNo"),
+        dialog -> {
           if (dialog.isConfirmed()) {
             eshts.removeExpense(expense, expenseSheet);
             es.remove(expense);
             view.refreshExpenses();
           }
-    });*/
+    });
   };
   private HasValue.ValueChangeListener<? super AbstractField.ComponentValueChangeEvent<DatePicker, LocalDate>> verifyDateFormula = event -> verifyFormula(formulaField.getValue());
   private HasValue.ValueChangeListener<? super AbstractField.ComponentValueChangeEvent<ComboBox<CategoryEntity>, CategoryEntity>> verifyCategoryFormula = event -> verifyFormula(formulaField.getValue());

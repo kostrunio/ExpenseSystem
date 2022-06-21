@@ -1,11 +1,15 @@
-package pl.kostro.expensesystem.ui.components.dialog;
+package pl.kostro.expensesystem.newui.dialog;
 
-import com.vaadin.event.ShortcutAction.KeyCode;
-import com.vaadin.ui.*;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Window.CloseEvent;
+import com.vaadin.flow.component.ClickEvent;
+import com.vaadin.flow.component.ComponentEventListener;
+import com.vaadin.flow.component.Key;
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
+import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog.Factory;
+import pl.kostro.expensesystem.newui.dialog.ConfirmDialog.Factory;
 
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -36,17 +40,17 @@ public class DefaultConfirmDialogFactory implements Factory {
 //    private static final double BUTTON_HEIGHT = 2.5;
 
     public ConfirmDialog create(final String caption, final String message,
-            final String okCaption, final String cancelCaption,
-            final String notOkCaption) {
+                                final String okCaption, final String cancelCaption,
+                                final String notOkCaption) {
 
         final boolean threeWay = notOkCaption != null;
         // Create a confirm dialog
         final ConfirmDialog confirm = new ConfirmDialog();
         confirm.setId(ConfirmDialog.DIALOG_ID);
-        confirm.setCaption(caption != null ? caption : DEFAULT_CAPTION);
+        confirm.setHeaderTitle(caption != null ? caption : DEFAULT_CAPTION);
 
         // Close listener implementation
-        confirm.addCloseListener(new Window.CloseListener() {
+        /*confirm.addCloseListener(new Window.CloseListener() {
             public void windowClose(CloseEvent ce) {
                 if (confirm.isEnabled()) {
                     confirm.setEnabled(false); // avoid double processing
@@ -56,88 +60,84 @@ public class DefaultConfirmDialogFactory implements Factory {
                     }
                 }
             }
-        });
+        });*/
 
         // Create content
         VerticalLayout c = new VerticalLayout();
-        confirm.setContent(c);
+        confirm.add(c);
         c.setSizeFull();
 
         // Panel for scrolling lengthy messages.
         VerticalLayout scrollContent = new VerticalLayout();
-        Panel panel = new Panel(scrollContent);
-        c.addComponent(panel);
+        Div panel = new Div(scrollContent);
+        c.add(panel);
         panel.setWidth("100%");
         panel.setHeight("100%");
-        panel.addStyleName(ValoTheme.PANEL_BORDERLESS); // valo compatibility
-        c.setExpandRatio(panel, 1f);
+        panel.addClassName(ValoTheme.PANEL_BORDERLESS); // valo compatibility
+        c.setFlexGrow(1f, panel);
 
-        // Always HTML, but escape
-        Label text = new Label("", com.vaadin.shared.ui.ContentMode.HTML);
+ /*       // Always HTML, but escape
+        Label text = new Label(""*//*, com.vaadin.shared.ui.ContentMode.HTML*//*);
         text.setId(ConfirmDialog.MESSAGE_ID);
-        scrollContent.addComponent(text);
-        confirm.setMessageLabel(text);
+        scrollContent.add(text);
+        confirm.setMessageLabel(text);*/
         confirm.setMessage(message);
 
         HorizontalLayout buttons = new HorizontalLayout();
-        c.addComponent(buttons);
-        c.setComponentAlignment(buttons, Alignment.TOP_RIGHT);
+        c.add(buttons);
+        c.setAlignItems(FlexComponent.Alignment.START);
         buttons.setMargin(false);
 
-        final Button ok = new Button(okCaption != null ? okCaption
-                : DEFAULT_OK_CAPTION);
-        ok.setData(true);
+        final Button ok = new Button(okCaption != null ? okCaption : DEFAULT_OK_CAPTION);
+//        ok.setData(true);
         ok.setId(ConfirmDialog.OK_ID);
-        ok.setClickShortcut(KeyCode.ENTER, null);
-        ok.setStyleName(ValoTheme.BUTTON_DANGER);
+        ok.addClickShortcut(Key.ENTER);
+        ok.setClassName(ValoTheme.BUTTON_DANGER);
         ok.focus();
-        buttons.addComponent(ok);
+        buttons.add(ok);
         confirm.setOkButton(ok);
         
         Button notOk = null;
         if (threeWay) {
             notOk = new Button(notOkCaption);
-            notOk.setData(false);
+//            notOk.setData(false);
             notOk.setId(ConfirmDialog.NOT_OK_ID);
-            buttons.addComponent(notOk);
+            buttons.add(notOk);
             confirm.setCancelButton(notOk);
         }
         
         final Button cancel = new Button(cancelCaption != null ? cancelCaption
                 : DEFAULT_CANCEL_CAPTION);
-        cancel.setData(null);
+//        cancel.setData(null);
         cancel.setId(ConfirmDialog.CANCEL_ID);
-        cancel.setClickShortcut(KeyCode.ESCAPE, null);
-        buttons.addComponent(cancel);
+        cancel.addClickShortcut(Key.ESCAPE);
+        buttons.add(cancel);
         confirm.setCancelButton(cancel);
 
         // Create a listener for buttons
-        Button.ClickListener cb = new Button.ClickListener() {
-            public void buttonClick(ClickEvent event) {
-                // Copy the button date to window for passing through either
-                // "OK" or "CANCEL". Only process id still enabled.
-                if (confirm.isEnabled()) {
-                    confirm.setEnabled(false); // Avoid double processing
+        ComponentEventListener<ClickEvent<Button>> cb = event -> {
+            // Copy the button date to window for passing through either
+            // "OK" or "CANCEL". Only process id still enabled.
+            if (confirm.isEnabled()) {
+                confirm.setEnabled(false); // Avoid double processing
 
-                    Button b = event.getButton();
-                    if (b != cancel)
-                        confirm.setConfirmed(b == ok);
+                Button b = event.getSource();
+                if (b != cancel)
+                    confirm.setConfirmed(b == ok);
 
-                    // We need to cast this way, because of the backward
-                    // compatibility issue in 6.4 series.
-                    UI parent = confirm.getUI();
-                    parent.removeWindow(confirm);
+                // We need to cast this way, because of the backward
+                // compatibility issue in 6.4 series.
+//                UI parent = confirm.getUI();
+//                parent.removeWindow(confirm);
 
-                    // This has to be invoked as the window.close
-                    // event is not fired when removed.
-                    if (confirm.getListener() != null) {
-                        confirm.getListener().onClose(confirm);
-                    }
+                // This has to be invoked as the window.close
+                // event is not fired when removed.
+                if (confirm.getListener() != null) {
+                    confirm.getListener().onClose(confirm);
                 }
-
             }
-
         };
+
         cancel.addClickListener(cb);
         ok.addClickListener(cb);
         if (notOk != null)

@@ -1,14 +1,13 @@
-package pl.kostro.expensesystem.ui.components.dialog;
+package pl.kostro.expensesystem.newui.dialog;
 
+import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.server.JsonPaintTarget;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Label;
-import com.vaadin.ui.UI;
-import com.vaadin.ui.Window;
 
 import java.io.Serializable;
 
-public class ConfirmDialog extends Window {
+public class ConfirmDialog extends Dialog {
 
   public interface Factory extends Serializable {
         ConfirmDialog create(String windowCaption, String message,
@@ -41,7 +40,7 @@ public class ConfirmDialog extends Window {
      * Default dialog factory.
      *
      */
-    private static ConfirmDialog.Factory factoryInstance;
+    private static Factory factoryInstance;
 
     /**
      * Get the ConfirmDialog.Factory used to create and configure the dialog.
@@ -50,7 +49,7 @@ public class ConfirmDialog extends Window {
      *
      * @return the currently used ConfirmDialog.Factory
      */
-    public static ConfirmDialog.Factory getFactory() {
+    public static Factory getFactory() {
         if (factoryInstance == null) {
             factoryInstance = new DefaultConfirmDialogFactory();
         }
@@ -65,15 +64,15 @@ public class ConfirmDialog extends Window {
      * @param newFactory the ConfirmDialog factory to be used
      *
      */
-    public static void setFactory(final ConfirmDialog.Factory newFactory) {
+    public static void setFactory(final Factory newFactory) {
         factoryInstance = newFactory;
     }
 
     /**
      * Show a modal ConfirmDialog in a window.
      *
-     * @param ui
-     *            Main level UI.
+//     * @param ui
+//     *            Main level UI.
      * @param windowCaption
      *            Caption for the confirmation dialog window.
      * @param message
@@ -86,13 +85,12 @@ public class ConfirmDialog extends Window {
      *            Listener for dialog result.
      * @return the ConfirmDialog that was instantiated
      */
-    public static ConfirmDialog show(final UI ui,
-            final String windowCaption, final String message,
+    public static ConfirmDialog show(final String windowCaption, final String message,
             final String okCaption, final String cancelCaption,
             final Listener listener) {
         ConfirmDialog d = getFactory().create(windowCaption, message,
                 okCaption, cancelCaption, null);
-        d.show(ui, listener, true);
+        d.show(listener, true);
         return d;
     }
 
@@ -107,16 +105,16 @@ public class ConfirmDialog extends Window {
     /**
      * Show confirm dialog.
      *
-     * @param ui the UI in which the dialog should be shown
+//     * @param ui the UI in which the dialog should be shown
      * @param listener the listener to be notified
      * @param modal true if the dialog should be modal
      */
-    public final void show(final UI ui, final Listener listener,
+    public final void show(final Listener listener,
             final boolean modal) {
         confirmListener = listener;
-        center();
+//        center();
         setModal(modal);
-        ui.addWindow(this);
+//        ui.addWindow(this);
     }
 
     /**
@@ -164,7 +162,7 @@ public class ConfirmDialog extends Window {
     public final void setMessage(final String message) {
         originalMessageText = message;
         messageLabel
-                .setValue(ContentMode.TEXT_WITH_NEWLINES == msgContentMode ? formatDialogMessage(message)
+                .setText(ContentMode.TEXT_WITH_NEWLINES == msgContentMode ? formatDialogMessage(message)
                         : message);
     }
 
@@ -172,11 +170,11 @@ public class ConfirmDialog extends Window {
         return originalMessageText;
     }
 
-    public final ContentMode getContentMode() {
+/*    public final ContentMode getContentMode() {
         return msgContentMode;
-    }
+    }*/
 
-    public final void setContentMode(final ContentMode contentMode) {
+/*    public final void setContentMode(final ContentMode contentMode) {
         msgContentMode = contentMode;
         com.vaadin.shared.ui.ContentMode labelContentMode = com.vaadin.shared.ui.ContentMode.TEXT;
         switch (contentMode) {
@@ -194,9 +192,9 @@ public class ConfirmDialog extends Window {
         messageLabel
                 .setContentMode(labelContentMode);
         messageLabel
-                .setValue(contentMode == ContentMode.TEXT_WITH_NEWLINES ? formatDialogMessage(originalMessageText)
+                .setText(contentMode == ContentMode.TEXT_WITH_NEWLINES ? formatDialogMessage(originalMessageText)
                         : originalMessageText);
-    }
+    }*/
 
     /**
      * Format the messageLabel by maintaining text only.

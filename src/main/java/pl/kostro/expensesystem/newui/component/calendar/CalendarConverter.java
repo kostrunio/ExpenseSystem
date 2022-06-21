@@ -1,7 +1,8 @@
-package pl.kostro.expensesystem.ui.components.calendar;
+package pl.kostro.expensesystem.newui.component.calendar;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.vaadin.addon.calendar.item.BasicItem;
+import org.springframework.stereotype.Component;
+import org.vaadin.stefan.fullcalendar.Entry;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.utils.transform.model.DateExpense;
@@ -9,11 +10,11 @@ import pl.kostro.expensesystem.utils.transform.model.UserLimitExpense;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Component
 public class CalendarConverter {
 
   private ExpenseSheetTransformService eshts;
@@ -23,10 +24,10 @@ public class CalendarConverter {
     this.eshts = eshts;
   }
 
-  public List<BasicItem> transformExpensesToEvents(ExpenseSheetEntity expenseSheet) {
+  public List<Entry> transformExpensesToEvents(ExpenseSheetEntity expenseSheet) {
     Set<LocalDate> dateSet = expenseSheet.getDateExpenseMap().keySet();
-    List<BasicItem> calendarEvents = new ArrayList<>();
-    BasicItem event;
+    List<Entry> calendarEvents = new ArrayList<>();
+    Entry event;
     for (LocalDate date : dateSet) {
       DateExpense dateExpense = expenseSheet.getDateExpenseMap().get(date);
 
@@ -35,10 +36,12 @@ public class CalendarConverter {
         UserLimitExpense userLimitExpenseMap = dateExpense.getUserLimitExpenseMap().get(userLimit);
         if (userLimitExpenseMap == null)
           continue;
-        event = new BasicItem(userLimitExpenseMap.getSumString(), null,
-            date.atStartOfDay(ZoneId.systemDefault()));
+        event = new Entry();
+        event.setDescription(userLimitExpenseMap.getSumString());
+        event.setStart(date);
+        event.setEnd(date);
         event.setAllDay(true);
-        event.setStyleName("" + userLimitExpenseMap.getUserLimit().getOrder());
+//        event.setStyleName("" + userLimitExpenseMap.getUserLimit().getOrder());
         calendarEvents.add(event);
       }
     }

@@ -3,11 +3,11 @@ package pl.kostro.expensesystem.newui.login;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.login.LoginForm;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import pl.kostro.expensesystem.ui.components.form.register.RegisterForm;
+import pl.kostro.expensesystem.newui.component.form.login.LoginForm;
+import pl.kostro.expensesystem.newui.component.form.register.RegisterForm;
 
 public class LoginDesign extends FlexLayout {
   protected VerticalLayout centeringLayout = new VerticalLayout();
@@ -44,7 +44,7 @@ public class LoginDesign extends FlexLayout {
     loginPanel.setMargin(false);
     loginForm.setClassName("login-form");
     registerForm.setVisible(false);
-    registerForm.setStyleName("login-form");
+    registerForm.setClassName("login-form");
     loginPanel.add(createButtons(), loginForm/*, registerForm*/);
     loginPanel.setAlignItems(Alignment.CENTER);
 //    loginPanel.setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);

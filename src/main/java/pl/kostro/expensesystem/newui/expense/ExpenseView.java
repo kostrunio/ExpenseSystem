@@ -14,7 +14,11 @@ import pl.kostro.expensesystem.model.entity.*;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.newui.chart.ChartView;
 import pl.kostro.expensesystem.newui.main.MainView;
+import pl.kostro.expensesystem.newui.month.MonthView;
+import pl.kostro.expensesystem.newui.settings.SettingsView;
+import pl.kostro.expensesystem.newui.settingsPage.ExpenseSheetPasswordWindow;
 import pl.kostro.expensesystem.newui.table.TableView;
+import pl.kostro.expensesystem.newui.userSummary.UserSummaryView;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.utils.filter.Filter;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
@@ -35,7 +39,7 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
   private ExpenseSheetEntity expenseSheet;
   private ComponentEventListener<ClickEvent<Button>> editClick = event -> {
     root.remove();
-//    root.add(new SettingsView());
+    root.add(new SettingsView());
   };
   private ComponentEventListener<ClickEvent<Button>> chartClick = event -> {
     searchPanel.setVisible(false);
@@ -54,7 +58,7 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
       filterButton.setEnabled(true);
       tableButton.setEnabled(true);
       userSummaryButton.setEnabled(true);
-//      mainView.add(new MonthView());
+      mainView.add(new MonthView());
     }
   };
   private ComponentEventListener<ClickEvent<Button>> filterClick = event -> {
@@ -68,7 +72,7 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
       formulaField.clear();
       commentCombo.clear();
       mainView.removeAll();
-//      mainView.add(new MonthView());
+      mainView.add(new MonthView());
     }
   };
   private ComponentEventListener<ClickEvent<Button>> tableClick = event -> {
@@ -86,7 +90,7 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
       monthMenu.setVisible(true);
       filterButton.setEnabled(true);
       userSummaryButton.setEnabled(true);
-//      mainView.add(new MonthView());
+      mainView.add(new MonthView());
     }
   };
   private ComponentEventListener<ClickEvent<Button>> userSummaryClick = event -> {
@@ -97,28 +101,28 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
       monthMenu.setVisible(false);
       filterButton.setEnabled(false);
       tableButton.setEnabled(false);
-//      mainView.add(new UserSummaryView());
+      mainView.add(new UserSummaryView());
     } else {
       expenseSheet.setFilter(null);
       yearMenu.setEnabled(true);
       monthMenu.setVisible(true);
       filterButton.setEnabled(true);
       tableButton.setEnabled(true);
-//      mainView.add(new MonthView());
+      mainView.add(new MonthView());
     }
   };
   private ComponentEventListener<ClickEvent<MenuItem>> yearCommand = selectedItem -> {
   date = date.withYear(Integer.parseInt(selectedItem.getSource().getText())).withDayOfMonth(1);
   VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
   mainView.removeAll();
-//  mainView.add(new MonthView());
+  mainView.add(new MonthView());
   checkedYear(selectedItem.getSource().getText());
   };
   private ComponentEventListener<ClickEvent<MenuItem>> monthCommand = selectedItem -> {
     mainView.removeAll();
     date = date.withMonth(CalendarUtils.getMonthNumber(selectedItem.getSource().getText())).withDayOfMonth(1);
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
-//    mainView.add(new MonthView());
+    mainView.add(new MonthView());
     checkedMonth(selectedItem.getSource().getText());
   };
 //  private NewItemProvider addComment = event -> Optional.of(event);
@@ -150,7 +154,7 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
     users.add(filterUser);
     expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));
     mainView.removeAll();
-//    mainView.add(new MonthView());
+    mainView.add(new MonthView());
   };
 
   public ExpenseView() {
@@ -205,7 +209,7 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
 
     date = date.withDayOfMonth(1);
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
-//    mainView.add(new MonthView());
+    mainView.add(new MonthView());
   }
 
   @Override
@@ -234,7 +238,7 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
           expenseSheet.getUserLimitList().get(0).getLimit();
         } catch (NullPointerException e) {
           expenseSheet.setSecretKey(null);
-//          UI.getCurrent().addWindow(new ExpenseSheetPasswordWindow());
+          new ExpenseSheetPasswordWindow().open();
           return;
         }
       }
