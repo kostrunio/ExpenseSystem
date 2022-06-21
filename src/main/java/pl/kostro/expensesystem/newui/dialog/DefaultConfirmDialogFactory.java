@@ -5,6 +5,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -40,10 +41,9 @@ public class DefaultConfirmDialogFactory implements Factory {
 //    private static final double BUTTON_HEIGHT = 2.5;
 
     public ConfirmDialog create(final String caption, final String message,
-                                final String okCaption, final String cancelCaption,
-                                final String notOkCaption) {
+                                final String okCaption, final String cancelCaption) {
 
-        final boolean threeWay = notOkCaption != null;
+        final boolean threeWay = false;
         // Create a confirm dialog
         final ConfirmDialog confirm = new ConfirmDialog();
         confirm.setId(ConfirmDialog.DIALOG_ID);
@@ -76,11 +76,11 @@ public class DefaultConfirmDialogFactory implements Factory {
         panel.addClassName(ValoTheme.PANEL_BORDERLESS); // valo compatibility
         c.setFlexGrow(1f, panel);
 
- /*       // Always HTML, but escape
-        Label text = new Label(""*//*, com.vaadin.shared.ui.ContentMode.HTML*//*);
+        // Always HTML, but escape
+        Label text = new Label("");
         text.setId(ConfirmDialog.MESSAGE_ID);
         scrollContent.add(text);
-        confirm.setMessageLabel(text);*/
+        confirm.setMessageLabel(text);
         confirm.setMessage(message);
 
         HorizontalLayout buttons = new HorizontalLayout();
@@ -98,13 +98,6 @@ public class DefaultConfirmDialogFactory implements Factory {
         confirm.setOkButton(ok);
         
         Button notOk = null;
-        if (threeWay) {
-            notOk = new Button(notOkCaption);
-//            notOk.setData(false);
-            notOk.setId(ConfirmDialog.NOT_OK_ID);
-            buttons.add(notOk);
-            confirm.setCancelButton(notOk);
-        }
         
         final Button cancel = new Button(cancelCaption != null ? cancelCaption
                 : DEFAULT_CANCEL_CAPTION);

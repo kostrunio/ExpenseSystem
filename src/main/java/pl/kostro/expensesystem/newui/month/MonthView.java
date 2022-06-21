@@ -3,12 +3,16 @@ package pl.kostro.expensesystem.newui.month;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.LocalDate;
 
+@Route(value = "month")
+@PageTitle("Month")
 public class MonthView extends MonthDesign {
 
   private Logger logger = LogManager.getLogger();

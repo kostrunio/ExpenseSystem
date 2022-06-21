@@ -2,7 +2,6 @@ package pl.kostro.expensesystem.newui.chart;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
-import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
@@ -28,15 +27,12 @@ public class ChartDesign extends VerticalLayout {
   }
 
   private Component createSearchPanel() {
-    Div panel = new Div();
-    panel.setSizeUndefined();
     HorizontalLayout layout = new HorizontalLayout();
     layout.setSizeUndefined();
     layout.setSpacing(false);
     layout.setMargin(true);
     layout.add(categoryCombo, createUserComboLayout());
-    panel.add(layout);
-    return panel;
+    return layout;
   }
 
   private Component createUserComboLayout() {

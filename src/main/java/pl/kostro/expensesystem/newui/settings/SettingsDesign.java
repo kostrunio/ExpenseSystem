@@ -2,7 +2,7 @@ package pl.kostro.expensesystem.newui.settings;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -19,7 +19,7 @@ public class SettingsDesign extends VerticalLayout {
   protected Button passwordButton = new Button();
   protected Button removeButton = new Button();
   protected HorizontalLayout gridLayout = new HorizontalLayout();
-  protected Div categoryPanel = new Div();
+  protected Label categoryLabel = new Label();
   protected VerticalLayout categoryLayout = new VerticalLayout();
   protected CategorySettingGrid categoryGrid = new CategorySettingGrid();
   protected HorizontalLayout categoryButtonLayout = new HorizontalLayout();
@@ -27,13 +27,13 @@ public class SettingsDesign extends VerticalLayout {
   protected Button moveUpCategoryButton = new Button();
   protected Button moveDownCategoryButton = new Button();
   protected Button deleteCategoryButton = new Button();
-  protected Div realUserPanel = new Div();
+  protected Label realUserLabel = new Label();
   protected VerticalLayout realUserLayout = new VerticalLayout();
   protected RealUserLimitSettingGrid realUserGrid = new RealUserLimitSettingGrid();
   protected HorizontalLayout realUserButtonLayout = new HorizontalLayout();
   protected Button addRealUserButton = new Button();
   protected Button deleteRealUserButton = new Button();
-  protected Div userPanel = new Div();
+  protected Label userLabel = new Label();
   protected VerticalLayout userLayout = new VerticalLayout();
   protected UserLimitSettingGrid userGrid = new UserLimitSettingGrid();
   protected HorizontalLayout userButtonLayout = new HorizontalLayout();
@@ -56,11 +56,11 @@ public class SettingsDesign extends VerticalLayout {
 
   private Component createToolsLayout() {
     editButton.setIcon(VaadinIcon.EDIT.create());
-    editButton.setClassName("icon-only borderless");
+    editButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_ICON);
     passwordButton.setIcon(VaadinIcon.LOCK.create());
-    passwordButton.setClassName("icon-only borderless");
+    passwordButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_ICON);
     removeButton.setIcon(VaadinIcon.TRASH.create());
-    removeButton.setClassName("icon-only borderless");
+    removeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_ICON);
     toolsLayout.add(editButton, passwordButton, removeButton);
     return toolsLayout;
   }
@@ -72,77 +72,71 @@ public class SettingsDesign extends VerticalLayout {
   }
 
   private Component createCategoryPanel() {
-    categoryPanel.setWidth("355px");
-    categoryPanel.setHeight("100%");
-    categoryLayout.setSizeFull();
-    categoryLayout.add(createCategoryGrid(), createCategoryButtonLayout());
-    categoryPanel.add(categoryLayout);
-    return categoryPanel;
+    categoryLayout.setWidth("355px");
+    categoryLayout.setHeightFull();
+    categoryLayout.add(categoryLabel, createCategoryGrid(), createCategoryButtonLayout());
+    return categoryLayout;
   }
 
   private Component createCategoryGrid() {
-    categoryGrid.setSizeFull();
+    categoryGrid.setWidthFull();
     return categoryGrid;
   }
 
   private Component createCategoryButtonLayout() {
-    categoryButtonLayout.setWidth("100%");
+    categoryButtonLayout.setWidthFull();
     addCategoryButton.setIcon(VaadinIcon.PLUS_SQUARE_O.create());
-    addCategoryButton.setClassName("icon-only borderless");
+    addCategoryButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_ICON);
     moveUpCategoryButton.setIcon(VaadinIcon.ARROW_UP.create());
-    moveUpCategoryButton.setClassName("icon-only borderless");
+    moveUpCategoryButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_ICON);
     moveDownCategoryButton.setIcon(VaadinIcon.ARROW_DOWN.create());
-    moveDownCategoryButton.setClassName("icon-only borderless");
+    moveDownCategoryButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_ICON);
     deleteCategoryButton.setIcon(VaadinIcon.MINUS_SQUARE_O.create());
-    deleteCategoryButton.setClassName("icon-only borderless");
+    deleteCategoryButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_ICON);
     categoryButtonLayout.add(addCategoryButton, moveUpCategoryButton, moveDownCategoryButton, deleteCategoryButton);
     return categoryButtonLayout;
   }
 
   private Component createRealUserPanel() {
-    realUserPanel.setWidth("355px");
-    realUserPanel.setHeight("100%");
-    realUserLayout.setSizeFull();
-    realUserLayout.add(createRealUserGrid(), createRealUserButtonLayout());
-    realUserPanel.add(realUserLayout);
-    return realUserPanel;
+    realUserLayout.setWidth("355px");
+    realUserLayout.setHeightFull();
+    realUserLayout.add(realUserLabel, createRealUserGrid(), createRealUserButtonLayout());
+    return realUserLayout;
   }
 
   private Component createRealUserGrid() {
-    realUserGrid.setSizeFull();
+    realUserGrid.setWidthFull();
     return realUserGrid;
   }
 
   private Component createRealUserButtonLayout() {
-    realUserButtonLayout.setWidth("100%");
+    realUserButtonLayout.setWidthFull();
     addRealUserButton.setIcon(VaadinIcon.PLUS_SQUARE_O.create());
-    addRealUserButton.setClassName("icon-only borderless");
+    addRealUserButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_ICON);
     deleteRealUserButton.setIcon(VaadinIcon.MINUS_SQUARE_O.create());
-    deleteRealUserButton.setClassName("icon-only borderless");
+    deleteRealUserButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_ICON);
     realUserButtonLayout.add(addRealUserButton, deleteRealUserButton);
     return realUserButtonLayout;
   }
 
   private Component createUserPanel() {
-    userPanel.setWidth("355px");
-    userPanel.setHeight("100%");
-    userLayout.setSizeFull();
-    userLayout.add(createUserGrid(), createUserButtonLayout());
-    userPanel.add(userLayout);
-    return userPanel;
+    userLayout.setWidth("355px");
+    userLayout.setHeightFull();
+    userLayout.add(userLabel, createUserGrid(), createUserButtonLayout());
+    return userLayout;
   }
 
   private Component createUserGrid() {
-    userGrid.setSizeFull();
+    userGrid.setWidthFull();
     return userGrid;
   }
 
   private Component createUserButtonLayout() {
-    userButtonLayout.setWidth("100%");
+    userButtonLayout.setWidthFull();
     addUserButton.setIcon(VaadinIcon.PLUS_SQUARE_O.create());
-    addUserButton.setClassName("icon-only borderless");
+    addUserButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_ICON);
     deleteUserButton.setIcon(VaadinIcon.MINUS_SQUARE_O.create());
-    deleteUserButton.setClassName("icon-only borderless");
+    deleteUserButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY, ButtonVariant.LUMO_ICON);
     userButtonLayout.add(addUserButton, deleteUserButton);
     return userButtonLayout;
   }

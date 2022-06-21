@@ -11,7 +11,7 @@ public class ConfirmDialog extends Dialog {
 
   public interface Factory extends Serializable {
         ConfirmDialog create(String windowCaption, String message,
-                String okTitle, String cancelTitle, String notOKCaption);
+                String okTitle, String cancelTitle);
     }
 
     /* Test IDs for elements */
@@ -89,7 +89,7 @@ public class ConfirmDialog extends Dialog {
             final String okCaption, final String cancelCaption,
             final Listener listener) {
         ConfirmDialog d = getFactory().create(windowCaption, message,
-                okCaption, cancelCaption, null);
+                okCaption, cancelCaption);
         d.show(listener, true);
         return d;
     }

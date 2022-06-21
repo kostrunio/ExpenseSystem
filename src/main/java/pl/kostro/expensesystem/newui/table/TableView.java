@@ -13,6 +13,7 @@ import com.vaadin.flow.component.grid.GridSortOrder;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.provider.SortDirection;
 import com.vaadin.flow.data.selection.SelectionListener;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 import org.apache.logging.log4j.LogManager;
@@ -20,6 +21,7 @@ import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.*;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.newui.main.MainView;
 import pl.kostro.expensesystem.utils.filter.Filter;
 import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
@@ -29,7 +31,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route("table")
+@Route(value = "table", layout = MainView.class)
+@PageTitle("Table")
 public class TableView extends TableDesign {
   
   private ExpenseSheetService eshs;

@@ -33,6 +33,7 @@ public class TableDesign extends VerticalLayout {
     setSizeFull();
     setMargin(false);
     add(createActionPanel(), newExpenseButton, createWorkingLayout(), exportButton);
+    expand(workingLayout);
     setAlignItems(Alignment.START);
 //    setComponentAlignment(exportButton, Alignment.TOP_RIGHT);
   }
@@ -52,7 +53,7 @@ public class TableDesign extends VerticalLayout {
 
   private Component createWorkingLayout() {
     workingLayout.setSizeFull();
-    expenseGrid.setWidth("100%");
+    expenseGrid.setWidthFull();
     workingLayout.add(expenseGrid, expenseForm);
     workingLayout.expand(expenseGrid);
     workingLayout.setAlignItems(Alignment.END);

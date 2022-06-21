@@ -37,7 +37,7 @@ public class CalendarConverter {
         if (userLimitExpenseMap == null)
           continue;
         event = new Entry();
-        event.setDescription(userLimitExpenseMap.getSumString());
+        event.setTitle(userLimitExpenseMap.getSumString());
         event.setStart(date);
         event.setEnd(date);
         event.setAllDay(true);

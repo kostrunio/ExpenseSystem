@@ -4,6 +4,8 @@ import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.UI;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +15,7 @@ import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.newui.dialog.ConfirmDialog;
+import pl.kostro.expensesystem.newui.main.MainView;
 import pl.kostro.expensesystem.newui.settingsPage.ExpenseSheetEditListener;
 import pl.kostro.expensesystem.newui.settingsPage.ExpenseSheetEditPasswordWindow;
 import pl.kostro.expensesystem.newui.settingsPage.ExpenseSheetEditWindow;
@@ -21,6 +24,8 @@ import pl.kostro.expensesystem.utils.msg.Msg;
 
 import java.text.MessageFormat;
 
+@Route(value = "settings", layout = MainView.class)
+@PageTitle("Settings")
 public class SettingsView extends SettingsDesign implements ExpenseSheetEditListener, ExpenseSheetPasswordChangeListener {
 
   private Logger logger = LogManager.getLogger();
@@ -81,12 +86,12 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
   }
   
   private void setCaption() {
-    editButton.setText(Msg.get("settingsPage.changeName"));
-    passwordButton.setText(Msg.get("settingsPage.changePassword"));
-    removeButton.setText(Msg.get("settingsPage.removeSheet"));
-    categoryPanel.setText(Msg.get("settingsPage.categoryLabel"));
-    realUserPanel.setText(Msg.get("settingsPage.realUserLabel"));
-    userPanel.setText(Msg.get("settingsPage.userLabel"));
+//    editButton.setText(Msg.get("settingsPage.changeName"));
+//    passwordButton.setText(Msg.get("settingsPage.changePassword"));
+//    removeButton.setText(Msg.get("settingsPage.removeSheet"));
+    categoryLabel.setText(Msg.get("settingsPage.categoryLabel"));
+    realUserLabel.setText(Msg.get("settingsPage.realUserLabel"));
+    userLabel.setText(Msg.get("settingsPage.userLabel"));
     backButton.setText(Msg.get("settingsPage.back"));
   }
   

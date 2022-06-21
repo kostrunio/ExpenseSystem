@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.newui.expense;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
@@ -11,7 +12,6 @@ import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
-import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.utils.msg.Msg;
@@ -45,7 +45,7 @@ public class ExpenseDesign extends Div {
   protected VerticalLayout mainView;
 
   public ExpenseDesign() {
-    setClassName(ValoTheme.PANEL_BORDERLESS);
+//    setClassName(ValoTheme.PANEL_BORDERLESS);
     setSizeFull();
     root = new VerticalLayout();
     root.setSizeUndefined();
@@ -59,8 +59,8 @@ public class ExpenseDesign extends Div {
 
     titleLabel = new Label(name);
     titleLabel.setSizeUndefined();
-    titleLabel.addClassName(ValoTheme.LABEL_H1);
-    titleLabel.addClassName(ValoTheme.LABEL_NO_MARGIN);
+//    titleLabel.addClassName(ValoTheme.LABEL_H1);
+//    titleLabel.addClassName(ValoTheme.LABEL_NO_MARGIN);
     header.add(titleLabel);
 
     tools = new HorizontalLayout(buildEditButton(), buildChartButton());
@@ -73,16 +73,14 @@ public class ExpenseDesign extends Div {
   private Component buildEditButton() {
     editButton = new Button();
     editButton.setIcon(VaadinIcon.EDIT.create());
-    editButton.addClassName(ValoTheme.BUTTON_ICON_ONLY);
-    editButton.addClassName(ValoTheme.BUTTON_BORDERLESS);
+    editButton.addThemeVariants(ButtonVariant.LUMO_ICON);
     return editButton;
   }
   
   private Component buildChartButton() {
     chartButton = new Button();
     chartButton.setIcon(VaadinIcon.LINE_CHART.create());
-    chartButton.addClassName(ValoTheme.BUTTON_ICON_ONLY);
-    chartButton.addClassName(ValoTheme.BUTTON_BORDERLESS);
+    chartButton.addThemeVariants(ButtonVariant.LUMO_ICON);
     return chartButton;
   }
   
@@ -120,9 +118,8 @@ public class ExpenseDesign extends Div {
     // filterButton
     filterButton = new Button();
     filterButton.setIcon(VaadinIcon.FILTER.create());
-    filterButton.addClassName(ValoTheme.BUTTON_ICON_ONLY);
-    filterButton.addClassName(ValoTheme.BUTTON_BORDERLESS);
-    filterButton.setText(Msg.get("expense.filter"));
+    filterButton.addThemeVariants(ButtonVariant.LUMO_ICON);
+//    filterButton.setText(Msg.get("expense.filter"));
 
     menuLayout.add(filterButton);
     menuLayout.setAlignItems(FlexComponent.Alignment.END);
@@ -130,9 +127,8 @@ public class ExpenseDesign extends Div {
     // findButton
     tableButton = new Button();
     tableButton.setIcon(VaadinIcon.TABLE.create());
-    tableButton.addClassName(ValoTheme.BUTTON_ICON_ONLY);
-    tableButton.addClassName(ValoTheme.BUTTON_BORDERLESS);
-    tableButton.setText(Msg.get("expense.find"));
+    tableButton.addThemeVariants(ButtonVariant.LUMO_ICON);
+//    tableButton.setText(Msg.get("expense.find"));
 
     menuLayout.add(tableButton);
     menuLayout.setAlignItems(FlexComponent.Alignment.END);
@@ -140,9 +136,8 @@ public class ExpenseDesign extends Div {
     // userSummaryBurron
     userSummaryButton = new Button();
     userSummaryButton.setIcon(VaadinIcon.FILE_TREE_SMALL.create());
-    userSummaryButton.addClassName(ValoTheme.BUTTON_ICON_ONLY);
-    userSummaryButton.addClassName(ValoTheme.BUTTON_BORDERLESS);
-    userSummaryButton.setText(Msg.get("expense.userSummary"));
+    userSummaryButton.addThemeVariants(ButtonVariant.LUMO_ICON);
+//    userSummaryButton.setText(Msg.get("expense.userSummary"));
 
     menuLayout.add(userSummaryButton);
     menuLayout.setAlignItems(FlexComponent.Alignment.END);

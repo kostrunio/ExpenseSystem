@@ -1,6 +1,5 @@
 package pl.kostro.expensesystem.newui.component.form.register;
 
-
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.formlayout.FormLayout;

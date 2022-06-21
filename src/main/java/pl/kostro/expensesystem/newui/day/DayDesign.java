@@ -26,7 +26,7 @@ public class DayDesign extends VerticalLayout {
   protected FlexLayout expenseListPanel = new FlexLayout();
   protected VerticalLayout expenseList = new VerticalLayout();
   protected Label categoryLabel = new Label();
-  protected GridLayout expenseGrid;/* = new GridLayout();*/
+  protected GridLayout expenseGrid = new GridLayout(1,1);
   protected HorizontalLayout addExpense = new HorizontalLayout();
   protected ComboBox<UserLimitEntity> userBox = new ComboBox<>();
   protected TextField formulaField = new TextField();

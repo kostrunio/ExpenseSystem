@@ -38,7 +38,7 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
   private LocalDate date = LocalDate.now();
   private ExpenseSheetEntity expenseSheet;
   private ComponentEventListener<ClickEvent<Button>> editClick = event -> {
-    root.remove();
+    root.removeAll();
     root.add(new SettingsView());
   };
   private ComponentEventListener<ClickEvent<Button>> chartClick = event -> {

@@ -1,16 +1,17 @@
 package pl.kostro.expensesystem.newui.day;
 
-import com.vaadin.componentfactory.gridlayout.GridLayout;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.ui.themes.ValoTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -31,7 +32,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
+@Route(value = "day")
+@PageTitle("Day")
 public class DayView extends DayDesign {
   
   private ExpenseService es;
@@ -204,7 +206,8 @@ public class DayView extends DayDesign {
     }
 //    expenseGrid.setColumns(5);
 //    expenseGrid.setRows(expenseList.size() == 0 ? 1 : expenseList.size());
-    expenseGrid = new GridLayout(5, expenseList.size() == 0 ? 1 : expenseList.size());
+    expenseGrid.setColumns(5);
+    expenseGrid.setRows(expenseList.size() == 0 ? 1 : expenseList.size());
 
     for (int i = 0; i < expenseList.size(); i++) {
       ExpenseEntity expense = expenseList.get(i);
@@ -227,8 +230,7 @@ public class DayView extends DayDesign {
 
       Button removeButton = new Button();
       removeButton.setIcon(VaadinIcon.TRASH.create());
-      removeButton.addClassName(ValoTheme.BUTTON_ICON_ONLY);
-      removeButton.addClassName(ValoTheme.BUTTON_BORDERLESS);
+      removeButton.addThemeVariants(ButtonVariant.LUMO_ICON);
 //      removeButton.setData(expense);
       removeButton.addClickListener(removeClick);
       expenseGrid.addComponent(removeButton, 3, i);

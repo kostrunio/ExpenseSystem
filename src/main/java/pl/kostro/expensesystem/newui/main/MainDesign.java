@@ -69,33 +69,21 @@ public class MainDesign extends AppLayout {
     addSheetButton = createMenuButton(addSheetButton, VaadinIcon.FILE_ADD.create());
     accountButton = createMenuButton(accountButton, VaadinIcon.AUTOMATION.create());
     logoutButton = createMenuButton(logoutButton, VaadinIcon.SIGN_OUT.create());
-    addToDrawer(new VerticalLayout(sheetLabel, sheetLayout, settingsLabel, addSheetButton, accountButton, logoutButton));
+    VerticalLayout buttonLayout = new VerticalLayout();
+    buttonLayout.setSpacing(false);
+    buttonLayout.setMargin(false);
+    buttonLayout.add(addSheetButton, accountButton, logoutButton);
+    addToDrawer(new VerticalLayout(sheetLabel, sheetLayout, settingsLabel, buttonLayout));
   }
 
   private Component createMenuTitle() {
     menuTitle.setClassName("menu-header");/*was valo-menu-title*/
-    menuTitle.setWidth("100%");
+    menuTitle.setWidthFull();
 //    title.setContentMode(ContentMode.HTML);
 //    title.setText("Expense Application");
     menuTitle.add(title);
     menuTitle.setDefaultVerticalComponentAlignment(FlexComponent.Alignment.CENTER);
     return menuTitle;
-  }
-
-  private Component createMenuItems() {
-    menuItems.setClassName("valo-menuitems");
-    sheetLabel.setClassName("valo-menu-subtitle");
-    sheetLayout.setSpacing(false);
-    sheetLayout.setMargin(false);
-    settingsLabel.setClassName("valo-menu-subtitle");
-    addSheetButton.setIcon(VaadinIcon.FILE_ADD.create());
-    addSheetButton.setClassName("valo-menu-item");
-    accountButton.setIcon(VaadinIcon.AUTOMATION.create());
-    accountButton.setClassName("valo-menu-item");
-    logoutButton.setIcon(VaadinIcon.SIGN_OUT.create());
-    logoutButton.setClassName("valo-menu-item");
-    menuItems.add(sheetLabel, sheetLayout, settingsLabel, addSheetButton, accountButton, logoutButton);
-    return menuItems;
   }
 
   protected Button createMenuButton(Button routerButton, Icon icon) {

@@ -45,7 +45,7 @@ public class LoginDesign extends FlexLayout {
     loginForm.setClassName("login-form");
     registerForm.setVisible(false);
     registerForm.setClassName("login-form");
-    loginPanel.add(createButtons(), loginForm/*, registerForm*/);
+    loginPanel.add(createButtons(), loginForm, registerForm);
     loginPanel.setAlignItems(Alignment.CENTER);
 //    loginPanel.setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
 //    loginPanel.setComponentAlignment(registerForm, Alignment.MIDDLE_CENTER);

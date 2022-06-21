@@ -7,6 +7,8 @@ import com.vaadin.flow.component.grid.editor.EditorOpenListener;
 import com.vaadin.flow.component.grid.editor.EditorSaveListener;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.router.PageTitle;
+import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,11 +17,14 @@ import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.entity.UserSummaryEntity;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
+import pl.kostro.expensesystem.newui.main.MainView;
 import pl.kostro.expensesystem.utils.msg.Msg;
 
 import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
+@Route(value = "summary", layout = MainView.class)
+@PageTitle("Summary")
 public class UserSummaryView extends UserSummaryDesign {
 
   private Logger logger = LogManager.getLogger();
@@ -71,9 +76,5 @@ public class UserSummaryView extends UserSummaryDesign {
   private void setCaption() {
     userBox.setLabel(Msg.get("userSummary.user"));
     userBox.setItemLabelGenerator(item -> item.getUser().getName());
-    userSummaryGrid.getColumnByKey("id").setHeader(Msg.get("userSummary.id"));
-    userSummaryGrid.getColumnByKey("date").setHeader(Msg.get("userSummary.date"));
-    userSummaryGrid.getColumnByKey("limit").setHeader(Msg.get("userSummary.limit"));
-    userSummaryGrid.getColumnByKey("sum").setHeader(Msg.get("userSummary.sum"));
   }
 }
