@@ -30,7 +30,9 @@ public class TableDesign extends VerticalLayout {
   protected Button exportButton = new Button();
 
   public TableDesign() {
-    setSizeFull();
+    setSizeUndefined();
+    setMinWidth("100%");
+    setMinHeight("100%");
     setMargin(false);
     add(createActionPanel(), newExpenseButton, createWorkingLayout(), exportButton);
     expand(workingLayout);
@@ -41,7 +43,7 @@ public class TableDesign extends VerticalLayout {
   private Component createActionPanel() {
 //    actionPanel.setSizeUndefined();
     actionsLayout.setSizeFull();
-    actionsLayout.setMargin(true);
+//    actionsLayout.setMargin(true);
     fromDateField.setWidth("144px");
     toDateField.setWidth("144px");
     categoryBox.setWidth("144px");
@@ -53,7 +55,6 @@ public class TableDesign extends VerticalLayout {
 
   private Component createWorkingLayout() {
     workingLayout.setSizeFull();
-    expenseGrid.setWidthFull();
     workingLayout.add(expenseGrid, expenseForm);
     workingLayout.expand(expenseGrid);
     workingLayout.setAlignItems(Alignment.END);

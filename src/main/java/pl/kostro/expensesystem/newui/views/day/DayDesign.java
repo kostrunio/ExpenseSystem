@@ -3,6 +3,7 @@ package pl.kostro.expensesystem.newui.views.day;
 import com.vaadin.componentfactory.gridlayout.GridLayout;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -45,9 +46,9 @@ public class DayDesign extends VerticalLayout {
   private Component createaNavigationLayout() {
     navigationLayout.setMargin(true);
     previousDayButton.setIcon(VaadinIcon.ARROW_LEFT.create());
-    previousDayButton.setClassName("icon-only borderless");
+    previousDayButton.addThemeVariants(ButtonVariant.LUMO_ICON);
     nextDayButton.setIcon(VaadinIcon.ARROW_RIGHT.create());
-    nextDayButton.setClassName("icon-only borderless");
+    nextDayButton.addThemeVariants(ButtonVariant.LUMO_ICON);
     navigationLayout.add(previousDayButton, thisDateField, nextDayButton);
     navigationLayout.setAlignItems(Alignment.END);
 //    navigationLayout.setComponentAlignment(thisDateField, Alignment.MIDDLE_CENTER);

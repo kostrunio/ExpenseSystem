@@ -116,14 +116,14 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
   VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
   mainView.removeAll();
   mainView.add(new MonthView());
-  checkedYear(selectedItem.getSource().getText());
+//  checkedYear(selectedItem.getSource().getText());
   };
   private ComponentEventListener<ClickEvent<MenuItem>> monthCommand = selectedItem -> {
     mainView.removeAll();
     date = date.withMonth(CalendarUtils.getMonthNumber(selectedItem.getSource().getText())).withDayOfMonth(1);
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
     mainView.add(new MonthView());
-    checkedMonth(selectedItem.getSource().getText());
+//    checkedMonth(selectedItem.getSource().getText());
   };
 //  private NewItemProvider addComment = event -> Optional.of(event);
 
@@ -162,21 +162,21 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
     eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
   }
 
-  public void checkedYear(String yearString) {
+/*  public void checkedYear(String yearString) {
     for (MenuItem item : yearMenu.getItems()) {
       item.setChecked(false);
       if (item.getText().equals(yearString))
         item.setChecked(true);
     }
-  }
+  }*/
 
-  public void checkedMonth(String monthString) {
+/*  public void checkedMonth(String monthString) {
     for (MenuItem item : monthMenu.getItems()) {
       item.setChecked(false);
       if (item.getText().equals(monthString))
         item.setChecked(true);
     }
-  }
+  }*/
 
   private void prepareSearchLayout() {
     categoryCombo.setItemLabelGenerator(item -> item.getName());

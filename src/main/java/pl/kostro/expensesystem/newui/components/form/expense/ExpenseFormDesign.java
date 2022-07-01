@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.newui.components.form.expense;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
@@ -26,7 +27,7 @@ public class ExpenseFormDesign extends FormLayout {
 
   public ExpenseFormDesign() {
 //    setMargin(true);
-    setSizeUndefined();
+    setMaxWidth("200px");
     notifyBox.setVisible(false);
     add(createActionsLayout(), dateField, categoryBox, userBox, formulaField, commentBox, notifyBox);
   }
@@ -35,9 +36,9 @@ public class ExpenseFormDesign extends FormLayout {
     saveButton.setEnabled(false);
     saveButton.setClassName("friendly");
     duplicateButton.setIcon(VaadinIcon.COPY_O.create());
-    duplicateButton.setClassName("icon-only borderless");
+    duplicateButton.addThemeVariants(ButtonVariant.LUMO_ICON);
     removeButton.setIcon(VaadinIcon.TRASH.create());
-    removeButton.setClassName("icon-only borderless");
+    removeButton.addThemeVariants(ButtonVariant.LUMO_ICON);
     actionsLayout.add(saveButton, duplicateButton, removeButton);
     return actionsLayout;
   }

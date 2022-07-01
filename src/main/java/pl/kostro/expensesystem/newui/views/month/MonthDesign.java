@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.newui.views.month;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -44,14 +45,14 @@ public class MonthDesign extends HorizontalLayout {
   private Component createNavigationLayout() {
     navigationLayout.setWidth("100%");
     previousMonthButton.setIcon(VaadinIcon.ARROW_LEFT.create());
-    previousMonthButton.setClassName("icon-only borderless");
+    previousMonthButton.addThemeVariants(ButtonVariant.LUMO_ICON);
     DatePicker.DatePickerI18n singleFormatI18n = new DatePicker.DatePickerI18n();
     singleFormatI18n.setDateFormat("yyyy-MMMM");
     thisMonthField.setI18n(singleFormatI18n);
 //    thisMonthField.setResolution(DateResolution.MONTH);
     thisMonthField.setWidth("180px");
     nextMonthButton.setIcon(VaadinIcon.ARROW_RIGHT.create());
-    nextMonthButton.setClassName("icon-only borderless");
+    nextMonthButton.addThemeVariants(ButtonVariant.LUMO_ICON);
     navigationLayout.add(previousMonthButton, thisMonthField, nextMonthButton);
     navigationLayout.setAlignItems(Alignment.START);
 //    navigationLayout.setComponentAlignment(thisMonthField, Alignment.TOP_CENTER);

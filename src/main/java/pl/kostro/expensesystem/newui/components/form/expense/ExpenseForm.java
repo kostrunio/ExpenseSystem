@@ -82,7 +82,7 @@ public class ExpenseForm extends ExpenseFormDesign {
 
   private void setCaption() {
     saveButton.setText(Msg.get("expensForm.save"));
-    duplicateButton.setText(Msg.get("expensForm.duplicate"));
+//    duplicateButton.setText(Msg.get("expensForm.duplicate"));
     dateField.setLabel(Msg.get("expensForm.date"));
     categoryBox.setLabel(Msg.get("expensForm.category"));
     userBox.setLabel(Msg.get("expensForm.user"));

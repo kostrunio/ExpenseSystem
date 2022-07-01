@@ -75,6 +75,7 @@ public class ExpenseCalendar extends FullCalendar {
     eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
 
+    setWeekNumbersVisible(false);
     setEntryProvider(eventProvider);
 
 //    setHandler(dateClick);

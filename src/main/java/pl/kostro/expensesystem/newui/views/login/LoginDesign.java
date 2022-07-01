@@ -27,6 +27,7 @@ public class LoginDesign extends FlexLayout {
 
   public LoginDesign() {
     setClassName("login-screen");
+    setMinHeight("100%");
     add(createLoginInformation(), createCenteringLayout());
   }
 
