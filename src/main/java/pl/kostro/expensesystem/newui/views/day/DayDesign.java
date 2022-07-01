@@ -2,11 +2,11 @@ package pl.kostro.expensesystem.newui.views.day;
 
 import com.vaadin.componentfactory.gridlayout.GridLayout;
 import com.vaadin.flow.component.Component;
-import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
+import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
@@ -14,6 +14,7 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
+import pl.kostro.expensesystem.newui.components.button.Button;
 
 public class DayDesign extends VerticalLayout {
   protected HorizontalLayout navigationLayout = new HorizontalLayout();
@@ -24,7 +25,7 @@ public class DayDesign extends VerticalLayout {
   protected FlexLayout categoryListPanel = new FlexLayout();
   protected FlexLayout categoryGrid = new FlexLayout();
   protected Button backButton = new Button();
-  protected FlexLayout expenseListPanel = new FlexLayout();
+  protected Div expenseListPanel = new Div();
   protected VerticalLayout expenseList = new VerticalLayout();
   protected Label categoryLabel = new Label();
   protected GridLayout expenseGrid = new GridLayout(1,1);
@@ -39,11 +40,11 @@ public class DayDesign extends VerticalLayout {
     setSizeFull();
     setSpacing(false);
     setMargin(false);
-    add(createaNavigationLayout(), createDayLayout());
+    add(createNavigationLayout(), createDayLayout());
     setAlignItems(Alignment.CENTER);
   }
 
-  private Component createaNavigationLayout() {
+  private Component createNavigationLayout() {
     navigationLayout.setMargin(true);
     previousDayButton.setIcon(VaadinIcon.ARROW_LEFT.create());
     previousDayButton.addThemeVariants(ButtonVariant.LUMO_ICON);

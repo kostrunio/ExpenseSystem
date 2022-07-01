@@ -63,7 +63,7 @@ public class MonthView extends MonthDesign {
     firstDateField.setValue(date.withDayOfMonth(1));
     lastDateField.setValue(date.withDayOfMonth(date.lengthOfMonth()));
     monthCalendar.setMonthView(this);
-//    monthCalendar.setStartDate(firstDateField.getValue().atStartOfDay(ZoneId.systemDefault()));
+    monthCalendar.gotoDate(firstDateField.getValue());
 //    monthCalendar.setEndDate(lastDateField.getValue().atStartOfDay(ZoneId.systemDefault()));
   }
 

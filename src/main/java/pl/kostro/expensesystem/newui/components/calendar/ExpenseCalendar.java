@@ -1,14 +1,15 @@
 package pl.kostro.expensesystem.newui.components.calendar;
 
+import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.server.VaadinSession;
-import org.vaadin.stefan.fullcalendar.Entry;
-import org.vaadin.stefan.fullcalendar.FullCalendar;
+import org.vaadin.stefan.fullcalendar.*;
 import org.vaadin.stefan.fullcalendar.dataprovider.CallbackEntryProvider;
 import org.vaadin.stefan.fullcalendar.dataprovider.EntryProvider;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
-import pl.kostro.expensesystem.newui.views.month.MonthView;
 import pl.kostro.expensesystem.newui.notification.ShowNotification;
+import pl.kostro.expensesystem.newui.views.day.DayView;
+import pl.kostro.expensesystem.newui.views.month.MonthView;
 import pl.kostro.expensesystem.utils.transform.model.UserSumChange;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
 
@@ -45,29 +46,20 @@ public class ExpenseCalendar extends FullCalendar {
           entryId -> null
   );
 
-/*  private DateClickHandler dateClick = event -> {
-    VaadinSession.getCurrent().setAttribute(LocalDate.class, event.getDate().toLocalDate());
-    monthView.removeAllComponents();
-    monthView.addComponent(new DayView());
-  };*/
+  private ComponentEventListener<DayNumberClickedEvent> dateClicked = event -> {
+    VaadinSession.getCurrent().setAttribute(LocalDate.class, event.getDate());
+    monthView.removeAll();
+    monthView.add(new DayView());
+  };
 
 /*  private WeekClickHandler weekClick = event -> {
   };*/
 
-/*  private ItemClickHandler eventClick = event -> {
-    VaadinSession.getCurrent().setAttribute(LocalDate.class, event.getCalendarItem().getStart().toLocalDate());
-    monthView.removeAllComponents();
-    monthView.addComponent(new DayView());
-  };*/
-
-/*  private BackwardHandler prevClick = event -> {
-    VaadinSession.getCurrent().setAttribute(LocalDate.class, date.minusMonths(1));
-    monthView.showCalendar();
-  };*/
-/*  private ForwardHandler nextClick = event -> {
-    VaadinSession.getCurrent().setAttribute(LocalDate.class, date.plusMonths(1));
-    monthView.showCalendar();
-  };*/
+  private ComponentEventListener<EntryClickedEvent> eventClicked = event -> {
+    VaadinSession.getCurrent().setAttribute(LocalDate.class, event.getEntry().getStart().toLocalDate());
+    monthView.removeAll();
+    monthView.add(new DayView());
+  };
 
   public ExpenseCalendar() {
     super(4);
@@ -78,15 +70,10 @@ public class ExpenseCalendar extends FullCalendar {
     setWeekNumbersVisible(false);
     setEntryProvider(eventProvider);
 
-//    setHandler(dateClick);
+    addDayNumberClickedListener(dateClicked);
 
-//    setHandler(weekClick);
+    addEntryClickedListener(eventClicked);
 
-//    setHandler(eventClick);
-
-//    setHandler(prevClick);
-
-//    setHandler(nextClick);
   }
 
   public void setMonthView(MonthView monthView) {
