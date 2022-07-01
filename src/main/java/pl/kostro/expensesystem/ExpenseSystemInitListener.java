@@ -4,7 +4,7 @@ import com.vaadin.flow.server.ServiceInitEvent;
 import com.vaadin.flow.server.VaadinServiceInitListener;
 import com.vaadin.flow.server.VaadinSession;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
-import pl.kostro.expensesystem.newui.login.LoginView;
+import pl.kostro.expensesystem.newui.views.login.LoginView;
 
 /**
  * This class is used to listen to BeforeEnter event of all UIs in order to
