@@ -70,6 +70,7 @@ public class CategorySettingGrid extends Grid<CategoryEntity> implements Setting
             eshs.removeCategory(category, expenseSheet);
             cs.remove(category);
             refreshValues();
+            dialog.close();
           }
         });
   };

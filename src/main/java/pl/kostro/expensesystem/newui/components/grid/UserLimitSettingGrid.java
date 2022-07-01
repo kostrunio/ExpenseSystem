@@ -62,6 +62,7 @@ public class UserLimitSettingGrid extends Grid<UserLimitEntity> implements Setti
             uls.remove(userLimit);
             refreshValues();
           }
+          dialog.close();
         });
   };
 

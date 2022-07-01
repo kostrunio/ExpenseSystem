@@ -65,6 +65,7 @@ public class RealUserLimitSettingGrid extends Grid<UserLimitEntity> implements S
             expenseSheet.getUserLimitList().remove(userLimit);
             uls.remove(userLimit);
             refreshValues();
+            dialog.close();
           }
         });
   };

@@ -50,6 +50,7 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
             VaadinSession.getCurrent().setAttribute(ExpenseSheetEntity.class, null);
 //            ((ExpenseSystemUI)getUI()).getMainView().refresh();
             UI.getCurrent().navigate("");
+            dialog.close();
           }
         });
   };

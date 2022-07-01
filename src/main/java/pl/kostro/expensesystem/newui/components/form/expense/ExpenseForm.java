@@ -61,6 +61,7 @@ public class ExpenseForm extends ExpenseFormDesign {
             eshts.removeExpense(expense, expenseSheet);
             es.remove(expense);
             view.refreshExpenses();
+            dialog.close();
           }
     });
   };

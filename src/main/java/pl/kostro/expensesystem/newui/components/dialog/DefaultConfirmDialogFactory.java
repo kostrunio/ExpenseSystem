@@ -4,6 +4,7 @@ import com.vaadin.flow.component.ClickEvent;
 import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
@@ -49,19 +50,6 @@ public class DefaultConfirmDialogFactory implements Factory {
         confirm.setId(ConfirmDialog.DIALOG_ID);
         confirm.setHeaderTitle(caption != null ? caption : DEFAULT_CAPTION);
 
-        // Close listener implementation
-        /*confirm.addCloseListener(new Window.CloseListener() {
-            public void windowClose(CloseEvent ce) {
-                if (confirm.isEnabled()) {
-                    confirm.setEnabled(false); // avoid double processing
-                    confirm.setConfirmed(false);
-                    if (confirm.getListener() != null) {
-                        confirm.getListener().onClose(confirm);
-                    }
-                }
-            }
-        });*/
-
         // Create content
         VerticalLayout c = new VerticalLayout();
         confirm.add(c);
@@ -89,15 +77,12 @@ public class DefaultConfirmDialogFactory implements Factory {
         buttons.setMargin(false);
 
         final Button ok = new Button(okCaption != null ? okCaption : DEFAULT_OK_CAPTION);
-//        ok.setData(true);
         ok.setId(ConfirmDialog.OK_ID);
         ok.addClickShortcut(Key.ENTER);
-        ok.setClassName(ValoTheme.BUTTON_DANGER);
+        ok.addThemeVariants(ButtonVariant.LUMO_ERROR);
         ok.focus();
         buttons.add(ok);
         confirm.setOkButton(ok);
-        
-        Button notOk = null;
         
         final Button cancel = new Button(cancelCaption != null ? cancelCaption
                 : DEFAULT_CANCEL_CAPTION);
@@ -115,16 +100,12 @@ public class DefaultConfirmDialogFactory implements Factory {
                 confirm.setEnabled(false); // Avoid double processing
 
                 Button b = event.getSource();
-                if (b != cancel)
+                if (b != cancel) {
                     confirm.setConfirmed(b == ok);
+                } else {
+                    confirm.close();
+                }
 
-                // We need to cast this way, because of the backward
-                // compatibility issue in 6.4 series.
-//                UI parent = confirm.getUI();
-//                parent.removeWindow(confirm);
-
-                // This has to be invoked as the window.close
-                // event is not fired when removed.
                 if (confirm.getListener() != null) {
                     confirm.getListener().onClose(confirm);
                 }
@@ -133,8 +114,6 @@ public class DefaultConfirmDialogFactory implements Factory {
 
         cancel.addClickListener(cb);
         ok.addClickListener(cb);
-        if (notOk != null)
-            notOk.addClickListener(cb);
 
         // Approximate the size of the dialog
         double[] dim = getDialogDimensions(message,
