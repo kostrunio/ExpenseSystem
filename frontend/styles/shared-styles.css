@@ -1,7 +1,20 @@
+.login-panel {
+    max-width: 400px;
+    background: white;
+    opacity: 0.9;
+    padding: 21px 21px 21px 21px;
+    border-radius: 10px;
+}
+.register-form {
+    padding: 31px 21px 21px 21px;
+}
+
 .login-information {
     min-width: 300px;
     flex: 0;
-    background: var(--lumo-primary-color-50pct);
+    background-color: rgba(96, 160, 234, 0.7);
+    padding: 21px 21px 21px 21px;
+    color: #f2f6fa;
 }
 
 /* Stack login-screen vertically on narrow screen */

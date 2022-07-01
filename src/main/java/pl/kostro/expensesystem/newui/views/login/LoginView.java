@@ -69,6 +69,7 @@ public class LoginView extends LoginDesign {
   private void setCaption() {
     signIn.setText(Msg.get("loginPage.signin"));
     signUp.setText(Msg.get("loginPage.signup"));
+    loginInfoHeader.setText("New Expense System");
     loginInfoText.setText(Msg.get("loginPage.welcome"));
   }
 

@@ -2,38 +2,39 @@ package pl.kostro.expensesystem.newui.views.login;
 
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.dependency.CssImport;
+import com.vaadin.flow.component.html.H1;
+import com.vaadin.flow.component.html.Span;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import pl.kostro.expensesystem.newui.components.form.login.LoginForm;
 import pl.kostro.expensesystem.newui.components.form.register.RegisterForm;
 
+@CssImport("./styles/shared-styles.css")
 public class LoginDesign extends FlexLayout {
-  protected VerticalLayout centeringLayout = new VerticalLayout();
+  protected FlexLayout centeringLayout = new FlexLayout();
   protected VerticalLayout loginPanel = new VerticalLayout();
   protected HorizontalLayout buttons = new HorizontalLayout();
   protected Button signIn = new Button();
   protected Button signUp = new Button();
   protected LoginForm loginForm = new LoginForm();
   protected RegisterForm registerForm = new RegisterForm();
-  protected FlexLayout loginInformation = new FlexLayout();
-  protected Label loginInfoText = new Label();
+  protected VerticalLayout loginInformation = new VerticalLayout();
+
+  protected H1 loginInfoHeader = new H1();
+  protected Span loginInfoText = new Span();
 
   public LoginDesign() {
     setClassName("login-screen");
-//    setResponsive(true);
-    setWidth("100%");
-    add(createCenteringLayout(), createLoginInformation());
+    add(createLoginInformation(), createCenteringLayout());
   }
 
   private Component createCenteringLayout() {
-    centeringLayout.setClassName("centering-layout");
-    centeringLayout.setSpacing(false);
-    centeringLayout.setSizeUndefined();
-    centeringLayout.setMargin(false);
+    centeringLayout.setSizeFull();
+    centeringLayout.setJustifyContentMode(JustifyContentMode.CENTER);
+    centeringLayout.setAlignItems(Alignment.CENTER);
     centeringLayout.add(createLoginPanel());
-//    centeringLayout.setComponentAlignment(loginPanel, Alignment.MIDDLE_CENTER);
     return centeringLayout;
   }
 
@@ -44,11 +45,10 @@ public class LoginDesign extends FlexLayout {
     loginPanel.setMargin(false);
     loginForm.setClassName("login-form");
     registerForm.setVisible(false);
-    registerForm.setClassName("login-form");
+    registerForm.setSizeUndefined();
+    registerForm.setClassName("register-form");
     loginPanel.add(createButtons(), loginForm, registerForm);
     loginPanel.setAlignItems(Alignment.CENTER);
-//    loginPanel.setComponentAlignment(loginForm, Alignment.MIDDLE_CENTER);
-//    loginPanel.setComponentAlignment(registerForm, Alignment.MIDDLE_CENTER);
     return loginPanel;
   }
 
@@ -67,9 +67,10 @@ public class LoginDesign extends FlexLayout {
 
   private Component createLoginInformation() {
     loginInformation.setClassName("login-information");
+    loginInfoHeader.setWidth("100%");
     loginInfoText.setWidth("100%");
-//    loginInfoText.setContentMode(ContentMode.HTML);
-    loginInformation.add(loginInfoText);
+
+    loginInformation.add(loginInfoHeader, loginInfoText);
     return loginInformation;
   }
 }

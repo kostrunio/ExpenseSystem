@@ -18,7 +18,7 @@ import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
-import pl.kostro.expensesystem.ui.notification.ShowNotification;
+import pl.kostro.expensesystem.newui.notification.ShowNotification;
 import pl.kostro.expensesystem.utils.msg.Msg;
 
 public class AddRealUserWindow extends Dialog {

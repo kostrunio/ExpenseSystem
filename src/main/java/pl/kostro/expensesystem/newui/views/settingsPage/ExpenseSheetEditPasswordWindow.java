@@ -12,7 +12,7 @@ import com.vaadin.ui.themes.ValoTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
-import pl.kostro.expensesystem.ui.notification.ShowNotification;
+import pl.kostro.expensesystem.newui.notification.ShowNotification;
 import pl.kostro.expensesystem.utils.msg.Msg;
 
 public class ExpenseSheetEditPasswordWindow extends Dialog {

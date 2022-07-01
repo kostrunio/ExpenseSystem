@@ -16,7 +16,7 @@ import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.service.CategoryService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
-import pl.kostro.expensesystem.ui.notification.ShowNotification;
+import pl.kostro.expensesystem.newui.notification.ShowNotification;
 import pl.kostro.expensesystem.utils.msg.Msg;
 
 public class AddCategoryWindow extends Dialog {
