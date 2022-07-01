@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.newui.views.settingsPage;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -53,6 +54,7 @@ public class ExpenseSheetPasswordWindow extends Dialog {
 
     passwordField.setLabel(MessageFormat.format(Msg.get("expenseSheetPassord.label"), VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class).getName()));
     passwordField.focus();
+    passwordField.setWidthFull();
 
     result.add(passwordField);
     result.add(buildFooter());
@@ -64,14 +66,14 @@ public class ExpenseSheetPasswordWindow extends Dialog {
     HorizontalLayout footer = new HorizontalLayout();
     footer.setMargin(false);
     footer.addClassName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
-    footer.setWidth(100.0f, Unit.PERCENTAGE);
+    footer.setWidthFull();
 
     Button cancel = new Button(Msg.get("expenseSheetPassord.cancel"));
     cancel.addClickShortcut(Key.ESCAPE);
     cancel.addClickListener(cancelClicked);
 
     Button save = new Button(Msg.get("expenseSheetPassord.save"));
-    save.addClassName(ValoTheme.BUTTON_FRIENDLY);
+    save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
     save.addClickShortcut(Key.ENTER);
     save.addClickListener(saveClicked);
 

@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.newui.views.settingsPage;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -63,6 +64,9 @@ public class ExpenseSheetEditPasswordWindow extends Dialog {
     VerticalLayout result = new VerticalLayout();
 
     oldPasswordField.focus();
+    oldPasswordField.setWidthFull();
+    newPasswordField.setWidthFull();
+    reNewPasswordField.setWidthFull();
     
     result.add(oldPasswordField, newPasswordField, reNewPasswordField);
     result.add(buildFooter());
@@ -81,7 +85,7 @@ public class ExpenseSheetEditPasswordWindow extends Dialog {
     cancel.addClickListener(cancelClicked);
 
     Button save = new Button(Msg.get("expenseSheet.save"));
-    save.addClassName(ValoTheme.BUTTON_FRIENDLY);
+    save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
     save.addClickShortcut(Key.ENTER);
     save.addClickListener(saveClicked);
 

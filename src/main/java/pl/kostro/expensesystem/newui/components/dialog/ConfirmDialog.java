@@ -115,6 +115,7 @@ public class ConfirmDialog extends Dialog {
 //        center();
         setModal(modal);
 //        ui.addWindow(this);
+        open();
     }
 
     /**

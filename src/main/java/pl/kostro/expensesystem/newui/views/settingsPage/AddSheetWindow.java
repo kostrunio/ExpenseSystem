@@ -2,6 +2,7 @@ package pl.kostro.expensesystem.newui.views.settingsPage;
 
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -9,7 +10,6 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.ui.themes.ValoTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -75,6 +75,9 @@ public class AddSheetWindow extends Dialog {
     VerticalLayout result = new VerticalLayout();
 
     nameField.focus();
+    nameField.setWidthFull();
+    passwordField.setWidthFull();
+    rePasswordField.setWidthFull();
     
     result.add(nameField, passwordField, rePasswordField);
     result.add(buildFooter());
@@ -84,16 +87,14 @@ public class AddSheetWindow extends Dialog {
 
   private Component buildFooter() {
     HorizontalLayout footer = new HorizontalLayout();
-    footer.setMargin(false);
-    footer.addClassName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
-    footer.setWidth(100.0f, Unit.PERCENTAGE);
+    footer.setWidthFull();
 
     Button cancel = new Button(Msg.get("newSheet.cancel"));
     cancel.addClickShortcut(Key.ESCAPE);
     cancel.addClickListener(cancelClicked);
 
     Button save = new Button(Msg.get("newSheet.save"));
-    save.addClassName(ValoTheme.BUTTON_FRIENDLY);
+    save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
     save.addClickShortcut(Key.ENTER);
     save.addClickListener(saveClicked);
 
