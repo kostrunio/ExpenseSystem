@@ -10,8 +10,8 @@
 	<name>ExpenseSystem</name>
 
 	<properties>
-		<java.version>11</java.version>
-		<vaadin.version>23.1.1</vaadin.version>
+		<java.version>1.8</java.version>
+		<vaadin.version>14.8.13</vaadin.version>
 	</properties>
 
 	<parent>
@@ -226,10 +226,14 @@
 				<executions>
 					<execution>
 						<goals>
-							<goal>prepare-frontend</goal>
+							<goal>build-frontend</goal>
 						</goals>
+						<phase>compile</phase>
 					</execution>
 				</executions>
+				<configuration>
+					<productionMode>true</productionMode>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

@@ -29,6 +29,7 @@ import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformServ
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Route(value = "table", layout = MainView.class)
@@ -246,7 +247,7 @@ public class TableView extends TableDesign {
     footer.getCell(categoryColumn).setText(""+expensesList.size());
     footer.getCell(valueColumn).setText(calcualteSum(expensesList).toString());
     GridSortOrder sortOrder = new GridSortOrder(expenseGrid.getColumns().get(0), SortDirection.DESCENDING);
-    expenseGrid.sort(List.of(sortOrder));
+    expenseGrid.sort(Arrays.asList(sortOrder));
     expenseForm.setVisible(false);
   }
 

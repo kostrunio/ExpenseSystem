@@ -15,7 +15,6 @@ import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.newui.notification.ShowNotification;
-import pl.kostro.expensesystem.utils.msg.Msg;
 
 @Route("login")
 @PageTitle("Login")
@@ -56,7 +55,6 @@ public class LoginView extends LoginDesign {
   public LoginView() {
     rus = AppCtxProvider.getBean(RealUserService.class);
     logger.info("create");
-    setCaption();
     signIn.setDisableOnClick(true);
     signUp.setDisableOnClick(true);
 
@@ -64,13 +62,6 @@ public class LoginView extends LoginDesign {
     signUp.addClickListener(signUpClick);
     
     loginForm.addLoginListener(loginEvent);
-  }
-
-  private void setCaption() {
-    signIn.setText(Msg.get("loginPage.signin"));
-    signUp.setText(Msg.get("loginPage.signup"));
-    loginInfoHeader.setText("New Expense System");
-    loginInfoText.setText(Msg.get("loginPage.welcome"));
   }
 
   private void signInEnable() {

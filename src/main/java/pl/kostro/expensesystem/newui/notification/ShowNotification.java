@@ -1,7 +1,6 @@
 package pl.kostro.expensesystem.newui.notification;
 
 import com.vaadin.flow.component.notification.Notification;
-import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.utils.msg.Msg;
 
 import java.math.BigDecimal;
@@ -9,21 +8,21 @@ import java.math.BigDecimal;
 public class ShowNotification {
   
   private static void setSuccessStyle(Notification notification) {
-    notification.setClassName(ValoTheme.NOTIFICATION_SUCCESS + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
+//    notification.setClassName(ValoTheme.NOTIFICATION_SUCCESS + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
     notification.setPosition(Notification.Position.BOTTOM_CENTER);
     notification.setDuration(2000);
     notification.open();
   }
   
   private static void setWarnStyle(Notification notification) {
-    notification.setClassName(ValoTheme.NOTIFICATION_WARNING + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
+//    notification.setClassName(ValoTheme.NOTIFICATION_WARNING + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
     notification.setPosition(Notification.Position.BOTTOM_CENTER);
     notification.setDuration(2000);
     notification.open();
   }
   
   private static void setErrorStyle(Notification notification) {
-    notification.setClassName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
+//    notification.setClassName(ValoTheme.NOTIFICATION_ERROR + " " + ValoTheme.NOTIFICATION_SMALL + " " + ValoTheme.NOTIFICATION_CLOSABLE);
     notification.setPosition(Notification.Position.BOTTOM_CENTER);
     notification.setDuration(5000);
     notification.open();

@@ -34,7 +34,7 @@ public class ExpenseSheetEditWindow extends Dialog {
   public ExpenseSheetEditWindow(ExpenseSheetEditListener listener, ExpenseSheetEntity expenseSheet) {
     logger.info("show");
     this.listener = listener;
-    setHeaderTitle(Msg.get("expenseSheet.edit"));
+//    setHeaderTitle(Msg.get("expenseSheet.edit"));
     setModal(true);
 //    setClosable(false);
     setResizable(false);

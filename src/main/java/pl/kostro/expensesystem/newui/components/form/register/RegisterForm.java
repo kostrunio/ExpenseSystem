@@ -9,7 +9,6 @@ import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.newui.notification.ShowNotification;
 import pl.kostro.expensesystem.utils.mail.SendEmail;
-import pl.kostro.expensesystem.utils.msg.Msg;
 
 public class RegisterForm extends RegisterFormDesign {
   
@@ -35,13 +34,7 @@ public class RegisterForm extends RegisterFormDesign {
 
   public RegisterForm() {
     rus = AppCtxProvider.getBean(RealUserService.class);
-    nameField.setLabel(Msg.get("registerPage.user"));
     nameField.focus();
-    passwordField.setLabel(Msg.get("registerPage.password"));
-    rePasswordField.setLabel(Msg.get("registerPage.passwordRep"));
-    emailField.setLabel(Msg.get("registerPage.email"));
-
-    saveButton.setText(Msg.get("registerPage.save"));
     saveButton.setDisableOnClick(true);
     saveButton.addClickListener(saveListener);
   }

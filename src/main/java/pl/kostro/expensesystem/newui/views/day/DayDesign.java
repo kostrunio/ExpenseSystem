@@ -70,6 +70,7 @@ public class DayDesign extends VerticalLayout {
     layout.setMargin(false);
     categoryGrid.setWidth("100%");
     categoryGrid.setClassName("category-grid");
+    categoryGrid.getStyle().set("flex-wrap", "wrap");
     layout.add(categoryGrid, backButton);
     categoryListPanel.add(layout);
     return categoryListPanel;

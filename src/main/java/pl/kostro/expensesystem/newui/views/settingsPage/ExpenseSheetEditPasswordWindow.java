@@ -51,7 +51,7 @@ public class ExpenseSheetEditPasswordWindow extends Dialog {
   public ExpenseSheetEditPasswordWindow(ExpenseSheetPasswordChangeListener listener) {
     logger.info("show");
     this.listener = listener;
-    setHeaderTitle(Msg.get("expenseSheet.edit"));
+//    setHeaderTitle(Msg.get("expenseSheet.edit"));
     setModal(true);
 //    setClosable(false);
     setResizable(false);

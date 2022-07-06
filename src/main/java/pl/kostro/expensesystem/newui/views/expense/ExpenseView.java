@@ -44,22 +44,22 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
   private ComponentEventListener<ClickEvent<Button>> chartClick = event -> {
     searchPanel.setVisible(false);
     mainView.removeAll();
-    if (yearMenu.isEnabled()) {
-      yearMenu.setEnabled(false);
+//    if (yearMenu.isEnabled()) {
+//      yearMenu.setEnabled(false);
       monthMenu.setVisible(false);
       filterButton.setEnabled(false);
       tableButton.setEnabled(false);
       userSummaryButton.setEnabled(false);
       mainView.add(new ChartView());
-    } else {
+    /*} else {
       expenseSheet.setFilter(null);
-      yearMenu.setEnabled(true);
+//      yearMenu.setEnabled(true);
       monthMenu.setVisible(true);
       filterButton.setEnabled(true);
       tableButton.setEnabled(true);
       userSummaryButton.setEnabled(true);
       mainView.add(new MonthView());
-    }
+    }*/
   };
   private ComponentEventListener<ClickEvent<Button>> filterClick = event -> {
     searchPanel.setVisible(!searchPanel.isVisible());
@@ -78,38 +78,38 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
   private ComponentEventListener<ClickEvent<Button>> tableClick = event -> {
     searchPanel.setVisible(false);
     mainView.removeAll();
-    if (yearMenu.isEnabled()) {
-      yearMenu.setEnabled(false);
+//    if (yearMenu.isEnabled()) {
+//      yearMenu.setEnabled(false);
       monthMenu.setVisible(false);
       filterButton.setEnabled(false);
       userSummaryButton.setEnabled(false);
       mainView.add(new TableView());
-    } else {
+    /*} else {
       expenseSheet.setFilter(null);
-      yearMenu.setEnabled(true);
+//      yearMenu.setEnabled(true);
       monthMenu.setVisible(true);
       filterButton.setEnabled(true);
       userSummaryButton.setEnabled(true);
       mainView.add(new MonthView());
-    }
+    }*/
   };
   private ComponentEventListener<ClickEvent<Button>> userSummaryClick = event -> {
     searchPanel.setVisible(false);
     mainView.removeAll();
-    if (yearMenu.isEnabled()) {
-      yearMenu.setEnabled(false);
+//    if (yearMenu.isEnabled()) {
+//      yearMenu.setEnabled(false);
       monthMenu.setVisible(false);
       filterButton.setEnabled(false);
       tableButton.setEnabled(false);
       mainView.add(new UserSummaryView());
-    } else {
+    /*} else {
       expenseSheet.setFilter(null);
-      yearMenu.setEnabled(true);
+//      yearMenu.setEnabled(true);
       monthMenu.setVisible(true);
       filterButton.setEnabled(true);
       tableButton.setEnabled(true);
       mainView.add(new MonthView());
-    }
+    }*/
   };
   private ComponentEventListener<ClickEvent<MenuItem>> yearCommand = selectedItem -> {
   date = date.withYear(Integer.parseInt(selectedItem.getSource().getText())).withDayOfMonth(1);

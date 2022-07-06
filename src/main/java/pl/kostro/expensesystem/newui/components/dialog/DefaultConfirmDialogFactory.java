@@ -48,7 +48,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         // Create a confirm dialog
         final ConfirmDialog confirm = new ConfirmDialog();
         confirm.setId(ConfirmDialog.DIALOG_ID);
-        confirm.setHeaderTitle(caption != null ? caption : DEFAULT_CAPTION);
+//        confirm.setHeaderTitle(caption != null ? caption : DEFAULT_CAPTION);
 
         // Create content
         VerticalLayout c = new VerticalLayout();
