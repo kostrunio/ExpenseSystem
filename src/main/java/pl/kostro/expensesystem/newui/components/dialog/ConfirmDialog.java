@@ -3,7 +3,6 @@ package pl.kostro.expensesystem.newui.components.dialog;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.server.JsonPaintTarget;
 
 import java.io.Serializable;
 
@@ -163,8 +162,9 @@ public class ConfirmDialog extends Dialog {
     public final void setMessage(final String message) {
         originalMessageText = message;
         messageLabel
-                .setText(ContentMode.TEXT_WITH_NEWLINES == msgContentMode ? formatDialogMessage(message)
-                        : message);
+/*                .setText(ContentMode.TEXT_WITH_NEWLINES == msgContentMode ? formatDialogMessage(message)
+                        : message);*/
+                .setText(message);
     }
 
     public final String getMessage() {
@@ -203,9 +203,9 @@ public class ConfirmDialog extends Dialog {
      * @param text the text to be formatted
      * @return formatted text
      */
-    protected final String formatDialogMessage(final String text) {
+/*    protected final String formatDialogMessage(final String text) {
         return JsonPaintTarget.escapeXML(text).replaceAll("\n", "<br />");
-    }
+    }*/
 
     /**
      * Set the isConfirmed state.

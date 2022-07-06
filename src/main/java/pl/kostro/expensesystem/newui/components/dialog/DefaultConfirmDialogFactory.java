@@ -10,7 +10,6 @@ import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.ui.themes.ValoTheme;
 import pl.kostro.expensesystem.newui.components.dialog.ConfirmDialog.Factory;
 
 import java.text.NumberFormat;
@@ -61,7 +60,7 @@ public class DefaultConfirmDialogFactory implements Factory {
         c.add(panel);
         panel.setWidth("100%");
         panel.setHeight("100%");
-        panel.addClassName(ValoTheme.PANEL_BORDERLESS); // valo compatibility
+//        panel.addClassName(ValoTheme.PANEL_BORDERLESS); // valo compatibility
         c.setFlexGrow(1f, panel);
 
         // Always HTML, but escape

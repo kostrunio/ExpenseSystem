@@ -8,7 +8,6 @@ import com.vaadin.flow.component.login.AbstractLogin;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.ui.themes.ValoTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -65,20 +64,20 @@ public class LoginView extends LoginDesign {
   }
 
   private void signInEnable() {
-    signIn.removeClassName(ValoTheme.BUTTON_BORDERLESS);
-    signIn.setClassName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+//    signIn.removeClassName(ValoTheme.BUTTON_BORDERLESS);
+//    signIn.setClassName(ValoTheme.BUTTON_BORDERLESS_COLORED);
 
     signUp.setEnabled(true);
-    signUp.removeClassName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-    signUp.setClassName(ValoTheme.BUTTON_BORDERLESS);
+//    signUp.removeClassName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+//    signUp.setClassName(ValoTheme.BUTTON_BORDERLESS);
   }
 
   private void signUpEnable() {
-    signUp.removeClassName(ValoTheme.BUTTON_BORDERLESS);
-    signUp.setClassName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+//    signUp.removeClassName(ValoTheme.BUTTON_BORDERLESS);
+//    signUp.setClassName(ValoTheme.BUTTON_BORDERLESS_COLORED);
 
     signIn.setEnabled(true);
-    signIn.removeClassName(ValoTheme.BUTTON_BORDERLESS_COLORED);
-    signIn.setClassName(ValoTheme.BUTTON_BORDERLESS);
+//    signIn.removeClassName(ValoTheme.BUTTON_BORDERLESS_COLORED);
+//    signIn.setClassName(ValoTheme.BUTTON_BORDERLESS);
   }
 }

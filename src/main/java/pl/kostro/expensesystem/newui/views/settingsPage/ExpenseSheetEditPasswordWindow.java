@@ -9,7 +9,6 @@ import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.PasswordField;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.ui.themes.ValoTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
@@ -77,7 +76,7 @@ public class ExpenseSheetEditPasswordWindow extends Dialog {
   private Component buildFooter() {
     HorizontalLayout footer = new HorizontalLayout();
     footer.setMargin(false);
-    footer.addClassName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
+//    footer.addClassName(ValoTheme.WINDOW_BOTTOM_TOOLBAR);
     footer.setWidth(100.0f, Unit.PERCENTAGE);
 
     Button cancel = new Button(Msg.get("expenseSheet.cancel"));

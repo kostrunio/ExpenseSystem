@@ -99,32 +99,6 @@
 			<version>1.4.7</version>
 		</dependency>
 		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-server</artifactId>
-			<version>8.8.5</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-push</artifactId>
-			<version>8.8.5</version>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-client</artifactId>
-			<version>8.8.5</version>
-			<scope>provided</scope>
-		</dependency>
-		<!-- Needed when using the widgetset optimizer (custom ConnectorBundleLoaderFactory). 
-			For widgetset compilation, vaadin-client-compiler is automatically added 
-			on the compilation classpath by vaadin-maven-plugin so normally there is 
-			no need for an explicit dependency. -->
-		<!-- <dependency> <groupId>com.vaadin</groupId> <artifactId>vaadin-client-compiler</artifactId> 
-			<scope>provided</scope> </dependency> -->
-		<!--<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-themes</artifactId>
-		</dependency>-->
-		<dependency>
 			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
 			<version>42.3.6</version>
@@ -132,11 +106,6 @@
 		<dependency>
 			<groupId>com.vaadin</groupId>
 			<artifactId>vaadin-charts-flow</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.vaadin</groupId>
-			<artifactId>vaadin-charts</artifactId>
-			<version>4.2.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.vaadin.stefan</groupId>
@@ -147,22 +116,6 @@
 			<groupId>org.vaadin.addons.componentfactory</groupId>
 			<artifactId>vcf-gridlayout</artifactId>
 			<version>1.0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>org.vaadin.blackbluegl</groupId>
-			<artifactId>calendar-component</artifactId>
-			<version>2.0-BETA4</version>
-		</dependency>
-		<dependency>
-		  <groupId>org.vaadin.haijian</groupId>
-		  <artifactId>exporter</artifactId>
-		  <version>2.0.0</version>
-		  <exclusions>
-			<exclusion>
-			  <groupId>org.slf4j</groupId>
-			  <artifactId>slf4j-simple</artifactId>
-			</exclusion>
-		  </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.google.guava</groupId>

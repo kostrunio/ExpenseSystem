@@ -8,7 +8,6 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.VaadinSession;
-import com.vaadin.ui.themes.ValoTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import pl.kostro.expensesystem.AppCtxProvider;
@@ -110,7 +109,7 @@ public class MainView extends MainDesign {
 
   private void createButton(final String name, String caption, boolean defaultExpense) {
     Button button = new Button(caption, event -> UI.getCurrent().navigate(name));
-    button.setClassName(ValoTheme.MENU_ITEM);
+//    button.setClassName(ValoTheme.MENU_ITEM);
     if (defaultExpense)
       button.setIcon(VaadinIcon.HOME.create());
     else
