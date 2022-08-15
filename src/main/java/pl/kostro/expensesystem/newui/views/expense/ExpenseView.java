@@ -27,7 +27,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Route(value = "expenseSheet", layout = MainView.class)
+
+@Route(value = "", layout = MainView.class)
+@RouteAlias(value = "expenseSheet", layout = MainView.class)
 @PageTitle("ExpenseSheet")
 public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Integer> {
   
