@@ -54,8 +54,7 @@ public class MonthDesign extends HorizontalLayout {
     nextMonthButton.setIcon(VaadinIcon.ARROW_RIGHT.create());
     nextMonthButton.addThemeVariants(ButtonVariant.LUMO_ICON);
     navigationLayout.add(previousMonthButton, thisMonthField, nextMonthButton);
-    navigationLayout.setAlignItems(Alignment.START);
-//    navigationLayout.setComponentAlignment(thisMonthField, Alignment.TOP_CENTER);
+    navigationLayout.setJustifyContentMode(JustifyContentMode.CENTER);
     return navigationLayout;
   }
 
