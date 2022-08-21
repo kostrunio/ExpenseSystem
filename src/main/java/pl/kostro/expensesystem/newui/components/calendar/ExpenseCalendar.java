@@ -49,7 +49,7 @@ public class ExpenseCalendar extends FullCalendar {
   private ComponentEventListener<DayNumberClickedEvent> dateClicked = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, event.getDate());
     monthView.removeAll();
-    monthView.add(new DayView());
+    monthView.add(new DayView(monthView));
   };
 
 /*  private WeekClickHandler weekClick = event -> {
@@ -58,7 +58,7 @@ public class ExpenseCalendar extends FullCalendar {
   private ComponentEventListener<EntryClickedEvent> eventClicked = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, event.getEntry().getStart().toLocalDate());
     monthView.removeAll();
-    monthView.add(new DayView());
+    monthView.add(new DayView(monthView));
   };
 
   public ExpenseCalendar() {

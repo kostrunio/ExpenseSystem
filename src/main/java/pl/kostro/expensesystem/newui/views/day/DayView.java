@@ -19,7 +19,6 @@ import pl.kostro.expensesystem.model.entity.ExpenseEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseService;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.newui.components.button.Button;
 import pl.kostro.expensesystem.newui.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.newui.views.month.MonthView;
@@ -36,9 +35,10 @@ import java.util.List;
 @Route(value = "day")
 @PageTitle("Day")
 public class DayView extends DayDesign {
+
+  private MonthView monthView;
   
   private ExpenseService es;
-  private ExpenseSheetService eshs;
   private ExpenseSheetTransformService eshts;
 
   private Logger logger = LogManager.getLogger();
@@ -50,17 +50,17 @@ public class DayView extends DayDesign {
 
   private ComponentEventListener<ClickEvent<com.vaadin.flow.component.button.Button>> prevClick = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date.minusDays(1));
-    removeAll();
-    add(new DayView());
+    monthView.removeAll();
+    monthView.add(new DayView(monthView));
   };
   private ComponentEventListener<ClickEvent<com.vaadin.flow.component.button.Button>> nextClick = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date.plusDays(1));
-    removeAll();
-    add(new DayView());
+    monthView.removeAll();
+    monthView.add(new DayView(monthView));
   };
   private ComponentEventListener<ClickEvent<com.vaadin.flow.component.button.Button>> backClick = event -> {
-    removeAll();
-    add(new MonthView());
+    monthView.removeAll();
+    monthView.add(new MonthView());
   };
   private ComponentEventListener<ClickEvent<com.vaadin.flow.component.button.Button>> categoryClick = event -> {
     if (event.getSource() instanceof pl.kostro.expensesystem.newui.components.button.Button) {
@@ -121,17 +121,17 @@ public class DayView extends DayDesign {
   };
   private HasValue.ValueChangeListener<? super AbstractField.ComponentValueChangeEvent<DatePicker, LocalDate>> dateChanged = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, event.getValue());
-    removeAll();
-    add(new DayView());
+    monthView.removeAll();
+    monthView.add(new DayView(monthView));
   };
   private HasValue.ValueChangeListener<? super AbstractField.ComponentValueChangeEvent<ComboBox<UserLimitEntity>, UserLimitEntity>> verifyUserFormula = event -> verifyFormula(formulaField.getValue());
   private HasValue.ValueChangeListener<? super AbstractField.ComponentValueChangeEvent<TextField, String>> verifyFormula = event -> verifyFormula(formulaField.getValue());
   private HasValue.ValueChangeListener<? super AbstractField.ComponentValueChangeEvent<ComboBox<String>, String>> verifyCommentFormula = event -> verifyFormula(formulaField.getValue());
 //  private NewItemProvider addComment = event -> Optional.of(event);
 
-  public DayView() {
+  public DayView(MonthView monthView) {
+    this.monthView = monthView;
     es = AppCtxProvider.getBean(ExpenseService.class);
-    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     logger.info("create");
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);

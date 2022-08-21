@@ -37,7 +37,7 @@ public class DayDesign extends VerticalLayout {
   protected Button saveButton = new Button();
 
   public DayDesign() {
-    setSizeFull();
+    setWidth("1200px");
     setSpacing(false);
     setMargin(false);
     add(createNavigationLayout(), createDayLayout());
@@ -58,7 +58,7 @@ public class DayDesign extends VerticalLayout {
 
   private Component createDayLayout() {
     dayLayout.setClassName("day-layout");
-    dayLayout.setWidth("100%");
+//    dayLayout.setWidth("100%");
     dayLayout.add(createCategoryListPanel(), createExpenseListPanel());
     return dayLayout;
   }
