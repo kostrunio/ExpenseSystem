@@ -15,31 +15,23 @@ public class ChartDesign extends VerticalLayout {
 
   public ChartDesign() {
     HorizontalLayout layout = new HorizontalLayout();
-    layout.setSizeFull();
-    chartLayout.setSizeFull();
-    chartLayout.setSpacing(true);
-    chartLayout.setMargin(false);
+    layout.setWidth("1600px");
+    layout.setHeightFull();
+//    chartLayout.setSpacing(true);
+//    chartLayout.setMargin(false);
     layout.add(chartLayout, createSearchPanel());
-    chartLayout2.setSizeFull();
-    chartLayout2.setSpacing(true);
-    chartLayout2.setMargin(false);
+//    chartLayout2.setSpacing(true);
+//    chartLayout2.setMargin(false);
     add(layout, chartLayout2);
   }
 
   private Component createSearchPanel() {
     HorizontalLayout layout = new HorizontalLayout();
-    layout.setSizeUndefined();
-    layout.setSpacing(false);
-    layout.setMargin(true);
-    layout.add(categoryCombo, createUserComboLayout());
+    layout.setWidth("300px");
+//    layout.setSpacing(false);
+//    layout.setMargin(true);
+    layout.add(categoryCombo, userCombo);
     return layout;
   }
 
-  private Component createUserComboLayout() {
-    VerticalLayout layout = new VerticalLayout();
-    layout.setSpacing(true);
-    layout.setMargin(false);
-    layout.add(userCombo);
-    return layout;
-  }
 }

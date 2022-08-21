@@ -61,8 +61,6 @@ public class ChartView extends ChartDesign {
   }
 
   private void refreshFilter() {
-    String filterFormula = null;
-    String filterComment = null;
     List<UserEntity> users = new ArrayList<>();
     Set<UserLimitEntity> setUserLimit = userCombo.getValue();
     for (Iterator<UserLimitEntity> iter = setUserLimit.iterator(); iter.hasNext();)
@@ -73,7 +71,7 @@ public class ChartView extends ChartDesign {
     for (Iterator<CategoryEntity> iter = setCategory.iterator(); iter.hasNext();)
       categories.add(iter.next());
 
-    expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));
+    expenseSheet.setFilter(new Filter(categories, users, null, null));
     showCharts();
   }
 
@@ -127,11 +125,11 @@ public class ChartView extends ChartDesign {
     columnGrid.setItems(columnGridData);
     columnGrid.setAllRowsVisible(true);
 
-    lineChart.setWidth("800px");
+    lineChart.setWidth("1600px");
     chartLayout.add(lineChart);
     lineGrid.setWidth("1600px");
     chartLayout2.add(lineGrid);
-    columnChart.setWidth("800px");
+    columnChart.setWidth("1600px");
     chartLayout2.add(columnChart);
     columnGrid.setWidth("1600px");
     chartLayout2.add(columnGrid);
