@@ -72,7 +72,7 @@ public class SettingsDesign extends VerticalLayout {
   }
 
   private Component createCategoryPanel() {
-    categoryLayout.setWidth("355px");
+    categoryLayout.setWidth("500px");
     categoryLayout.setHeightFull();
     categoryLayout.add(categoryLabel, createCategoryGrid(), createCategoryButtonLayout());
     return categoryLayout;
@@ -98,7 +98,7 @@ public class SettingsDesign extends VerticalLayout {
   }
 
   private Component createRealUserPanel() {
-    realUserLayout.setWidth("355px");
+    realUserLayout.setWidth("450px");
     realUserLayout.setHeightFull();
     realUserLayout.add(realUserLabel, createRealUserGrid(), createRealUserButtonLayout());
     return realUserLayout;
@@ -120,7 +120,7 @@ public class SettingsDesign extends VerticalLayout {
   }
 
   private Component createUserPanel() {
-    userLayout.setWidth("355px");
+    userLayout.setWidth("450px");
     userLayout.setHeightFull();
     userLayout.add(userLabel, createUserGrid(), createUserButtonLayout());
     return userLayout;
