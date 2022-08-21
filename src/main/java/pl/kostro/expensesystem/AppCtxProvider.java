@@ -12,10 +12,6 @@ public class AppCtxProvider implements ApplicationContextAware {
 
     private AppCtxProvider(){}
 
-    public static ApplicationContext getApplicationContext() {
-        return context;
-    }
-
     public  static <T> T getBean(Class<T> aClass){
         return context.getBean(aClass);
     }
