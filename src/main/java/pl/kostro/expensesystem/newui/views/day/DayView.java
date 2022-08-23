@@ -3,6 +3,7 @@ package pl.kostro.expensesystem.newui.views.day;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.combobox.GeneratedVaadinComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -127,7 +128,7 @@ public class DayView extends DayDesign {
   private HasValue.ValueChangeListener<? super AbstractField.ComponentValueChangeEvent<ComboBox<UserLimitEntity>, UserLimitEntity>> verifyUserFormula = event -> verifyFormula(formulaField.getValue());
   private HasValue.ValueChangeListener<? super AbstractField.ComponentValueChangeEvent<TextField, String>> verifyFormula = event -> verifyFormula(formulaField.getValue());
   private HasValue.ValueChangeListener<? super AbstractField.ComponentValueChangeEvent<ComboBox<String>, String>> verifyCommentFormula = event -> verifyFormula(formulaField.getValue());
-//  private NewItemProvider addComment = event -> Optional.of(event);
+  private ComponentEventListener<GeneratedVaadinComboBox.CustomValueSetEvent<ComboBox<String>>> addComment = event -> commentBox.setValue(event.getDetail());
 
   public DayView(MonthView monthView) {
     this.monthView = monthView;
@@ -155,8 +156,8 @@ public class DayView extends DayDesign {
     userBox.setItems(expenseSheet.getUserLimitList());
     userBox.addValueChangeListener(verifyUserFormula);
     formulaField.addValueChangeListener(verifyFormula);
-//    commentBox.setNewItemProvider(addComment);
-//    commentBox.setEmptySelectionAllowed(true);
+    commentBox.setAllowCustomValue(true);
+    commentBox.addCustomValueSetListener(addComment);
     commentBox.addValueChangeListener(verifyCommentFormula);
     saveButton.addClickShortcut(Key.ENTER);
     saveButton.addClickListener(saveClick);
