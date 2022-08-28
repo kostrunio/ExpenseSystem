@@ -111,7 +111,7 @@ public class DayView extends DayDesign {
       expense.setUser(userBox.getValue().getUser());
       expense.setFormula(formulaField.getValue().startsWith("=") ? formulaField.getValue().substring(1) : formulaField.getValue());
       if (commentBox.getValue() != null)
-        expense.setComment(commentBox.getValue().toString());
+        expense.setComment(commentBox.getValue());
       expense.setNotify(notifyBox.getValue());
       expense.setExpenseSheet(expenseSheet);
       es.save(expense);

@@ -3,6 +3,7 @@ package pl.kostro.expensesystem.newui.views.expense;
 import com.vaadin.flow.component.*;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.combobox.GeneratedVaadinComboBox;
 import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.*;
@@ -128,7 +129,7 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
     mainView.add(new MonthView());
 //    checkedMonth(selectedItem.getSource().getText());
   };
-//  private NewItemProvider addComment = event -> Optional.of(event);
+  private ComponentEventListener<GeneratedVaadinComboBox.CustomValueSetEvent<ComboBox<String>>> addComment = event -> commentCombo.setValue(event.getDetail());
 
   private HasValue.ValueChangeListener<? super AbstractField.ComponentValueChangeEvent<ComboBox<CategoryEntity>, CategoryEntity>> categoryChanged = event -> refreshFilter();
 
@@ -186,8 +187,8 @@ public class ExpenseView extends ExpenseDesign implements HasUrlParameter<Intege
     categoryCombo.setItems(expenseSheet.getCategoryList());
     userCombo.setItemLabelGenerator(item -> item.getUser().getName());
     userCombo.setItems(expenseSheet.getUserLimitList());
-//    commentCombo.setNewItemProvider(addComment);
-//    commentCombo.setEmptySelectionAllowed(true);
+    commentCombo.setAllowCustomValue(true);
+    commentCombo.addCustomValueSetListener(addComment);
     commentCombo.setItems(eshts.getAllComments(expenseSheet));
   }
 

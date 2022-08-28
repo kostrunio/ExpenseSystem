@@ -6,6 +6,7 @@ import com.vaadin.flow.component.ComponentEventListener;
 import com.vaadin.flow.component.HasValue;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.combobox.GeneratedVaadinComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.grid.FooterRow;
 import com.vaadin.flow.component.grid.Grid;
@@ -146,15 +147,14 @@ public class TableView extends TableDesign {
     refreshExpenses();
   };
 
-  private
-  ComponentEventListener<ClickEvent<Button>> newClicked = event -> expenseForm.edit(new ExpenseEntity());
+  private ComponentEventListener<ClickEvent<Button>> newClicked = event -> expenseForm.edit(new ExpenseEntity());
   private SelectionListener<Grid<ExpenseEntity>, ExpenseEntity> itemClicked = event -> {
     if (expenseGrid.getSelectedItems().size() != 0)
       expenseForm.edit(expenseGrid.getSelectedItems().iterator().next());
     else
       expenseForm.setVisible(false);
   };
-//  private NewItemProvider addComment = event -> Optional.of(event);
+  private ComponentEventListener<GeneratedVaadinComboBox.CustomValueSetEvent<ComboBox<String>>> addComment = event -> commentBox.setValue(event.getDetail());
   
   public TableView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
@@ -185,7 +185,8 @@ public class TableView extends TableDesign {
     userBox.setItems(expenseSheet.getUserLimitList());
     userBox.addValueChangeListener(filterUserChanged);
     formulaField.addValueChangeListener(filterFormulaChanged);
-//    commentBox.setNewItemProvider(addComment);
+    commentBox.setAllowCustomValue(true);
+    commentBox.addCustomValueSetListener(addComment);
     commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshts.getAllComments(expenseSheet));
     commentBox.addValueChangeListener(filterCommentChanged);
     newExpenseButton.addClickListener(newClicked);
