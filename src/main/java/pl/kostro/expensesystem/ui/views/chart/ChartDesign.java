@@ -16,7 +16,7 @@ public class ChartDesign extends VerticalLayout {
 
   public ChartDesign() {
     HorizontalLayout layout = new HorizontalLayout();
-    layout.setSizeFull();
+//    layout.setSizeFull();
     chartLayout.setSizeFull();
     chartLayout.setSpacing(true);
     chartLayout.setMargin(false);
