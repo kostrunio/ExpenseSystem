@@ -15,12 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.vaadin.haijian.Exporter;
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.model.entity.CategoryEntity;
-import pl.kostro.expensesystem.model.entity.ExpenseEntity;
-import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.entity.UserEntity;
-import pl.kostro.expensesystem.model.entity.UserLimitEntity;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
+import pl.kostro.expensesystem.model.entity.*;
 import pl.kostro.expensesystem.utils.filter.Filter;
 import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
@@ -33,7 +28,6 @@ import java.util.Optional;
 
 public class TableView extends TableDesign {
   
-  private ExpenseSheetService eshs;
   private ExpenseSheetTransformService eshts;
 
   private Logger logger = LogManager.getLogger();
@@ -44,6 +38,7 @@ public class TableView extends TableDesign {
   private Column<ExpenseEntity, String> categoryColumn;
   private Column<ExpenseEntity, String> formulaColumn;
   private Column<ExpenseEntity, BigDecimal> valueColumn;
+  private Column<ExpenseEntity, LocalDate> updateDateColumn;
   
   private StreamResource exportData = new StreamResource((StreamResource.StreamSource) () -> Exporter.exportAsExcel(expenseGrid), "export.xls");
   private FileDownloader excelFileDownloader = new FileDownloader(exportData);
@@ -76,7 +71,6 @@ public class TableView extends TableDesign {
   private NewItemProvider addComment = event -> Optional.of(event);
   
   public TableView() {
-    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     logger.info("create");
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
@@ -149,6 +143,7 @@ public class TableView extends TableDesign {
     formulaColumn = expenseGrid.addColumn(ExpenseEntity::getFormula).setCaption(Msg.get("findPage.formula")).setId("formula");
     valueColumn = expenseGrid.addColumn(ExpenseEntity::getValue).setCaption(Msg.get("findPage.value")).setId("value");
     expenseGrid.addColumn(ExpenseEntity::getComment).setCaption(Msg.get("findPage.comment")).setId("comment");
+    updateDateColumn = expenseGrid.addColumn(ExpenseEntity::getUpdateDate).setCaption(Msg.get("findPage.updateDate")).setId("updateDate");
     footer.getCell(dateColumn).setText(Msg.get("findPage.rows"));
     footer.getCell(formulaColumn).setText(Msg.get("findPage.sum"));
     exportButton.setCaption(Msg.get("findPage.export"));

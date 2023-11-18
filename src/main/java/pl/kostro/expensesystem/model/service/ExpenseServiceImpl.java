@@ -27,6 +27,7 @@ public class ExpenseServiceImpl implements ExpenseService {
 
   public void save(ExpenseEntity expense) {
     LocalDateTime stopper = LocalDateTime.now();
+    expense.setUpdateDate(LocalDate.now());
     repository.save(expense);
     logger.info("save for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }

@@ -1,7 +1,9 @@
 package pl.kostro.expensesystem.model.entity;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import org.hibernate.annotations.GenericGenerator;
+import pl.kostro.expensesystem.model.converter.LocalDatePersistenceConverter;
+import pl.kostro.expensesystem.utils.calculator.Calculator;
+import pl.kostro.expensesystem.utils.encryption.Encryption;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -13,12 +15,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import pl.kostro.expensesystem.utils.calculator.Calculator;
-import pl.kostro.expensesystem.utils.encryption.Encryption;
-import pl.kostro.expensesystem.model.converter.LocalDatePersistenceConverter;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "expenses")
@@ -49,6 +47,9 @@ public class ExpenseEntity extends AbstractEntity {
   private byte[] comment_byte;
   @Column(name = "e_notify")
   private boolean notify;
+  @Column(name = "e_u_date")
+  @Convert(converter = LocalDatePersistenceConverter.class)
+  private LocalDate updateDate;
   @ManyToOne
   @JoinColumn(name = "e_es_id")
   private ExpenseSheetEntity expenseSheet;
@@ -146,6 +147,14 @@ public class ExpenseEntity extends AbstractEntity {
 
   public void setNotify(boolean notify) {
     this.notify = notify;
+  }
+
+  public LocalDate getUpdateDate() {
+    return updateDate;
+  }
+
+  public void setUpdateDate(LocalDate updateDate) {
+    this.updateDate = updateDate;
   }
 
   public ExpenseSheetEntity getExpenseSheet() {
