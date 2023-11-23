@@ -5,9 +5,9 @@ import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import java.math.BigDecimal;
 
 public class UserLimitSumLeft {
-  private UserLimitEntity userLimit;
-  private BigDecimal sum;
-  private BigDecimal left;
+  private final UserLimitEntity userLimit;
+  private final BigDecimal sum;
+  private final BigDecimal left;
   
   public UserLimitSumLeft(UserLimitEntity userLimit, BigDecimal sum, BigDecimal left) {
     this.userLimit = userLimit;
@@ -19,11 +19,11 @@ public class UserLimitSumLeft {
     return userLimit;
   }
 
-  public BigDecimal getSum() {
-    return sum;
+  public String getSumString() {
+    return sum.toString().replace('.',',');
   }
 
-  public BigDecimal getLeft() {
-    return left;
+  public String getLeftString() {
+    return left.toString().replace('.',',');
   }
 }

@@ -1,12 +1,12 @@
 package pl.kostro.expensesystem.utils.transform.model;
 
-import java.math.BigDecimal;
-
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 
+import java.math.BigDecimal;
+
 public class CategorySum {
-  private CategoryEntity category;
-  private BigDecimal sum;
+  private final CategoryEntity category;
+  private final BigDecimal sum;
   
   public CategorySum(CategoryEntity category, BigDecimal sum) {
     super();
@@ -18,7 +18,7 @@ public class CategorySum {
     return category;
   }
 
-  public BigDecimal getSum() {
-    return sum;
+  public String getSumString() {
+    return sum.toString().replace('.',',');
   }
 }
