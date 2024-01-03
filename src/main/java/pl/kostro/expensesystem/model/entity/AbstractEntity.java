@@ -1,11 +1,11 @@
 package pl.kostro.expensesystem.model.entity;
 
+import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Objects;
-import javax.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class AbstractEntity implements Serializable, Cloneable {
+public abstract class AbstractEntity implements Serializable {
 
   public abstract Long getId();
 
@@ -29,8 +29,6 @@ public abstract class AbstractEntity implements Serializable, Cloneable {
 
   @Override
   public int hashCode() {
-    int hash = 5;
-    hash = 43 * hash + Objects.hashCode(this.getId());
-    return hash;
+    return Objects.hashCode(getId());
   }
 }
