@@ -11,14 +11,15 @@ import javax.persistence.NoResultException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
   
-  private ExpenseRepository repository;
+  private final ExpenseRepository repository;
   
-  private Logger logger = LogManager.getLogger();
+  private final Logger logger = LogManager.getLogger();
 
   @Autowired
   public ExpenseServiceImpl(ExpenseRepository repository) {
@@ -28,7 +29,8 @@ public class ExpenseServiceImpl implements ExpenseService {
   public void save(ExpenseEntity expense) {
     LocalDateTime stopper = LocalDateTime.now();
     expense.setUpdateDate(LocalDate.now());
-    repository.save(expense);
+    ExpenseEntity saved = repository.save(expense);
+    expense.setId(saved.getId());
     logger.info("save for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
@@ -40,10 +42,11 @@ public class ExpenseServiceImpl implements ExpenseService {
 
   public List<ExpenseEntity> findExpensesToNotify() {
     LocalDateTime stopper = LocalDateTime.now();
-    List<ExpenseEntity> expenseList = null;
+    List<ExpenseEntity> expenseList = new ArrayList<>();
     try {
       expenseList = repository.findExpensesToNotify(LocalDate.now());
     } catch (NoResultException e) {
+      //if no expenses found expenseList is 0
     }
     logger.info("Found {} expenses to notify", expenseList.size());
     logger.info("findExpensesToNotify finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
