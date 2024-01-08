@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.model.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kostro.expensesystem.model.entity.ExpenseEntity;
 import pl.kostro.expensesystem.model.repository.ExpenseRepository;
@@ -14,16 +14,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
   
   private final ExpenseRepository repository;
   
-  @Autowired
-  public ExpenseServiceImpl(ExpenseRepository repository) {
-    this.repository = repository;
-  }
-
   public void save(ExpenseEntity expense) {
     LocalDateTime stopper = LocalDateTime.now();
     expense.setUpdateDate(LocalDate.now());

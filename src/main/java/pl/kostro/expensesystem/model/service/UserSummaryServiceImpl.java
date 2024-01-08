@@ -1,7 +1,7 @@
 package pl.kostro.expensesystem.model.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.entity.UserSummaryEntity;
@@ -14,16 +14,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class UserSummaryServiceImpl implements UserSummaryService {
   
   private final UserSummaryRepository repository;
   
-  @Autowired
-  public UserSummaryServiceImpl(UserSummaryRepository repository) {
-    this.repository = repository;
-  }
-
   public UserSummaryEntity create(UserLimitEntity userLimit, LocalDate date) {
     LocalDateTime stopper = LocalDateTime.now();
     UserSummaryEntity userSummary = new UserSummaryEntity(date, userLimit.getLimit());

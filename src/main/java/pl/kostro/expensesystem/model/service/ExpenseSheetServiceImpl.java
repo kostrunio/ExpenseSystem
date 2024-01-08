@@ -1,8 +1,8 @@
 package pl.kostro.expensesystem.model.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.LazyInitializationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseEntity;
@@ -17,24 +17,15 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class ExpenseSheetServiceImpl implements ExpenseSheetService {
 
   private final ExpenseSheetRepository repository;
-
-  @Autowired
-  private CategoryServiceImpl cs;
-  @Autowired
-  private ExpenseServiceImpl es;
-  @Autowired
-  private UserLimitServiceImpl uls;
-  @Autowired
-  private UserSummaryServiceImpl uss;
-
-  @Autowired
-  public ExpenseSheetServiceImpl(ExpenseSheetRepository repository) {
-    this.repository = repository;
-  }
+  private final CategoryServiceImpl cs;
+  private final ExpenseServiceImpl es;
+  private final UserLimitServiceImpl uls;
+  private final UserSummaryServiceImpl uss;
 
   public ExpenseSheetEntity create(String name, String key, RealUserEntity owner, UserLimitEntity userLimit) {
     LocalDateTime stopper = LocalDateTime.now();

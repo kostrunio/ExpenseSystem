@@ -1,8 +1,8 @@
 package pl.kostro.expensesystem.model.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.LazyInitializationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kostro.expensesystem.model.entity.UserEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
@@ -13,16 +13,12 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class UserLimitServiceImpl implements UserLimitService {
   
   private final UserLimitRepository repository;
 
-  @Autowired
-  public UserLimitServiceImpl(UserLimitRepository repository) {
-    this.repository = repository;
-  }
-  
   public UserLimitEntity create(UserEntity user, int orderId) {
     LocalDateTime stopper = LocalDateTime.now();
     UserLimitEntity userLimit = repository.save(new UserLimitEntity(user, orderId));

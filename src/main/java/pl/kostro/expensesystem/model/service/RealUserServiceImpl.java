@@ -1,8 +1,8 @@
 package pl.kostro.expensesystem.model.service;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.hibernate.LazyInitializationException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
@@ -17,6 +17,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class RealUserServiceImpl implements RealUserService {
 
@@ -29,11 +30,6 @@ public class RealUserServiceImpl implements RealUserService {
       messageDigest = MessageDigest.getInstance("SHA-256");
     } catch (NoSuchAlgorithmException e) {
     }
-  }
-
-  @Autowired
-  public RealUserServiceImpl(RealUserRepository repository) {
-    this.repository = repository;
   }
 
   public RealUserEntity create(String name, String password, String email) {
