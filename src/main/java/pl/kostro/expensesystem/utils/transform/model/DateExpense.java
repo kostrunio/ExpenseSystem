@@ -1,8 +1,9 @@
 package pl.kostro.expensesystem.utils.transform.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseEntity;
-import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 
 import java.math.BigDecimal;
@@ -11,11 +12,13 @@ import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
 
+@Getter
 public class DateExpense {
   
+	@Setter
 	private LocalDate date;
-	private Map<CategoryEntity, CategoryExpense> categoryExpenseMap;
-	private Map<UserLimitEntity, UserLimitExpense> userLimitExpenseMap;
+	private final Map<CategoryEntity, CategoryExpense> categoryExpenseMap;
+	private final Map<UserLimitEntity, UserLimitExpense> userLimitExpenseMap;
 	private BigDecimal sum = new BigDecimal(0);
 	
 	public DateExpense(LocalDate date) {
@@ -23,28 +26,12 @@ public class DateExpense {
 		categoryExpenseMap = new HashMap<>();
 		userLimitExpenseMap = new HashMap<>();
 	}
-	public LocalDate getDate() {
-		return date;
-	}
-	public void setDate(LocalDate date) {
-		this.date = date;
-	}
-	
-	public Map<CategoryEntity, CategoryExpense> getCategoryExpenseMap() {
-		return categoryExpenseMap;
-	}
-	public Map<UserLimitEntity, UserLimitExpense> getUserLimitExpenseMap() {
-		return userLimitExpenseMap;
-	}
-	public BigDecimal getSum() {
-		return sum;
-	}
 
 	public String toString() {
 		return "DateExpense: " + date + ";" + sum;
 	}
 	
-	public void addExpense(ExpenseEntity expense, UserLimitEntity userLimit, ExpenseSheetEntity expenseSheet) {
+	public void addExpense(ExpenseEntity expense, UserLimitEntity userLimit) {
 		sum = sum.add(expense.getValue().multiply(expense.getCategory().getMultiplier()).setScale(2, RoundingMode.HALF_UP));
 		CategoryExpense categoryExpense = getCategoryExpenseMap().get(expense.getCategory());
 		if (categoryExpense == null) {

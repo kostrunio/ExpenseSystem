@@ -1,57 +1,54 @@
 package pl.kostro.expensesystem.ui.components.grid;
 
-import java.math.BigDecimal;
-import java.text.MessageFormat;
-
 import com.vaadin.data.Binder;
 import com.vaadin.event.selection.SelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
-import com.vaadin.ui.components.grid.EditorOpenListener;
-import com.vaadin.ui.components.grid.EditorSaveListener;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
-
+import com.vaadin.ui.components.grid.EditorOpenListener;
+import com.vaadin.ui.components.grid.EditorSaveListener;
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.utils.msg.Msg;
-import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
+import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.ui.views.settingsPage.AddUserWindow;
 import pl.kostro.expensesystem.ui.views.settingsPage.SettingsChangeListener;
+import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
+
+import java.math.BigDecimal;
+import java.text.MessageFormat;
 
 public class UserLimitSettingGrid extends Grid<UserLimitEntity> implements SettingsChangeListener {
   
-  private ExpenseSheetService eshs;
-  private ExpenseSheetTransformService eshts;
+  private final ExpenseSheetTransformService eshts;
   private UserLimitService uls;
   private Button addUserLimitButton;
   private Button deleteUserLimitButton;
 
-  private TextField limitField = new TextField();
-  private TextField orderField = new TextField();
-  private TextField continuousField = new TextField();
+  private final TextField limitField = new TextField();
+  private final TextField orderField = new TextField();
+  private final TextField continuousField = new TextField();
 
-  private ExpenseSheetEntity expenseSheet;
+  private final ExpenseSheetEntity expenseSheet;
   
-  private Binder<UserLimitEntity> binder = new Binder<>();
+  private final Binder<UserLimitEntity> binder = new Binder<>();
 
-  private SelectionListener<UserLimitEntity> itemSelected = event -> deleteUserLimitButton.setEnabled(event.getAllSelectedItems().size() != 0);
-  private EditorOpenListener<UserLimitEntity> editorOpen = event -> binder.setBean(event.getBean());
-  private EditorSaveListener<UserLimitEntity> saveUserLimit = event -> {
+  private final SelectionListener<UserLimitEntity> itemSelected = event -> deleteUserLimitButton.setEnabled(!event.getAllSelectedItems().isEmpty());
+  private final EditorOpenListener<UserLimitEntity> editorOpen = event -> binder.setBean(event.getBean());
+  private final EditorSaveListener<UserLimitEntity> saveUserLimit = event -> {
     uls.merge(event.getBean());
     refreshValues();
   };
-  private ClickListener addUserClicked = event -> UI.getCurrent().addWindow(new AddUserWindow(UserLimitSettingGrid.this));
-  private ClickListener deleteUserClicked = event -> {
+  private final ClickListener addUserClicked = event -> UI.getCurrent().addWindow(new AddUserWindow(UserLimitSettingGrid.this));
+  private final ClickListener deleteUserClicked = event ->
     ConfirmDialog.show(getUI(), Msg.get("settingsPage.removeUserLabel"),
         MessageFormat.format(Msg.get("settingsPage.removeUserQuestion"),
-            new Object[] { getItem().getUser().getName() }),
+            getItem().getUser().getName()),
         Msg.get("settingsPage.removeUserYes"), Msg.get("settingsPage.removeUserNo"), dialog -> {
           if (dialog.isConfirmed()) {
             ExpenseSheetEntity expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
@@ -61,10 +58,8 @@ public class UserLimitSettingGrid extends Grid<UserLimitEntity> implements Setti
             refreshValues();
           }
         });
-  };
 
   public UserLimitSettingGrid() {
-    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     uls = AppCtxProvider.getBean(UserLimitService.class);
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);

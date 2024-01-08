@@ -1,7 +1,9 @@
 package pl.kostro.expensesystem.utils.mail;
 
-import java.text.MessageFormat;
-import java.util.Properties;
+import lombok.extern.slf4j.Slf4j;
+import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
+import pl.kostro.expensesystem.model.entity.RealUserEntity;
+import pl.kostro.expensesystem.utils.msg.Msg;
 
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
@@ -16,17 +18,11 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.text.MessageFormat;
+import java.util.Properties;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
-import pl.kostro.expensesystem.utils.msg.Msg;
-import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
-import pl.kostro.expensesystem.model.entity.RealUserEntity;
-
+@Slf4j
 public class SendEmail {
-
-  private static Logger logger = LogManager.getLogger();
 
   public static void welcome(RealUserEntity user) {
     if (user.getEmail().isEmpty()) return;
@@ -48,9 +44,9 @@ public class SendEmail {
       multipart.addBodyPart(messageBodyPart);
       message.setContent(multipart);
 
-      logger.info("SendEmail: Sending");
+      log.info("SendEmail: Sending");
       Transport.send(message);
-      logger.info("SendEmail: Done");
+      log.info("SendEmail: Done");
 
     } catch (MessagingException e) {
       throw new RuntimeException(e);
@@ -67,12 +63,12 @@ public class SendEmail {
       message.setSubject(Msg.get("email.expenses.subject"));
       message.setContent(
           MessageFormat.format(Msg.get("email.expenses.text"),
-              new Object[] {expenseSheet.getId(), expenseSheet.getName(), expenses}),
+              expenseSheet.getId(), expenseSheet.getName(), expenses),
           "text/html; charset=UTF-8");
 
-      logger.info("SendEmail: Sending");
+      log.info("SendEmail: Sending");
       Transport.send(message);
-      logger.info("SendEmail: Done");
+      log.info("SendEmail: Done");
 
     } catch (MessagingException e) {
       throw new RuntimeException(e);
@@ -86,13 +82,12 @@ public class SendEmail {
     props.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
     props.put("mail.smtp.auth", "true");
     props.put("mail.smtp.port", System.getenv("MAIL_PORT"));
-    Session session = Session.getDefaultInstance(props, new javax.mail.Authenticator() {
+    return Session.getDefaultInstance(props, new javax.mail.Authenticator() {
       @Override
       protected PasswordAuthentication getPasswordAuthentication() {
         return new PasswordAuthentication(System.getenv("MAIL_USERNAME"), System.getenv("MAIL_PASSWORD"));
       }
     });
-    return session;
   }
 
   public static void exception(String exception, StackTraceElement[] stackTraceElements) {
@@ -104,12 +99,12 @@ public class SendEmail {
       message.setSubject(Msg.get("email.exception.subject"));
       message.setContent(
           MessageFormat.format(Msg.get("email.exception.text"),
-              new Object[] {exception, stackTraceElements.toString()}),
+              exception, stackTraceElements.toString()),
           "text/html");
 
-      logger.info("SendEmail: Sending");
+      log.info("SendEmail: Sending");
       Transport.send(message);
-      logger.info("SendEmail: Done");
+      log.info("SendEmail: Done");
 
     } catch (MessagingException e) {
       throw new RuntimeException(e);

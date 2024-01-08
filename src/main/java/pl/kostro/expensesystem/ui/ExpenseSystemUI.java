@@ -10,8 +10,9 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.spring.annotation.SpringUI;
 import com.vaadin.ui.UI;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.ui.event.ExpenseSystemEvent.BrowserResizeEvent;
 import pl.kostro.expensesystem.ui.event.ExpenseSystemEventBus;
@@ -21,19 +22,21 @@ import pl.kostro.expensesystem.ui.views.main.MainView;
 import java.util.Locale;
 import java.util.TimeZone;
 
+@Slf4j
 @SpringUI
 @Title("Expense System Application")
 @Theme("expensesystem")
 @Widgetset("pl.kostro.expensesystem.ExpenseSystemWidgetset")
 public class ExpenseSystemUI extends UI {
 
-  private static Logger logger = LogManager.getLogger();
   private final ExpenseSystemEventBus expenseEventbus = new ExpenseSystemEventBus();
+  @Getter
+  @Setter
   private MainView mainView;
 
   @Override
   protected void init(VaadinRequest vaadinRequest) {
-    logger.info("New session start: {}", vaadinRequest.getLocale());
+    log.info("New session start: {}", vaadinRequest.getLocale());
     Locale.setDefault(vaadinRequest.getLocale());
     TimeZone.setDefault(TimeZone.getTimeZone("Europe/Warsaw"));
     Responsive.makeResponsive(this);
@@ -41,7 +44,7 @@ public class ExpenseSystemUI extends UI {
     
     Page.getCurrent().addBrowserWindowResizeListener(
             (BrowserWindowResizeListener) event -> {
-              logger.debug("new width: " + event.getWidth());
+              log.debug("new width: " + event.getWidth());
               ExpenseSystemEventBus.post(new BrowserResizeEvent());
             });
   }
@@ -60,11 +63,4 @@ public class ExpenseSystemUI extends UI {
     return ((ExpenseSystemUI) getCurrent()).expenseEventbus;
   }
 
-  public void setMainView(MainView mainView) {
-    this.mainView = mainView;
-  }
-
-  public MainView getMainView() {
-    return mainView;
-  }
 }

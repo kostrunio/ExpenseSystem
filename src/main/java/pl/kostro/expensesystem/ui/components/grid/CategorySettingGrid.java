@@ -30,32 +30,32 @@ public class CategorySettingGrid extends Grid<CategoryEntity> implements Setting
   private ExpenseSheetService eshs;
   private ExpenseSheetEntity expenseSheet;
   
-  private Binder<CategoryEntity> binder = new Binder<>();
+  private final Binder<CategoryEntity> binder = new Binder<>();
 
   private Button addCategoryButton;
   private Button moveUpCategoryButton;
   private Button moveDownCategoryButton;
   private Button deleteCategoryButton;
   
-  private SelectionListener<CategoryEntity> itemSelected = event -> {
-    moveUpCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
-    moveDownCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
-    deleteCategoryButton.setEnabled(event.getAllSelectedItems().size() != 0);
+  private final SelectionListener<CategoryEntity> itemSelected = event -> {
+    moveUpCategoryButton.setEnabled(!event.getAllSelectedItems().isEmpty());
+    moveDownCategoryButton.setEnabled(!event.getAllSelectedItems().isEmpty());
+    deleteCategoryButton.setEnabled(!event.getAllSelectedItems().isEmpty());
   };
-  private EditorOpenListener<CategoryEntity> editorOpen = event -> binder.setBean(event.getBean());
-  private EditorSaveListener<CategoryEntity> saveCategory = event -> cs.save(event.getBean());
-  private ClickListener addCategoryClicked = event -> UI.getCurrent().addWindow(new AddCategoryWindow(CategorySettingGrid.this));
-  private ClickListener moveUpClicked = event -> {
+  private final EditorOpenListener<CategoryEntity> editorOpen = event -> binder.setBean(event.getBean());
+  private final EditorSaveListener<CategoryEntity> saveCategory = event -> cs.save(event.getBean());
+  private final ClickListener addCategoryClicked = event -> UI.getCurrent().addWindow(new AddCategoryWindow(CategorySettingGrid.this));
+  private final ClickListener moveUpClicked = event -> {
     expenseSheet = eshs.moveCategoryUp(expenseSheet, getItem());
     refreshValues();
   };
-  private ClickListener moveDownClick = event -> {
+  private final ClickListener moveDownClick = event -> {
     expenseSheet = eshs.moveCategoryDown(expenseSheet, getItem());
     refreshValues();
   };
-  private ClickListener deleteCategoryClick = event -> {
+  private final ClickListener deleteCategoryClick = event ->
     ConfirmDialog.show(getUI(), Msg.get("settingsPage.removeCategoryLabel"),
-        MessageFormat.format(Msg.get("settingsPage.removeCategoryQuestion"), new Object[] { getItem().getName() }),
+        MessageFormat.format(Msg.get("settingsPage.removeCategoryQuestion"), getItem().getName()),
         Msg.get("settingsPage.removeCategoryYes"), Msg.get("settingsPage.removeCategoryNo"), dialog -> {
           if (dialog.isConfirmed()) {
             CategoryEntity category = getItem();
@@ -64,7 +64,6 @@ public class CategorySettingGrid extends Grid<CategoryEntity> implements Setting
             refreshValues();
           }
         });
-  };
 
   public CategorySettingGrid() {
     cs = AppCtxProvider.getBean(CategoryService.class);

@@ -1,7 +1,6 @@
 package pl.kostro.expensesystem.model.service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,13 +16,12 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+@Slf4j
 @Service
 public class RealUserServiceImpl implements RealUserService {
 
-  private RealUserRepository repository;
+  private final RealUserRepository repository;
 
-  private Logger logger = LogManager.getLogger();
-  
   static MessageDigest messageDigest;
 
   static {
@@ -46,7 +44,7 @@ public class RealUserServiceImpl implements RealUserService {
     realUser.setPassword(new String(messageDigest.digest()));
     realUser.setEmail(email);
     repository.save(realUser);
-    logger.info("createRealUser for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("createRealUser for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return realUser;
   }
 
@@ -57,18 +55,18 @@ public class RealUserServiceImpl implements RealUserService {
       realUser.setPassword(new String(messageDigest.digest()));
     }
     repository.save(realUser);
-    logger.info("merge for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("merge for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public RealUserEntity refresh(RealUserEntity realUser) {
-    return repository.getById(realUser.getId());
+    return repository.getReferenceById(realUser.getId());
   }
 
   public void setDefaultExpenseSheet(RealUserEntity realUser, ExpenseSheetEntity expenseSheet) {
     LocalDateTime stopper = LocalDateTime.now();
     realUser.setDefaultExpenseSheet(expenseSheet);
     repository.save(realUser);
-    logger.info("setDefaultExpenseSheet for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("setDefaultExpenseSheet for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public RealUserEntity getUserData(String userName, String password) {
@@ -81,7 +79,7 @@ public class RealUserServiceImpl implements RealUserService {
     if (realUser.getPasswordByte() == null)
       realUser.setPasswordByte(messageDigest.digest());
     repository.save(realUser);
-    logger.info("getUserData for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("getUserData for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return realUser;
   }
 
@@ -93,7 +91,7 @@ public class RealUserServiceImpl implements RealUserService {
     } catch (NoResultException e) {
 
     }
-    logger.info("findRealUser for {} finish: {} ms", userName, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("findRealUser for {} finish: {} ms", userName, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return realUser;
   }
 
@@ -103,10 +101,10 @@ public class RealUserServiceImpl implements RealUserService {
       realUser.getExpenseSheetList().size();
     } catch (LazyInitializationException e) {
       LocalDateTime stopper = LocalDateTime.now();
-      RealUserEntity attached = repository.getOne(realUser.getId());
+      RealUserEntity attached = repository.getReferenceById(realUser.getId());
       attached.getExpenseSheetList().size();
       realUser.setExpenseSheetList(attached.getExpenseSheetList());
-      logger.info("fetchExpenseSheetList for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+      log.info("fetchExpenseSheetList for {} finish: {} ms", realUser, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
   }
 

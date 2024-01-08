@@ -1,34 +1,25 @@
 package pl.kostro.expensesystem.utils.transform.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import pl.kostro.expensesystem.model.entity.ExpenseEntity;
+import pl.kostro.expensesystem.model.entity.UserLimitEntity;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.kostro.expensesystem.model.entity.ExpenseEntity;
-import pl.kostro.expensesystem.model.entity.UserLimitEntity;
-
+@Getter
 public class UserLimitExpense {
+	@Setter
 	private UserLimitEntity userLimit;
-	private List<ExpenseEntity> expenseList;
+	private final List<ExpenseEntity> expenseList;
 	private BigDecimal sum = new BigDecimal(0);
 	
 	public UserLimitExpense(UserLimitEntity userLimit) {
 		this.userLimit = userLimit;
 		expenseList = new ArrayList<>();
-	}
-	public UserLimitEntity getUserLimit() {
-		return userLimit;
-	}
-	public void setUserLimit(UserLimitEntity userLimit) {
-		this.userLimit = userLimit;
-	}
-	
-	public List<ExpenseEntity> getExpenseList() {
-		return expenseList;
-	}
-	public BigDecimal getSum() {
-		return sum;
 	}
 
 	public String getSumString() {

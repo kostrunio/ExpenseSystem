@@ -1,7 +1,6 @@
 package pl.kostro.expensesystem.model.service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
@@ -14,13 +13,12 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class UserSummaryServiceImpl implements UserSummaryService {
   
-  private UserSummaryRepository repository;
+  private final UserSummaryRepository repository;
   
-  private Logger logger = LogManager.getLogger();
-
   @Autowired
   public UserSummaryServiceImpl(UserSummaryRepository repository) {
     this.repository = repository;
@@ -30,14 +28,14 @@ public class UserSummaryServiceImpl implements UserSummaryService {
     LocalDateTime stopper = LocalDateTime.now();
     UserSummaryEntity userSummary = new UserSummaryEntity(date, userLimit.getLimit());
     repository.save(userSummary);
-    logger.info("createUserSummary for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("createUserSummary for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return userSummary;
   }
 
   public UserSummaryEntity merge(UserSummaryEntity userSummary) {
     LocalDateTime stopper = LocalDateTime.now();
     repository.save(userSummary);
-    logger.info("merge for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("merge for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return userSummary;
   }
 
@@ -51,7 +49,7 @@ public class UserSummaryServiceImpl implements UserSummaryService {
     userSummary.setLimit(userSummary.getLimit(true), true);
     userSummary.setSum(userSummary.getSum(true), true);
     repository.save(userSummary);
-    logger.info("encrypt for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("encrypt for {} finish: {} ms", userSummary, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public BigDecimal calculateSum(UserLimitEntity userLimit, LocalDate date) {

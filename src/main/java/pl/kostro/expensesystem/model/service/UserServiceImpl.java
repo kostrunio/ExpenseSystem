@@ -1,23 +1,20 @@
 package pl.kostro.expensesystem.model.service;
 
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import pl.kostro.expensesystem.model.entity.UserEntity;
 import pl.kostro.expensesystem.model.repository.UserRepository;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
-  private UserRepository repository;
+  private final UserRepository repository;
   
-  private Logger logger = LogManager.getLogger();
-
   @Autowired
   public UserServiceImpl(UserRepository repository) {
     this.repository = repository;
@@ -28,7 +25,7 @@ public class UserServiceImpl implements UserService {
     UserEntity user = new UserEntity();
     user.setName(name);
     repository.save(user);
-    logger.info("createUser for {} finish: {} ms", user, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("createUser for {} finish: {} ms", user, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return user;
   }
 

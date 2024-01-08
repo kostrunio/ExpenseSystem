@@ -1,35 +1,32 @@
 package pl.kostro.expensesystem.ui.views.userSummary;
 
-import java.math.BigDecimal;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.vaadin.data.Binder;
 import com.vaadin.event.selection.SingleSelectionListener;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.components.grid.EditorOpenListener;
 import com.vaadin.ui.components.grid.EditorSaveListener;
-
+import lombok.extern.slf4j.Slf4j;
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.entity.UserSummaryEntity;
 import pl.kostro.expensesystem.model.service.UserSummaryService;
+import pl.kostro.expensesystem.utils.msg.Msg;
 
+import java.math.BigDecimal;
+
+@Slf4j
 public class UserSummaryView extends UserSummaryDesign {
 
-  private Logger logger = LogManager.getLogger();
   private UserSummaryService uss;
   private ExpenseSheetEntity expenseSheet;
 
-  private Binder<UserSummaryEntity> binder = new Binder<>();
-  private TextField limitField = new TextField();
-  private TextField sumField = new TextField();
+  private final Binder<UserSummaryEntity> binder = new Binder<>();
+  private final TextField limitField = new TextField();
+  private final TextField sumField = new TextField();
 
-  private SingleSelectionListener<UserLimitEntity> userChanged = event -> {
+  private final SingleSelectionListener<UserLimitEntity> userChanged = event -> {
     if (event.getSelectedItem().isPresent()) {
       userSummaryGrid.setItems(expenseSheet.getUserLimitList().parallelStream()
           .filter(userLimit -> userLimit.equals(event.getSelectedItem().get()))
@@ -39,14 +36,12 @@ public class UserSummaryView extends UserSummaryDesign {
           .flatMap(userLimit -> userLimit.getUserSummaryList().stream()));
     }
   };
-  private EditorOpenListener<UserSummaryEntity> editorOpen = event -> binder.setBean(event.getBean());
-  private EditorSaveListener<UserSummaryEntity> saveUserLimit = event -> {
-    uss.merge(event.getBean());
-  };
+  private final EditorOpenListener<UserSummaryEntity> editorOpen = event -> binder.setBean(event.getBean());
+  private final EditorSaveListener<UserSummaryEntity> saveUserLimit = event -> uss.merge(event.getBean());
 
   public UserSummaryView() {
     uss = AppCtxProvider.getBean(UserSummaryService.class);
-    logger.info("create");
+    log.info("create");
     setCaption();
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     userBox.setItems(expenseSheet.getUserLimitList());

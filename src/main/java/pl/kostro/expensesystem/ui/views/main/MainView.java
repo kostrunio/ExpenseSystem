@@ -11,8 +11,7 @@ import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.themes.ValoTheme;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
@@ -26,30 +25,30 @@ import pl.kostro.expensesystem.utils.msg.Msg;
 import java.util.HashMap;
 import java.util.Map;
 
+@Slf4j
 public class MainView extends MainDesign {
 
-  private RealUserService rus;
+  private final RealUserService rus;
   
-  private Logger logger = LogManager.getLogger();
   private static final String VALO_MENU_SELECTED = "selected";
   private static final String VALO_MENU_VISIBLE = "valo-menu-visible";
 
-  private Map<String, Button> viewButtons = new HashMap<String, Button>();
+  private final Map<String, Button> viewButtons = new HashMap<>();
 
-  private ClickListener showMenuClick = event -> {
+  private final ClickListener showMenuClick = event -> {
     if (menuPart.getStyleName().contains(VALO_MENU_VISIBLE)) {
       menuPart.removeStyleName(VALO_MENU_VISIBLE);
     } else {
       menuPart.addStyleName(VALO_MENU_VISIBLE);
     }
   };
-  private ClickListener addSheetClick = event -> UI.getCurrent().addWindow(new AddSheetWindow());
-  private ClickListener accountClick = event -> UI.getCurrent().getNavigator().navigateTo("account");
-  private ClickListener logoutClick = event -> {
+  private final ClickListener addSheetClick = event -> UI.getCurrent().addWindow(new AddSheetWindow());
+  private final ClickListener accountClick = event -> UI.getCurrent().getNavigator().navigateTo("account");
+  private final ClickListener logoutClick = event -> {
     VaadinSession.getCurrent().getSession().invalidate();
     Page.getCurrent().reload();
   };
-  private ViewProvider errorProvider = new ViewProvider() {
+  private final ViewProvider errorProvider = new ViewProvider() {
     @Override
     public String getViewName(final String viewAndParameters) {
       return "expenseSheet";
@@ -64,7 +63,7 @@ public class MainView extends MainDesign {
 
   public MainView(UI ui) {
     rus = AppCtxProvider.getBean(RealUserService.class);
-    logger.info("create");
+    log.info("create");
     setCaption();
     showMenuButton.addClickListener(showMenuClick);
     addSheetButton.addClickListener(addSheetClick);
@@ -94,7 +93,7 @@ public class MainView extends MainDesign {
   }
 
   public void refresh() {
-    logger.info("refresh");
+    log.info("refresh");
     buildMenuItems();
   }
 

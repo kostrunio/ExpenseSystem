@@ -1,7 +1,6 @@
 package pl.kostro.expensesystem.model.service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.LazyInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,12 +12,11 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+@Slf4j
 @Service
 public class UserLimitServiceImpl implements UserLimitService {
   
-  private UserLimitRepository repository;
-
-  private Logger logger = LogManager.getLogger();
+  private final UserLimitRepository repository;
 
   @Autowired
   public UserLimitServiceImpl(UserLimitRepository repository) {
@@ -28,20 +26,20 @@ public class UserLimitServiceImpl implements UserLimitService {
   public UserLimitEntity create(UserEntity user, int orderId) {
     LocalDateTime stopper = LocalDateTime.now();
     UserLimitEntity userLimit = repository.save(new UserLimitEntity(user, orderId));
-    logger.info("createUserLimit for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("createUserLimit for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return userLimit;
   }
 
   public void merge(UserLimitEntity userLimit) {
     LocalDateTime stopper = LocalDateTime.now();
     repository.save(userLimit);
-    logger.info("merge for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("merge for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void remove(UserLimitEntity userLimit) {
     LocalDateTime stopper = LocalDateTime.now();
     repository.delete(userLimit);
-    logger.info("removeUserLimit for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("removeUserLimit for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   @Transactional
@@ -50,10 +48,10 @@ public class UserLimitServiceImpl implements UserLimitService {
       userLimit.getUserSummaryList().size();
     } catch (LazyInitializationException e) {
       LocalDateTime stopper = LocalDateTime.now();
-      UserLimitEntity attached = repository.getOne(userLimit.getId());
+      UserLimitEntity attached = repository.getReferenceById(userLimit.getId());
       attached.getUserSummaryList().size();
       userLimit.setUserSummaryList(attached.getUserSummaryList());
-      logger.info("fetchUserSummaryList for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+      log.info("fetchUserSummaryList for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     }
   }
 
@@ -65,7 +63,7 @@ public class UserLimitServiceImpl implements UserLimitService {
     LocalDateTime stopper = LocalDateTime.now();
     userLimit.setLimit(userLimit.getLimit(true), true);
     repository.save(userLimit);
-    logger.info("encrypt for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("encrypt for {} finish: {} ms", userLimit, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
 }

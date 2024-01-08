@@ -1,10 +1,12 @@
 package pl.kostro.expensesystem.utils.calendar;
 
+import lombok.Getter;
 import pl.kostro.expensesystem.utils.msg.Msg;
 
 public class CalendarUtils {
 
-  private static String[] monthsName =
+  @Getter
+  private static final String[] monthsName =
     {Msg.get("expenseSheet.january"),
       Msg.get("expenseSheet.february"),
       Msg.get("expenseSheet.march"),
@@ -17,10 +19,6 @@ public class CalendarUtils {
       Msg.get("expenseSheet.october"),
       Msg.get("expenseSheet.november"),
       Msg.get("expenseSheet.december")};
-
-  public static String[] getMonthsName() {
-    return monthsName;
-  }
 
   public static int getMonthNumber(String monthName) {
     for (int i = 0; i < getMonthsName().length; i++)

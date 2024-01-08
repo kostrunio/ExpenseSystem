@@ -1,6 +1,7 @@
 package pl.kostro.expensesystem.ui.components.calendar;
 
 import com.vaadin.server.VaadinSession;
+import lombok.Setter;
 import org.vaadin.addon.calendar.Calendar;
 import org.vaadin.addon.calendar.item.BasicItem;
 import org.vaadin.addon.calendar.item.CalendarItemProvider;
@@ -26,10 +27,11 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
   private CalendarConverter converter;
   private ExpenseSheetTransformService eshts;
 
+  @Setter
   private MonthView monthView;
   private ExpenseSheetEntity expenseSheet;
   private LocalDate date;
-  private CalendarItemProvider<BasicItem> eventProvider = (startDate, endDate) -> {
+  private final CalendarItemProvider<BasicItem> eventProvider = (startDate, endDate) -> {
     date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
     eshts.prepareExpenseMap(expenseSheet,
         startDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
@@ -46,26 +48,26 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
     return converter.transformExpensesToEvents(expenseSheet);
   };
 
-  private DateClickHandler dateClick = event -> {
+  private final DateClickHandler dateClick = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, event.getDate().toLocalDate());
     monthView.removeAllComponents();
     monthView.addComponent(new DayView());
   };
 
-  private WeekClickHandler weekClick = event -> {
+  private final WeekClickHandler weekClick = event -> {
   };
 
-  private ItemClickHandler eventClick = event -> {
+  private final ItemClickHandler eventClick = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, event.getCalendarItem().getStart().toLocalDate());
     monthView.removeAllComponents();
     monthView.addComponent(new DayView());
   };
 
-  private BackwardHandler prevClick = event -> {
+  private final BackwardHandler prevClick = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date.minusMonths(1));
     monthView.showCalendar();
   };
-  private ForwardHandler nextClick = event -> {
+  private final ForwardHandler nextClick = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date.plusMonths(1));
     monthView.showCalendar();
   };
@@ -89,7 +91,4 @@ public class ExpenseCalendar extends Calendar<BasicItem> {
     
   }
 
-  public void setMonthView(MonthView monthView) {
-    this.monthView = monthView;
-  }
 }

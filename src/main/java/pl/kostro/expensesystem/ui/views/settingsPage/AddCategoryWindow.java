@@ -1,8 +1,5 @@
 package pl.kostro.expensesystem.ui.views.settingsPage;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -14,26 +11,26 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
-
+import lombok.extern.slf4j.Slf4j;
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.service.CategoryService;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.ui.notification.ShowNotification;
+import pl.kostro.expensesystem.utils.msg.Msg;
 
+@Slf4j
 public class AddCategoryWindow extends Window {
 
-  private Logger logger = LogManager.getLogger();
   private ExpenseSheetService echs;
   private CategoryService cs;
 
   private final TextField nameField = new TextField(Msg.get("newCategory.label"));
   private SettingsChangeListener listener;
 
-  private ClickListener cancelClicked = event -> close();
-  private ClickListener saveClicked = event -> {
+  private final ClickListener cancelClicked = event -> close();
+  private final ClickListener saveClicked = event -> {
     if (nameField.isEmpty()) {
       ShowNotification.fieldEmpty(nameField.getCaption());
       return;
@@ -49,7 +46,7 @@ public class AddCategoryWindow extends Window {
   public AddCategoryWindow(SettingsChangeListener listener) {
     echs = AppCtxProvider.getBean(ExpenseSheetService.class);
     cs = AppCtxProvider.getBean(CategoryService.class);
-    logger.info("show");
+    log.info("show");
     this.listener = listener;
     setModal(true);
     setClosable(false);

@@ -1,5 +1,7 @@
 package pl.kostro.expensesystem.model.entity;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 import pl.kostro.expensesystem.model.converter.LocalDatePersistenceConverter;
 import pl.kostro.expensesystem.utils.calculator.Calculator;
@@ -21,11 +23,15 @@ import java.time.LocalDate;
 @Entity
 @Table(name = "expenses")
 public class ExpenseEntity extends AbstractEntity {
+  @Setter
+  @Getter
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
   @Column(name = "e_id")
   private Long id;
+  @Setter
+  @Getter
   @Column(name = "e_date")
   @Convert(converter = LocalDatePersistenceConverter.class)
   private LocalDate date;
@@ -35,9 +41,13 @@ public class ExpenseEntity extends AbstractEntity {
   private byte[] formula_byte;
   @Transient
   private BigDecimal value;
+  @Setter
+  @Getter
   @OneToOne
   @JoinColumn(name = "e_c_id")
   private CategoryEntity category;
+  @Setter
+  @Getter
   @OneToOne
   @JoinColumn(name = "e_u_id")
   private UserEntity user;
@@ -45,11 +55,17 @@ public class ExpenseEntity extends AbstractEntity {
   private String comment;
   @Column(name = "e_comment_byte")
   private byte[] comment_byte;
+  @Setter
+  @Getter
   @Column(name = "e_notify")
   private boolean notify;
+  @Setter
+  @Getter
   @Column(name = "e_u_date")
   @Convert(converter = LocalDatePersistenceConverter.class)
   private LocalDate updateDate;
+  @Setter
+  @Getter
   @ManyToOne
   @JoinColumn(name = "e_es_id")
   private ExpenseSheetEntity expenseSheet;
@@ -69,22 +85,6 @@ public class ExpenseEntity extends AbstractEntity {
     setComment(comment);
     this.notify = notify;
     this.expenseSheet = expenseSheet;
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public LocalDate getDate() {
-    return date;
-  }
-
-  public void setDate(LocalDate date) {
-    this.date = date;
   }
 
   public String getFormula() {
@@ -115,22 +115,6 @@ public class ExpenseEntity extends AbstractEntity {
     }
   }
 
-  public CategoryEntity getCategory() {
-    return category;
-  }
-
-  public void setCategory(CategoryEntity category) {
-    this.category = category;
-  }
-
-  public UserEntity getUser() {
-    return user;
-  }
-
-  public void setUser(UserEntity user) {
-    this.user = user;
-  }
-
   public String getComment() {
     if (encoded) decode();
     return comment;
@@ -139,30 +123,6 @@ public class ExpenseEntity extends AbstractEntity {
   public void setComment(String comment) {
     this.comment_byte = Encryption.encryption(comment);
     this.comment = comment;
-  }
-
-  public boolean isNotify() {
-    return notify;
-  }
-
-  public void setNotify(boolean notify) {
-    this.notify = notify;
-  }
-
-  public LocalDate getUpdateDate() {
-    return updateDate;
-  }
-
-  public void setUpdateDate(LocalDate updateDate) {
-    this.updateDate = updateDate;
-  }
-
-  public ExpenseSheetEntity getExpenseSheet() {
-    return expenseSheet;
-  }
-
-  public void setExpenseSheet(ExpenseSheetEntity expenseSheet) {
-    this.expenseSheet = expenseSheet;
   }
 
   @Override

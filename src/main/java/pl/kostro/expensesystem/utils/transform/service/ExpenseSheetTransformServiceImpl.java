@@ -1,7 +1,6 @@
 package pl.kostro.expensesystem.utils.transform.service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
@@ -33,13 +32,12 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformService {
 
-  private UserLimitService uls;
-  private UserSummaryService uss;
-
-  private Logger logger = LogManager.getLogger();
+  private final UserLimitService uls;
+  private final UserSummaryService uss;
 
   @Autowired
   public ExpenseSheetTransformServiceImpl(UserLimitService uls, UserSummaryService uss) {
@@ -91,7 +89,7 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
         addExpenseToUserLimitMap(expense, expenseSheet);
       }
     }
-    logger.info("prepareExpenseMap for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("prepareExpenseMap for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   private void clearMaps(ExpenseSheetEntity expenseSheet) {
@@ -111,7 +109,7 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
       dateExpense = new DateExpense(expense.getDate());
       expenseSheet.getDateExpenseMap().put(expense.getDate(), dateExpense);
     }
-    dateExpense.addExpense(expense, getUserLimitForUser(expense.getUser(), expenseSheet), expenseSheet);
+    dateExpense.addExpense(expense, getUserLimitForUser(expense.getUser(), expenseSheet));
   }
 
   private void addExpenseToCategoryMap(ExpenseEntity expense, ExpenseSheetEntity expenseSheet) {
@@ -212,7 +210,7 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
       }
       yearCategoryList.add(yearCategory);
     }
-    logger.info("prepareYearCategoryList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("prepareYearCategoryList for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return yearCategoryList;
   }
 
@@ -244,7 +242,7 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
       return null;
     for (UserLimitEntity userLimit : expenseSheet.getUserLimitList()) {
       uls.fetchUserSummaryList(userLimit);
-      logger.debug("checkSummary for: {} at {}", userLimit, date);
+      log.debug("checkSummary for: {} at {}", userLimit, date);
       UserSummaryEntity userSummary = uss.findUserSummary(userLimit, date);
       if (userSummary == null) {
         userSummary = uss.create(userLimit, date);
@@ -254,14 +252,14 @@ public class ExpenseSheetTransformServiceImpl implements ExpenseSheetTransformSe
       BigDecimal exSummary = new BigDecimal(0);
       if (expenseSheet.getUserLimitExpenseMap().get(userLimit) != null)
         exSummary = expenseSheet.getUserLimitExpenseMap().get(userLimit).getSum();
-      logger.debug("exSummary: {}; userSummary: {}", exSummary, userSummary.getSum());
+      log.debug("exSummary: {}; userSummary: {}", exSummary, userSummary.getSum());
       if (userSummary.getSum().compareTo(exSummary) != 0) {
         returnList.add(new UserSumChange(userLimit.getUser().getName(), exSummary, userSummary.getSum()));
         userSummary.setSum(exSummary);
         uss.merge(userSummary);
       }
     }
-    logger.info("checkSummary for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("checkSummary for {} finish: {} ms", expenseSheet, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return returnList;
   }
 }

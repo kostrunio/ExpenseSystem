@@ -1,7 +1,10 @@
 package pl.kostro.expensesystem.model.entity;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import pl.kostro.expensesystem.model.converter.LocalDatePersistenceConverter;
+import pl.kostro.expensesystem.utils.encryption.Encryption;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -10,20 +13,21 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import pl.kostro.expensesystem.utils.encryption.Encryption;
-import pl.kostro.expensesystem.model.converter.LocalDatePersistenceConverter;
+import java.math.BigDecimal;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "users_summaries")
 public class UserSummaryEntity extends AbstractEntity {
+  @Setter
+  @Getter
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
   @Column(name = "us_id")
   private Long id;
+  @Setter
+  @Getter
   @Column(name = "us_date")
   @Convert(converter = LocalDatePersistenceConverter.class)
   private LocalDate date;
@@ -44,22 +48,6 @@ public class UserSummaryEntity extends AbstractEntity {
     this.date = date;
     setLimit(limit);
     setSum(new BigDecimal(0));
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public LocalDate getDate() {
-    return date;
-  }
-
-  public void setDate(LocalDate date) {
-    this.date = date;
   }
 
   public BigDecimal getLimit() {

@@ -1,8 +1,9 @@
 package pl.kostro.expensesystem.model.entity;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import pl.kostro.expensesystem.utils.encryption.Encryption;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,19 +16,21 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import pl.kostro.expensesystem.utils.encryption.Encryption;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "users_limits")
 public class UserLimitEntity extends AbstractEntity {
+  @Setter
+  @Getter
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
   @Column(name = "ul_id")
   private Long id;
+  @Getter
   @OneToOne
   @JoinColumn(name = "ul_u_id")
   private UserEntity user;
@@ -35,12 +38,17 @@ public class UserLimitEntity extends AbstractEntity {
   private BigDecimal limit;
   @Column(name = "ul_limit_byte")
   private byte[] limit_byte;
+  @Setter
+  @Getter
   @Column(name = "ul_order")
   private int order;
+  @Setter
   @OneToMany(cascade = CascadeType.REMOVE)
   @JoinColumn(name = "us_ul_id")
   @OrderBy(value = "date")
   private List<UserSummaryEntity> userSummaryList;
+  @Setter
+  @Getter
   @Column(name = "ul_cont_summary")
   private boolean continuousSummary;
 
@@ -54,22 +62,6 @@ public class UserLimitEntity extends AbstractEntity {
     this.order = order;
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public UserEntity getUser() {
-    return user;
-  }
-
-  public void setUser(UserEntity user) {
-    this.user = user;
-  }
-  
   public void setUser(String name) {
     this.user.setName(name);
   }
@@ -96,30 +88,10 @@ public class UserLimitEntity extends AbstractEntity {
     this.limit = limit;
   }
 
-  public int getOrder() {
-    return order;
-  }
-
-  public void setOrder(int order) {
-    this.order = order;
-  }
-
   public List<UserSummaryEntity> getUserSummaryList() {
     if (userSummaryList == null)
       userSummaryList = new ArrayList<>();
     return userSummaryList;
-  }
-
-  public void setUserSummaryList(List<UserSummaryEntity> userSummaryList) {
-    this.userSummaryList = userSummaryList;
-  }
-
-  public boolean isContinuousSummary() {
-    return continuousSummary;
-  }
-
-  public void setContinuousSummary(boolean continuousSummary) {
-    this.continuousSummary = continuousSummary;
   }
 
   @Override

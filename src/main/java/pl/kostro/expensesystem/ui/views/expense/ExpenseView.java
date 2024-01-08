@@ -11,8 +11,7 @@ import com.vaadin.ui.Component;
 import com.vaadin.ui.MenuBar;
 import com.vaadin.ui.MenuBar.MenuItem;
 import com.vaadin.ui.UI;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
@@ -21,13 +20,13 @@ import pl.kostro.expensesystem.model.entity.UserEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.ui.ExpenseSystemUI;
+import pl.kostro.expensesystem.ui.views.chart.ChartView;
 import pl.kostro.expensesystem.ui.views.main.MainView;
 import pl.kostro.expensesystem.ui.views.month.MonthView;
 import pl.kostro.expensesystem.ui.views.settings.SettingsView;
+import pl.kostro.expensesystem.ui.views.settingsPage.ExpenseSheetPasswordWindow;
 import pl.kostro.expensesystem.ui.views.table.TableView;
 import pl.kostro.expensesystem.ui.views.userSummary.UserSummaryView;
-import pl.kostro.expensesystem.ui.views.chart.ChartView;
-import pl.kostro.expensesystem.ui.views.settingsPage.ExpenseSheetPasswordWindow;
 import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import pl.kostro.expensesystem.utils.filter.Filter;
 import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformService;
@@ -37,19 +36,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public class ExpenseView extends ExpenseDesign implements View {
   
-  private ExpenseSheetService eshs;
-  private ExpenseSheetTransformService eshts;
+  private final ExpenseSheetService eshs;
+  private final ExpenseSheetTransformService eshts;
 
-  private Logger logger = LogManager.getLogger();
   private LocalDate date = LocalDate.now();
   private ExpenseSheetEntity expenseSheet;
-  private Button.ClickListener editClick = event -> {
+  private final Button.ClickListener editClick = event -> {
     root.removeAllComponents();
     root.addComponent(new SettingsView());
   };
-  private ClickListener chartClick = event -> {
+  private final ClickListener chartClick = event -> {
     searchPanel.setVisible(false);
     mainView.removeAllComponents();
     if (yearMenu.isEnabled()) {
@@ -69,7 +68,7 @@ public class ExpenseView extends ExpenseDesign implements View {
       mainView.addComponent(new MonthView());
     }
   };
-  private ClickListener filterClick = event -> {
+  private final ClickListener filterClick = event -> {
     searchPanel.setVisible(!searchPanel.isVisible());
     if (searchPanel.isVisible()) {
       prepareSearchLayout();
@@ -83,7 +82,7 @@ public class ExpenseView extends ExpenseDesign implements View {
       mainView.addComponent(new MonthView());
     }
   };
-  private ClickListener tableClick = event -> {
+  private final ClickListener tableClick = event -> {
     searchPanel.setVisible(false);
     mainView.removeAllComponents();
     if (yearMenu.isEnabled()) {
@@ -101,7 +100,7 @@ public class ExpenseView extends ExpenseDesign implements View {
       mainView.addComponent(new MonthView());
     }
   };
-  private ClickListener userSummaryClick = event -> {
+  private final ClickListener userSummaryClick = event -> {
     searchPanel.setVisible(false);
     mainView.removeAllComponents();
     if (yearMenu.isEnabled()) {
@@ -119,29 +118,29 @@ public class ExpenseView extends ExpenseDesign implements View {
       mainView.addComponent(new MonthView());
     }
   };
-  private MenuBar.Command yearCommand = selectedItem -> {
+  private final MenuBar.Command yearCommand = selectedItem -> {
   date = date.withYear(Integer.parseInt(selectedItem.getText())).withDayOfMonth(1);
   VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
   mainView.removeAllComponents();
   mainView.addComponent(new MonthView());
   checkedYear(selectedItem.getText());
   };
-  private MenuBar.Command monthCommand = selectedItem -> {
+  private final MenuBar.Command monthCommand = selectedItem -> {
     mainView.removeAllComponents();
     date = date.withMonth(CalendarUtils.getMonthNumber(selectedItem.getText())).withDayOfMonth(1);
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date);
     mainView.addComponent(new MonthView());
     checkedMonth(selectedItem.getText());
   };
-  private NewItemProvider addComment = event -> Optional.of(event);
+  private final NewItemProvider addComment = Optional::of;
 
-  private ValueChangeListener<CategoryEntity> categoryChanged = event -> refreshFilter();
+  private final ValueChangeListener<CategoryEntity> categoryChanged = event -> refreshFilter();
 
-  private ValueChangeListener<UserLimitEntity> userChanged = event -> refreshFilter();
+  private final ValueChangeListener<UserLimitEntity> userChanged = event -> refreshFilter();
 
-  private ValueChangeListener<String> formulaChanged = event -> refreshFilter();
+  private final ValueChangeListener<String> formulaChanged = event -> refreshFilter();
 
-  private ValueChangeListener<String> commentChanged = event -> refreshFilter();
+  private final ValueChangeListener<String> commentChanged = event -> refreshFilter();
 
   private void refreshFilter() {
     UserEntity filterUser = null;
@@ -163,7 +162,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));
     mainView.removeAllComponents();
     mainView.addComponent(new MonthView());
-  };
+  }
 
   public ExpenseView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
@@ -187,7 +186,7 @@ public class ExpenseView extends ExpenseDesign implements View {
   }
 
   private void prepareSearchLayout() {
-    categoryCombo.setItemCaptionGenerator(item -> item.getName());
+    categoryCombo.setItemCaptionGenerator(CategoryEntity::getName);
     categoryCombo.setItems(expenseSheet.getCategoryList());
     userCombo.setItemCaptionGenerator(item -> item.getUser().getName());
     userCombo.setItems(expenseSheet.getUserLimitList());
@@ -222,7 +221,7 @@ public class ExpenseView extends ExpenseDesign implements View {
 
   @Override
   public void enter(ViewChangeEvent event) {
-    logger.info("Enter");
+    log.info("Enter");
     RealUserEntity loggedUser = VaadinSession.getCurrent().getAttribute(RealUserEntity.class);
     if (event.getParameters().isEmpty()) {
       expenseSheet = loggedUser.getDefaultExpenseSheet();
@@ -241,7 +240,7 @@ public class ExpenseView extends ExpenseDesign implements View {
     menuView.setActiveView("expenseSheet/" + expenseSheet.getId());
     if (expenseSheet.getSecretKey() == null) {
       expenseSheet.setSecretKey(loggedUser.getClearPassword());
-      if (expenseSheet.getUserLimitList().size() > 0) {
+      if (!expenseSheet.getUserLimitList().isEmpty()) {
         try {
           expenseSheet.getUserLimitList().get(0).getLimit();
         } catch (NullPointerException e) {

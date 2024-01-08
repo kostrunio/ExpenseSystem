@@ -11,24 +11,23 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.ui.notification.ShowNotification;
 import pl.kostro.expensesystem.utils.msg.Msg;
 
 import java.text.MessageFormat;
 
+@Slf4j
 public class ExpenseSheetPasswordWindow extends Window {
 
-  private Logger logger = LogManager.getLogger();
   private final PasswordField passwordField = new PasswordField();
 
-  private ClickListener cancelClicked = event -> close();
-  private ClickListener saveClicked = event -> {
+  private final ClickListener cancelClicked = event -> close();
+  private final ClickListener saveClicked = event -> {
     ExpenseSheetEntity expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     expenseSheet.setSecretKey(passwordField.getValue());
-    if (expenseSheet.getUserLimitList().size() > 0) {
+    if (!expenseSheet.getUserLimitList().isEmpty()) {
       try {
         expenseSheet.getUserLimitList().get(0).getLimit();
       } catch (NullPointerException e) {
@@ -41,7 +40,7 @@ public class ExpenseSheetPasswordWindow extends Window {
   };
 
   public ExpenseSheetPasswordWindow() {
-    logger.info("show");
+    log.info("show");
     setModal(true);
     setClosable(false);
     setResizable(false);

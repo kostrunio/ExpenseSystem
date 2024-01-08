@@ -1,10 +1,13 @@
 package pl.kostro.expensesystem.model.entity;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import pl.kostro.expensesystem.utils.encryption.Encryption;
+import pl.kostro.expensesystem.utils.filter.Filter;
+import pl.kostro.expensesystem.utils.transform.model.CategoryExpense;
+import pl.kostro.expensesystem.utils.transform.model.DateExpense;
+import pl.kostro.expensesystem.utils.transform.model.UserLimitExpense;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.persistence.CascadeType;
@@ -18,92 +21,84 @@ import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import pl.kostro.expensesystem.utils.encryption.Encryption;
-import pl.kostro.expensesystem.utils.filter.Filter;
-import pl.kostro.expensesystem.utils.transform.model.CategoryExpense;
-import pl.kostro.expensesystem.utils.transform.model.DateExpense;
-import pl.kostro.expensesystem.utils.transform.model.UserLimitExpense;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Entity
 @Table(name = "expense_sheets")
 public class ExpenseSheetEntity extends AbstractEntity {
+  @Setter
+  @Getter
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
   @Column(name = "es_id")
   private Long id;
+  @Setter
+  @Getter
   @OneToOne
   @JoinColumn(name = "es_u_id")
   private RealUserEntity owner;
+  @Setter
+  @Getter
   @Column(name = "es_name")
   private String name;
+  @Setter
   @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE})
   @JoinColumn(name = "c_es_id")
   @OrderBy("order")
   private List<CategoryEntity> categoryList;
+  @Setter
   @OneToMany(cascade = CascadeType.REMOVE)
   @JoinColumn(name = "ul_es_id")
   @OrderBy("order")
   private List<UserLimitEntity> userLimitList;
+  @Setter
   @OneToMany(mappedBy = "expenseSheet", cascade = CascadeType.REMOVE)
   @OrderBy
   private List<ExpenseEntity> expenseList;
+  @Setter
+  @Getter
   @Column(name = "es_reload_day")
   private int reloadDay;
+  @Setter
   @Column(name = "es_encrypted")
   private boolean encrypted;
+  @Getter
   @Transient
   private SecretKeySpec secretKey;
+  @Getter
   @Transient
   String key;
+  @Setter
   @Transient
   private Map<LocalDate, DateExpense> dateExpenseMap;
+  @Setter
   @Transient
   private Map<CategoryEntity, CategoryExpense> categoryExpenseMap;
+  @Setter
   @Transient
   private Map<UserLimitEntity, UserLimitExpense> userLimitExpenseMap;
+  @Setter
+  @Getter
   @Transient
   private Filter filter;
+  @Setter
+  @Getter
   @Transient
   private LocalDate firstDate;
+  @Setter
+  @Getter
   @Transient
   private LocalDate lastDate;
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public RealUserEntity getOwner() {
-    return owner;
-  }
-
-  public void setOwner(RealUserEntity owner) {
-    this.owner = owner;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
 
   public List<CategoryEntity> getCategoryList() {
     if (categoryList == null)
       categoryList = new ArrayList<>();
     return categoryList;
-  }
-
-  public void setCategoryList(List<CategoryEntity> categoryList) {
-    this.categoryList = categoryList;
   }
 
   public List<UserLimitEntity> getUserLimitList() {
@@ -112,38 +107,14 @@ public class ExpenseSheetEntity extends AbstractEntity {
     return userLimitList;
   }
 
-  public void setUserLimitList(List<UserLimitEntity> userLimitList) {
-    this.userLimitList = userLimitList;
-  }
-
   public List<ExpenseEntity> getExpenseList() {
     if (expenseList == null)
       expenseList = new ArrayList<>();
     return expenseList;
   }
 
-  public void setExpenseList(List<ExpenseEntity> expenseList) {
-    this.expenseList = expenseList;
-  }
-
-  public int getReloadDay() {
-    return reloadDay;
-  }
-
-  public void setReloadDay(int reloadDay) {
-    this.reloadDay = reloadDay;
-  }
-
   public boolean getEncrypted() {
     return encrypted;
-  }
-
-  public void setEncrypted(boolean encrypted) {
-    this.encrypted = encrypted;
-  }
-
-  public SecretKeySpec getSecretKey() {
-    return secretKey;
   }
 
   public void setSecretKey(String key) {
@@ -152,18 +123,10 @@ public class ExpenseSheetEntity extends AbstractEntity {
     this.secretKey = Encryption.getSecretKey(key);
   }
 
-  public String getKey() {
-    return key;
-  }
-
   public Map<LocalDate, DateExpense> getDateExpenseMap() {
     if (dateExpenseMap == null)
       dateExpenseMap = new HashMap<>();
     return dateExpenseMap;
-  }
-
-  public void setDateExpenseMap(Map<LocalDate, DateExpense> dateExpenseMap) {
-    this.dateExpenseMap = dateExpenseMap;
   }
 
   public Map<CategoryEntity, CategoryExpense> getCategoryExpenseMap() {
@@ -172,42 +135,10 @@ public class ExpenseSheetEntity extends AbstractEntity {
     return categoryExpenseMap;
   }
 
-  public void setCategoryExpenseMap(Map<CategoryEntity, CategoryExpense> categoryExpenseMap) {
-    this.categoryExpenseMap = categoryExpenseMap;
-  }
-
   public Map<UserLimitEntity, UserLimitExpense> getUserLimitExpenseMap() {
     if (userLimitExpenseMap == null)
       userLimitExpenseMap = new HashMap<>();
     return userLimitExpenseMap;
-  }
-
-  public void setUserLimitExpenseMap(Map<UserLimitEntity, UserLimitExpense> userLimitExpenseMap) {
-    this.userLimitExpenseMap = userLimitExpenseMap;
-  }
-
-  public Filter getFilter() {
-    return filter;
-  }
-
-  public void setFilter(Filter filter) {
-    this.filter = filter;
-  }
-
-  public LocalDate getFirstDate() {
-    return firstDate;
-  }
-
-  public void setFirstDate(LocalDate firstDate) {
-    this.firstDate = firstDate;
-  }
-
-  public LocalDate getLastDate() {
-    return lastDate;
-  }
-
-  public void setLastDate(LocalDate lastDate) {
-    this.lastDate = lastDate;
   }
 
   @Override

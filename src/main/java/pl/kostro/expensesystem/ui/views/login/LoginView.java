@@ -1,40 +1,35 @@
 package pl.kostro.expensesystem.ui.views.login;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.LoginForm;
 import com.vaadin.ui.themes.ValoTheme;
-
+import lombok.extern.slf4j.Slf4j;
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.ui.ExpenseSystemUI;
-import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.service.RealUserService;
+import pl.kostro.expensesystem.ui.ExpenseSystemUI;
 import pl.kostro.expensesystem.ui.notification.ShowNotification;
+import pl.kostro.expensesystem.utils.msg.Msg;
 
+@Slf4j
 public class LoginView extends LoginDesign {
   
   private RealUserService rus;
 
-  private Logger logger = LogManager.getLogger();
-
-  private Button.ClickListener signInClick = event -> {
+  private final Button.ClickListener signInClick = event -> {
     signInEnable();
     registerForm.setVisible(false);
     loginForm.setVisible(true);
   };
-  private Button.ClickListener signUpClick = event -> {
+  private final Button.ClickListener signUpClick = event -> {
     signUpEnable();
     loginForm.setVisible(false);
     registerForm.setVisible(true);
   };
-  private LoginForm.LoginListener loginEvent = event -> {
-    RealUserEntity loggedUser = null;
+  private final LoginForm.LoginListener loginEvent = event -> {
     try {
-      loggedUser = rus.getUserData(event.getLoginParameter("username"), event.getLoginParameter("password"));
+      RealUserEntity loggedUser = rus.getUserData(event.getLoginParameter("username"), event.getLoginParameter("password"));
       if (loggedUser == null) {
         ShowNotification.logonProblem();
         loginForm.getLoginButton().setEnabled(true);
@@ -51,7 +46,7 @@ public class LoginView extends LoginDesign {
 
   public LoginView() {
     rus = AppCtxProvider.getBean(RealUserService.class);
-    logger.info("create");
+    log.info("create");
     setCaption();
     signIn.setDisableOnClick(true);
     signUp.setDisableOnClick(true);

@@ -1,7 +1,6 @@
 package pl.kostro.expensesystem.model.service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
@@ -10,12 +9,11 @@ import pl.kostro.expensesystem.model.repository.CategoryRepository;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
+@Slf4j
 @Service
 public class CategoryServiceImpl implements CategoryService {
 
-  private CategoryRepository repository;
-
-  private Logger logger = LogManager.getLogger();
+  private final CategoryRepository repository;
 
   @Autowired
   public CategoryServiceImpl(CategoryRepository repository) {
@@ -25,13 +23,13 @@ public class CategoryServiceImpl implements CategoryService {
   public void save(CategoryEntity category) {
     LocalDateTime stopper = LocalDateTime.now();
     repository.save(category);
-    logger.info("save for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("save for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void remove(CategoryEntity category) {
     LocalDateTime stopper = LocalDateTime.now();
     repository.delete(category);
-    logger.info("removeCategory for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("removeCategory for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   void decrypt(CategoryEntity category) {
@@ -42,7 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
     LocalDateTime stopper = LocalDateTime.now();
     category.setName(category.getName(true), true);
     repository.save(category);
-    logger.info("encrypt for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("encrypt for {} finish: {} ms", category, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
 }

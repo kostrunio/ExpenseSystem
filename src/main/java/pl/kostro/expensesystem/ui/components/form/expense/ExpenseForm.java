@@ -5,10 +5,10 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox.NewItemProvider;
 import pl.kostro.expensesystem.AppCtxProvider;
+import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.service.ExpenseService;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.ui.views.table.TableView;
 import pl.kostro.expensesystem.utils.calculator.Calculator;
@@ -21,14 +21,13 @@ import java.util.Optional;
 public class ExpenseForm extends ExpenseFormDesign {
   
   private ExpenseService es;
-  private ExpenseSheetService eshs;
   private ExpenseSheetTransformService eshts;
   
   private ExpenseSheetEntity expenseSheet;
   private ExpenseEntity expense;
   private TableView view;
 
-  private Button.ClickListener saveClick = event -> {
+  private final Button.ClickListener saveClick = event -> {
     expense.setDate(dateField.getValue());
     expense.setCategory(categoryBox.getValue());
     expense.setUser(userBox.getValue().getUser());
@@ -42,13 +41,13 @@ public class ExpenseForm extends ExpenseFormDesign {
       expenseSheet.getExpenseList().add(expense);
     view.refreshExpenses();
   };
-  private Button.ClickListener duplicateClick = event -> {
+  private final Button.ClickListener duplicateClick = event -> {
     ExpenseEntity newExpense = new ExpenseEntity(expense.getDate(), expense.getFormula(), expense.getCategory(),
         expense.getUser(), expense.getComment(), expense.isNotify(), expense.getExpenseSheet());
     edit(newExpense);
     saveButton.setEnabled(false);
   };
-  private Button.ClickListener removeClick = event -> {
+  private final Button.ClickListener removeClick = event ->
     ConfirmDialog.show(getUI(), Msg.get("expensForm.removeLabel"), Msg.get("expensForm.removeQuestion"),
         Msg.get("expensForm.removeYes"), Msg.get("expensForm.removeNo"), dialog -> {
           if (dialog.isConfirmed()) {
@@ -57,13 +56,11 @@ public class ExpenseForm extends ExpenseFormDesign {
             view.refreshExpenses();
           }
     });
-  };
-  private HasValue.ValueChangeListener verifyFormula = event -> verifyFormula(formulaField.getValue());
-  private NewItemProvider<String> addComment = event -> Optional.of(event);
+  private final HasValue.ValueChangeListener verifyFormula = event -> verifyFormula(formulaField.getValue());
+  private final NewItemProvider<String> addComment = Optional::of;
 
   public ExpenseForm() {
     es = AppCtxProvider.getBean(ExpenseService.class);
-    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     setCaption();
     configureComponents();
@@ -84,7 +81,7 @@ public class ExpenseForm extends ExpenseFormDesign {
     dateField.setDateFormat("yyyy-MM-dd");
     dateField.addValueChangeListener(verifyFormula);
 
-    categoryBox.setItemCaptionGenerator(item -> item.getName());
+    categoryBox.setItemCaptionGenerator(CategoryEntity::getName);
     categoryBox.setEmptySelectionAllowed(false);
     categoryBox.addValueChangeListener(verifyFormula);
 
@@ -120,10 +117,7 @@ public class ExpenseForm extends ExpenseFormDesign {
   }
 
   private void verifyFormula(Object formula) {
-    if (formula != null && !formula.toString().equals("") && Calculator.verifyAllowed(formula.toString()))
-      saveButton.setEnabled(true);
-    else
-      saveButton.setEnabled(false);
+      saveButton.setEnabled(formula != null && !formula.toString().isEmpty() && Calculator.verifyAllowed(formula.toString()));
   }
 
   public void edit(ExpenseEntity expense) {

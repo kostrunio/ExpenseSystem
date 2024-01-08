@@ -1,6 +1,9 @@
 package pl.kostro.expensesystem.model.entity;
 
-import java.math.BigDecimal;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import pl.kostro.expensesystem.utils.encryption.Encryption;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,14 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-
-import org.hibernate.annotations.GenericGenerator;
-
-import pl.kostro.expensesystem.utils.encryption.Encryption;
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "categories")
 public class CategoryEntity extends AbstractEntity {
+  @Setter
+  @Getter
   @Id
   @GeneratedValue(generator="increment")
   @GenericGenerator(name = "increment", strategy = "increment")
@@ -25,8 +27,12 @@ public class CategoryEntity extends AbstractEntity {
   private String name;
   @Column(name = "c_name_byte")
   private byte[] name_byte;
+  @Setter
+  @Getter
   @Column(name = "c_multiplier")
   private BigDecimal multiplier;
+  @Setter
+  @Getter
   @Column(name = "c_order")
   private int order;
 
@@ -41,14 +47,6 @@ public class CategoryEntity extends AbstractEntity {
     this.order = order;
   }
 
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-  
   public String getName() {
     return getName(false);
   }
@@ -68,22 +66,6 @@ public class CategoryEntity extends AbstractEntity {
     if (name_byte != null && name.equals(this.name) && !encrypt) return;
     this.name_byte = Encryption.encryption(name);
     this.name = name;
-  }
-  
-  public BigDecimal getMultiplier() {
-    return multiplier;
-  }
-
-  public void setMultiplier(BigDecimal multiplier) {
-    this.multiplier = multiplier;
-  }
-
-  public int getOrder() {
-    return order;
-  }
-
-  public void setOrder(int order) {
-    this.order = order;
   }
 
   @Override

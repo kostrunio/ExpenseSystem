@@ -11,8 +11,7 @@ import com.vaadin.ui.ComboBox.NewItemProvider;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Grid.Column;
 import com.vaadin.ui.components.grid.FooterRow;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.vaadin.haijian.Exporter;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.*;
@@ -26,24 +25,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public class TableView extends TableDesign {
   
-  private ExpenseSheetTransformService eshts;
-
-  private Logger logger = LogManager.getLogger();
-  private LocalDate date;
+  private final ExpenseSheetTransformService eshts;
+  private final LocalDate date;
   private ExpenseSheetEntity expenseSheet;
-  private FooterRow footer = expenseGrid.prependFooterRow();
+  private final FooterRow footer = expenseGrid.prependFooterRow();
   private Column<ExpenseEntity, LocalDate> dateColumn;
   private Column<ExpenseEntity, String> categoryColumn;
   private Column<ExpenseEntity, String> formulaColumn;
   private Column<ExpenseEntity, BigDecimal> valueColumn;
   private Column<ExpenseEntity, LocalDate> updateDateColumn;
   
-  private StreamResource exportData = new StreamResource((StreamResource.StreamSource) () -> Exporter.exportAsExcel(expenseGrid), "export.xls");
-  private FileDownloader excelFileDownloader = new FileDownloader(exportData);
+  private final StreamResource exportData = new StreamResource((StreamResource.StreamSource) () -> Exporter.exportAsExcel(expenseGrid), "export.xls");
+  private final FileDownloader excelFileDownloader = new FileDownloader(exportData);
   
-  private HasValue.ValueChangeListener filterChanged = event -> {
+  private final HasValue.ValueChangeListener filterChanged = event -> {
     UserEntity filterUser = null;
     if (userBox.getValue() instanceof UserLimitEntity) {
       filterUser = userBox.getValue().getUser();
@@ -61,18 +59,18 @@ public class TableView extends TableDesign {
         commentBox.getValue()));
     refreshExpenses();
   };
-  private ClickListener newClicked = event -> expenseForm.edit(new ExpenseEntity());
-  private SelectionListener<ExpenseEntity> itemClicked = event -> {
-    if (expenseGrid.getSelectedItems().size() != 0)
+  private final ClickListener newClicked = event -> expenseForm.edit(new ExpenseEntity());
+  private final SelectionListener<ExpenseEntity> itemClicked = event -> {
+    if (!expenseGrid.getSelectedItems().isEmpty())
       expenseForm.edit(expenseGrid.getSelectedItems().iterator().next());
     else
       expenseForm.setVisible(false);
   };
-  private NewItemProvider addComment = event -> Optional.of(event);
+  private final NewItemProvider addComment = Optional::of;
   
   public TableView() {
     eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
-    logger.info("create");
+    log.info("create");
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
     
@@ -89,7 +87,7 @@ public class TableView extends TableDesign {
     fromDateField.addValueChangeListener(filterChanged);
     toDateField.setValue(date.withDayOfMonth(date.lengthOfMonth()));
     toDateField.addValueChangeListener(filterChanged);
-    categoryBox.setItemCaptionGenerator(item -> item.getName());
+    categoryBox.setItemCaptionGenerator(CategoryEntity::getName);
     categoryBox.setItems(expenseSheet.getCategoryList());
     categoryBox.addValueChangeListener(filterChanged);
     userBox.setItemCaptionGenerator(item -> item.getUser().getName());
@@ -97,17 +95,17 @@ public class TableView extends TableDesign {
     userBox.addValueChangeListener(filterChanged);
     formulaField.addValueChangeListener(filterChanged);
     commentBox.setNewItemProvider(addComment);
-    commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshts.getAllComments(expenseSheet));
+    commentBox.setItems(String::contains, eshts.getAllComments(expenseSheet));
     commentBox.addValueChangeListener(filterChanged);
     newExpenseButton.addClickListener(newClicked);
     expenseGrid.addSelectionListener(itemClicked);
     
     if (expenseSheet.getFilter() != null) {
       if (expenseSheet.getFilter().getCategories() != null
-          && expenseSheet.getFilter().getCategories().size() > 0)
+          && !expenseSheet.getFilter().getCategories().isEmpty())
         categoryBox.setSelectedItem(expenseSheet.getFilter().getCategories().get(0));
       if (expenseSheet.getFilter().getUsers() != null
-          && expenseSheet.getFilter().getUsers().size() > 0)
+          && !expenseSheet.getFilter().getUsers().isEmpty())
         userBox.setSelectedItem(eshts.getUserLimitForUser(expenseSheet.getFilter().getUsers().get(0), expenseSheet));
       if (expenseSheet.getFilter().getFormula() != null
           && !expenseSheet.getFilter().getFormula().isEmpty())
@@ -164,7 +162,7 @@ public class TableView extends TableDesign {
       try {
         result = result.add(exp.getValue());
       } catch (Exception e) {
-        logger.error("calcualteSum: Problem "+ e.getMessage() + " with " + exp.getId());
+        log.error("calcualteSum: Problem "+ e.getMessage() + " with " + exp.getId());
       }
     }
     return result;

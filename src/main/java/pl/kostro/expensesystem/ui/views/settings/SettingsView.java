@@ -3,8 +3,7 @@ package pl.kostro.expensesystem.ui.views.settings;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickListener;
 import com.vaadin.ui.UI;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
@@ -20,15 +19,15 @@ import pl.kostro.expensesystem.utils.msg.Msg;
 
 import java.text.MessageFormat;
 
+@Slf4j
 public class SettingsView extends SettingsDesign implements ExpenseSheetEditListener, ExpenseSheetPasswordChangeListener {
 
-  private Logger logger = LogManager.getLogger();
   private ExpenseSheetService eshs;
   private RealUserService rus;
   private ExpenseSheetEntity expenseSheet;
-  private ClickListener editClick = event -> UI.getCurrent().addWindow(new ExpenseSheetEditWindow(SettingsView.this, expenseSheet));
-  private ClickListener passwordClick = event -> UI.getCurrent().addWindow(new ExpenseSheetEditPasswordWindow(SettingsView.this));
-  private ClickListener removeClick = event -> {
+  private final ClickListener editClick = event -> UI.getCurrent().addWindow(new ExpenseSheetEditWindow(SettingsView.this, expenseSheet));
+  private final ClickListener passwordClick = event -> UI.getCurrent().addWindow(new ExpenseSheetEditPasswordWindow(SettingsView.this));
+  private final ClickListener removeClick = event ->
     ConfirmDialog.show(getUI(),
         Msg.get("settingsPage.removeSheetLabel"),
         MessageFormat.format(Msg.get("settingsPage.removeSheetQuestion"), expenseSheet.getName()),
@@ -40,20 +39,20 @@ public class SettingsView extends SettingsDesign implements ExpenseSheetEditList
             eshs.removeExpenseSheet(expenseSheet);
             RealUserEntity loggedUser = VaadinSession.getCurrent().getAttribute(RealUserEntity.class);
             loggedUser = rus.refresh(loggedUser);
-            if (loggedUser.getDefaultExpenseSheet() == null && loggedUser.getExpenseSheetList().size() != 0)
+            if (loggedUser.getDefaultExpenseSheet() == null && !loggedUser.getExpenseSheetList().isEmpty())
               rus.setDefaultExpenseSheet(loggedUser, loggedUser.getExpenseSheetList().get(0));
             VaadinSession.getCurrent().setAttribute(ExpenseSheetEntity.class, null);
             ((ExpenseSystemUI)getUI()).getMainView().refresh();
             UI.getCurrent().getNavigator().navigateTo("");
           }
         });
-  };
-  private ClickListener backClick = event -> ((ExpenseSystemUI) getUI()).updateContent();
+
+  private final ClickListener backClick = event -> ((ExpenseSystemUI) getUI()).updateContent();
 
   public SettingsView() {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     rus = AppCtxProvider.getBean(RealUserService.class);
-    logger.info("create");
+    log.info("create");
     this.expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     setCaption();
     editButton.addClickListener(editClick);

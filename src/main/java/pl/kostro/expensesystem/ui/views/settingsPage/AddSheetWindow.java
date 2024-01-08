@@ -1,8 +1,5 @@
 package pl.kostro.expensesystem.ui.views.settingsPage;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Alignment;
@@ -15,21 +12,21 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Window;
 import com.vaadin.ui.themes.ValoTheme;
-
+import lombok.extern.slf4j.Slf4j;
 import pl.kostro.expensesystem.AppCtxProvider;
-import pl.kostro.expensesystem.ui.ExpenseSystemUI;
-import pl.kostro.expensesystem.utils.msg.Msg;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.RealUserEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.model.service.RealUserService;
 import pl.kostro.expensesystem.model.service.UserLimitService;
+import pl.kostro.expensesystem.ui.ExpenseSystemUI;
 import pl.kostro.expensesystem.ui.notification.ShowNotification;
+import pl.kostro.expensesystem.utils.msg.Msg;
 
+@Slf4j
 public class AddSheetWindow extends Window {
 
-  private Logger logger = LogManager.getLogger();
   private ExpenseSheetService eshs;
   private UserLimitService uls;
   private RealUserService rus;
@@ -38,8 +35,8 @@ public class AddSheetWindow extends Window {
   private final PasswordField passwordField = new PasswordField(Msg.get("newSheet.password"));
   private final PasswordField rePasswordField = new PasswordField(Msg.get("newSheet.repassword"));
 
-  private ClickListener cancelClicked = event -> close();
-  private ClickListener saveClicked = event -> {
+  private final ClickListener cancelClicked = event -> close();
+  private final ClickListener saveClicked = event -> {
     if (nameField.isEmpty()) {
       ShowNotification.fieldEmpty(nameField.getCaption());
       return;
@@ -66,7 +63,7 @@ public class AddSheetWindow extends Window {
     eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     uls = AppCtxProvider.getBean(UserLimitService.class);
     rus = AppCtxProvider.getBean(RealUserService.class);
-    logger.info("show");
+    log.info("show");
     setModal(true);
     setClosable(false);
     setResizable(false);

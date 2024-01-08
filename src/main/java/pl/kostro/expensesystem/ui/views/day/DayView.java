@@ -10,15 +10,13 @@ import com.vaadin.ui.ComboBox.NewItemProvider;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.themes.ValoTheme;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
 import pl.kostro.expensesystem.model.entity.UserLimitEntity;
 import pl.kostro.expensesystem.model.service.ExpenseService;
-import pl.kostro.expensesystem.model.service.ExpenseSheetService;
 import pl.kostro.expensesystem.ui.components.dialog.ConfirmDialog;
 import pl.kostro.expensesystem.ui.views.month.MonthView;
 import pl.kostro.expensesystem.utils.calculator.Calculator;
@@ -32,45 +30,44 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 public class DayView extends DayDesign {
   
   private ExpenseService es;
-  private ExpenseSheetService eshs;
   private ExpenseSheetTransformService eshts;
 
-  private Logger logger = LogManager.getLogger();
   private ExpenseSheetEntity expenseSheet;
   private LocalDate date;
   private CategoryEntity category;
   private ExpenseEntity expense;
   private boolean modify;
 
-  private Button.ClickListener prevClick = event -> {
+  private final Button.ClickListener prevClick = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date.minusDays(1));
     removeAllComponents();
     addComponent(new DayView());
   };
-  private Button.ClickListener nextClick = event -> {
+  private final Button.ClickListener nextClick = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date.plusDays(1));
     removeAllComponents();
     addComponent(new DayView());
   };
-  private Button.ClickListener backClick = event -> {
+  private final Button.ClickListener backClick = event -> {
     removeAllComponents();
     addComponent(new MonthView());
   };
-  private Button.ClickListener categoryClick = event -> {
+  private final Button.ClickListener categoryClick = event -> {
     if (event.getButton().getData() instanceof CategoryEntity) {
       category = (CategoryEntity) event.getButton().getData();
       prepareExpenseListLayout();
     }
   };
-  private Button.ClickListener valueClick = event -> {
+  private final Button.ClickListener valueClick = event -> {
     if (event.getButton().getData() instanceof ExpenseEntity) {
       buildAddNewExpense((ExpenseEntity) event.getButton().getData(), true);
     }
   };
-  private Button.ClickListener removeClick = event -> {
+  private final Button.ClickListener removeClick = event -> {
     if (event.getButton().getData() instanceof ExpenseEntity) {
       final ExpenseEntity expense = (ExpenseEntity) event.getButton().getData();
       ConfirmDialog.show(getUI(), Msg.get("category.removeLabel"), Msg.get("category.removeQuestion"),
@@ -84,7 +81,7 @@ public class DayView extends DayDesign {
           });
     }
   };
-  private Button.ClickListener saveClick = event -> {
+  private final Button.ClickListener saveClick = event -> {
     if (userBox.getValue() instanceof UserLimitEntity) {
       if (modify) {
         eshts.removeExpense(expense, expenseSheet);
@@ -93,7 +90,7 @@ public class DayView extends DayDesign {
       expense.setUser(userBox.getValue().getUser());
       expense.setFormula(formulaField.getValue().startsWith("=") ? formulaField.getValue().substring(1) : formulaField.getValue());
       if (commentBox.getValue() != null)
-        expense.setComment(commentBox.getValue().toString());
+        expense.setComment(commentBox.getValue());
       expense.setNotify(notifyBox.getValue());
       expense.setExpenseSheet(expenseSheet);
       es.save(expense);
@@ -102,19 +99,18 @@ public class DayView extends DayDesign {
       prepareExpenseListLayout();
     }
   };
-  private ValueChangeListener<LocalDate> dateChanged = event -> {
+  private final ValueChangeListener<LocalDate> dateChanged = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, event.getValue());
     removeAllComponents();
     addComponent(new DayView());
   };
-  private ValueChangeListener verifyFormula = event -> verifyFormula(formulaField.getValue());
-  private NewItemProvider addComment = event -> Optional.of(event);
+  private final ValueChangeListener verifyFormula = event -> verifyFormula(formulaField.getValue());
+  private final NewItemProvider addComment = Optional::of;
 
   public DayView() {
     es = AppCtxProvider.getBean(ExpenseService.class);
-    eshs = AppCtxProvider.getBean(ExpenseSheetService.class);
     eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
-    logger.info("create");
+    log.info("create");
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     category = expenseSheet.getCategoryList().get(0);
     date = VaadinSession.getCurrent().getAttribute(LocalDate.class);
@@ -156,14 +152,13 @@ public class DayView extends DayDesign {
     categoryGrid.removeAllComponents();
     List<CategoryEntity> categoryList = expenseSheet.getCategoryList();
 
-    for (int i = 0; i < categoryList.size(); i++) {
+    for (CategoryEntity category : categoryList) {
       VerticalLayout vertLay = new VerticalLayout();
       vertLay.setMargin(false);
       vertLay.setSpacing(false);
       vertLay.addStyleName("category-button");
       categoryGrid.addComponent(vertLay);
 
-      CategoryEntity category = categoryList.get(i);
       Label catLabel = new Label();
       catLabel.setValue(category.getName());
       vertLay.addComponent(catLabel);
@@ -195,7 +190,7 @@ public class DayView extends DayDesign {
       expenseList = dateExpenseMap.getCategoryExpenseMap().get(category).getExpenseList();
     }
     expenseGrid.setColumns(5);
-    expenseGrid.setRows(expenseList.size() == 0 ? 1 : expenseList.size());
+    expenseGrid.setRows(expenseList.isEmpty() ? 1 : expenseList.size());
 
     for (int i = 0; i < expenseList.size(); i++) {
       ExpenseEntity expense = expenseList.get(i);
@@ -230,14 +225,11 @@ public class DayView extends DayDesign {
         expenseGrid.addComponent(notifyLabel, 4, i);
       }
     }
-    buildAddNewExpense(new ExpenseEntity(date, "", category, expenseSheet.getUserLimitList().get(0).getUser(), "", date.isAfter(LocalDate.now()) ? true : false, expenseSheet), false);
+    buildAddNewExpense(new ExpenseEntity(date, "", category, expenseSheet.getUserLimitList().get(0).getUser(), "", date.isAfter(LocalDate.now()), expenseSheet), false);
   }
 
   private void verifyFormula(Object formula) {
-    if (formula != null && !formula.toString().equals("") && Calculator.verifyAllowed(formula.toString()))
-      saveButton.setEnabled(true);
-    else
-      saveButton.setEnabled(false);
+      saveButton.setEnabled(formula != null && !formula.toString().isEmpty() && Calculator.verifyAllowed(formula.toString()));
   }
 
   public void buildAddNewExpense(ExpenseEntity expense, Boolean modify) {
@@ -252,7 +244,7 @@ public class DayView extends DayDesign {
     formulaField.focus();
     formulaField.setValue(expense.getFormula());
 
-    commentBox.setItems((itemCaption, filterText) -> itemCaption.contains(filterText), eshts.getCommentForCategory(expenseSheet, expense.getCategory()));
+    commentBox.setItems(String::contains, eshts.getCommentForCategory(expenseSheet, expense.getCategory()));
     commentBox.setSelectedItem(expense.getComment());
     
     if (expense.isNotify() || expense.getDate().isAfter(LocalDate.now())) {

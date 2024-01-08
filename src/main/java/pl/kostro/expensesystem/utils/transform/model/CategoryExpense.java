@@ -1,34 +1,26 @@
 package pl.kostro.expensesystem.utils.transform.model;
 
+import lombok.Getter;
+import lombok.Setter;
+import pl.kostro.expensesystem.model.entity.CategoryEntity;
+import pl.kostro.expensesystem.model.entity.ExpenseEntity;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import pl.kostro.expensesystem.model.entity.CategoryEntity;
-import pl.kostro.expensesystem.model.entity.ExpenseEntity;
-
+@Getter
 public class CategoryExpense implements Serializable {
-  private CategoryEntity category;
-  private List<ExpenseEntity> expenseList;
+  private final CategoryEntity category;
+  private final List<ExpenseEntity> expenseList;
+  @Setter
   private BigDecimal sum = new BigDecimal(0);
 
   public CategoryExpense(CategoryEntity category) {
     this.category = category;
     expenseList = new ArrayList<>();
-  }
-
-  public CategoryEntity getCategory() {
-    return category;
-  }
-
-  public List<ExpenseEntity> getExpenseList() {
-    return expenseList;
-  }
-
-  public BigDecimal getSum() {
-    return sum;
   }
 
   public String getSumString() {
@@ -45,7 +37,4 @@ public class CategoryExpense implements Serializable {
     getExpenseList().remove(expense);
   }
 
-  public void setSum(BigDecimal sum) {
-    this.sum = sum;
-  }
 }

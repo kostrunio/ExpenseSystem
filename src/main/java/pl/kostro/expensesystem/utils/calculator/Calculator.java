@@ -14,8 +14,7 @@ public class Calculator {
     if (str.matches("[0-9\\+\\-\\*\\/\\(\\)\\.]*")) {
       String[] open = str.split("\\(", -1);
       String[] close = str.split("\\)", -1);
-      if (open.length == close.length)
-        return true;
+      return open.length == close.length;
     }
     return false;
   }
@@ -23,10 +22,10 @@ public class Calculator {
   public static BigDecimal getOperationResult(String str) {
     if (str.startsWith("="))
       str = str.substring(1);
-    if (str.equals(""))
+    if (str.isEmpty())
       return new BigDecimal(0);
     str = str.replaceAll(",", ".");
-    if (str.indexOf("(") != -1) {
+    if (str.contains("(")) {
       int a = str.lastIndexOf("(");
       int b = str.indexOf(")", a);
       BigDecimal middle = getOperationResult(str.substring(a + 1, b));
@@ -36,7 +35,7 @@ public class Calculator {
     String[] plus = str.split("\\+");
     if (plus.length > 1) {
       // there were some +
-      if (plus[0].length() > 0)
+      if (!plus[0].isEmpty())
         result = getOperationResult(plus[0]);
       for (int i = 1; i < plus.length; i++) {
         result = result.add(getOperationResult(plus[i]));

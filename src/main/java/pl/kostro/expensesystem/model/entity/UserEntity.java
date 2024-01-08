@@ -1,6 +1,9 @@
 package pl.kostro.expensesystem.model.entity;
 
-import java.time.LocalDateTime;
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import pl.kostro.expensesystem.model.converter.LocalDateTimePersistenceConverter;
 
 import javax.persistence.Column;
 import javax.persistence.Convert;
@@ -13,11 +16,10 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
+import java.time.LocalDateTime;
 
-import org.hibernate.annotations.GenericGenerator;
-
-import pl.kostro.expensesystem.model.converter.LocalDateTimePersistenceConverter;
-
+@Setter
+@Getter
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
@@ -41,30 +43,6 @@ public class UserEntity extends AbstractEntity {
 
   public UserEntity(String name) {
     setName(name);
-  }
-
-  public Long getId() {
-    return id;
-  }
-
-  public void setId(Long id) {
-    this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
-  }
-
-  public LocalDateTime getCreationDate() {
-    return creationDate;
-  }
-
-  public void setCreationDate(LocalDateTime creationDate) {
-    this.creationDate = creationDate;
   }
 
   @Override

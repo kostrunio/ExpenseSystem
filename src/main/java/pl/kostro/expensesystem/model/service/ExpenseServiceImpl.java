@@ -1,7 +1,6 @@
 package pl.kostro.expensesystem.model.service;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import pl.kostro.expensesystem.model.entity.ExpenseEntity;
@@ -14,13 +13,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 public class ExpenseServiceImpl implements ExpenseService {
   
   private final ExpenseRepository repository;
   
-  private final Logger logger = LogManager.getLogger();
-
   @Autowired
   public ExpenseServiceImpl(ExpenseRepository repository) {
     this.repository = repository;
@@ -31,13 +29,13 @@ public class ExpenseServiceImpl implements ExpenseService {
     expense.setUpdateDate(LocalDate.now());
     ExpenseEntity saved = repository.save(expense);
     expense.setId(saved.getId());
-    logger.info("save for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("save for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public void remove(ExpenseEntity expense) {
     LocalDateTime stopper = LocalDateTime.now();
     repository.delete(expense);
-    logger.info("removeExpense for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("removeExpense for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 
   public List<ExpenseEntity> findExpensesToNotify() {
@@ -48,8 +46,8 @@ public class ExpenseServiceImpl implements ExpenseService {
     } catch (NoResultException e) {
       //if no expenses found expenseList is 0
     }
-    logger.info("Found {} expenses to notify", expenseList.size());
-    logger.info("findExpensesToNotify finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("Found {} expenses to notify", expenseList.size());
+    log.info("findExpensesToNotify finish: {} ms", stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
     return expenseList;
   }
 
@@ -63,6 +61,6 @@ public class ExpenseServiceImpl implements ExpenseService {
     expense.setFormula(expense.getFormula());
     expense.setComment(expense.getComment());
     expense = repository.save(expense);
-    logger.info("encrypt for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
+    log.info("encrypt for {} finish: {} ms", expense, stopper.until(LocalDateTime.now(), ChronoUnit.MILLIS));
   }
 }

@@ -9,8 +9,7 @@ import com.vaadin.addon.charts.model.Series;
 import com.vaadin.addon.charts.model.Tooltip;
 import com.vaadin.data.HasValue.ValueChangeListener;
 import com.vaadin.server.VaadinSession;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import pl.kostro.expensesystem.AppCtxProvider;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 import pl.kostro.expensesystem.model.entity.ExpenseSheetEntity;
@@ -29,22 +28,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 public class ChartView extends ChartDesign {
 
-  private Logger logger = LogManager.getLogger();
-  private ExpenseSheetTransformService eshts;
-  private ExpenseSheetEntity expenseSheet;
-  private ValueChangeListener<Set<CategoryEntity>> categoryChanged = event -> refreshFilter();
-  private ValueChangeListener<Set<UserLimitEntity>> userChanged = event -> refreshFilter();
+  private final ExpenseSheetTransformService eshts;
+  private final ExpenseSheetEntity expenseSheet;
+  private final ValueChangeListener<Set<CategoryEntity>> categoryChanged = event -> refreshFilter();
+  private final ValueChangeListener<Set<UserLimitEntity>> userChanged = event -> refreshFilter();
 
   public ChartView() {
     eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
-    logger.info("create");
+    log.info("create");
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
     expenseSheet.setFilter(null);
     setCaption();
     categoryCombo.addValueChangeListener(categoryChanged);
-    categoryCombo.setItemCaptionGenerator(item -> item.getName());
+    categoryCombo.setItemCaptionGenerator(CategoryEntity::getName);
     categoryCombo.setItems(expenseSheet.getCategoryList());
     userCombo.addValueChangeListener(userChanged);
     userCombo.setItems(expenseSheet.getUserLimitList());

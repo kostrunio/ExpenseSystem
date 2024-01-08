@@ -1,5 +1,6 @@
 package pl.kostro.expensesystem.utils.transform.model;
 
+import lombok.Getter;
 import pl.kostro.expensesystem.model.entity.CategoryEntity;
 
 import java.math.BigDecimal;
@@ -8,6 +9,7 @@ import java.util.List;
 
 public class YearCategory {
   
+  @Getter
   int year;
   List<List<CategoryExpense>> categoryExpenseList;
   
@@ -23,11 +25,7 @@ public class YearCategory {
       categoryExpenseList.add(monthCategoryList);
     }
   }
-  
-  public int getYear() {
-    return year;
-  }
-  
+
   public CategoryExpense getCategory(int m, CategoryEntity category) {
     for (CategoryExpense categoryEx : categoryExpenseList.get(m))
       if (categoryEx.getCategory().equals(category))

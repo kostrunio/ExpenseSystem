@@ -6,8 +6,7 @@ import com.vaadin.event.ShortcutAction;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button.ClickListener;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import lombok.extern.slf4j.Slf4j;
 import pl.kostro.expensesystem.ui.event.ExpenseSystemEvent.BrowserResizeEvent;
 import pl.kostro.expensesystem.ui.event.ExpenseSystemEventBus;
 import pl.kostro.expensesystem.ui.views.expense.ExpenseView;
@@ -16,26 +15,26 @@ import pl.kostro.expensesystem.utils.calendar.CalendarUtils;
 import java.time.LocalDate;
 import java.time.ZoneId;
 
+@Slf4j
 public class MonthView extends MonthDesign {
 
-  private Logger logger = LogManager.getLogger();
   private LocalDate date;
 
-  private ClickListener prevClick = event -> {
+  private final ClickListener prevClick = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date.minusMonths(1));
     showCalendar();
   };
-  private ClickListener nextClick = event -> {
+  private final ClickListener nextClick = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, date.plusMonths(1));
     showCalendar();
   };
-  private ValueChangeListener<LocalDate> monthChanged = event -> {
+  private final ValueChangeListener<LocalDate> monthChanged = event -> {
     VaadinSession.getCurrent().setAttribute(LocalDate.class, event.getValue());
     showCalendar();
   };
 
   public MonthView() {
-    logger.info("create");
+    log.info("create");
     ExpenseSystemEventBus.register(this);
     previousMonthButton.setClickShortcut(ShortcutAction.KeyCode.ARROW_LEFT);
     previousMonthButton.addClickListener(prevClick);
