@@ -26,7 +26,6 @@ import pl.kostro.expensesystem.utils.transform.service.ExpenseSheetTransformServ
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -42,7 +41,7 @@ public class ChartView extends ChartDesign {
     eshts = AppCtxProvider.getBean(ExpenseSheetTransformService.class);
     logger.info("create");
     expenseSheet = VaadinSession.getCurrent().getAttribute(ExpenseSheetEntity.class);
-    expenseSheet.setFilter(new Filter(null, null, null, null));
+    expenseSheet.setFilter(null);
     setCaption();
     categoryCombo.addValueChangeListener(categoryChanged);
     categoryCombo.setItemCaptionGenerator(item -> item.getName());
@@ -63,13 +62,10 @@ public class ChartView extends ChartDesign {
     String filterComment = null;
     List<UserEntity> users = new ArrayList<>();
     Set<UserLimitEntity> setUserLimit = userCombo.getValue();
-    for (Iterator<UserLimitEntity> iter = setUserLimit.iterator(); iter.hasNext();)
-      users.add(iter.next().getUser());
+    for (UserLimitEntity userLimitEntity : setUserLimit) users.add(userLimitEntity.getUser());
 
-    List<CategoryEntity> categories = new ArrayList<>();
     Set<CategoryEntity> setCategory = categoryCombo.getValue();
-    for (Iterator<CategoryEntity> iter = setCategory.iterator(); iter.hasNext();)
-      categories.add(iter.next());
+    List<CategoryEntity> categories = new ArrayList<>(setCategory);
 
     expenseSheet.setFilter(new Filter(categories, users, filterFormula, filterComment));
     showCharts();
