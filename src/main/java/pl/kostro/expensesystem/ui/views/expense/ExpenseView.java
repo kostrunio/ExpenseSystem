@@ -70,14 +70,14 @@ public class ExpenseView extends ExpenseDesign implements View {
   };
   private final ClickListener filterClick = event -> {
     searchPanel.setVisible(!searchPanel.isVisible());
+    categoryCombo.clear();
+    userCombo.clear();
+    formulaField.clear();
+    commentCombo.clear();
     if (searchPanel.isVisible()) {
       prepareSearchLayout();
     } else {
       expenseSheet.setFilter(null);
-      categoryCombo.clear();
-      userCombo.clear();
-      formulaField.clear();
-      commentCombo.clear();
       mainView.removeAllComponents();
       mainView.addComponent(new MonthView());
     }

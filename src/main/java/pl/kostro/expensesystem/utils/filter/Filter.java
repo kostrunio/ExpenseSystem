@@ -94,4 +94,16 @@ public class Filter {
         return true;
     return false;
   }
+
+    @Override
+    public String toString() {
+        return "Filter{" +
+                "dateFrom=" + dateFrom +
+                ", dateTo=" + dateTo +
+                ", categories=" + categories +
+                ", users=" + users +
+                ", formula='" + formula + '\'' +
+                ", comment='" + comment + '\'' +
+                '}';
+    }
 }
