@@ -66,8 +66,9 @@ public class Filter {
           && !matchUser(expense, filter.getUsers()))
         return false;
       if (filter.getFormula() != null
-          && !expense.getFormula().contains(filter.getFormula())
-          && !expense.getValue().equals(new BigDecimal(filter.getFormula())))
+          && !expense.getFormula().contains(filter.getFormula().replace('.', ','))
+              && !expense.getFormula().contains(filter.getFormula().replace(',', '.'))
+          && !expense.getValue().equals(new BigDecimal(filter.getFormula().replace(',', '.'))))
         return false;
       return filter.getComment() == null || filter.getComment().isEmpty()
           || ((expense.getComment() == null

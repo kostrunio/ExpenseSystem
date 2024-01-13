@@ -55,7 +55,7 @@ public class TableView extends TableDesign {
         toDateField.getValue(),
         categories,
         users,
-        formulaField.getValue().replace(',','.'),
+        formulaField.getValue(),
         commentBox.getValue()));
     refreshExpenses();
   };
