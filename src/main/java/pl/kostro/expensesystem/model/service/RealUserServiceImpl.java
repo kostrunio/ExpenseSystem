@@ -104,6 +104,7 @@ public class RealUserServiceImpl implements RealUserService {
     }
   }
 
+  @Transactional
   public void removeExpenseSheetFromUsers(ExpenseSheetEntity expenseSheet) {
     List<RealUserEntity> realUsers = repository.findUsersWithExpenseSheet(expenseSheet);
     if (realUsers != null) {
@@ -112,6 +113,18 @@ public class RealUserServiceImpl implements RealUserService {
           realUser.setDefaultExpenseSheet(null);
         realUser.getExpenseSheetList().remove(expenseSheet);
       }
+      repository.saveAll(realUsers);
     }
+  }
+
+  @Transactional
+  public void removeExpenseSheetAccess(RealUserEntity realUser, ExpenseSheetEntity expenseSheet) {
+    RealUserEntity attached = repository.findById(realUser.getId()).orElseThrow();
+    if (attached.getDefaultExpenseSheet() != null
+        && attached.getDefaultExpenseSheet().equals(expenseSheet)) {
+      attached.setDefaultExpenseSheet(null);
+    }
+    attached.getExpenseSheetList().remove(expenseSheet);
+    repository.save(attached);
   }
 }

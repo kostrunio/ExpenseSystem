@@ -12,4 +12,5 @@ public interface RealUserService {
     RealUserEntity findRealUser(String userName);
     void fetchExpenseSheetList(RealUserEntity realUser);
     void removeExpenseSheetFromUsers(ExpenseSheetEntity expenseSheet);
+    void removeExpenseSheetAccess(RealUserEntity realUser, ExpenseSheetEntity expenseSheet);
 }
