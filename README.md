@@ -1,51 +1,26 @@
-# Bookstore App Starter for Vaadin
+# ExpenseSystem — Vaadin Flow 25 migration foundation
 
-A project example for a Vaadin application that only requires a Servlet 3.1 container to run (no other JEE dependencies). The UI is built with Java only.
+This branch ports the ExpenseSystem domain model, JPA repositories, business services,
+and shared utilities from Vaadin 8 to the Jakarta APIs used by Vaadin Flow 25. It
+retains Spring Boot, PostgreSQL, scheduled notifications, and the existing schema.
 
-The easiest way of using it is via [https://vaadin.com/start](https://vaadin.com/start) - you can choose the package naming you want.
+The old Vaadin 8 UI depended on Navigator, generated Design classes, custom GWT
+widgetsets, Charts, Calendar, and Exporter add-ons. Those views and add-ons have not
+been migrated. The root route is a safe migration-status page and does not expose
+expense data while authentication and authorization are absent.
 
-## Prerequisites
+## Not yet ported
 
-The project can be imported into the IDE of your choice, with Java 21 installed, as a Maven project.
+- Login, registration, and account management
+- Expense-sheet creation and password management
+- Daily/monthly expense entry and calendar navigation
+- Expense tables, charts, filters, and user summaries
+- Settings for categories, users, and spending limits
+- Vaadin 8 Charts, Calendar, and Exporter integrations
 
-## Project Structure
+## Build and run
 
-The project is following the standard [Maven project layout](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html).
-
-## Workflow
-
-To compile the entire project, run "mvn install" in the project root.
-
-Other basic workflow steps:
-
-- getting started
-- compiling the whole project
-  - run `mvn install` in project root
-- developing the application
-  - edit code in src/main
-  - run `mvn`
-  - open http://localhost:8080/
-- creating a production mode war
-  - run `mvn package` 
-- running in production mode
-  - run `mvn jetty:run-war`
-  - open http://localhost:8080/
-
-### Running Integration Tests
-
-Integration tests are implemented using TestBench. The tests take a few minutes to run and are therefore included in a separate Maven profile. To run the tests using Google Chrome, execute
-
-`mvn verify -Pit`
-
-and make sure you have a valid TestBench license installed. If the tests fail because of an old Chrome Driver or you want to use a different browser, you'll need to update the webdrivers.xml file in the project root.
-
-Profile `it` adds the following parameters to run integration tests:
-```sh
--Dwebdriver.chrome.driver=path_to_driver
--Dcom.vaadin.testbench.Parameters.runLocally=chrome
-```
-
-If you would like to run a separate test make sure you have added these parameters to VM Options of JUnit run configuration
-
-### Branching information:
-* `vX` where X is the largest number is the latest version of the starter, using the latest platform version
+Requires Java 21 and Maven. Run `mvn test` to compile the application and execute
+tests. For local startup, configure `JDBC_DATABASE_URL` for the existing PostgreSQL
+database, and optionally `SPRING_DATASOURCE_USERNAME` and
+`SPRING_DATASOURCE_PASSWORD`, then run `mvn spring-boot:run`.

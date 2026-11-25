@@ -37,12 +37,7 @@
     "transform-ast": "2.4.4",
     "typescript": "npm:@typescript/typescript6@6.0.2",
     "vite": "8.3.8",
-    "vite-plugin-checker": "1.0.0",
-    "workbox-build": "7.4.1",
-    "workbox-core": "7.4.1",
-    "workbox-precaching": "7.4.1",
-    "workbox-routing": "7.4.1",
-    "workbox-strategies": "7.4.1"
+    "vite-plugin-checker": "1.0.0"
   },
   "overrides": {
     "@vaadin/a11y-base": "25.3.7",
@@ -119,10 +114,7 @@
     "lit": "$lit",
     "react": "$react",
     "react-dom": "$react-dom",
-    "react-router": "$react-router",
-    "workbox-build": {
-      "glob": "13.0.6"
-    }
+    "react-router": "$react-router"
   },
   "type": "module",
   "vaadin": {
@@ -162,13 +154,8 @@
       "transform-ast": "2.4.4",
       "typescript": "npm:@typescript/typescript6@6.0.2",
       "vite": "8.3.8",
-      "vite-plugin-checker": "1.0.0",
-      "workbox-build": "7.4.1",
-      "workbox-core": "7.4.1",
-      "workbox-precaching": "7.4.1",
-      "workbox-routing": "7.4.1",
-      "workbox-strategies": "7.4.1"
+      "vite-plugin-checker": "1.0.0"
     },
-    "hash": "6a1d90501347cd93a5472361bee6e4cb006201b2fc4773d92fd65797682ab282"
+    "hash": "29b1324b50f9211bd0aa9284370f688323d676b5b5a242972808144d7265d073"
   }
 }

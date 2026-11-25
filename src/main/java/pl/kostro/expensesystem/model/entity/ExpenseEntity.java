@@ -1,0 +1,136 @@
+package pl.kostro.expensesystem.model.entity;
+
+import lombok.Getter;
+import lombok.Setter;
+import org.hibernate.annotations.GenericGenerator;
+import pl.kostro.expensesystem.model.converter.LocalDatePersistenceConverter;
+import pl.kostro.expensesystem.utils.calculator.Calculator;
+import pl.kostro.expensesystem.utils.encryption.Encryption;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+import java.math.BigDecimal;
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "expenses")
+public class ExpenseEntity extends AbstractEntity {
+  @Setter
+  @Getter
+  @Id
+  @GeneratedValue(generator="increment")
+  @GenericGenerator(name = "increment", strategy = "increment")
+  @Column(name = "e_id")
+  private Long id;
+  @Setter
+  @Getter
+  @Column(name = "e_date")
+  @Convert(converter = LocalDatePersistenceConverter.class)
+  private LocalDate date;
+  @Transient
+  private String formula;
+  @Column(name = "e_formula_byte")
+  private byte[] formula_byte;
+  @Transient
+  private BigDecimal value;
+  @Setter
+  @Getter
+  @OneToOne
+  @JoinColumn(name = "e_c_id")
+  private CategoryEntity category;
+  @Setter
+  @Getter
+  @OneToOne
+  @JoinColumn(name = "e_u_id")
+  private UserEntity user;
+  @Transient
+  private String comment;
+  @Column(name = "e_comment_byte")
+  private byte[] comment_byte;
+  @Setter
+  @Getter
+  @Column(name = "e_notify")
+  private boolean notify;
+  @Setter
+  @Getter
+  @Column(name = "e_u_date")
+  @Convert(converter = LocalDatePersistenceConverter.class)
+  private LocalDate updateDate;
+  @Setter
+  @Getter
+  @ManyToOne
+  @JoinColumn(name = "e_es_id")
+  private ExpenseSheetEntity expenseSheet;
+  @Transient
+  private boolean encoded = true;
+
+  public ExpenseEntity() {
+    super();
+  }
+
+  public ExpenseEntity(LocalDate date, String formula, CategoryEntity category, UserEntity user, String comment, boolean notify,
+                       ExpenseSheetEntity expenseSheet) {
+    this.date = date;
+    setFormula(formula);
+    this.category = category;
+    this.user = user;
+    setComment(comment);
+    this.notify = notify;
+    this.expenseSheet = expenseSheet;
+  }
+
+  public String getFormula() {
+    if (encoded) decode();
+    return formula;
+  }
+
+  private void decode() {
+    if (formula_byte != null)
+      formula = Encryption.decryption(formula_byte);
+    if (comment_byte != null)
+      comment = Encryption.decryption(comment_byte);
+    encoded = false;
+  }
+
+  public void setFormula(String formula) {
+    this.formula_byte = Encryption.encryption(formula);
+    this.formula = formula;
+  }
+
+  public BigDecimal getValue() {
+    try {
+    if (getFormula() != null && !formula.isEmpty())
+      value = Calculator.getOperationResult(formula);
+    return value;
+    } catch (NumberFormatException e) {
+      return new BigDecimal(-1);
+    }
+  }
+
+  public String getComment() {
+    if (encoded) decode();
+    return comment;
+  }
+
+  public void setComment(String comment) {
+    this.comment_byte = Encryption.encryption(comment);
+    this.comment = comment;
+  }
+
+  @Override
+  public String toString() {
+    if (encoded)
+      return getClass().getSimpleName()+"[" + getId() + ";" + getDate() + "]";
+    else
+      return getClass().getSimpleName()+"[" + getId() + ";" + getDate() + ";" + getCategory() + ";" + getValue() + "]";
+  }
+
+}
