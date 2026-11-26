@@ -36,10 +36,10 @@ public class MainView extends MainDesign {
   private final Map<String, Button> viewButtons = new HashMap<>();
 
   private final ClickListener showMenuClick = event -> {
-    if (menuPart.getStyleName().contains(VALO_MENU_VISIBLE)) {
-      menuPart.removeStyleName(VALO_MENU_VISIBLE);
+    if (menuPartLayout.getStyleName().contains(VALO_MENU_VISIBLE)) {
+      menuPartLayout.removeStyleName(VALO_MENU_VISIBLE);
     } else {
-      menuPart.addStyleName(VALO_MENU_VISIBLE);
+      menuPartLayout.addStyleName(VALO_MENU_VISIBLE);
     }
   };
   private final ClickListener addSheetClick = event -> UI.getCurrent().addWindow(new AddSheetWindow());
@@ -75,7 +75,7 @@ public class MainView extends MainDesign {
     viewButtons.put(accountButton.getCaption(), accountButton);
     viewButtons.put(logoutButton.getCaption(), logoutButton);
     
-    Navigator navigator = new Navigator(ui, content);
+    Navigator navigator = new Navigator(ui, contentLayout);
     navigator.addView("expenseSheet", new ExpenseView());
     navigator.addView("account", new AccountView());
     navigator.setErrorProvider(errorProvider);
@@ -83,8 +83,8 @@ public class MainView extends MainDesign {
   }
 
   private void setCaption() {
-    title.setValue(Msg.get("menu.logo"));
-    title.setContentMode(ContentMode.HTML);
+    titleLabel.setValue(Msg.get("menu.logo"));
+    titleLabel.setContentMode(ContentMode.HTML);
     sheetLabel.setValue(Msg.get("menu.sheets"));
     settingsLabel.setValue(Msg.get("menu.settingsLabel"));
     addSheetButton.setCaption(Msg.get("menu.addSheet"));
@@ -125,7 +125,7 @@ public class MainView extends MainDesign {
     if (selected != null) {
       selected.addStyleName(VALO_MENU_SELECTED);
     }
-    menuPart.removeStyleName(VALO_MENU_VISIBLE);
+    menuPartLayout.removeStyleName(VALO_MENU_VISIBLE);
   }
 
 }

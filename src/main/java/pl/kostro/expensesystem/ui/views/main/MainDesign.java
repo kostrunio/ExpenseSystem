@@ -11,29 +11,29 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.VerticalLayout;
 
 public class MainDesign extends HorizontalLayout {
-  protected CssLayout menuPart = new CssLayout();
-  protected HorizontalLayout menuTitle = new HorizontalLayout();
-  protected Label title = new Label();
+  protected CssLayout menuPartLayout = new CssLayout();
+  protected HorizontalLayout menuTitleLayout = new HorizontalLayout();
+  protected Label titleLabel = new Label();
   protected Button showMenuButton = new Button();
-  protected CssLayout menuItems = new CssLayout();
+  protected CssLayout menuItemsLayout = new CssLayout();
   protected Label sheetLabel = new Label();
   protected VerticalLayout sheetLayout = new VerticalLayout();
   protected Label settingsLabel = new Label();
   protected Button addSheetButton = new Button();
   protected Button accountButton = new Button();
   protected Button logoutButton = new Button();
-  protected VerticalLayout content = new VerticalLayout();
+  protected VerticalLayout contentLayout = new VerticalLayout();
 
   public MainDesign() {
     setStyleName("valo-menu-responsive");
     setSpacing(false);
     setResponsive(true);
     setSizeFull();
-    content.setSpacing(false);
-    content.setSizeFull();
-    content.setMargin(false);
-    addComponents(createCssLayout(), content);
-    setExpandRatio(content, 1);
+    contentLayout.setSizeFull();
+    contentLayout.setSpacing(false);
+    contentLayout.setMargin(false);
+    addComponents(createCssLayout(), contentLayout);
+    setExpandRatio(contentLayout, 1);
   }
 
   private Component createCssLayout() {
@@ -44,25 +44,25 @@ public class MainDesign extends HorizontalLayout {
   }
 
   private Component createMenuPart() {
-    menuPart.setStyleName("valo-menu-part");
+    menuPartLayout.setStyleName("valo-menu-part");
     showMenuButton.setIcon(VaadinIcons.MENU);
     showMenuButton.setStyleName("primary small valo-menu-toggle");
-    menuPart.addComponents(createMenuTitle(), showMenuButton, createMenuItems());
-    return menuPart;
+    menuPartLayout.addComponents(createMenuTitleLayout(), showMenuButton, createMenuItemsLayout());
+    return menuPartLayout;
   }
 
-  private Component createMenuTitle() {
-    menuTitle.setStyleName("valo-menu-title");
-    menuTitle.setWidth("100%");
-    title.setContentMode(ContentMode.HTML);
-    title.setValue("<strong>Expense</strong> Application");
-    menuTitle.addComponent(title);
-    menuTitle.setComponentAlignment(title, Alignment.MIDDLE_CENTER);
-    return menuTitle;
+  private Component createMenuTitleLayout() {
+    menuTitleLayout.setStyleName("valo-menu-title");
+    menuTitleLayout.setWidth("100%");
+    titleLabel.setContentMode(ContentMode.HTML);
+    titleLabel.setValue("<strong>Expense</strong> Application");
+    menuTitleLayout.addComponent(titleLabel);
+    menuTitleLayout.setComponentAlignment(titleLabel, Alignment.MIDDLE_CENTER);
+    return menuTitleLayout;
   }
 
-  private Component createMenuItems() {
-    menuItems.setStyleName("valo-menuitems");
+  private Component createMenuItemsLayout() {
+    menuItemsLayout.setStyleName("valo-menuitems");
     sheetLabel.setStyleName("valo-menu-subtitle");
     sheetLayout.setSpacing(false);
     sheetLayout.setMargin(false);
@@ -73,7 +73,7 @@ public class MainDesign extends HorizontalLayout {
     accountButton.setPrimaryStyleName("valo-menu-item");
     logoutButton.setIcon(VaadinIcons.SIGN_OUT);
     logoutButton.setPrimaryStyleName("valo-menu-item");
-    menuItems.addComponents(sheetLabel, sheetLayout, settingsLabel, addSheetButton, accountButton, logoutButton);
-    return menuItems;
+    menuItemsLayout.addComponents(sheetLabel, sheetLayout, settingsLabel, addSheetButton, accountButton, logoutButton);
+    return menuItemsLayout;
   }
 }
